@@ -1,0 +1,43 @@
+api:
+  default_models:
+    stage2: openai/gpt-5.3-chat
+    stage3: openai/gpt-5.3-chat
+    stage4: openai/gpt-5.3-chat
+
+  models:
+    openai/gpt-5.3-chat:
+      api_source: cloud
+      api_base: ${FLIGHTMVSTG_API_BASE}
+      api_key: ${FLIGHTMVSTG_API_KEY}
+      request_model: gpt-5.3-chat
+      rpm_limit: 60
+      tpm_limit: 200000
+      rate_limit_reserve_ratio: 0.1
+
+    anthropic/claude-sonnet-4.6:
+      api_source: cloud
+      api_base: ${FLIGHTMVSTG_API_BASE}
+      api_key: ${FLIGHTMVSTG_API_KEY}
+      request_model: claude-sonnet-4.6
+      rpm_limit: 60
+      tpm_limit: 200000
+      rate_limit_reserve_ratio: 0.1
+
+    google/gemini-3-flash-preview:
+      api_source: cloud
+      api_base: ${FLIGHTMVSTG_API_BASE}
+      api_key: ${FLIGHTMVSTG_API_KEY}
+      request_model: gemini-3-flash-preview
+      rpm_limit: 60
+      tpm_limit: 200000
+      rate_limit_reserve_ratio: 0.1
+
+stage3_temporal:
+  api_upload_resize_enabled: true
+  api_upload_max_width: 640
+  api_upload_max_height: 480
+  api_upload_jpeg_quality: 80
+  timeout_s: 600
+  experiment_concurrency: 1
+  api_rpm_limit: 0
+  api_tpm_limit: 0

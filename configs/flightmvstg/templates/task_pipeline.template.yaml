@@ -1,0 +1,139 @@
+# FlightMVSTG task pipeline template
+#
+# Usage:
+#   conda run -n flight-mvstg python scripts/flightmvstg/task_pipeline.py \
+#     --spec configs/flightmvstg/task_pipeline/task_pipeline_template.yaml
+#
+# If `config_path` is omitted, the script will try:
+# 1. `landmark_list.scene_configs[0]`
+# 2. fail with a clear error
+
+config_path: configs/flightmvstg/task_airsim_env_demo.yaml
+task_name: reviewer_demo_task
+task_pipeline_root_dir: task_pipeline_data
+
+# stage: both | stage3 | stage4
+stage: both
+
+# phase: selection | data | render | experiment | both
+phase: selection
+
+seed: 29
+
+# Clear outputs only for the stages you are about to run.
+clear_existing_stage3: false
+clear_existing_stage4: false
+
+# Default fallback count used when stage-specific count is not given.
+landmark_count: 50
+
+experiment_model: openai/gpt-5.3-chat
+experiment_concurrency: 4
+# 0 means auto: use up to all selected models with CPU reserve.
+experiment_model_parallelism: 0
+
+# Optional: generate a reusable cross-scene landmark list.
+# This artifact only stores:
+# - engine
+# - scene_id
+# - config_path
+# - instance_id
+#
+# You may use either:
+# - scene_landmark_counts: per-scene counts
+# - global_landmark_count: distribute approximately evenly across scenes
+#
+# `all` is also supported.
+landmark_list:
+  artifact_name: stage34_landmark_list
+  seed: 29
+  scene_configs:
+    - configs/flightmvstg/task_airsim_env_demo.yaml
+    # - configs/flightmvstg/task_airsim_env_24.yaml
+  scene_landmark_counts:
+    env_demo: 50
+    # env_24: all
+  # global_landmark_count: 100
+
+# Optional: reuse an existing landmark list artifact in later steps.
+# Example:
+# landmark_list_path: task_pipeline_data/demo_task/task_pipeline/landmark_lists/stage34_landmark_list.latest.json
+landmark_list_path: ""
+
+stage3:
+  # Single-landmark mapping:
+  # - uniformly sample `landmark_count` landmarks by subcategory
+  # - for each landmark, sample `atomic_classes_per_landmark` atomic classes
+  # - for each landmark, sample `composite_classes_per_landmark` composite classes
+  # - generate `instances_per_class` flight instances for each chosen class
+  # - each flight instance contributes:
+  #   - len(self_state_forms) self-state QA tasks
+  #   - len(environmental_forms) environmental QA tasks
+  # - each QA task generates `qa_samples_per_task` QA samples
+  single_landmark:
+    landmark_count: 500
+    atomic_classes_per_landmark: 1
+    composite_classes_per_landmark: 1
+    instances_per_class: 1
+    self_state_forms:
+      - self_set_instance_recognition
+      - self_element_instance_recognition
+    environmental_forms:
+      - env_visibility_reasoning
+    qa_samples_per_task: 1
+
+  # Optional multi-landmark mappings.
+  pair_count: 0
+  # Optional per-scene override when one shared spec spans multiple scenes.
+  # pair_scene_counts:
+  #   env_7: 20
+  #   env_23: 10
+  # Generate more than one mission for each selected pair group if needed.
+  pair_instances_per_group: 1
+  pair_max_range_m: 50.0
+  triple_count: 0
+  # Optional per-scene override when one shared spec spans multiple scenes.
+  # triple_scene_counts:
+  #   env_7: 20
+  #   env_23: 10
+  # Generate more than one mission for each selected triple group if needed.
+  triple_instances_per_group: 1
+  triple_max_range_m: 100.0
+
+  rerender_existing: false
+  include_temporal_localization: true
+
+  # Manifest mode:
+  # - single-landmark
+  # - multi-landmark
+  # - all
+  manifest_mode: all
+  # Optional hard override for debugging only.
+  # Normally leave this unset and let the script derive sample_count from the mapping above.
+  # sample_count: 3000
+
+stage4:
+  # Stage 4 mapping:
+  # - uniformly sample `landmark_count` landmarks by subcategory
+  # - each landmark corresponds to len(view_definitions) * len(task_types) task types
+  # - each task type corresponds to 2 difficulty variants:
+  #   - diagonal views exist -> 4way + 8way
+  #   - only frontal views -> 4way + 4way
+  # - each difficulty variant generates `qa_samples_per_difficulty` QA samples
+  landmark_count: 500
+  per_landmark:
+    view_definitions:
+    task_types:
+      - self_where
+      - self_what
+      - env_where
+      - env_how
+    qa_samples_per_difficulty: 1
+
+  difficulties:
+    - 4way
+    - 8way
+
+  # Optional hard override for debugging only.
+  # Normally leave this unset and let the script derive sample_count from the mapping above.
+  # sample_count: 4000

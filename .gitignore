@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+scene_data/
+task_pipeline_data/
+dist/
+public/
+logs/
+*.log
