@@ -9,7 +9,7 @@ import yaml
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
-COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_stage_configs.yaml"
+COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_stage_configs.yaml"
 BEHAVIOR_SHARED_CONFIG: dict[str, Any] = {}
 
 

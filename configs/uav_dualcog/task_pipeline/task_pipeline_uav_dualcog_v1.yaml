@@ -1,0 +1,95 @@
+stage: both
+phase: both
+task_name: UAV-DualCog-V1
+task_pipeline_root_dir: task_pipeline_data
+engine: airsim
+scene_ids:
+- env_7
+- env_8
+- env_9
+- env_10
+- env_11
+- env_13
+- env_16
+- env_17
+- env_20
+- env_21
+- env_23
+- env_24
+seed: 29
+clear_existing_stage3: false
+clear_existing_stage4: false
+experiment_models: null
+experiment_concurrency: 8
+experiment_model_parallelism: 10
+unique_experiment: true
+timeout_s: 600
+landmark_list:
+  artifact_name: AirMultiviewST_Test_Single_landmarks
+  scene_ids:
+  - env_7
+  - env_8
+  - env_9
+  - env_10
+  - env_11
+  - env_13
+  - env_16
+  - env_17
+  - env_20
+  - env_21
+  - env_23
+  - env_24
+  scene_landmark_counts:
+    env_7: all
+    env_8: all
+    env_9: all
+    env_10: all
+    env_11: all
+    env_13: all
+    env_16: all
+    env_17: all
+    env_20: all
+    env_21: all
+    env_23: all
+    env_24: all
+  seed: 29
+landmark_list_path: task_pipeline_data/UAV-DualCog-V1/task_pipeline/landmark_lists/AirMultiviewST_Test_Single_landmarks.latest.json
+stage3:
+  single_landmark:
+    landmark_count: all
+    atomic_classes_per_landmark: 1
+    composite_classes_per_landmark: 1
+    instances_per_class: 1
+    self_state_forms:
+    - self_instance_recognition_joint
+    environmental_forms:
+    - env_visibility_reasoning
+    qa_samples_per_task: 1
+  pair_count: 0
+  triple_count: 0
+  pair_max_range_m: 100.0
+  triple_max_range_m: 100.0
+  rerender_existing: false
+  include_temporal_localization: true
+  manifest_mode: all
+  final_video_width: 1440
+  final_video_height: 1080
+  final_capture_width: 1440
+  final_capture_height: 1080
+  final_capture_parallel_workers: 16
+  record_parallel_workers: 16
+stage4:
+  rerender_existing: false
+  overlay_parallel_workers: 32
+  env_capture_parallel_workers: 8
+  landmark_count: all
+  per_landmark:
+    task_types:
+    - self_where
+    - self_what
+    - env_where
+    - env_how
+    qa_samples_per_difficulty: 1
+  difficulties:
+  - 4way
+  - 8way

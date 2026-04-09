@@ -1,0 +1,188 @@
+task:
+  name: FlightMVSTG-env_15
+  engine: airsim
+  base_dir: scene_data
+  scene_id: env_15
+  scene_dir_name: airsim_env_15
+output_layout:
+  scene_dir_include_engine: true
+  stage1_dir: pcd_map
+  stage2_raw_dir: landmarks_raw
+  stage2_review_dir: landmarks_review
+  stage2_landmarks_dir: landmarks
+  stage3_trajectory_dir: trajectory
+  stage3_review_dir: trajectory_review
+  logs_dir: logs
+camera:
+  width: 4096
+  height: 3072
+  fov: 72.0
+  fps: 10
+collect:
+  yaw_list_deg:
+  - 0
+  pose_settle_sec: 0.05
+  multimodal_fusion:
+    enabled: false
+    max_assign_dist_m: 1.2
+    instance_voxel_size: 1.0
+    instance_min_points: 80
+  lidar_segmentation:
+    enabled: true
+    instance_voxel_size: 1.0
+    instance_min_points: 80
+traj_map:
+  DilateRadius: 3
+  VoxelWidth: 1.5
+  MapBound:
+  - -229
+  - 236
+  - -304
+  - 304
+  - -50
+  - 55
+  LidarDelta:
+  - 30
+  - 30
+  - 50
+  pcd_scale_ratio: 1
+  traj_scale_ratio: 1
+  map_elevation: 0
+  min_height_thresh: 6
+  EstimatedSurfaceZ: -12.38428840637207
+  DetectedMinZ: -50.0
+parallel:
+  mode: single_instance_multi_thread
+  workers: 6
+  bindings:
+  - worker_id: 0
+    vehicle: drone_1
+merge:
+  dedup: true
+  voxel_size: 0.01
+  use_sor: false
+  sor_k: 8
+  sor_z: 2.0
+  coverage_grid_res_m: 1.0
+stage1_output:
+  formats:
+    pcd: true
+    ply: true
+  primary_cloud_type: semantic_lidar
+stage2:
+  auto_label_bbox_upload_max_width: 640
+  auto_label_bbox_upload_max_height: 480
+  auto_label_bbox_show_face_label: true
+  auto_label_bbox_face_label_format: 'Visible Face: {direction} (Landmark-centric)'
+  mode: collect_instances
+  collect_min_points: 50
+  collect_exclude_class_ids:
+  - 0
+  collect_exclude_nonpositive_instance: true
+  pcd_ground_percentile: 15.0
+  pcd_ground_margin_m: 1.2
+  pcd_max_instances: 0
+  collect_preview_bg_max_points: 300000
+  collect_preview_context_radius_scale: 8.0
+  collect_preview_context_radius_min_m: 25.0
+  collect_preview_context_height_scale: 6.0
+  collect_preview_context_height_min_m: 15.0
+  collect_preview_lower_row_range_scale: 3
+  collect_parallel_workers: 6
+  collect_progress_log_every: 20
+  collect_pair_limit: 0
+  collect_enable_rgb_views: true
+  collect_rgb_source: sim
+  collect_rgb_views_count: 8
+  collect_side_view_min_keep: 4
+  collect_add_birdseye_view: true
+  collect_view_image_size: 640
+  collect_view_image_width: 4096
+  collect_view_image_height: 3072
+  collect_rgb_pose_settle_sec: 0.03
+  collect_rgb_parallel_workers: 6
+  collect_rgb_square_crop: false
+  collect_use_square_capture_in_airsim: false
+  collect_rgb_draw_bbox_on_image: false
+  collect_side_view_min_visible_ratio: 0.02
+  collect_side_view_min_visible_points: 80
+  collect_side_view_occlusion_neighbor_px: 2
+  collect_side_view_occlusion_depth_margin_m: 0.8
+  collect_side_view_occlusion_search_radius_scale: 1.5
+  collect_side_view_occlusion_search_radius_min_m: 12.0
+  collect_side_view_pitch_offsets_deg:
+  - 0.0
+  - 8.0
+  - 16.0
+  - 24.0
+  collect_camera_distance_scale: 2.5
+  collect_camera_distance_min_m: 9.0
+  collect_camera_distance_max_m: 0.0
+  collect_camera_height_base_m: 3.0
+  collect_camera_height_scale: 0.1
+  collect_camera_height_obj_scale: 0.35
+  collect_camera_height_max_m: 18.0
+  collect_camera_look_at_z_ratio: 0.55
+  auto_label_force_disable_thinking: false
+  auto_label_debug_save_bbox_img: true
+  auto_label_debug_bbox_dir: scene_data/${scene_id}/landmarks_review/auto_label_debug
+  auto_label_model_rewrite_from: ''
+  auto_label_model_rewrite_to: ''
+  auto_label_enable_thinking: false
+  auto_label_prefix: ''
+  auto_label_api_rpm_per_api: 1000
+  auto_label_api_tpm_per_api: 80000
+  auto_label_api_aggregate_count: 5
+  auto_label_token_reserve_ratio: 0.1
+  auto_label_image_token_estimate: 400
+  auto_label_upload_resize_enabled: true
+  auto_label_upload_max_width: 640
+  auto_label_upload_max_height: 480
+  auto_label_upload_jpeg_quality: 85
+  review_web_image_compress_enabled: true
+  review_web_image_max_width: 640
+  review_web_image_max_height: 480
+  review_web_image_jpeg_quality: 85
+  review_web_show_bbox_enabled: true
+  review_web_port: 20261
+  collect_surface_exclude_below_z: -12.38428840637207
+engine_params:
+  airsim:
+    sim_ip: 127.0.0.1
+    sim_port: 41150
+    launch_sim: true
+    headless: true
+    connect_on_init: true
+    auto_select_port_on_conflict: true
+    connect_timeout_sec: 30
+    capture_retries: 2
+    camera_name: front_0
+    vehicle_name: drone_1
+    strict_vehicle_name: false
+    lidar_names:
+    - LidarSensor1
+    - LidarSensor2
+    lidar_update_frequency_hz: 400
+    lidar_capture_window_sec: 0.05
+    lidar_samples_per_pose: 20
+    lidar_sample_interval_sec: 0.0025
+    lidar_min_points_per_pose: 500
+    lidar_min_range_m: 2.0
+    lidar_range: 500.0
+    lidar_range_mode: auto
+    lidar_range_auto_scale: 1.5
+    lidar_rotation_frequency: 20.0
+    lidar_points_per_second: 200000
+    lidar_channels_horizontal: 128
+    lidar_channels_vertical: 128
+    lidar_sensor1_pitch: 90
+    lidar_sensor2_pitch: 0
+    lidar_vertical_fov_upper_sensor1: 45.0
+    lidar_vertical_fov_lower_sensor1: -45.0
+    lidar_vertical_fov_upper_sensor2: 45.0
+    lidar_vertical_fov_lower_sensor2: -45.0
+    lidar_data_frame: SensorLocalFrame
+    depth_fallback_when_lidar_empty: false
+    lidar_retry_count: 6
+    lidar_retry_interval_sec: 0.03
+    lidar_segmentation_enabled: true

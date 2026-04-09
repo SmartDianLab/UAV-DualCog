@@ -1,1 +1,1 @@
-"""Trajectory modules for FlightMVSTG (to be expanded in M2/M3)."""
+"""Trajectory modules for UAV-DualCog (to be expanded in M2/M3)."""
