@@ -23,8 +23,6 @@ It keeps the Stage 1-4 entrypoints, shared runtime modules, simulator/trajectory
   - task pipeline template
 - `configs/prompts/templates/`
   - prompt configuration template
-- `docs/FlightMVSTG工具链设计.md`
-  - design reference aligned with the current stage structure
 
 ## Not Included
 
