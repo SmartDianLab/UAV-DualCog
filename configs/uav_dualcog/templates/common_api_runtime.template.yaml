@@ -10,6 +10,10 @@
 # -----------------------------------------------------------------------------
 
 api:
+  # Suffix rule for experiments:
+  # - You may pass model names like "...-Instant" or "...-Thinking" in --experiment-models.
+  # - Routing still resolves on the suffix-stripped base model key below.
+  # - Suffixes only switch family-specific reasoning controls.
   # Default model aliases used when a stage command does not pass --model.
   default_models:
     stage2: Qwen/Qwen3.5-9B

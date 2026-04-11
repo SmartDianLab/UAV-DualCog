@@ -397,7 +397,7 @@ def _resolve_artifact_scene_root(scene_cfg: dict[str, Any]) -> Path:
 def _resolve_stage3_missions_root(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
     return stage3_root / str(output_layout.get("stage3_mission_dir", "missions"))
 
 
@@ -526,12 +526,12 @@ def _clear_stage_outputs(scene_cfg: dict[str, Any], *, clear_stage3: bool, clear
     removed = []
     output_layout = scene_cfg.get("output_layout", {}) or {}
     if clear_stage3:
-        root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
+        root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
         if root.exists():
             shutil.rmtree(root)
             removed.append(str(root))
     if clear_stage4:
-        root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
+        root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
         if root.exists():
             shutil.rmtree(root)
             removed.append(str(root))
@@ -541,7 +541,7 @@ def _clear_stage_outputs(scene_cfg: dict[str, Any], *, clear_stage3: bool, clear
 def _resolve_latest_stage3_manifest_path(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
     dataset_dir = stage3_root / str(output_layout.get("stage3_dataset_dir", "datasets"))
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     return dataset_dir / f"{scene_id}.latest_manifest.json"
@@ -550,7 +550,7 @@ def _resolve_latest_stage3_manifest_path(scene_cfg: dict[str, Any]) -> Path:
 def _resolve_latest_stage4_manifest_path(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
+    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
     manifest_dir = qa_root / "manifests"
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     return manifest_dir / f"{scene_id}.latest_manifest.json"
@@ -602,7 +602,7 @@ def _stage4_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_c
 def _resolve_stage3_selection_dir(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
     return stage3_root / "selections"
 
 
@@ -634,7 +634,7 @@ def _stage3_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_c
 def _resolve_stage4_selection_dir(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
+    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
     return qa_root / "selections"
 
 

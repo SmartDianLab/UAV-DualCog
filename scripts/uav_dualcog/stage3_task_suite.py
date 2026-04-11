@@ -342,7 +342,7 @@ def _resolve_stage3_layout(config: dict[str, Any], scene_id: str, engine: str) -
         engine=engine,
         workspace_root=WORKSPACE_ROOT,
     ) or scene_root
-    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="stage3_tasks")
+    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="video_tasks")
     root = artifact_scene_root / task_root_name
     return {
         "scene_root": scene_root,

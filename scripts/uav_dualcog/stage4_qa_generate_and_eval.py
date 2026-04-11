@@ -298,7 +298,7 @@ def _object_to_observer_label(obj_label: str) -> str:
 
 
 def _resolve_stage4_root(config: dict[str, Any], *, scene_root: Path) -> Path:
-    dir_name = resolve_output_dir_name(config, key="stage4_qa_dir", default="qa")
+    dir_name = resolve_output_dir_name(config, key="stage4_qa_dir", default="image_tasks")
     task_cfg = config.get("task", {}) or {}
     scene_id = str(task_cfg.get("scene_id", "") or "").strip()
     engine = str(task_cfg.get("engine", "airsim") or "airsim").strip().lower()

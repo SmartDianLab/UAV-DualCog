@@ -10,6 +10,8 @@ output_layout:
   stage2_raw_dir: landmarks_raw
   stage2_review_dir: landmarks_review
   stage2_landmarks_dir: landmarks
+  stage3_task_root_dir: video_tasks
+  stage4_qa_dir: image_tasks
   stage3_trajectory_dir: trajectory
   stage3_review_dir: trajectory_review
   logs_dir: logs

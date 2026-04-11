@@ -436,7 +436,13 @@ def list_task_pipeline_tasks(
     for path in sorted(base_dir.iterdir()):
         if not path.is_dir():
             continue
-        if (path / "task_pipeline").exists() or (path / "stage3_tasks").exists() or (path / "qa").exists():
+        if (
+            (path / "task_pipeline").exists()
+            or (path / "video_tasks").exists()
+            or (path / "image_tasks").exists()
+            or (path / "stage3_tasks").exists()
+            or (path / "qa").exists()
+        ):
             out.append(path.name)
     return out
 

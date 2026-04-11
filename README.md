@@ -105,6 +105,64 @@ Requires:
    Call local OpenAI-compatible serving endpoints.  
    The release package assumes local models are used as deployed, with no additional quantization handling logic in this code package.
 
+### 5.1 Instant / Thinking Suffix Rules
+
+Experiment model names can carry one runtime suffix:
+
+- `-Instant`: force non-thinking style request controls where supported.
+- `-Thinking` (or `-Reasoning`): force thinking/reasoning controls where supported.
+
+Examples:
+
+- `Qwen/Qwen3.5-9B-Instant`
+- `Qwen/Qwen3.5-9B-Thinking`
+- `OpenGVLab/InternVL3_5-4B-Instant`
+
+Important behavior:
+
+- The suffix is a **request-mode switch**, not a new routing key.
+- Routing is resolved on the **base model name** in `common_api_runtime.yaml` (suffix stripped).
+- Different providers/families expose different control knobs (`enable_thinking`, `reasoning`, `chat_template_kwargs`, etc.), and the runtime maps suffixes to family-compatible controls automatically.
+- If a model family does not support a specific toggle, the runtime keeps a safe no-op behavior instead of rewriting benchmark semantics.
+
+### 5.2 vLLM Local Deployment (Example)
+
+For vLLM environment setup, use the official quickstart:
+
+- https://docs.vllm.com.cn/en/latest/getting_started/quickstart/#installation
+
+Example model download (ModelScope):
+
+```bash
+modelscope download --model Qwen/Qwen3.5-4B --local_dir ./models/qwen3_5-4b
+```
+
+Example local serving command:
+
+```bash
+export CUDA_VISIBLE_DEVICES=3
+export VLLM_USE_MODELSCOPE=true
+
+vllm serve \
+  ./models/internvl3_5-4b \
+  --served-model-name OpenGVLab/InternVL3_5-4B-Instant \
+  --tensor-parallel-size 1 \
+  --reasoning-parser qwen3 \
+  --max-model-len 32K \
+  --kv-cache-dtype fp8 \
+  --gpu-memory-utilization 0.90 \
+  --max-num-seqs 8 \
+  --max-num-batched-tokens 16K \
+  --enable-prefix-caching \
+  --host 0.0.0.0 \
+  --port 40900
+```
+
+Recommended alignment:
+
+- Keep `--served-model-name` consistent with the model alias used in experiments.
+- Keep `common_api_runtime.yaml -> api.models.<base_model>.request_model` consistent with your served model name.
+
 For safe dry checks (no real model calls), run:
 
 ```bash
@@ -128,6 +186,11 @@ Runnable examples are already provided under:
 - `configs/uav_dualcog/common_api_runtime.yaml`
 - `configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml`
 
+Default path convention in this release:
+
+- Stage 3 root: `video_tasks`
+- Stage 4 root: `image_tasks`
+
 ## 7) Executable Steps (Mode A: Construction)
 
 Below uses `env_7` as example scene.
@@ -142,6 +205,21 @@ conda activate uav-dualcog
 ### Step 1. Stage 1 (Point Cloud Collection + Fusion)
 
 Purpose: build segmented/fused scene cloud for landmark construction.
+
+1.0 Probe and write back scene map bounds (recommended before large collection):
+
+```bash
+python scripts/uav_dualcog/probe_airsim_mapbound.py \
+  --config configs/uav_dualcog/task_airsim_env_7.yaml \
+  --scene-id 7 \
+  --workers 6 \
+  --probe-source hybrid \
+  --write-back \
+  --output scene_data/airsim_env_7/pcd_map/mapbound_probe_env7.json
+```
+
+This step estimates robust `traj_map.MapBound`, `EstimatedSurfaceZ`, and related boundary fields
+for the current scene, then writes them back to the scene config for stable Stage 1 collection.
 
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py \
@@ -250,13 +328,13 @@ Purpose: run model evaluation on released task manifests without redoing scene c
 python scripts/uav_dualcog/task_pipeline.py \
   --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
   --stage stage3 --phase experiment \
-  --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-9B
+  --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-9B-Instant
 
 # Stage 4 experiments
 python scripts/uav_dualcog/task_pipeline.py \
   --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
   --stage stage4 --phase experiment \
-  --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-4B
+  --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-4B-Thinking
 ```
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
@@ -266,6 +344,7 @@ If you only want to verify interface wiring (without real model calls), use `--h
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py --help
 python scripts/uav_dualcog/stage2_landmark_label.py --help
+python scripts/uav_dualcog/probe_airsim_mapbound.py --help
 python scripts/uav_dualcog/stage3_generate_traj.py --help
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py --help
 python scripts/uav_dualcog/task_pipeline.py --help
