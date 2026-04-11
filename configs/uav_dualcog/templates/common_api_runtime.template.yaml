@@ -1,17 +1,38 @@
+# -----------------------------------------------------------------------------
+# UAV-DualCog API/runtime routing template
+# -----------------------------------------------------------------------------
+# This config is consumed by Stage 2/3/4 scripts when they invoke multimodal models.
+# It supports two invocation modes:
+# 1) external API routing (cloud/openrouter/etc.)
+# 2) local deployment endpoints (OpenAI-compatible local serving)
+#
+# Keep this file free of private secrets. Use environment variables for keys.
+# -----------------------------------------------------------------------------
+
 api:
+  # Default model aliases used when a stage command does not pass --model.
   default_models:
-    stage2: openai/gpt-5.3-chat
+    stage2: Qwen/Qwen3.5-9B
     stage3: openai/gpt-5.3-chat
-    stage4: openai/gpt-5.3-chat
+    stage4: Qwen/Qwen3.5-4B
 
   models:
+    # -------------------------------------------------------------------------
+    # External API examples
+    # -------------------------------------------------------------------------
     openai/gpt-5.3-chat:
+      # Logical provider tag used for bookkeeping.
       api_source: cloud
+      # OpenAI-compatible endpoint base.
       api_base: ${UAV_DUALCOG_API_BASE}
+      # Auth token (environment variable placeholder).
       api_key: ${UAV_DUALCOG_API_KEY}
+      # Optional request-model override sent to provider.
       request_model: gpt-5.3-chat
+      # Per-model rate limits.
       rpm_limit: 60
       tpm_limit: 200000
+      # Keep reserve for retries / bursts.
       rate_limit_reserve_ratio: 0.1
 
     anthropic/claude-sonnet-4.6:
@@ -32,12 +53,39 @@ api:
       tpm_limit: 200000
       rate_limit_reserve_ratio: 0.1
 
+    # -------------------------------------------------------------------------
+    # Local deployment examples (no additional quantization required by this repo)
+    # -------------------------------------------------------------------------
+    Qwen/Qwen3.5-9B:
+      api_source: local
+      api_base: http://127.0.0.1:28000/v1
+      api_key: ${UAV_DUALCOG_LOCAL_API_KEY}
+      request_model: Qwen/Qwen3.5-9B
+      rpm_limit: 1000
+      tpm_limit: 1000000
+      rate_limit_reserve_ratio: 0.2
+
+    Qwen/Qwen3.5-4B:
+      api_source: local
+      api_base: http://127.0.0.1:29000/v1
+      api_key: ${UAV_DUALCOG_LOCAL_API_KEY}
+      request_model: Qwen/Qwen3.5-4B
+      rpm_limit: 1000
+      tpm_limit: 1000000
+      rate_limit_reserve_ratio: 0.2
+
 stage3_temporal:
+  # Resize uploaded temporal keyframes before API calls (recommended true).
   api_upload_resize_enabled: true
+  # Target upload width/height when resizing is enabled.
   api_upload_max_width: 640
   api_upload_max_height: 480
+  # JPEG quality for uploaded temporal frames.
   api_upload_jpeg_quality: 80
+  # Request timeout for temporal runs.
   timeout_s: 600
+  # Per-model request concurrency inside one experiment process.
   experiment_concurrency: 1
+  # Optional stage-level global rate limits (0 => use per-model limits above).
   api_rpm_limit: 0
   api_tpm_limit: 0

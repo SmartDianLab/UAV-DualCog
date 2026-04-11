@@ -1,391 +1,239 @@
-# UAV-DualCog
+# UAV-DualCog Reviewer Code Package
 
-This folder is the official code of UAV-DualCog for reviewers and external users.
-
-It keeps the implemented Stage 1-4 entrypoints, shared runtime modules, simulator and trajectory
-adapters, prompt templates, and sanitized configuration examples needed to inspect or reproduce the
-pipeline logic of **UAV-DualCog** without shipping environment files, cached artifacts, generated
-datasets, media outputs, or any private credentials.
-
-For benchmark definitions, task examples, leaderboard views, and detailed release notes, please
-refer to the public website and dataset pages first:
+This folder is a cleaned, reviewer-facing code snapshot for **UAV-DualCog**.
 
 - Website: https://uav-dualcog.lozumi.com/
-- Dataset: https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
-- Code repository: https://github.com/SmartDianLab/UAV-DualCog
+- Code repo: https://github.com/SmartDianLab/UAV-DualCog
+- Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
+- Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog (preparing)
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
-Detailed usage guidance and dataset download instructions should be treated as external-release
-documentation and should be read from those pages.
+For benchmark definitions, leaderboard interpretation, and detailed supplementary explanations, please read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Usage.
 
-## Included
+## 1) What Is Included
 
-- `scripts/uav_dualcog/`
-  - Stage 1 point-cloud collection and fusion
-  - Stage 2 landmark construction, review, and auto-labeling
-  - Stage 3 trajectory, mission, and video-task generation
-  - Stage 4 image-QA generation and evaluation
-  - pipeline orchestration and shared runtime helpers
-- `sim_bridge/`
-  - simulator bridge factory and engine adapters
-- `trajectory/`
-  - hierarchical flight-behavior library and trajectory composition helpers
-- `configs/uav_dualcog/`
-  - sanitized runnable examples for 18 released AirSim scenes together with common-stage, API, and task-pipeline configs
-  - template copies for customization
-- `configs/prompts/`
-  - prompt package used by Stage 2-4
+- `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities.
+- `trajectory/`: hierarchical atomic/composite behavior library and composition logic.
+- `sim_bridge/`: simulator abstraction and AirSim bridge.
+- `configs/uav_dualcog/`: 18 runnable per-scene configs + shared configs + task-pipeline spec.
+- `configs/uav_dualcog/templates/`: fully commented templates for customization.
+- `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
+- `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
 
-## Not Included
+## 2) What Is Excluded
 
-- any `.env`, Conda bootstrap, or local machine setup files
-- any API keys, private endpoints, or internal routing settings
-- any `scene_data/`, `task_pipeline_data/`, website outputs, logs, or cached artifacts
-- any one-off repair scripts, backups, or experimental branches not needed for review
+- No private keys or private endpoints.
+- No generated artifacts (`scene_data/`, `task_pipeline_data/`, logs, caches, media outputs).
+- No internal notes/workflow docs outside public release scope.
 
-## Package Layout
+## 3) Full Workspace Structure (Code + Env + Data + Outputs)
 
 ```text
 reviewer_code_repo/
+├── scripts/uav_dualcog/                        # Stage 1-4 + task_pipeline entrypoints
+├── trajectory/                                  # behavior elements/sets and composition
+├── sim_bridge/                                  # AirSim bridge and engine adapter layer
 ├── configs/
-│   ├── prompts/
-│   │   ├── templates/
-│   │   │   └── uav_dualcog_prompts.template.yaml
-│   │   └── uav_dualcog_prompts.yaml
-│   └── uav_dualcog/
-│       ├── common_api_runtime.yaml
-│       ├── common_stage_configs.yaml
-│       ├── task_airsim_env_7.yaml
-│       ├── task_pipeline/
-│       │   └── task_pipeline_uav_dualcog_v1.yaml
-│       └── templates/
-│           ├── common_api_runtime.template.yaml
-│           ├── common_stage_configs.template.yaml
-│           ├── scene_config.template.yaml
-│           └── task_pipeline.template.yaml
-├── deps/
-│   └── msgpack_rpc_python-0.4-py3-none-any.whl
-├── scripts/
-│   └── uav_dualcog/
-│       ├── stage1_collect_pcd.py
-│       ├── stage2_landmark_label.py
-│       ├── stage3_generate_traj.py
-│       ├── stage3_task_suite.py
-│       ├── stage4_qa_generate_and_eval.py
-│       ├── task_pipeline.py
-│       ├── pipeline_common.py
-│       └── probe_airsim_mapbound.py
-├── sim_bridge/
-├── trajectory/
-├── coord_transform_utils.py
-├── environment.yml
-├── requirements.txt
-└── README.md
-```
-
-## Expected External Workspace
-
-When reproducing the released benchmark, the repository is typically paired with two external asset
-roots:
-
-```text
-UAV-DualCog/
-├── scene_data/
-│   └── airsim_env_*/
+│   ├── uav_dualcog/
+│   │   ├── task_airsim_env_<id>.yaml           # runnable scene configs (18 scenes)
+│   │   ├── common_stage_configs.yaml            # behavior library and shared stage defaults
+│   │   ├── common_api_runtime.yaml              # model routing (API + local deployment)
+│   │   ├── task_pipeline/
+│   │   │   └── task_pipeline_uav_dualcog_v1.yaml
+│   │   └── templates/                           # fully-commented config templates
+│   └── prompts/
+│       └── uav_dualcog_prompts.yaml
+├── envs/                                        # simulator env assets (download separately)
+│   └── airsim/
+│       └── env_7/
+├── scene_data/                                  # Stage 1-2 outputs
+│   └── airsim_env_7/
 │       ├── pcd_map/
 │       ├── landmarks_raw/
 │       └── landmarks_review/
-└── task_pipeline_data/
-    └── UAV-DualCog-V1/
-        ├── airsim_env_*/
-        │   ├── video_tasks/
-        │   └── image_tasks/
-        └── task_pipeline/
-            ├── dataset_stats/
-            ├── exports/
-            └── landmark_lists/
+├── task_pipeline_data/                          # Stage 3-4 outputs
+│   └── UAV-DualCog-V1/
+│       ├── airsim_env_7/
+│       │   ├── video_tasks/
+│       │   └── image_tasks/
+│       └── task_pipeline/
+│           ├── dataset_stats/
+│           ├── exports/
+│           └── landmark_lists/
+├── environment.yml                              # conda environment reference
+├── requirements.txt
+└── deps/
 ```
 
-The released public dataset uses `video_tasks/` and `image_tasks/` as the benchmark-facing folder
-names. Internally, some construction scripts still generate intermediate artifacts under
-`stage3_tasks/` and `qa/` before release packaging.
+## 4) Two Reproduction Modes
 
-## Shipped Config Examples
+### Mode A: Data Construction (Stage 1-4)
 
-The following sanitized example files are already included at their runtime paths:
+Use this when reproducing benchmark construction from scene/simulator inputs.
 
-- `configs/uav_dualcog/task_airsim_env_1.yaml`
-- `configs/uav_dualcog/task_airsim_env_3.yaml`
-- `configs/uav_dualcog/task_airsim_env_5.yaml`
-- `configs/uav_dualcog/task_airsim_env_7.yaml`
-- `configs/uav_dualcog/task_airsim_env_8.yaml`
-- `configs/uav_dualcog/task_airsim_env_9.yaml`
-- `configs/uav_dualcog/task_airsim_env_10.yaml`
-- `configs/uav_dualcog/task_airsim_env_11.yaml`
-- `configs/uav_dualcog/task_airsim_env_13.yaml`
-- `configs/uav_dualcog/task_airsim_env_15.yaml`
-- `configs/uav_dualcog/task_airsim_env_16.yaml`
-- `configs/uav_dualcog/task_airsim_env_17.yaml`
-- `configs/uav_dualcog/task_airsim_env_18.yaml`
-- `configs/uav_dualcog/task_airsim_env_20.yaml`
-- `configs/uav_dualcog/task_airsim_env_21.yaml`
-- `configs/uav_dualcog/task_airsim_env_22.yaml`
-- `configs/uav_dualcog/task_airsim_env_23.yaml`
-- `configs/uav_dualcog/task_airsim_env_24.yaml`
+Requires:
+- `envs/airsim/env_*` simulator files.
+- writeable `scene_data/` and `task_pipeline_data/`.
+- stage configs + prompt package.
+
+Recommended workflow:
+1. Stage 1 collects and fuses scene point clouds.
+2. Stage 2 collects landmark candidates and performs review/auto-labeling.
+3. Stage 3 generates behavior-driven video tasks.
+4. Stage 4 generates image tasks and evaluation manifests.
+
+Important operational notes:
+- Stage 2 Step 2-4 are completed in the internal review web (`review_instances_web` + auto-label flow).
+- Stage 3 and Stage 4 both provide internal web workbenches for inspection (behavior library, landmark/task previews, experiment outputs), but for released split generation we recommend `task_pipeline.py` batch phases.
+
+### Mode B: Experiment Only (No Scene Reconstruction)
+
+Use this when you only evaluate models on released benchmark assets.
+
+Requires:
+- downloaded `task_pipeline_data/UAV-DualCog-V1` release.
+- no simulator environment files needed.
+- `common_api_runtime.yaml` configured (API or local).
+
+## 5) Model Invocation Methods
+
+`configs/uav_dualcog/common_api_runtime.yaml` supports:
+
+1. **API routing** (`api_source: cloud/openrouter/...`)  
+   Call remote OpenAI-compatible endpoints.
+2. **Local deployment** (`api_source: local`)  
+   Call local OpenAI-compatible serving endpoints.  
+   The release package assumes local models are used as deployed, with no additional quantization handling logic in this code package.
+
+For safe dry checks (no real model calls), run:
+
+```bash
+python scripts/uav_dualcog/api_common.py --help
+python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualcog/common_api_runtime.yaml
+```
+
+## 6) Config Files You Should Edit
+
+All templates below are fully commented:
+
+- `configs/uav_dualcog/templates/scene_config.template.yaml`
+- `configs/uav_dualcog/templates/common_stage_configs.template.yaml`
+- `configs/uav_dualcog/templates/common_api_runtime.template.yaml`
+- `configs/uav_dualcog/templates/task_pipeline.template.yaml`
+
+Runnable examples are already provided under:
+
+- `configs/uav_dualcog/task_airsim_env_*.yaml` (18 scenes)
 - `configs/uav_dualcog/common_stage_configs.yaml`
 - `configs/uav_dualcog/common_api_runtime.yaml`
 - `configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml`
-- `configs/prompts/uav_dualcog_prompts.yaml`
-- `environment.yml`
 
-These files are parseable examples and can be copied or edited directly for local reproduction.
+## 7) Executable Steps (Mode A: Construction)
 
-## Core Config Roles
+Below uses `env_7` as example scene.
 
-### 1. Scene Config
-
-`configs/uav_dualcog/task_airsim_env_7.yaml`
-
-Use this file to define:
-
-- scene identity and `scene_data` location
-- Stage 1 capture resolution and LiDAR collection settings
-- Stage 2 landmark-view collection, review, and auto-label defaults
-- Stage 3 rendering defaults and simulator connection parameters
-
-### 2. Common Stage Config
-
-`configs/uav_dualcog/common_stage_configs.yaml`
-
-Use this file to define:
-
-- the hierarchical Stage 3 behavior library
-- shared atomic and composite flight-mode parameter ranges
-- behavior-set composition rules reused by Stage 3 tasks
-
-### 3. API Runtime Config
-
-`configs/uav_dualcog/common_api_runtime.yaml`
-
-Use this file to define:
-
-- default models for Stage 2, Stage 3, and Stage 4
-- model-specific API base URLs, keys, and rate limits
-- Stage 3 temporal-upload settings
-
-### 4. Task Pipeline Spec
-
-`configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml`
-
-Use this file to define:
-
-- benchmark name and artifact root
-- selected scene list
-- Stage 3 task-generation scope and render settings
-- Stage 4 task-generation scope and difficulty settings
-- pipeline-wide experiment scheduling parameters
-
-### 5. Prompt Package
-
-`configs/prompts/uav_dualcog_prompts.yaml`
-
-This file is the prompt contract used by Stage 2 auto-labeling and by Stage 3/4 benchmark-facing
-task generation and evaluation.
-
-## Stage 1 Command
-
-Entrypoint: `python scripts/uav_dualcog/stage1_collect_pcd.py`
-
-Main options:
-
-- `--config`: scene config yaml
-- `--mode`: `collect_raw` | `fuse` | `all`
-- `--engine`: simulator backend, usually `airsim`
-- `--scene-id`: override scene id such as `7` or `env_7`
-- `--workers`: override worker count
-- `--max-frames`: cap raw collection frames
-- `--control-port`: override runtime control port
-- `--output-root`: override output directory
-- `--voxel-size`: override fusion voxel size
-- `--use-sor`: enable statistical outlier removal
-- `--no-dedup`: disable fusion deduplication
-- `--stop-on-error`: fail fast on worker errors
-- `--multimodal-fusion`: enable multimodal fusion branch
-- `--lidar-segmentation`: enable segmented LiDAR branch
-
-Commands:
+### Step 0. Environment
 
 ```bash
-# Stage 1-A: raw collection only
-python scripts/uav_dualcog/stage1_collect_pcd.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode collect_raw \
-  --engine airsim
-
-# Stage 1-B: fusion only
-python scripts/uav_dualcog/stage1_collect_pcd.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode fuse
-
-# Stage 1 full run
-python scripts/uav_dualcog/stage1_collect_pcd.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode all
+conda env create -f environment.yml
+conda activate uav-dualcog
 ```
 
-## Stage 2 Command
+### Step 1. Stage 1 (Point Cloud Collection + Fusion)
 
-Entrypoint: `python scripts/uav_dualcog/stage2_landmark_label.py`
-
-Main options:
-
-- `--config`: scene config yaml
-- `--scene-id`: override scene id
-- `--mode`: `collect_instances` | `review_instances` | `review_instances_web` | `auto_label` | `all`
-- `--pcd`: override point-cloud path
-- `--min-points`: minimum instance point threshold
-- `--review-decisions`: path to review decision file
-- `--host`, `--port`: web review host and port
-- `--auto-label-sample-size`: debug/sample subset size for auto-labeling
-- `--auto-label-sample-seed`: seed for sampled auto-labeling
-- `--auto-label-debug-save-bbox-img`: save bbox-debug images during auto-labeling
-
-Commands:
+Purpose: build segmented/fused scene cloud for landmark construction.
 
 ```bash
-# Stage 2-A: candidate aggregation and multiview capture
+python scripts/uav_dualcog/stage1_collect_pcd.py \
+  --config configs/uav_dualcog/task_airsim_env_7.yaml \
+  --scene-id 7 \
+  --mode all \
+  --engine airsim
+```
+
+### Step 2. Stage 2 (Landmark Construction + Review + Auto-Label)
+
+Purpose: construct landmark instances and finalize reviewed semantic annotations.
+
+2.1 Collect candidates and multiview evidence:
+```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
   --scene-id 7 \
   --mode collect_instances
+```
 
-# Stage 2-B: browser-based review
+2.2 Open review web (Step 2-4 are web-centered in practice):
+```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
   --scene-id 7 \
   --mode review_instances_web \
   --host 0.0.0.0 \
   --port 20261
+```
 
-# Stage 2-C: semantic auto-labeling
+2.3 Auto-label reviewed instances:
+```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
   --scene-id 7 \
   --mode auto_label
-
-# Stage 2 full run
-python scripts/uav_dualcog/stage2_landmark_label.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode all
 ```
 
-## Stage 3 Command
+### Step 3. Stage 3 (Video Task Construction)
 
-Entrypoint: `python scripts/uav_dualcog/stage3_generate_traj.py`
+Purpose: generate missions/trajectories, render videos, build stage3 manifests.
 
-Main options:
-
-- `--config`: scene config yaml
-- `--mode`: `generate` | `generate_mission` | `generate_dataset` | `run_experiment` | `record_scene_videos` | `web`
-- `--scene-id`: override scene id
-- `--landmark-id`: one Stage 2 `instance_id`
-- `--traj-id`: explicit trajectory id
-- `--behavior-sequence`: explicit behavior sequence
-- `--mission-type`: mission-type override
-- `--generation-kind`: `auto` | `atomic-only` | `composite-driven`
-- `--mission-mode`: `single-landmark` | `multi-landmark`
-- `--seed`: random seed
-- `--sample-count`: generated sample count
-- `--forms`: comma-separated task forms
-- `--task-group`: `all` | `self-state` | `environmental`
-- `--approved-only`: use only reviewed inputs
-- `--manifest-path`: explicit manifest path
-- `--limit`: experiment limit
-- `--model`: experiment model name
-- `--traj-ids`: comma-separated trajectory ids for recording
-- `--record-parallel-workers`: parallel render workers
-- `--record-reuse-worker-connections`: reuse render worker connections
-- `--rerender-existing`: rerender existing outputs
-- `--ignore-waypoint-forwards`: rebuild forward vectors
-- `--provide-flight-description`: attach text description
-- `--include-keyframes`: export keyframe boards
-
-Commands:
-
+Direct entrypoint:
 ```bash
-# Stage 3-A: generate missions from reviewed landmarks
-python scripts/uav_dualcog/stage3_generate_traj.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode generate_mission \
-  --generation-kind auto \
-  --mission-mode single-landmark
-
-# Stage 3-B: build dataset manifests from generated missions
-python scripts/uav_dualcog/stage3_generate_traj.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode generate_dataset \
-  --forms self_instance_recognition_joint,env_visibility_reasoning
-
-# Stage 3-C: record benchmark-facing task videos
-python scripts/uav_dualcog/stage3_generate_traj.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode record_scene_videos \
-  --record-parallel-workers 8
-
-# Stage 3-D: run one experiment pass
-python scripts/uav_dualcog/stage3_generate_traj.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode run_experiment \
-  --model openai/gpt-5.3-chat
+python scripts/uav_dualcog/stage3_generate_traj.py --help
 ```
 
-## Stage 4 Command
-
-Entrypoint: `python scripts/uav_dualcog/stage4_qa_generate_and_eval.py`
-
-Main options:
-
-- `--config`: scene config yaml
-- `--scene-id`: scene id
-- `--engine`: simulator backend
-- `--mode`: `generate` | `experiment` | `web` | `all`
-- `--sample-count`: generation sample count
-- `--seed`: random seed
-- `--reference-main-only`: use only reviewed main views as references
-- `--allow-non-main-reference`: allow non-main references
-- `--manifest-path`: explicit manifest path
-- `--model`: experiment model name
-- `--limit`: experiment limit
-- `--port`: web workbench port
-- `--landmark-category`: repeatable category filter
-
-Commands:
-
+Recommended (batch/reproducible) pipeline phases:
 ```bash
-# Stage 4-A: generate image-task manifests
-python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage3 --phase selection
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage3 --phase data
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage3 --phase render
+```
+
+Optional internal web workbench:
+```bash
+python scripts/uav_dualcog/stage3_generate_traj.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
   --scene-id 7 \
-  --mode generate \
-  --sample-count 10 \
-  --seed 7
+  --mode web
+```
 
-# Stage 4-B: run one experiment pass
-python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
-  --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
-  --mode experiment \
-  --model openai/gpt-5.3-chat
+### Step 4. Stage 4 (Image Task Construction)
 
-# Stage 4-C: open the local QA workbench
+Purpose: sample image QA tasks, render assets, export stage4 manifests.
+
+Recommended pipeline phases:
+```bash
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage4 --phase selection
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage4 --phase data
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
+  --stage stage4 --phase render
+```
+
+Optional internal web workbench:
+```bash
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
   --scene-id 7 \
@@ -393,94 +241,35 @@ python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --port 20264
 ```
 
-## Cross-Scene Pipeline Orchestration
+## 8) Executable Steps (Mode B: Experiment)
 
-Entrypoint: `python scripts/uav_dualcog/task_pipeline.py`
-
-Main options:
-
-- `--spec`: yaml task-pipeline spec
-- `--spec-json`: json task-pipeline spec
-- `--config`: optional fallback scene config
-- `--stage`: `both` | `stage3` | `stage4`
-- `--phase`: `both` | `selection` | `data` | `render` | `experiment` | `analyze`
-- `--clear-stage3`, `--clear-stage4`: clear target-stage artifacts before rerun
-- `--landmark-count`: default fallback landmark count
-- `--task-name`: override task name
-- `--experiment-models`: one or more experiment models
-
-Commands:
+Purpose: run model evaluation on released task manifests without redoing scene construction.
 
 ```bash
-# Stage 3 selection
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage3 \
-  --phase selection
-
-# Stage 3 data assembly
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage3 \
-  --phase data
-
-# Stage 3 rendering
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage3 \
-  --phase render
-
 # Stage 3 experiments
 python scripts/uav_dualcog/task_pipeline.py \
   --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage3 \
-  --phase experiment \
+  --stage stage3 --phase experiment \
   --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-9B
-
-# Stage 3 report analysis
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage3 \
-  --phase analyze
-
-# Stage 4 selection
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage4 \
-  --phase selection
-
-# Stage 4 data assembly
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage4 \
-  --phase data
-
-# Stage 4 rendering
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage4 \
-  --phase render
 
 # Stage 4 experiments
 python scripts/uav_dualcog/task_pipeline.py \
   --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage4 \
-  --phase experiment \
+  --stage stage4 --phase experiment \
   --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-4B
-
-# Stage 4 report analysis
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml \
-  --stage stage4 \
-  --phase analyze
 ```
 
-## Notes
+If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-- `requirements.txt` is copied from the AirSim-oriented dependency list used by this repo.
-- `environment.yml` is the current exported Conda environment file from the active development
-  workspace, and the referenced local wheel is included under `deps/`.
-- `configs/uav_dualcog/*.yaml` and `configs/prompts/uav_dualcog_prompts.yaml` are sanitized but
-  parseable examples; replace placeholder API values before running model-backed stages.
-- `common_stage_configs.yaml` and `uav_dualcog_prompts.yaml` preserve the implemented structure so
-  reviewers can inspect the exact behavior-library and prompt interfaces.
+## 9) Smoke-Test Commands (Reviewer Quick Check)
+
+```bash
+python scripts/uav_dualcog/stage1_collect_pcd.py --help
+python scripts/uav_dualcog/stage2_landmark_label.py --help
+python scripts/uav_dualcog/stage3_generate_traj.py --help
+python scripts/uav_dualcog/stage4_qa_generate_and_eval.py --help
+python scripts/uav_dualcog/task_pipeline.py --help
+python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualcog/common_api_runtime.yaml
+```
+
+These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.

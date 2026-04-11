@@ -1,5 +1,5 @@
 task:
-  name: FlightMVSTG-env_17
+  name: UAV-DualCog-env_17
   engine: airsim
   base_dir: scene_data
   scene_id: env_17

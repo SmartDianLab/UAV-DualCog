@@ -1,139 +1,104 @@
-# UAV-DualCog task pipeline template
-#
-# Usage:
-#   conda run -n uav-dualcog python scripts/uav_dualcog/task_pipeline.py \
-#     --spec configs/uav_dualcog/task_pipeline/task_pipeline_template.yaml
-#
-# If `config_path` is omitted, the script will try:
-# 1. `landmark_list.scene_configs[0]`
-# 2. fail with a clear error
+# -----------------------------------------------------------------------------
+# UAV-DualCog task-pipeline template (cross-scene orchestrator)
+# -----------------------------------------------------------------------------
+# Execute with:
+#   python scripts/uav_dualcog/task_pipeline.py \
+#     --spec configs/uav_dualcog/task_pipeline/task_pipeline_demo.yaml
+# -----------------------------------------------------------------------------
 
-config_path: configs/uav_dualcog/task_airsim_env_demo.yaml
-task_name: reviewer_demo_task
+# Optional fallback scene config when landmark_list is not used.
+config_path: configs/uav_dualcog/task_airsim_env_7.yaml
+
+# Benchmark artifact namespace.
+task_name: UAV-DualCog-V1-Demo
 task_pipeline_root_dir: task_pipeline_data
 
-# stage: both | stage3 | stage4
+# Stage selector: both | stage3 | stage4
 stage: both
-
-# phase: selection | data | render | experiment | both
+# Phase selector: selection | data | render | experiment | analyze | both
 phase: selection
 
+# Random seed for deterministic sampling.
 seed: 29
 
-# Clear outputs only for the stages you are about to run.
+# Clear generated outputs before rerun.
 clear_existing_stage3: false
 clear_existing_stage4: false
 
-# Default fallback count used when stage-specific count is not given.
-landmark_count: 50
-
+# Global experiment defaults.
 experiment_model: openai/gpt-5.3-chat
+experiment_models: []
 experiment_concurrency: 4
-# 0 means auto: use up to all selected models with CPU reserve.
 experiment_model_parallelism: 0
+timeout_s: 600
 
-# Optional: generate a reusable cross-scene landmark list.
-# This artifact only stores:
-# - engine
-# - scene_id
-# - config_path
-# - instance_id
-#
-# You may use either:
-# - scene_landmark_counts: per-scene counts
-# - global_landmark_count: distribute approximately evenly across scenes
-#
-# `all` is also supported.
+# Scene list for the benchmark split.
+scene_ids:
+  - env_7
+
+# Optional reusable cross-scene landmark selection artifact.
 landmark_list:
-  artifact_name: stage34_landmark_list
-  seed: 29
-  scene_configs:
-    - configs/uav_dualcog/task_airsim_env_demo.yaml
-    # - configs/uav_dualcog/task_airsim_env_24.yaml
+  artifact_name: UAV-DualCog-env7-landmarks
+  scene_ids: [env_7]
   scene_landmark_counts:
-    env_demo: 50
-    # env_24: all
-  # global_landmark_count: 100
+    env_7: all
+  seed: 29
 
-# Optional: reuse an existing landmark list artifact in later steps.
-# Example:
-# landmark_list_path: task_pipeline_data/demo_task/task_pipeline/landmark_lists/stage34_landmark_list.latest.json
+# Optional reuse of an existing landmark list artifact.
 landmark_list_path: ""
 
 stage3:
-  # Single-landmark mapping:
-  # - uniformly sample `landmark_count` landmarks by subcategory
-  # - for each landmark, sample `atomic_classes_per_landmark` atomic classes
-  # - for each landmark, sample `composite_classes_per_landmark` composite classes
-  # - generate `instances_per_class` flight instances for each chosen class
-  # - each flight instance contributes:
-  #   - len(self_state_forms) self-state QA tasks
-  #   - len(environmental_forms) environmental QA tasks
-  # - each QA task generates `qa_samples_per_task` QA samples
+  # Stage 3 single-landmark sampling policy.
   single_landmark:
-    landmark_count: 500
+    # "all" means use all selected landmarks from stage2 review.
+    landmark_count: all
+    # How many atomic/composite classes to sample per landmark.
     atomic_classes_per_landmark: 1
     composite_classes_per_landmark: 1
+    # Mission instances per sampled class.
     instances_per_class: 1
-    self_state_forms:
-      - self_set_instance_recognition
-      - self_element_instance_recognition
-    environmental_forms:
-      - env_visibility_reasoning
+    # Self-aware video task forms.
+    self_state_forms: [self_instance_recognition_joint]
+    # Environment-aware video task forms.
+    environmental_forms: [env_visibility_reasoning]
+    # QA rows per task form and difficulty branch.
     qa_samples_per_task: 1
 
-  # Optional multi-landmark mappings.
+  # Multi-landmark generation controls (set to 0 to disable).
   pair_count: 0
-  # Optional per-scene override when one shared spec spans multiple scenes.
-  # pair_scene_counts:
-  #   env_7: 20
-  #   env_23: 10
-  # Generate more than one mission for each selected pair group if needed.
-  pair_instances_per_group: 1
-  pair_max_range_m: 50.0
   triple_count: 0
-  # Optional per-scene override when one shared spec spans multiple scenes.
-  # triple_scene_counts:
-  #   env_7: 20
-  #   env_23: 10
-  # Generate more than one mission for each selected triple group if needed.
-  triple_instances_per_group: 1
+  pair_max_range_m: 100.0
   triple_max_range_m: 100.0
 
+  # Render/extraction switches.
   rerender_existing: false
   include_temporal_localization: true
-
-  # Manifest mode:
-  # - single-landmark
-  # - multi-landmark
-  # - all
+  # Manifest branch: single-landmark | multi-landmark | all
   manifest_mode: all
-  # Optional hard override for debugging only.
-  # Normally leave this unset and let the script derive sample_count from the mapping above.
-  # sample_count: 3000
+
+  # Released benchmark video spec.
+  final_video_width: 1440
+  final_video_height: 1080
+  # Archive frame capture spec.
+  final_capture_width: 1440
+  final_capture_height: 1080
+  final_capture_parallel_workers: 8
+  record_parallel_workers: 8
 
 stage4:
-  # Stage 4 mapping:
-  # - uniformly sample `landmark_count` landmarks by subcategory
-  # - each landmark corresponds to len(view_definitions) * len(task_types) task types
-  # - each task type corresponds to 2 difficulty variants:
-  #   - diagonal views exist -> 4way + 8way
-  #   - only frontal views -> 4way + 4way
-  # - each difficulty variant generates `qa_samples_per_difficulty` QA samples
-  landmark_count: 500
+  # Regenerate existing assets if true.
+  rerender_existing: false
+  # Parallel overlay rendering and env-image capture workers.
+  overlay_parallel_workers: 16
+  env_capture_parallel_workers: 4
+
+  # Stage 4 landmark sampling policy.
+  landmark_count: all
   per_landmark:
-    view_definitions:
-    task_types:
-      - self_where
-      - self_what
-      - env_where
-      - env_how
+    # Task families released in UAV-DualCog.
+    task_types: [self_where, self_what, env_where, env_how]
+    # Sample count per difficulty branch.
     qa_samples_per_difficulty: 1
 
-  difficulties:
-    - 4way
-    - 8way
-
-  # Optional hard override for debugging only.
-  # Normally leave this unset and let the script derive sample_count from the mapping above.
-  # sample_count: 4000
+  # Difficulty branches for image tasks.
+  difficulties: [4way, 8way]

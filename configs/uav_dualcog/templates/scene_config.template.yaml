@@ -1,15 +1,36 @@
+# -----------------------------------------------------------------------------
+# UAV-DualCog per-scene runtime config template
+# -----------------------------------------------------------------------------
+# This file defines one AirSim scene for Stages 1-4.
+# Copy it to:
+#   configs/uav_dualcog/task_airsim_env_<id>.yaml
+# and replace env ids / map bounds / ports with your own values.
+#
+# All fields below are parseable and can be used directly as a runnable template.
+# -----------------------------------------------------------------------------
+
 task:
-  name: UAV-DualCog-reviewer-template
+  # Human-readable task label used in logs.
+  name: UAV-DualCog-env_demo
+  # Simulator backend, currently "airsim".
   engine: airsim
+  # Scene-root parent directory for this scene.
   base_dir: scene_data
+  # Canonical scene id used by pipeline and manifests.
   scene_id: env_demo
+  # Actual scene directory under base_dir.
   scene_dir_name: airsim_env_demo
+
 output_layout:
+  # True: outputs are written under scene_data/airsim_<scene_id>/...
   scene_dir_include_engine: true
+  # Stage 1 outputs (raw/fused point clouds).
   stage1_dir: pcd_map
+  # Stage 2 raw candidates and review artifacts.
   stage2_raw_dir: landmarks_raw
   stage2_review_dir: landmarks_review
   stage2_landmarks_dir: landmarks
+  # Stage 3 benchmark artifact tree.
   stage3_task_root_dir: stage3_tasks
   stage3_mission_dir: missions
   stage3_trajectory_dir: trajectory
@@ -18,76 +39,96 @@ output_layout:
   stage3_experiment_dir: experiments
   stage3_report_dir: reports
   stage3_cache_dir: cache
+  # Shared log folder inside scene root.
   logs_dir: logs
+
 camera:
+  # Source capture width/height for scene-side collection.
   width: 4096
   height: 3072
+  # Camera horizontal FOV in degrees.
   fov: 72.0
+  # Capture FPS used by mission video rendering defaults.
   fps: 10
+
 collect:
-  yaw_list_deg:
-  - 0
+  # Stage 1 yaw sampling list.
+  yaw_list_deg: [0]
+  # Settle time after each pose move before capture.
   pose_settle_sec: 0.05
+  # Optional multimodal fusion branch (off by default).
   multimodal_fusion:
     enabled: false
     max_assign_dist_m: 1.2
     instance_voxel_size: 1.0
     instance_min_points: 80
+  # Segmentation-aware LiDAR collection branch.
   lidar_segmentation:
     enabled: true
     instance_voxel_size: 1.0
     instance_min_points: 80
+
 traj_map:
+  # Trajectory-map dilation radius.
   DilateRadius: 3
+  # Voxel width for map generation.
   VoxelWidth: 1.5
-  MapBound:
-  - -160
-  - 160
-  - -160
-  - 160
-  - -50
-  - 100
-  LidarDelta:
-  - 30
-  - 30
-  - 50
+  # Scene map bound: [xmin, xmax, ymin, ymax, zmin, zmax].
+  MapBound: [-160, 160, -160, 160, -50, 100]
+  # LiDAR range extent used by auto-range profiling.
+  LidarDelta: [30, 30, 50]
+  # Scale factors for PCD and trajectory coordinates.
   pcd_scale_ratio: 1
   traj_scale_ratio: 1
+  # Terrain/elevation controls.
   map_elevation: 0
   min_height_thresh: 6
-  EstimatedSurfaceZ: -2.8223674297332764
+  EstimatedSurfaceZ: 0.0
   DetectedMinZ: -50.0
+
 parallel:
+  # Worker scheduling mode.
   mode: single_instance_multi_thread
+  # Default worker count for capture tasks.
   workers: 6
+  # Optional worker->vehicle binding list.
   bindings:
-  - worker_id: 0
-    vehicle: drone_1
+    - worker_id: 0
+      vehicle: drone_1
+
 merge:
+  # Stage 1 fusion controls.
   dedup: true
   voxel_size: 0.01
   use_sor: false
   sor_k: 8
   sor_z: 2.0
   coverage_grid_res_m: 1.0
+
 stage1_output:
   formats:
     pcd: true
     ply: true
   primary_cloud_type: semantic_lidar
+
 stage2:
+  # Web/debug image upload compression for auto-label and review.
   auto_label_bbox_upload_max_width: 640
   auto_label_bbox_upload_max_height: 480
   auto_label_bbox_show_face_label: true
-  auto_label_bbox_face_label_format: 'Visible Face: {direction} (Landmark-centric)'
+  auto_label_bbox_face_label_format: "Visible Face: {direction} (Landmark-centric)"
+
+  # Default stage2 mode when script is launched without explicit --mode.
   mode: collect_instances
+  # Candidate filtering.
   collect_min_points: 50
-  collect_exclude_class_ids:
-  - 0
+  collect_exclude_class_ids: [0]
   collect_exclude_nonpositive_instance: true
+  # Ground/instance extraction controls.
   pcd_ground_percentile: 15.0
   pcd_ground_margin_m: 1.2
   pcd_max_instances: 0
+  # Preview rendering controls.
   collect_preview_bg_max_points: 300000
   collect_preview_context_radius_scale: 8.0
   collect_preview_context_radius_min_m: 25.0
@@ -97,6 +138,7 @@ stage2:
   collect_parallel_workers: 6
   collect_progress_log_every: 20
   collect_pair_limit: 0
+  # RGB multiview capture.
   collect_enable_rgb_views: true
   collect_rgb_source: sim
   collect_rgb_views_count: 8
@@ -110,17 +152,15 @@ stage2:
   collect_rgb_square_crop: false
   collect_use_square_capture_in_airsim: false
   collect_rgb_draw_bbox_on_image: false
+  # Side-view validity checks.
   collect_side_view_min_visible_ratio: 0.02
   collect_side_view_min_visible_points: 80
   collect_side_view_occlusion_neighbor_px: 2
   collect_side_view_occlusion_depth_margin_m: 0.8
   collect_side_view_occlusion_search_radius_scale: 1.5
   collect_side_view_occlusion_search_radius_min_m: 12.0
-  collect_side_view_pitch_offsets_deg:
-  - 0.0
-  - 8.0
-  - 16.0
-  - 24.0
+  collect_side_view_pitch_offsets_deg: [0.0, 8.0, 16.0, 24.0]
+  # Camera pose synthesis around landmark center.
   collect_camera_distance_scale: 2.5
   collect_camera_distance_min_m: 9.0
   collect_camera_distance_max_m: 0.0
@@ -129,13 +169,14 @@ stage2:
   collect_camera_height_obj_scale: 0.35
   collect_camera_height_max_m: 18.0
   collect_camera_look_at_z_ratio: 0.55
+  # Auto-label runtime routing and upload controls.
   auto_label_force_disable_thinking: false
   auto_label_debug_save_bbox_img: true
   auto_label_debug_bbox_dir: scene_data/${scene_id}/landmarks_review/auto_label_debug
-  auto_label_model_rewrite_from: ''
-  auto_label_model_rewrite_to: ''
+  auto_label_model_rewrite_from: ""
+  auto_label_model_rewrite_to: ""
   auto_label_enable_thinking: false
-  auto_label_prefix: ''
+  auto_label_prefix: ""
   auto_label_api_rpm_per_api: 1000
   auto_label_api_tpm_per_api: 80000
   auto_label_api_aggregate_count: 5
@@ -145,62 +186,75 @@ stage2:
   auto_label_upload_max_width: 640
   auto_label_upload_max_height: 480
   auto_label_upload_jpeg_quality: 85
+  # Stage2 web review controls.
   review_web_image_compress_enabled: true
   review_web_image_max_width: 640
   review_web_image_max_height: 480
   review_web_image_jpeg_quality: 85
   review_web_show_bbox_enabled: true
   review_web_port: 20261
-  collect_surface_exclude_below_z: -2.8223674297332764
+  # Optional lower-z filter for surface artifacts.
+  collect_surface_exclude_below_z: 0.0
+
 stage3:
+  # Automatic mission generation policy.
   auto_select_strategy: balanced_visibility
   auto_mission_enabled: true
   auto_primary_mode: single-landmark
   multi_landmark_radius_m: 45.0
   multi_landmark_max_secondary: 2
+  # Rendering bitrate profile.
   preview_video_bitrate: 10M
   final_video_bitrate: 10M
   web_video_bitrate: 1M
+  # Final trajectory smoothing and overlays.
   final_pose_smooth_window: 7
   final_overlay_show_frame_index: true
   final_overlay_show_pose_preview: true
+  # Benchmark-facing video specs.
   final_video_fps: 2
-  final_video_width: 640
-  final_video_height: 480
+  final_video_width: 1440
+  final_video_height: 1080
   final_video_frame_stride: 1
+  # Parallel frame capture setup.
   final_capture_settle_sec: 0.03
-  final_capture_width: 640
-  final_capture_height: 480
+  final_capture_width: 1440
+  final_capture_height: 1080
   final_capture_parallel_workers: 6
   final_capture_bindings:
-  - worker_id: 0
-    vehicle: drone_1
+    - worker_id: 0
+      vehicle: drone_1
+  # Default experiment controls for stage3 script mode.
   experiment_defaults:
     provide_flight_description: true
     include_keyframes: false
     concurrency: 1
     rpm_limit: 0
     tpm_limit: 0
+  # Keyframe-eval export controls.
   keyframe_eval:
     sampling_mode: whole_second
     include_endpoint_fallback: true
     max_frames_per_interval: 8
+
 engine_params:
   airsim:
+    # Simulator endpoint.
     sim_ip: 127.0.0.1
     sim_port: 41000
+    # Runtime launch and connect behaviors.
     launch_sim: true
     headless: true
     connect_on_init: true
     auto_select_port_on_conflict: true
     connect_timeout_sec: 30
     capture_retries: 2
+    # Camera and vehicle names.
     camera_name: front_0
     vehicle_name: drone_1
     strict_vehicle_name: false
-    lidar_names:
-    - LidarSensor1
-    - LidarSensor2
+    # LiDAR sensor settings.
+    lidar_names: [LidarSensor1, LidarSensor2]
     lidar_update_frequency_hz: 400
     lidar_capture_window_sec: 0.05
     lidar_samples_per_pose: 20

@@ -1,4 +1,4 @@
-name: flight-mvstg
+name: uav-dualcog
 channels:
   - pytorch
   - nvidia
