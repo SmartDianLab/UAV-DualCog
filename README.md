@@ -1,6 +1,6 @@
 # UAV-DualCog Official Code Package
 
-This folder is the official public code package for **UAV-DualCog**.
+This is the official code package for **UAV-DualCog**. The corresponding paper is currently under peer review, and this release is made public under a single-blind policy.
 
 - Website: https://uav-dualcog.lozumi.com/
 - Code repo: https://github.com/SmartDianLab/UAV-DualCog
@@ -23,8 +23,11 @@ For benchmark definitions, leaderboard interpretation, and detailed supplementar
 ## 2) What Is Excluded
 
 - No private keys or private endpoints.
-- No generated artifacts (`scene_data/`, `task_pipeline_data/`, logs, caches, media outputs).
+- No generated artifacts (`scene_data/`, `task_pipeline_data/`, caches, media outputs).
 - No internal notes/workflow docs outside public release scope.
+
+Note:
+- Environment setup records and Stage 1-4 empirical run logs in this package are provided under `logs/`.
 
 ## 3) Full Workspace Structure (Code + Env + Data + Outputs)
 
@@ -346,6 +349,40 @@ conda env create -f environment.yml
 conda activate uav-dualcog
 ```
 
+Then follow this GitHub issue to patch AirSim client compatibility:
+- https://github.com/microsoft/AirSim/issues/3333
+
+```bash
+pip show airsim
+# locate the "Location: <path>" field
+vim <path>/airsim/client.py
+```
+
+Update `client.py` as follows:
+
+```python
+class VehicleClient:
+    def __init__(self, ip = "", port = 41451, timeout_value = 3600):
+        if (ip == ""):
+            ip = "127.0.0.1"
+        # self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value, pack_encoding = 'utf-8', unpack_encoding = 'utf-8')
+        self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value)
+```
+
+If your server does not have a display device, you may need:
+
+```bash
+sudo apt install xdg-user-dirs xdg-utils
+sudo apt install libegl1
+sudo apt install vulkan-tools libvulkan1 mesa-vulkan-drivers
+```
+
+Environment setup records and Stage 1-4 empirical logs are available in:
+
+```text
+logs/
+```
+
 ### Step 1. Stage 1 (Point Cloud Collection + Fusion)
 
 Purpose: build segmented/fused scene cloud for landmark construction.
@@ -496,3 +533,7 @@ python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualco
 ```
 
 These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.
+
+## Acknowledgement
+
+Some components modified from [AerialVLN](https://github.com/AirVLN/AirVLN) and [OpenFly](https://github.com/SHAILAB-IPEC/OpenFly-Platform). Thanks sincerely.
