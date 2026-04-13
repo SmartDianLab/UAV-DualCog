@@ -185,6 +185,9 @@ Fully commented templates are in:
 
 Runnable examples are already provided under (env_7 shown here):
 
+scene_id values are recommended to use the canonical `env_<id>` format throughout configs and commands.
+If `--scene-id` is passed on the command line, keep it identical to `task.scene_id` in the config; do not mix forms such as `7` and `env_7` within one workspace.
+
 - `configs/uav_dualcog/task_airsim_env_7.yaml`
 - `configs/uav_dualcog/common_stage_configs.yaml`
 - `configs/uav_dualcog/common_api_runtime.yaml`
@@ -392,7 +395,7 @@ Purpose: build segmented/fused scene cloud for landmark construction.
 ```bash
 python scripts/uav_dualcog/probe_airsim_mapbound.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --workers 6 \
   --probe-source hybrid \
   --write-back \
@@ -405,7 +408,7 @@ for the current scene, then writes them back to the scene config for stable Stag
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode all \
   --engine airsim
 ```
@@ -418,7 +421,7 @@ Purpose: construct landmark instances and finalize reviewed semantic annotations
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode collect_instances
 ```
 
@@ -426,7 +429,7 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode review_instances_web \
   --host 0.0.0.0 \
   --port 20261
@@ -436,7 +439,7 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode auto_label
 ```
 
@@ -468,7 +471,7 @@ Optional internal web workbench:
 ```bash
 python scripts/uav_dualcog/stage3_generate_traj.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode web
 ```
 
@@ -495,7 +498,7 @@ Optional internal web workbench:
 ```bash
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode web \
   --port 20264
 ```
