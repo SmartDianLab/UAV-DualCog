@@ -73,6 +73,7 @@ from api_common import (
 from pipeline_common import list_task_pipeline_tasks, resolve_task_pipeline_scene_root
 from pipeline_common import append_unified_scene_log, build_unified_bridge_config, build_unified_stage_event
 from pipeline_common import ensure_single_airsim_process, format_unified_startup_ports_message, prepare_airsim_runtime_unified
+from pipeline_common import resolve_scene_artifact_path
 from image_compression_utils import compression_cfg as build_image_compression_cfg
 from image_compression_utils import preferred_output_path, save_bgr_image, save_pil_image
 from sim_bridge.factory import create_bridge
@@ -314,7 +315,7 @@ def _resolve_stage4_root(config: dict[str, Any], *, scene_root: Path) -> Path:
 def _resolve_stage2_review_paths(config: dict[str, Any], *, scene_root: Path, scene_id: str) -> tuple[Path, Path]:
     review_dir = scene_root / resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
     raw_dir = scene_root / resolve_output_dir_name(config, key="stage2_raw_dir", default="landmarks_raw")
-    valid_instances_path = review_dir / f"{scene_id}.valid_instances.json"
+    valid_instances_path = resolve_scene_artifact_path(review_dir, scene_id, ".valid_instances.json")
     return raw_dir, valid_instances_path
 
 
@@ -4268,11 +4269,11 @@ def _make_web_app(default_config: dict[str, Any], *, scene_id: str, engine: str,
 
     def _render_shell(active_page: str) -> str:
         nav_items = [
-            ("generate", "任务生成"),
-            ("dataset", "任务查看"),
-            ("experiments", "实验执行"),
-            ("results", "结果查看"),
-            ("metrics", "指标汇总"),
+            ("generate", "Task Generation"),
+            ("dataset", "Dataset Browser"),
+            ("experiments", "Experiments"),
+            ("results", "Results"),
+            ("metrics", "Metrics"),
         ]
         nav_html = "".join(
             f'<a class="nav-item {"active" if key == active_page else ""}" href="/{key}">{label}</a>'
@@ -4475,11 +4476,11 @@ def _make_web_app(default_config: dict[str, Any], *, scene_id: str, engine: str,
     <div class="footer-shell">
       <div class="footer-grid">
         <div class="footer-col">
-        <div class="footer-title">当前工作区</div>
+        <div class="footer-title">Current Workspace</div>
         <div class="footer-list" id="footer_left"></div>
         </div>
         <div class="footer-col">
-        <div class="footer-title">操作提示</div>
+        <div class="footer-title">Action Tips</div>
         <div class="footer-list" id="footer_right"></div>
         </div>
       </div>
@@ -4582,7 +4583,7 @@ function renderChoiceSelectionSummary(id) {{
   }}
   const multiple = root.dataset.multiple === '1';
   const selectedInputs = [...root.querySelectorAll('input:checked')];
-  const title = multiple ? `已选 ${{selectedInputs.length}} 项` : `当前选择 ${{selectedInputs.length ? '1' : '0'}} 项`;
+  const title = multiple ? `Selected ${{selectedInputs.length}} item(s)` : `Current selection: ${{selectedInputs.length ? '1' : '0'}} item(s)`;
   const items = selectedInputs.map((input)=> {{
     const text = input.closest('.choice-item')?.querySelector('span')?.textContent || input.value;
     return `<div class="choice-selected-item"><strong>${{esc(input.value)}}</strong><span>${{esc(text)}}</span></div>`;
@@ -4590,7 +4591,7 @@ function renderChoiceSelectionSummary(id) {{
   box.innerHTML = `
     <div class="muted"><strong>${{title}}</strong></div>
     <div class="choice-selected-list">
-      ${{items || '<div class="choice-selected-empty">当前还没有选中项</div>'}}
+      ${{items || '<div class="choice-selected-empty">Nothing selected yet</div>'}}
     </div>`;
 }}
 function renderChoiceGroup(id, options, cfg={{}}) {{
@@ -4610,20 +4611,20 @@ function renderChoiceGroup(id, options, cfg={{}}) {{
     </label>`).join('');
   const actions = showActions ? `
     <div class="choice-actions">
-      <button type="button" class="secondary" data-choice-id="${{esc(id)}}" data-choice-action="all">全选</button>
-      <button type="button" class="secondary" data-choice-id="${{esc(id)}}" data-choice-action="none">清空</button>
+      <button type="button" class="secondary" data-choice-id="${{esc(id)}}" data-choice-action="all">Select All</button>
+      <button type="button" class="secondary" data-choice-id="${{esc(id)}}" data-choice-action="none">Clear</button>
     </div>` : '';
   return `
     <div class="choice-shell">
       ${{actions}}
       <div class="choice-panel ${{showSelected ? '' : 'no-summary'}}">
         <div class="choice-left">
-          <div class="muted"><strong>可选列表</strong></div>
+          <div class="muted"><strong>Available Choices</strong></div>
           <div class="choice-list cols-${{cols}}" id="${{esc(id)}}" data-multiple="${{multiple ? '1' : '0'}}" data-storage-name="${{esc(storageName)}}" data-show-selected="${{showSelected ? '1' : '0'}}">
-            ${{items || '<div class="muted">暂无可选项</div>'}}
+            ${{items || '<div class="muted">No available options.</div>'}}
           </div>
         </div>
-        ${{showSelected ? `<div class="choice-right" id="${{esc(id)}}_selected"><div class="choice-selected-empty">当前还没有选中项</div></div>` : ''}}
+        ${{showSelected ? `<div class="choice-right" id="${{esc(id)}}_selected"><div class="choice-selected-empty">Nothing selected yet</div></div>` : ''}}
       </div>
     </div>`;
 }}
@@ -4711,20 +4712,20 @@ function getSceneDifficultyStats(difficulty) {{
   return state.current?.scene_landmark_stats?.by_difficulty?.[difficulty] || null;
 }}
 function summaryItemsHtml(items) {{
-  return (items || []).map((item)=>`<div class="summary-item">${{item}}</div>`).join('') || '<div class="muted">暂无信息</div>';
+  return (items || []).map((item)=>`<div class="summary-item">${{item}}</div>`).join('') || '<div class="muted">No information available.</div>';
 }}
 function renderManifestSummary(summary) {{
-  if(!summary) return '<div class="muted">暂无 manifest 摘要</div>';
+  if(!summary) return '<div class="muted">No manifest summary available.</div>';
   const comboEntries = Object.entries(summary.task_combo_counts || {{}});
   const diffEntries = Object.entries(summary.difficulty_counts || {{}});
   return `
     <div class="summary-list">
-      <div class="summary-item"><strong>使用地标数</strong>：${{esc(summary.used_landmark_count || 0)}}</div>
-      <div class="summary-item"><strong>包含地标类别数</strong>：${{esc(summary.used_category_count || 0)}}</div>
-      <div class="summary-item"><strong>类别筛选</strong>：${{(summary.selected_landmark_categories || []).length ? (summary.selected_landmark_categories || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') : '全部类别'}}</div>
-      <div class="summary-item"><strong>任务组合</strong>：${{comboEntries.length ? comboEntries.map(([k,v])=>`${{esc(k)}}=${{esc(v)}}`).join(' | ') : '暂无'}}</div>
-      <div class="summary-item"><strong>难度分布</strong>：${{diffEntries.length ? diffEntries.map(([k,v])=>`${{esc(k)}}=${{esc(v)}}`).join(' | ') : '暂无'}}</div>
-      <div class="summary-item"><strong>地标类别</strong>：${{(summary.used_categories || []).slice(0, 12).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || '暂无'}}</div>
+      <div class="summary-item"><strong>Used Landmarks</strong>: ${{esc(summary.used_landmark_count || 0)}}</div>
+      <div class="summary-item"><strong>Used Categories</strong>: ${{esc(summary.used_category_count || 0)}}</div>
+      <div class="summary-item"><strong>Category Filter</strong>: ${{(summary.selected_landmark_categories || []).length ? (summary.selected_landmark_categories || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') : 'All categories'}}</div>
+      <div class="summary-item"><strong>Task Combination Summary</strong>: ${{comboEntries.length ? comboEntries.map(([k,v])=>`${{esc(k)}}=${{esc(v)}}`).join(' | ') : 'None'}}</div>
+      <div class="summary-item"><strong>Difficulty Distribution</strong>: ${{diffEntries.length ? diffEntries.map(([k,v])=>`${{esc(k)}}=${{esc(v)}}`).join(' | ') : 'None'}}</div>
+      <div class="summary-item"><strong>Landmark Categories</strong>: ${{(summary.used_categories || []).slice(0, 12).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'None'}}</div>
     </div>
   `;
 }}
@@ -4823,10 +4824,10 @@ async function refreshAll() {{
   renderPage();
 }}
 function buildSummaryCards(summary) {{
-  if(!summary) return '<div class="muted">暂无实验结果</div>';
+  if(!summary) return '<div class="muted">No experiment results available.</div>';
   return `
     <div class="mini-grid">
-      <div class="metric"><div class="muted">样本数</div><div class="v">${{esc(summary.count)}}</div></div>
+      <div class="metric"><div class="muted">Sample Count</div><div class="v">${{esc(summary.count)}}</div></div>
       <div class="metric"><div class="muted">Parse Success</div><div class="v">${{fmtPct(summary.parse_success_rate)}}</div></div>
       <div class="metric"><div class="muted">Option Accuracy</div><div class="v">${{fmtPct(summary.option_accuracy)}}</div></div>
       <div class="metric"><div class="muted">BBox Acc@50IoU</div><div class="v">${{fmtPct(summary['bbox_acc@50iou'])}}</div></div>
@@ -4836,7 +4837,7 @@ function buildSummaryCards(summary) {{
   `;
 }}
 function footerHtml(items) {{
-  return (items || []).map((item)=>`<div class="footer-item">${{item}}</div>`).join('') || '<div class="muted">暂无内容</div>';
+  return (items || []).map((item)=>`<div class="footer-item">${{item}}</div>`).join('') || '<div class="muted">No content available.</div>';
 }}
 function renderFooter() {{
   const current = state.current || {{}};
@@ -4847,72 +4848,72 @@ function renderFooter() {{
   let rightItems = [];
   if(ACTIVE_PAGE === 'generate') {{
     leftItems = [
-      `<strong>任务数据生成</strong>：为当前场景生成 Stage 4-1 QA manifest。`,
-      `<strong>当前场景</strong>：${{esc(current.engine || '')}} / ${{esc(current.scene_id || '')}}。`,
-      `<strong>已有数据</strong>：manifest ${{esc(state.manifests.length)}} 份，report ${{esc(state.reports.length)}} 份。`,
-      `<strong>默认采样</strong>：可按新四类任务、难度和主视角策略联合控制。`,
+      `<strong>Task Generation</strong>: Generate a Stage 4-1 QA manifest for the current scene.`,
+      `<strong>Current Scene</strong>: ${{esc(current.engine || '')}} / ${{esc(current.scene_id || '')}}.`,
+      `<strong>Available Artifacts</strong>: manifest ${{esc(state.manifests.length)}} item(s), report ${{esc(state.reports.length)}} item(s).`,
+      `<strong>Default Sampling</strong>: Sampling can be jointly controlled by the four released task types, difficulty, and the main-view strategy.`,
     ];
     rightItems = [
-      `<strong>当前操作</strong>：设置生成方式、样本量、任务类型和难度。`,
-      `先确认 Stage 2 已完成地标方向与主视角整理，再开始生成。`,
-      `样本量建议先用 5 到 20 条快速检查，再扩大规模。`,
-      `生成后可切到“任务数据查看”核对 Self/Env 配对图像、参考图 BBox 与选项是否合理。`,
+      `<strong>Current Operation</strong>: Set the generation strategy, sample count, task types, and difficulty.`,
+      `Confirm that Stage 2 has finalized landmark directions and main views before generation.`,
+      `Start with 5 to 20 samples for a quick check before scaling up.`,
+      `After generation, switch to Dataset Browser to verify Self/Env paired images, reference-image BBoxes, and answer options.`,
     ];
   }} else if(ACTIVE_PAGE === 'dataset') {{
     leftItems = [
-      `<strong>任务数据查看</strong>：浏览 manifest 列表与样本预览。`,
-      `<strong>当前 Manifest</strong>：${{esc(state.activeManifest || current.latest_manifest_path || '未选择')}}。`,
-      `<strong>预览内容</strong>：显示参考图、任务定义、候选项与样本元信息。`,
-      `<strong>目标</strong>：确认四类任务与 4-way/8-way 采样是否符合预期。`,
+      `<strong>Dataset Browser</strong>: Browse manifest lists and sample previews.`,
+      `<strong>Current Manifest</strong>: ${{esc(state.activeManifest || current.latest_manifest_path || 'Not selected')}}.`,
+      `<strong>Preview Content</strong>: Display the reference image, task definition, answer options, and sample metadata.`,
+      `<strong>Goal</strong>: Check whether the four task types and 4-way / 8-way sampling match expectations.`,
     ];
     rightItems = [
-      `<strong>当前操作</strong>：切换 manifest 并抽查样本。`,
-      `优先检查参考图的目标地标 BBox 是否准确。`,
-      `重点核对 Self-1/2 与 Env-1/2 是否共享同一张查询图或观测图。`,
-      `如果采样偏斜，可返回生成页调整主视角策略或样本量。`,
+      `<strong>Current Operation</strong>: Switch manifests and inspect representative samples.`,
+      `Check first whether the target-landmark BBox is accurate on the reference image.`,
+      `Pay special attention to whether Self-1/2 and Env-1/2 share the intended query or observation image.`,
+      `If sampling is skewed, return to the generation page to adjust main-view strategy or sample count.`,
     ];
   }} else if(ACTIVE_PAGE === 'experiments') {{
     const runningJobs = (state.jobs || []).filter((job)=>['queued','running','cancel_requested'].includes(job.status || '')).length;
     const latestJob = (state.jobs || [])[0] || null;
     leftItems = [
-      `<strong>实验执行</strong>：选择 manifest、模型、分辨率、压缩率、并发和限频。`,
-      `<strong>默认上传预处理</strong>：${{esc(current.stage4_defaults?.api_upload_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.api_upload_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.api_upload_jpeg_quality ?? 80)}}。`,
-      `<strong>默认网页图片预览</strong>：${{esc(current.stage4_defaults?.web_image_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.web_image_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.web_image_jpeg_quality ?? 80)}}。`,
-      `<strong>后台任务</strong>：当前共有 ${{esc((state.jobs || []).length)}} 个 job，可启动、刷新、取消。`,
-      `<strong>运行中</strong>：${{esc(runningJobs)}} 个；最近任务：${{esc(latestJob?.job_id || '-')}} / ${{esc(latestJob?.status || '-')}}。`,
-      `<strong>实验目标</strong>：输出 Option 预测与归一化 BBox 预测。`,
+      `<strong>Experiments</strong>: Select the manifest, model, resolution, compression, concurrency, and rate limits.`,
+      `<strong>Default Upload Preprocessing</strong>: ${{esc(current.stage4_defaults?.api_upload_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.api_upload_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.api_upload_jpeg_quality ?? 80)}}.`,
+      `<strong>Default Web Image Preview</strong>: ${{esc(current.stage4_defaults?.web_image_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.web_image_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.web_image_jpeg_quality ?? 80)}}.`,
+      `<strong>Background Jobs</strong>: There are currently ${{esc((state.jobs || []).length)}} jobs. You can start, refresh, or cancel them.`,
+      `<strong>Running</strong>: ${{esc(runningJobs)}} active; latest job: ${{esc(latestJob?.job_id || '-')}} / ${{esc(latestJob?.status || '-')}}.`,
+      `<strong>Experiment Goal</strong>: Produce option predictions and normalized BBox predictions.`,
     ];
     rightItems = [
-      `<strong>当前操作</strong>：启动任务、取消任务、查看当前样本进度。`,
-      `为降低 524 风险，建议先用 480P 级别上传和较低并发。`,
-      `多模型对比时，优先保持相同 manifest、相同任务筛选条件。`,
-      `如果任务运行较久，可用刷新进度或查看任务详情定位卡点。`,
+      `<strong>Current Operation</strong>: Start jobs, cancel jobs, and inspect per-sample progress.`,
+      `To reduce 524 risk, start with 480P uploads and lower concurrency.`,
+      `When comparing multiple models, keep the manifest and task filters fixed.`,
+      `If a job runs for a long time, use progress refresh or job inspection to locate the bottleneck.`,
     ];
   }} else if(ACTIVE_PAGE === 'results') {{
     leftItems = [
-      `<strong>实验结果查看</strong>：浏览每次 run 的总体结果与逐样本输出。`,
-      `<strong>当前 Report</strong>：${{esc(state.activeReport || current.latest_report_path || '未选择')}}。`,
-      `<strong>逐样本字段</strong>：pred/gold option、BBox@50、IoU。`,
-      `<strong>用途</strong>：定位单个失败样本和解析错误。`,
+      `<strong>Results</strong>: Browse run-level summaries and per-sample outputs.`,
+      `<strong>Current Report</strong>: ${{esc(state.activeReport || current.latest_report_path || 'Not selected')}}.`,
+      `<strong>Per-Sample Fields</strong>: predicted option, gold option, BBox@50, and IoU.`,
+      `<strong>Use Case</strong>: Identify individual failure cases and parsing errors.`,
     ];
     rightItems = [
-      `<strong>当前操作</strong>：切换 report 并查看逐样本结果。`,
-      `优先看 option 是否选对，再看 BBox 是否达到 Acc@50IoU。`,
-      `如果 parse success 低，先检查提示词、输出格式或模型稳定性。`,
-      `如需横向比较，建议切到“指标汇总”查看大表和分组图。`,
+      `<strong>Current Operation</strong>: Switch reports and inspect per-sample results.`,
+      `Check option correctness first, then whether the BBox reaches Acc@50IoU.`,
+      `If parse success is low, inspect prompts, output formatting, and model stability first.`,
+      `For side-by-side comparison, switch to Metrics and inspect the matrix and grouped charts.`,
     ];
   }} else {{
     leftItems = [
-      `<strong>实验指标汇总</strong>：查看总体 summary、分组条形图和实验大表。`,
-      `<strong>核心指标</strong>：Option Accuracy、BBox Acc@50IoU、BBox Mean IoU、Avg Latency。`,
-      `<strong>当前汇总</strong>：基于最近 report 自动加载。`,
-      `<strong>分组分析</strong>：按参照系、任务类型、难度对比表现。`,
+      `<strong>Metrics</strong>: Inspect the overall summary, grouped bar charts, and the experiment matrix.`,
+      `<strong>Core Metrics</strong>: Option Accuracy, BBox Acc@50IoU, BBox Mean IoU, and Average Latency.`,
+      `<strong>Current Summary</strong>: Automatically loaded from the latest report.`,
+      `<strong>Grouped Analysis</strong>: Compare performance by view definition, task type, and difficulty.`,
     ];
     rightItems = [
-      `<strong>当前操作</strong>：切换 latest-only 统计并刷新矩阵。`,
-      `建议先看总体指标，再看分组差异，最后回到结果页抽查样本。`,
-      `如果某一类任务显著偏低，优先回查对应 prompt 和数据采样。`,
-      `做论文表格时，可直接以这里的大表为整理基础。`,
+      `<strong>Current Operation</strong>: Toggle latest-only aggregation and refresh the matrix.`,
+      `Read overall metrics first, then grouped differences, and finally return to Results for sample-level inspection.`,
+      `If one task type is substantially weaker, review its prompt and data sampling first.`,
+      `This matrix can be used directly as the basis for paper tables.`,
     ];
   }}
   left.innerHTML = footerHtml(leftItems);
@@ -4924,9 +4925,9 @@ function renderGeneratePage() {{
   const stats = getSceneDifficultyStats(difficulty) || {{}};
   const categoryOptions = (state.current?.scene_landmark_stats?.categories || []).map((name)=>({{value:name, label:name}}));
   const strategyOptions = [
-    {{value:'manual', label:'手动指定样本量'}},
-    {{value:'per_landmark', label:'自动：每个满足四类任务的地标生成固定数量'}},
-    {{value:'per_task_landmark', label:'自动：每类任务的可用地标分别生成固定数量'}},
+    {{value:'manual', label:'Manual sample count'}},
+    {{value:'per_landmark', label:'Automatic: fixed count for each landmark that supports all four tasks'}},
+    {{value:'per_task_landmark', label:'Automatic: fixed count for each task over its eligible landmarks'}},
   ];
   const taskTypeOptions = [
     {{value:'self_where', label:'self_where'}},
@@ -4948,63 +4949,63 @@ function renderGeneratePage() {{
   return `
     <div class="grid">
       <div class="card">
-        <h2>任务数据生成</h2>
-        <p>按场景生成 Stage 4-1 QA manifest，可按参照系、任务类型和难度进行采样控制。</p>
+        <h2>Task Generation</h2>
+        <p>Generate Stage 4-1 QA manifests scene by scene, with sampling control over view definitions, task types, and difficulty.</p>
         <div class="form-grid">
-          <label class="compact-field">样本量<input id="gen_sample_count" value="5"></label>
-          <label class="compact-field">随机种子<input id="gen_seed" value="7"></label>
-          <label>主视角参考<input id="gen_main_only" type="checkbox" checked></label>
-          <label class="compact-field">每地标样本数<input id="gen_per_landmark" value="2" onchange="updateGenerateEstimator()"></label>
-          <label class="compact-field">每类任务每地标样本数<input id="gen_per_task_landmark" value="1" onchange="updateGenerateEstimator()"></label>
+          <label class="compact-field">Sample Count<input id="gen_sample_count" value="5"></label>
+          <label class="compact-field">Random Seed<input id="gen_seed" value="7"></label>
+          <label>Main-View Reference Only<input id="gen_main_only" type="checkbox" checked></label>
+          <label class="compact-field">Samples per Landmark<input id="gen_per_landmark" value="2" onchange="updateGenerateEstimator()"></label>
+          <label class="compact-field">Samples per Task per Landmark<input id="gen_per_task_landmark" value="1" onchange="updateGenerateEstimator()"></label>
         </div>
         <div class="form-grid" style="margin-top:12px;">
-          <label>生成方式
+          <label>Generation Strategy
             ${{renderChoiceGroup('gen_strategy_group', strategyOptions, {{ multiple:false, storageName:'gen_strategy', defaultValue:'manual', cols:1, showSelected:false }})}}
           </label>
-          <label>任务类型
+          <label>Task Types
             ${{renderChoiceGroup('gen_task_types_group', taskTypeOptions, {{ multiple:true, storageName:'gen_task_types', defaultValues:['self_where','self_what','env_where','env_how'], cols:1, showSelected:false, showActions:false }})}}
           </label>
-          <label>难度
+          <label>Difficulty
             ${{renderChoiceGroup('gen_difficulty_group', difficultyOptions, {{ multiple:false, storageName:'gen_difficulty', defaultValue:'4way', cols:1, showSelected:false }})}}
           </label>
         </div>
         <div class="form-grid" style="margin-top:12px;">
-          <label style="grid-column:1/-1;">地标类别
+          <label style="grid-column:1/-1;">Landmark Categories
             ${{renderChoiceGroup('gen_categories_group', categoryOptions, {{ multiple:true, storageName:'gen_categories', defaultValues:[], cols:1, showSelected:true, showActions:true }})}}
           </label>
         </div>
         <div class="summary-list" style="margin-top:12px;" id="generate_estimator"></div>
         <div class="actions">
-          <button onclick="runGenerate()">生成任务数据</button>
-          <button class="secondary" onclick="loadManifestPreview()">加载最新 Manifest</button>
+          <button onclick="runGenerate()">Generate Task Data</button>
+          <button class="secondary" onclick="loadManifestPreview()">Load Latest Manifest</button>
         </div>
         <pre id="generate_out"></pre>
       </div>
       <div class="card">
-        <h2>场景摘要</h2>
+        <h2>Scene Summary</h2>
         <div class="mini-grid">
           <div class="metric"><div class="muted">Scene</div><div class="v" style="font-size:20px;">${{esc(current.scene_id || '')}}</div></div>
           <div class="metric"><div class="muted">Engine</div><div class="v" style="font-size:20px;">${{esc(current.engine || '')}}</div></div>
-          <div class="metric"><div class="muted">满足四类任务地标数</div><div class="v">${{esc(stats.eligible_all_task_landmark_count || 0)}}</div></div>
-          <div class="metric"><div class="muted">满足四类任务类别数</div><div class="v">${{esc(stats.eligible_all_task_category_count || 0)}}</div></div>
-          <div class="metric"><div class="muted">平均视图数</div><div class="v">${{fmtFloat(stats.avg_view_count_per_eligible_landmark || 0, 2)}}</div></div>
-          <div class="metric"><div class="muted">Manifest 数量</div><div class="v">${{state.manifests.length}}</div></div>
+          <div class="metric"><div class="muted">Landmarks Eligible for All Four Tasks</div><div class="v">${{esc(stats.eligible_all_task_landmark_count || 0)}}</div></div>
+          <div class="metric"><div class="muted">Categories Eligible for All Four Tasks</div><div class="v">${{esc(stats.eligible_all_task_category_count || 0)}}</div></div>
+          <div class="metric"><div class="muted">Average View Count</div><div class="v">${{fmtFloat(stats.avg_view_count_per_eligible_landmark || 0, 2)}}</div></div>
+          <div class="metric"><div class="muted">Manifest Count</div><div class="v">${{state.manifests.length}}</div></div>
         </div>
         <div class="detail-grid" style="margin-top:16px;">
           <div class="summary-list">
-            <div class="summary-item"><strong>Stage 2 有效地标总数</strong>：${{esc(current.scene_landmark_stats?.total_valid_landmarks || 0)}}</div>
-            <div class="summary-item"><strong>全部地标类别数</strong>：${{esc(current.scene_landmark_stats?.total_category_count || 0)}}</div>
-            <div class="summary-item"><strong>可用于四类任务的类别</strong>：${{(stats.eligible_all_task_categories || []).slice(0, 16).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || '暂无'}}</div>
+            <div class="summary-item"><strong>Total Valid Stage-2 Landmarks</strong>: ${{esc(current.scene_landmark_stats?.total_valid_landmarks || 0)}}</div>
+            <div class="summary-item"><strong>Total Landmark Categories</strong>: ${{esc(current.scene_landmark_stats?.total_category_count || 0)}}</div>
+            <div class="summary-item"><strong>Categories Eligible for All Four Tasks</strong>: ${{(stats.eligible_all_task_categories || []).slice(0, 16).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'None'}}</div>
           </div>
           <div>
-            <h3>地标任务可用性统计</h3>
+            <h3>Landmark Task Eligibility Statistics</h3>
             <table class="compact-table">
-              <thead><tr><th>任务</th><th>地标数</th><th>类别数</th><th>平均视图</th></tr></thead>
-              <tbody>${{perTaskRows || '<tr><td colspan="4" class="muted">暂无统计</td></tr>'}}</tbody>
+              <thead><tr><th>Task</th><th>Landmarks</th><th>Category Count</th><th>Average Views</th></tr></thead>
+              <tbody>${{perTaskRows || '<tr><td colspan="4" class="muted">No statistics available.</td></tr>'}}</tbody>
             </table>
           </div>
           <div>
-            <h3>最近实验摘要</h3>
+            <h3>Latest Experiment Summary</h3>
             ${{buildSummaryCards(current.report_summary)}}
           </div>
         </div>
@@ -5026,16 +5027,16 @@ function renderDatasetPage() {{
   return `
     <div class="grid">
       <div class="card">
-        <h2>任务数据查看</h2>
+        <h2>Dataset Browser</h2>
         <table>
-          <thead><tr><th>Manifest</th><th>样本数</th><th>地标数</th><th>类别数</th><th>任务类型</th><th>难度</th><th>时间</th></tr></thead>
-          <tbody>${{manifestRows || '<tr><td colspan="7" class="muted">暂无 manifest</td></tr>'}}</tbody>
+          <thead><tr><th>Manifest</th><th>Sample Count</th><th>Landmarks</th><th>Category Count</th><th>Task Types</th><th>Difficulty</th><th>Timestamp</th></tr></thead>
+          <tbody>${{manifestRows || '<tr><td colspan="7" class="muted">No manifests available.</td></tr>'}}</tbody>
         </table>
-        <div class="section-title">任务列表</div>
+        <div class="section-title">Sample List</div>
         <div id="manifest_task_list" class="table-wrap"></div>
       </div>
       <div class="card">
-        <h2>样本预览</h2>
+        <h2>Sample Preview</h2>
         <div id="manifest_summary" class="summary-list" style="margin-bottom:12px;"></div>
         <div id="manifest_preview" class="sample-list"></div>
       </div>
@@ -5056,42 +5057,42 @@ function renderExperimentsPage() {{
       <td>${{esc(job.payload?.manifest_name || '-')}}</td>
       <td>${{esc(job.progress?.completed || 0)}} / ${{esc(job.progress?.total || 0)}}</td>
       <td>${{esc(job.progress?.current_sample_id || '')}}</td>
-      <td><button class="secondary" onclick="inspectJob('${{esc(job.job_id)}}')">查看</button> <button class="warn" onclick="cancelJob('${{esc(job.job_id)}}')">取消</button></td>
+      <td><button class="secondary" onclick="inspectJob('${{esc(job.job_id)}}')">View</button> <button class="warn" onclick="cancelJob('${{esc(job.job_id)}}')">Cancel</button></td>
     </tr>`).join('');
   return `
     <div class="grid">
       <div class="card">
-        <h2>实验执行</h2>
+        <h2>Experiments</h2>
         <div class="form-grid">
           <label>Manifest
             <select id="exp_manifest">${{state.manifests.map((row)=>`<option value="${{esc(row.path)}}" ${{row.path===state.activeManifest?'selected':''}}>${{esc(row.generation_id)}}</option>`).join('')}}</select>
           </label>
-          <label class="compact-field">样本数<input id="exp_limit" value="5"></label>
-          <label class="compact-field">并发<input id="exp_concurrency" value="1"></label>
+          <label class="compact-field">Sample Count<input id="exp_limit" value="5"></label>
+          <label class="compact-field">Concurrency<input id="exp_concurrency" value="1"></label>
           <label class="compact-field">RPM<input id="exp_rpm" value="0"></label>
           <label class="compact-field">TPM<input id="exp_tpm" value="0"></label>
-          <label class="compact-field">宽<input id="exp_width" value="${{esc(stage4Defaults.api_upload_max_width ?? 640)}}"></label>
-          <label class="compact-field">高<input id="exp_height" value="${{esc(stage4Defaults.api_upload_max_height ?? 480)}}"></label>
+          <label class="compact-field">Width<input id="exp_width" value="${{esc(stage4Defaults.api_upload_max_width ?? 640)}}"></label>
+          <label class="compact-field">Height<input id="exp_height" value="${{esc(stage4Defaults.api_upload_max_height ?? 480)}}"></label>
           <label class="compact-field">JPEG<input id="exp_quality" value="${{esc(stage4Defaults.api_upload_jpeg_quality ?? 80)}}"></label>
-          <label class="compact-field">超时<input id="exp_timeout" value="30"></label>
+          <label class="compact-field">Timeout<input id="exp_timeout" value="30"></label>
         </div>
         <div class="form-grid" style="margin-top:12px;">
-          <label style="grid-column:1/-1;">模型（可多选）
+          <label style="grid-column:1/-1;">Models (multi-select)
             ${{renderChoiceGroup('exp_models_group', modelOptions, {{ multiple:true, storageName:'exp_models', defaultValues: defaultModel ? [defaultModel] : [], cols:1, showSelected:true, showActions:true }})}}
           </label>
         </div>
         <div class="actions">
-          <button onclick="startExperimentJob()">启动实验</button>
-          <button class="secondary" onclick="refreshJobs()">刷新进度</button>
+          <button onclick="startExperimentJob()">Start Experiment</button>
+          <button class="secondary" onclick="refreshJobs()">Refresh Progress</button>
         </div>
         <div id="experiment_manifest_info" class="summary-list" style="margin-top:12px;"></div>
         <pre id="job_detail"></pre>
       </div>
       <div class="card">
-        <h2>后台实验任务</h2>
+        <h2>Background Experiment Jobs</h2>
         <table>
-          <thead><tr><th>Job</th><th>状态</th><th>场景</th><th>模型</th><th>Manifest</th><th>进度</th><th>当前样本</th><th>操作</th></tr></thead>
-          <tbody>${{jobRows || '<tr><td colspan="8" class="muted">暂无任务</td></tr>'}}</tbody>
+          <thead><tr><th>Job</th><th>Status</th><th>Scene</th><th>Model</th><th>Manifest</th><th>Progress</th><th>Current Sample</th><th>Actions</th></tr></thead>
+          <tbody>${{jobRows || '<tr><td colspan="8" class="muted">No jobs available.</td></tr>'}}</tbody>
         </table>
       </div>
     </div>
@@ -5112,16 +5113,16 @@ function renderResultsPage() {{
   return `
     <div class="grid">
       <div class="card">
-        <h2>实验结果查看</h2>
+        <h2>Results</h2>
         <table>
-          <thead><tr><th>Run</th><th>模型</th><th>Manifest</th><th>样本数</th><th>Opt</th><th>BBox</th><th>延迟</th><th>时间</th></tr></thead>
-          <tbody>${{rows || '<tr><td colspan="8" class="muted">暂无 report</td></tr>'}}</tbody>
+          <thead><tr><th>Run</th><th>Model</th><th>Manifest</th><th>Sample Count</th><th>Opt</th><th>BBox</th><th>Latency</th><th>Timestamp</th></tr></thead>
+          <tbody>${{rows || '<tr><td colspan="8" class="muted">No reports available.</td></tr>'}}</tbody>
         </table>
       </div>
       <div class="card">
-        <h2>逐样本结果</h2>
-        <div id="report_meta" class="summary-list" style="margin-bottom:10px;"><div class="muted">选择左侧 report 查看</div></div>
-        <div id="report_rows"><div class="muted">选择左侧 report 查看</div></div>
+        <h2>Per-Sample Results</h2>
+        <div id="report_meta" class="summary-list" style="margin-bottom:10px;"><div class="muted">Select a report on the left to inspect it.</div></div>
+        <div id="report_rows"><div class="muted">Select a report on the left to inspect it.</div></div>
       </div>
     </div>
   `;
@@ -5130,33 +5131,33 @@ function renderMetricsPage() {{
   return `
     <div class="stack">
       <div class="card">
-        <h2>实验指标汇总</h2>
+        <h2>Metrics</h2>
         <div class="actions">
           <label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;">
             <input id="metrics_latest_only" type="checkbox" onchange="loadMetricsMatrix()">
-            按单个样本最新结果汇总
+            Aggregate by the latest result for each sample
           </label>
           <label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;">
             <input id="metrics_by_difficulty" type="checkbox" onchange="loadMetricsMatrix()">
-            按难度区分
+            Split by difficulty
           </label>
-          <button class="secondary" onclick="loadMetricsMatrix()">刷新指标大表</button>
-          <button class="secondary" onclick="exportMetricsCsv()">导出 CSV</button>
+          <button class="secondary" onclick="loadMetricsMatrix()">Refresh Metrics Matrix</button>
+          <button class="secondary" onclick="exportMetricsCsv()">Export CSV</button>
         </div>
         <div id="metrics_report_summary_cards">${{buildSummaryCards(state.current?.report_summary)}}</div>
       </div>
       <div class="card">
-        <h2>分组分析</h2>
-        <div id="metrics_group_bars" class="stack"><div class="muted">加载中...</div></div>
+        <h2>Grouped Analysis</h2>
+        <div id="metrics_group_bars" class="stack"><div class="muted">Loading...</div></div>
       </div>
       <div class="card">
-        <h2>实验大表</h2>
-        <div id="metrics_matrix"><div class="muted">加载中...</div></div>
+        <h2>Experiment Matrix</h2>
+        <div id="metrics_matrix"><div class="muted">Loading...</div></div>
       </div>
       <div class="card">
-        <h2>实验进度大表</h2>
+        <h2>Experiment Progress Matrix</h2>
         <div id="metrics_progress_summary" class="summary-list" style="margin-bottom:12px;"></div>
-        <div id="metrics_progress_matrix"><div class="muted">加载中...</div></div>
+        <div id="metrics_progress_matrix"><div class="muted">Loading...</div></div>
       </div>
     </div>
   `;
@@ -5225,11 +5226,11 @@ function updateGenerateEstimator() {{
   const perTaskLandmark = parseInt(document.getElementById('gen_per_task_landmark')?.value || '0', 10);
   const estimated = estimateAutoSampleCount(strategy, difficulty, perLandmark, perTaskLandmark);
   const items = [
-    `<strong>当前难度</strong>：${{esc(difficulty)}}`,
-    `<strong>满足四类任务地标数</strong>：${{esc(stats.eligible_all_task_landmark_count || 0)}}`,
-    `<strong>类别筛选</strong>：${{getSelectedCategories().length ? getSelectedCategories().map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') : '全部类别'}}`,
-    `<strong>自动估算样本量</strong>：${{strategy === 'manual' ? '手动模式，不自动改写' : esc(estimated)}}`,
-    `<strong>说明</strong>：${{strategy === 'per_task_landmark' ? '按四类任务各自可用地标分别生成。' : strategy === 'per_landmark' ? '按满足四类任务的地标统一生成。' : '直接使用上面的样本量输入框。'}}`,
+    `<strong>Current Difficulty</strong>: ${{esc(difficulty)}}`,
+    `<strong>Landmarks Eligible for All Four Tasks</strong>: ${{esc(stats.eligible_all_task_landmark_count || 0)}}`,
+    `<strong>Category Filter</strong>: ${{getSelectedCategories().length ? getSelectedCategories().map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') : 'All categories'}}`,
+    `<strong>Estimated Sample Count</strong>: ${{strategy === 'manual' ? 'Manual mode; the sample count will not be overwritten automatically.' : esc(estimated)}}`,
+    `<strong>Note</strong>: ${{strategy === 'per_task_landmark' ? 'Generate separately over landmarks eligible for each task type.' : strategy === 'per_landmark' ? 'Generate uniformly over landmarks that support all four tasks.' : 'Use the sample-count field above directly.'}}`,
   ];
   holder.innerHTML = summaryItemsHtml(items);
 }}
@@ -5240,9 +5241,9 @@ async function loadManifestPreview() {{
   const listHolder = document.getElementById('manifest_task_list');
   if(!holder) return;
   if(!state.activeManifest) {{
-    holder.innerHTML = '<div class="muted">暂无 manifest</div>';
-    if(summaryHolder) summaryHolder.innerHTML = '<div class="muted">暂无 manifest 摘要</div>';
-    if(listHolder) listHolder.innerHTML = '<div class="muted">暂无样本</div>';
+    holder.innerHTML = '<div class="muted">No manifest selected.</div>';
+    if(summaryHolder) summaryHolder.innerHTML = '<div class="muted">No manifest summary available.</div>';
+    if(listHolder) listHolder.innerHTML = '<div class="muted">No samples available.</div>';
     return;
   }}
   const data = await api(`/api/manifest?path=${{encodeURIComponent(state.activeManifest)}}`);
@@ -5258,12 +5259,12 @@ async function loadManifestPreview() {{
   }});
   if(listHolder) {{
     listHolder.innerHTML = `<table><thead><tr><th>sample_id</th><th>task</th><th>difficulty</th><th>landmark</th></tr></thead><tbody>${{
-      (data.samples || []).map((sample)=>`<tr onclick="selectManifestSample('${{esc(sample.sample_id)}}')" style="cursor:pointer;${{String(state.activeManifestSampleId)===String(sample.sample_id)?'background:var(--paper-soft);':''}}"><td>${{esc(sample.sample_id)}}</td><td>${{esc(sample.task_type)}}</td><td>${{esc(sample.difficulty)}}</td><td>${{esc(sample.landmark_id)}}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">暂无样本</td></tr>'
+      (data.samples || []).map((sample)=>`<tr onclick="selectManifestSample('${{esc(sample.sample_id)}}')" style="cursor:pointer;${{String(state.activeManifestSampleId)===String(sample.sample_id)?'background:var(--paper-soft);':''}}"><td>${{esc(sample.sample_id)}}</td><td>${{esc(sample.task_type)}}</td><td>${{esc(sample.difficulty)}}</td><td>${{esc(sample.landmark_id)}}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">No samples available.</td></tr>'
     }}</tbody></table>`;
   }}
   const sample = (data.samples || []).find((row)=>String(row.sample_id)===String(state.activeManifestSampleId)) || (data.samples || [])[0] || null;
   if(!sample) {{
-    holder.innerHTML = '<div class="muted">暂无样本</div>';
+    holder.innerHTML = '<div class="muted">No samples available.</div>';
     return;
   }}
   state.activeManifestSampleId = String(sample.sample_id || '');
@@ -5272,21 +5273,21 @@ async function loadManifestPreview() {{
       <div><strong>${{esc(sample.sample_id)}}</strong></div>
       <div class="muted">${{esc(comboLabel(sample.view_definition, sample.task_type, sample.difficulty))}}</div>
       <div class="summary-list" style="margin:8px 0;">
-        <div class="summary-item"><strong>地标</strong>：${{esc(sample.landmark_id)}} / ${{esc(sample.landmark_category)}}</div>
-        <div class="summary-item"><strong>System Prompt</strong>：<pre>${{esc(sample.system_prompt || '')}}</pre></div>
-        <div class="summary-item"><strong>User Prompt</strong>：<pre>${{esc(sample.user_prompt || sample.prompt_text || '')}}</pre></div>
-        <div class="summary-item"><strong>选项</strong>：${{optionHtml(sample.label_options || sample.candidates || [])}}</div>
-        <div class="summary-item"><strong>答案</strong>：${{esc((sample.answer_option_ids || [sample.answer_option_id || '-']).join(', '))}}</div>
-        <div class="summary-item"><strong>答案 BBox</strong>：<span class="inline-code">${{fmtBbox(sample.answer_bbox_xyxy_norm)}}</span></div>
+        <div class="summary-item"><strong>Landmark</strong>: ${{esc(sample.landmark_id)}} / ${{esc(sample.landmark_category)}}</div>
+        <div class="summary-item"><strong>System Prompt</strong>: <pre>${{esc(sample.system_prompt || '')}}</pre></div>
+        <div class="summary-item"><strong>User Prompt</strong>: <pre>${{esc(sample.user_prompt || sample.prompt_text || '')}}</pre></div>
+        <div class="summary-item"><strong>Options</strong>: ${{optionHtml(sample.label_options || sample.candidates || [])}}</div>
+        <div class="summary-item"><strong>Ground Truth</strong>: ${{esc((sample.answer_option_ids || [sample.answer_option_id || '-']).join(', '))}}</div>
+        <div class="summary-item"><strong>Ground-Truth BBox</strong>: <span class="inline-code">${{fmtBbox(sample.answer_bbox_xyxy_norm)}}</span></div>
       </div>
       <div class="thumb-row">
         <div class="thumb-box">
-          <div class="muted" style="margin-bottom:4px;">参考图</div>
+          <div class="muted" style="margin-bottom:4px;">Reference Image</div>
           <img src="${{buildImageSrc(sample.reference_image_with_bbox)}}" />
         </div>
         ${{
           ['label_multiple_choice','self_where','env_where','env_how'].includes(sample.task_type)
-            ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">目标图</div><img src="${{buildImageSrc(sample.target_image)}}" /></div>`
+            ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Target Image</div><img src="${{buildImageSrc(sample.target_image)}}" /></div>`
             : `<div class="option-grid">${{(sample.candidates || []).map((cand)=>`<div class="option-card"><div><strong>${{esc(cand.option_id)}}</strong> / ${{esc(cand.view_under_definition || '')}}</div><div class="muted">BBox: ${{fmtBbox(cand.bbox_xyxy_norm)}}</div><img src="${{buildImageSrc(cand.image)}}" style="margin-top:6px; max-width:180px;" /></div>`).join('')}}</div>`
         }}
       </div>
@@ -5308,12 +5309,12 @@ async function updateExperimentManifestInfo() {{
   if(row) {{
     holder.innerHTML = renderManifestSummary(row.summary) + `
       <div class="summary-list" style="margin-top:10px;">
-        <div class="summary-item"><strong>参照系</strong>：${{(row.view_definitions || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || '由 manifest 决定'}}</div>
-        <div class="summary-item"><strong>任务类型</strong>：${{(row.task_types || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || '由 manifest 决定'}}</div>
-        <div class="summary-item"><strong>难度</strong>：${{(row.difficulties || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || '由 manifest 决定'}}</div>
+        <div class="summary-item"><strong>View Definitions</strong>: ${{(row.view_definitions || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'Defined by the manifest'}}</div>
+        <div class="summary-item"><strong>Task Types</strong>: ${{(row.task_types || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'Defined by the manifest'}}</div>
+        <div class="summary-item"><strong>Difficulty</strong>: ${{(row.difficulties || []).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'Defined by the manifest'}}</div>
       </div>`;
   }} else {{
-    holder.innerHTML = '<div class="muted">暂无 manifest 参考信息</div>';
+    holder.innerHTML = '<div class="muted">No manifest reference information available.</div>';
   }}
   select.onchange = ()=> {{
     state.activeManifest = select.value;
@@ -5366,8 +5367,8 @@ async function loadReportRows() {{
   if(!holder) return;
   if(!state.activeReport && state.reports.length) state.activeReport = state.reports[0].path;
   if(!state.activeReport) {{
-    holder.innerHTML = '<div class="muted">暂无 report</div>';
-    if(meta) meta.innerHTML = '<div class="muted">暂无 report</div>';
+    holder.innerHTML = '<div class="muted">No report selected.</div>';
+    if(meta) meta.innerHTML = '<div class="muted">No report selected.</div>';
     return;
   }}
   const rows = await api(`/api/report_rows?path=${{encodeURIComponent(state.activeReport)}}`);
@@ -5375,9 +5376,9 @@ async function loadReportRows() {{
   const reportRow = (state.reports || []).find((row)=>row.path === state.activeReport);
   if(meta) {{
     meta.innerHTML = `
-      <div class="summary-item"><strong>Run</strong>：${{esc(reportRow?.run_id || '-')}}</div>
-      <div class="summary-item"><strong>模型</strong>：${{esc(reportRow?.model || '-')}}</div>
-      <div class="summary-item"><strong>Manifest</strong>：${{esc(reportRow?.manifest_name || '-')}}</div>
+      <div class="summary-item"><strong>Run</strong>: ${{esc(reportRow?.run_id || '-')}}</div>
+      <div class="summary-item"><strong>Model</strong>: ${{esc(reportRow?.model || '-')}}</div>
+      <div class="summary-item"><strong>Manifest</strong>: ${{esc(reportRow?.manifest_name || '-')}}</div>
     `;
   }}
   const grouped = {{}};
@@ -5398,7 +5399,7 @@ async function loadReportRows() {{
           <td>${{Number(row.bbox_iou||0).toFixed(3)}}</td>
         </tr>`).join('')}}</tbody>
       </table>
-    </div>`).join('') || '<div class="muted">暂无逐样本结果</div>';
+    </div>`).join('') || '<div class="muted">No per-sample results available.</div>';
 }}
 async function loadMetricsMatrix() {{
   const holder = document.getElementById('metrics_matrix');
@@ -5410,10 +5411,10 @@ async function loadMetricsMatrix() {{
   const gbEl = document.getElementById('metrics_group_bars');
   const pmEl = document.getElementById('metrics_progress_matrix');
   const psEl = document.getElementById('metrics_progress_summary');
-  holder.innerHTML = '<div class="muted">加载中...</div>';
-  if(pmEl) pmEl.innerHTML = '<div class="muted">加载中...</div>';
+  holder.innerHTML = '<div class="muted">Loading...</div>';
+  if(pmEl) pmEl.innerHTML = '<div class="muted">Loading...</div>';
   if(psEl) psEl.innerHTML = '';
-  if(gbEl) gbEl.innerHTML = '<div class="muted">加载中...</div>';
+  if(gbEl) gbEl.innerHTML = '<div class="muted">Loading...</div>';
   let reports = [];
   let data = {{ columns: [], rows: [] }};
   let progressData = {{ scenes: [], rows: [], overall_completed: 0, overall_total: 0, overall_ratio: null }};
@@ -5424,7 +5425,7 @@ async function loadMetricsMatrix() {{
       api(`/api/experiment_progress_matrix?${{mq}}`).catch(()=>({{scenes:[],rows:[],overall_completed:0,overall_total:0,overall_ratio:null}})),
     ]);
   }} catch (e) {{
-    holder.innerHTML = `<div class="warn">加载失败：${{esc(String((e && e.message) || e))}}</div>`;
+    holder.innerHTML = `<div class="warn">Load failed: ${{esc(String((e && e.message) || e))}}</div>`;
     if(pmEl) pmEl.innerHTML = '';
     if(gbEl) gbEl.innerHTML = '';
     renderFooter();
@@ -5435,7 +5436,7 @@ async function loadMetricsMatrix() {{
   const latestSummary = latestReport.summary || {{}};
   if(rsEl) rsEl.innerHTML = buildSummaryCards(latestSummary);
   function barSection(title, payload) {{
-    if(!payload || Object.keys(payload).length === 0) return `<div class="muted">${{title}}: 暂无数据</div>`;
+    if(!payload || Object.keys(payload).length === 0) return `<div class="muted">${{title}}: No data available.</div>`;
     return `<div style="margin-bottom:18px;"><h3>${{title}}</h3><div class="bars">${{Object.entries(payload).map(([name, item])=>`
       <div class="bar-row">
         <div>${{esc(name)}}</div>
@@ -5446,9 +5447,9 @@ async function loadMetricsMatrix() {{
   if(gbEl) {{
     const grouped = latestSummary.grouped || {{}};
     gbEl.innerHTML = [
-      barSection('按参照系 · Option', grouped.view_definition),
-      barSection('按任务类型 · Option', grouped.task_type),
-      barSection('按难度 · Option', grouped.difficulty),
+      barSection('Option Accuracy by View Definition', grouped.view_definition),
+      barSection('Option Accuracy by Task Type', grouped.task_type),
+      barSection('Option Accuracy by Difficulty', grouped.difficulty),
     ].join('');
   }}
   const columns = data.columns || [];
@@ -5472,7 +5473,7 @@ async function loadMetricsMatrix() {{
   const metricHead = columns.map(()=>`<th>Opt</th><th>BBox</th><th>IoU</th><th>N</th>`).join('');
   holder.innerHTML = `<table class="compact-table">
     <thead>
-      <tr><th rowspan="3">Model</th>${{topHead || '<th>暂无列</th>'}}</tr>
+      <tr><th rowspan="3">Model</th>${{topHead || '<th>No columns</th>'}}</tr>
       <tr>${{diffHead}}</tr>
       <tr>${{metricHead}}</tr>
     </thead>
@@ -5484,11 +5485,11 @@ async function loadMetricsMatrix() {{
           return `<td>${{fmtPct(cell.option_accuracy)}}</td><td>${{fmtPct(cell['bbox_acc@50iou'])}}</td><td>${{fmtFloat(cell.bbox_mean_iou, 3)}}</td><td>${{esc(cell.count ?? 0)}}</td>`;
         }}).join('')
       }}
-    </tr>`).join('') || `<tr><td colspan="${{1 + columns.length * 4}}" class="muted">暂无实验记录</td></tr>`}}</tbody>
+    </tr>`).join('') || `<tr><td colspan="${{1 + columns.length * 4}}" class="muted">No experiment records available.</td></tr>`}}</tbody>
   </table>`;
   const progressSummary = document.getElementById('metrics_progress_summary');
   if(progressSummary) {{
-    progressSummary.innerHTML = `<div class="summary-item"><strong>总体进度</strong>：${{esc(progressData.overall_completed || 0)}} / ${{esc(progressData.overall_total || 0)}} (${{fmtPct(progressData.overall_ratio)}})</div>`;
+    progressSummary.innerHTML = `<div class="summary-item"><strong>Overall Progress</strong>: ${{esc(progressData.overall_completed || 0)}} / ${{esc(progressData.overall_total || 0)}} (${{fmtPct(progressData.overall_ratio)}})</div>`;
   }}
   const progressHolder = document.getElementById('metrics_progress_matrix');
   if(progressHolder) {{
@@ -5496,8 +5497,8 @@ async function loadMetricsMatrix() {{
     const progressRows = progressData.rows || [];
     const head = progressScenes.map((scene)=>`<th>${{esc(scene.scene_id)}}</th>`).join('');
     const totalCols = 2 + progressScenes.length + 1;
-    progressHolder.innerHTML = `<table class="compact-table"><thead><tr><th>Model</th>${{head}}<th>汇总</th></tr></thead><tbody>${{
-      progressRows.map((row)=>`<tr><td>${{esc(row.model)}}</td>${{progressScenes.map((scene)=>{{ const cell = row.scenes?.[scene.scene_id] || {{}}; return `<td>${{esc(cell.completed ?? 0)}} / ${{esc(cell.total ?? 0)}} (${{fmtPct(cell.ratio)}})</td>`; }}).join('')}}<td>${{esc(row.total_completed ?? 0)}} / ${{esc(row.total_samples ?? 0)}} (${{fmtPct(row.total_ratio)}})</td></tr>`).join('') || `<tr><td colspan="${{totalCols}}" class="muted">暂无实验进度</td></tr>`
+    progressHolder.innerHTML = `<table class="compact-table"><thead><tr><th>Model</th>${{head}}<th>Overall</th></tr></thead><tbody>${{
+      progressRows.map((row)=>`<tr><td>${{esc(row.model)}}</td>${{progressScenes.map((scene)=>{{ const cell = row.scenes?.[scene.scene_id] || {{}}; return `<td>${{esc(cell.completed ?? 0)}} / ${{esc(cell.total ?? 0)}} (${{fmtPct(cell.ratio)}})</td>`; }}).join('')}}<td>${{esc(row.total_completed ?? 0)}} / ${{esc(row.total_samples ?? 0)}} (${{fmtPct(row.total_ratio)}})</td></tr>`).join('') || `<tr><td colspan="${{totalCols}}" class="muted">No experiment progress available.</td></tr>`
     }}</tbody></table>`;
   }}
   renderFooter();
@@ -5858,7 +5859,7 @@ loadCatalog().then(refreshAll);
         raw_path = str(request.args.get("path", "") or "").strip()
         if not raw_path:
             return jsonify({"error": "missing_path"}), 400
-        path = (WORKSPACE_ROOT / raw_path).resolve()
+        path = resolve_existing_file_with_suffix_fallback(raw_path, base_dirs=[WORKSPACE_ROOT])
         if not path.exists() or not path.is_file():
             return jsonify({"error": "file_not_found"}), 404
         resize_enabled = str(request.args.get("resize", "0") or "0").strip().lower() in {"1", "true", "yes", "on"}

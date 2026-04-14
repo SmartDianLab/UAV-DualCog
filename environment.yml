@@ -1,4 +1,4 @@
-name: uav-dualcog
+name: uav-dualcog-test
 channels:
   - pytorch
   - nvidia

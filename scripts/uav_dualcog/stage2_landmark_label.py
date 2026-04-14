@@ -48,6 +48,7 @@ from pipeline_common import (
     format_unified_startup_ports_message,
     prepare_airsim_runtime_unified,
     resolve_output_dir_name,
+    resolve_scene_artifact_path,
     resolve_scene_root,
 )
 from api_common import (
@@ -387,7 +388,7 @@ def _assign_view_directions(
     if view_count <= 0:
         return []
     base_idx = VIEW_DIRECTION_RING.index(base_direction)
-    # 4视图 -> 步长2（自动补齐其余3个方向），8视图 -> 步长1
+    # 4 views -> step 2 (auto-fill the remaining 3 directions), 8 views -> step 1
     step = max(1, int(round(8.0 / float(view_count))))
     out: list[str] = []
     for i in range(view_count):
@@ -422,7 +423,7 @@ def _assign_view_directions_by_yaw(
     out: list[str] = []
     for yaw in yaws:
         delta = _normalize_deg(float(yaw) - float(yaw_selected))
-        # yaw在ENU中逆时针为正；当前方向环按顺时针递增，故取负号对齐
+        # Yaw is positive counter-clockwise in ENU; the direction ring increases clockwise, so negate to align.
         step_45 = int(round((-delta) / 45.0))
         out.append(VIEW_DIRECTION_RING[(base_idx + step_45) % 8])
     return out
@@ -439,7 +440,7 @@ def _resolve_image_path(path_str: str) -> Path | None:
     if resolved is not None:
         return resolved
 
-    # 常见相对路径: rgb_views/<instance_id>/view_xx.png，实际位于 scene_data/<scene>/landmarks_raw/
+    # Common relative path: rgb_views/<instance_id>/view_xx.png; actual root is scene_data/<scene>/landmarks_raw/
     scene_data_roots = [Path.cwd() / "scene_data", WORKSPACE_ROOT / "scene_data"]
     for scene_data_root in scene_data_roots:
         if not scene_data_root.exists():
@@ -471,7 +472,7 @@ def _pick_vlm_views(item: dict[str, Any], max_views: int) -> list[dict[str, Any]
         selected.append(query_view)
         used_ids.add(id(query_view))
 
-    # 优先顺序：前后左右 > 左前右前左后右后 > 其余
+    # Priority order: front/back/left/right > front-left/front-right/back-left/back-right > others
     primary = ["front", "back", "left", "right"]
     secondary = ["front_left", "front_right", "back_left", "back_right"]
     for target in primary:
@@ -838,7 +839,7 @@ def _prepare_auto_label_upload_image(
         "no",
         "off",
     }
-    # 红框图片上传压缩参数，默认480P，可通过配置调整
+    # Upload compression for red-box images, default 480P (configurable)
     max_width = max(1, _safe_int_cfg(stage2_cfg, 640, "auto_label_bbox_upload_max_width", "auto_label_upload_max_width"))
     max_height = max(1, _safe_int_cfg(stage2_cfg, 480, "auto_label_bbox_upload_max_height", "auto_label_upload_max_height"))
     jpeg_quality = int(np.clip(_safe_int_cfg(stage2_cfg, 85, "auto_label_upload_jpeg_quality"), 50, 100))
@@ -852,18 +853,18 @@ def _prepare_auto_label_upload_image(
             raise RuntimeError("invalid_image_shape")
 
         out = image_bgr
-        # 新增：判断是否需要加红框和方向文字
+        # New: decide whether to draw the red box and direction label
         add_bbox = str(stage2_cfg.get("auto_label_image_bbox", True)).strip().lower() not in {"0", "false", "no", "off"}
         debug_save_bbox_img = str(stage2_cfg.get("auto_label_debug_save_bbox_img", False)).strip().lower() in {"1", "true", "yes", "on"}
         debug_bbox_dir = _resolve_auto_label_debug_bbox_dir(stage2_cfg, image_path=image_path)
         if add_bbox and stage2_cfg.get("_auto_label_bbox_info") is not None:
             bbox_info = stage2_cfg["_auto_label_bbox_info"]
             out = draw_bbox_and_direction(out, bbox_info)
-            # debug保存加框图片
+            # Debug: save boxed image
             if debug_save_bbox_img and debug_bbox_dir:
                 import os
                 os.makedirs(debug_bbox_dir, exist_ok=True)
-                # 文件名包含原图名和方向
+                # Filename includes original name and direction
                 fname = os.path.basename(str(image_path))
                 direction = bbox_info.get("direction", "")
                 debug_path = os.path.join(debug_bbox_dir, f"debug_{direction}_{fname}")
@@ -917,7 +918,7 @@ def _resolve_auto_label_debug_bbox_dir(stage2_cfg: dict[str, Any], image_path: P
             debug_root = debug_root / parent_name
     return str(debug_root)
 
-# 新增：图片加红框和方向文字辅助函数
+# New: helper to draw red box and direction label on images
 def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
     img = copy.deepcopy(image)
     # bbox_info: {"bbox": [x0, y0, x1, y1], "direction": "front"}
@@ -933,7 +934,7 @@ def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
     margin = max(10, int(round(12.0 * scale)))
     text_pad_x = max(10, int(round(12.0 * scale)))
     text_pad_y = max(8, int(round(10.0 * scale)))
-    # 1. 红框
+    # 1) Red box
     if bbox and len(bbox) == 4:
         x0, y0, x1, y1 = map(int, bbox)
         x0 = int(np.clip(x0, 0, max(0, img_w - 1)))
@@ -941,14 +942,14 @@ def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
         x1 = int(np.clip(x1, 0, max(0, img_w - 1)))
         y1 = int(np.clip(y1, 0, max(0, img_h - 1)))
         cv2.rectangle(img, (x0, y0), (x1, y1), (40, 40, 255), box_thickness, cv2.LINE_AA)
-    # 2. 左上角标注地标朝向（可配置）
+    # 2) Direction label at top-left (configurable)
     show_face_label = bbox_info.get("show_face_label")
     if show_face_label is None:
         show_face_label = True
     if show_face_label:
         face_label = bbox_info.get("face_label")
         if not face_label:
-            # 默认格式
+            # Default format
             face_label = f"Visible Side: {direction} (Landmark-centric)"
         face_label = " ".join(str(face_label).split())
         max_label_width = max(120, int(round(float(img_w) * 0.5)))
@@ -1057,17 +1058,17 @@ def _call_vlm_with_class_and_views(
 
     client = OpenAI(api_key=api_key, base_url=api_base)
     image_blocks: list[dict[str, Any]] = []
-    # 新增：为每张图片设置bbox和方向信息
+    # New: set bbox and direction info for each image
     for idx, p in enumerate(image_paths):
         bbox_info = None
         if view_infos and idx < len(view_infos):
             info = view_infos[idx]
-            # 期望view_infos中有bbox字段（xyxy）和direction
+            # Expect bbox (xyxy) and direction fields in view_infos
             bbox = info.get("bbox")
             direction = info.get("view_direction", "")
             if bbox:
                 bbox_info = {"bbox": bbox, "direction": direction}
-        # 临时写入stage2_cfg，供图片处理函数读取
+        # Temporarily write into stage2_cfg for image processing
         if bbox_info:
             stage2_cfg["_auto_label_bbox_info"] = bbox_info
         else:
@@ -1075,7 +1076,7 @@ def _call_vlm_with_class_and_views(
         image_bytes, mime_type = _prepare_auto_label_upload_image(p, stage2_cfg)
         b64 = base64.b64encode(image_bytes).decode("utf-8")
         image_blocks.append({"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{b64}"}})
-    # 清理临时字段
+    # Clear temporary fields
     stage2_cfg.pop("_auto_label_bbox_info", None)
 
     view_infos = list(view_infos or [])
@@ -1133,7 +1134,7 @@ def _call_vlm_with_class_and_views(
         "  \"confidence\": 0.0\n"
         "}"
     )
-    # 数据准备：将item中的instance_id/class_id/class_name/center_3d/bbox_3d写入stage2_cfg临时字段
+    # Data prep: write instance_id/class_id/class_name/center_3d/bbox_3d into stage2_cfg temporary fields
     if 'instance_id' in stage2_cfg:
         pass
     else:
@@ -1145,12 +1146,12 @@ def _call_vlm_with_class_and_views(
             stage2_cfg['center_3d'] = item['center_3d']
         if 'bbox_3d' not in stage2_cfg and 'bbox_3d' in item:
             stage2_cfg['bbox_3d'] = item['bbox_3d']
-    # 组装messages
+    # Build messages
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    # 兼容原有API调用结构
+    # Backward-compatible API call structure
     text_block = {"type": "text", "text": user_prompt}
 
     def _extract_text_and_meta(resp_obj: Any) -> tuple[str, str, int | None]:
@@ -1287,7 +1288,7 @@ def _build_auto_label_fields(item: dict[str, Any], scope: str, stage2_cfg: dict[
         path_obj = _resolve_image_path(str(view.get("path", "") or ""))
         if path_obj is not None:
             image_paths.append(path_obj)
-            # 尝试获取bbox（xyxy）
+            # Try to read bbox (xyxy)
             bbox = None
             if "bbox_2d_xyxy" in view and view.get("bbox_2d_valid", False):
                 bbox = view["bbox_2d_xyxy"]
@@ -2130,9 +2131,9 @@ def _compute_target_visible_stats(
     occlusion_neighbor_px: int,
     occlusion_depth_margin_m: float,
 ) -> tuple[int, int, float]:
-    """计算目标实例在给定视角的可见点统计。
+    """Compute visible-point statistics for the target instance under a given view.
 
-    该函数仅统计可见点比例；实例级遮挡由邻居BBox射线检测负责。
+    This function only estimates the visible-point ratio; instance-level occlusion is handled by neighbor BBox ray checks.
     """
     tx, ty, tz, _ = _project_points_pinhole_with_depth(
         points_xyz=points_xyz,
@@ -3420,8 +3421,8 @@ def collect_instances(scene_id: str, args: argparse.Namespace, config: dict[str,
         kept_ids = {it["instance_id"] for it in instances}
         image_index = [it for it in image_index if str(it.get("instance_id", "")) in kept_ids]
 
-    instances_json_path = landmarks_raw_root / f"{scene_id}.instances.json"
-    bundle_json_path = landmarks_raw_root / f"{scene_id}.landmarks_bundle.json"
+    instances_json_path = resolve_scene_artifact_path(landmarks_raw_root, scene_id, ".instances.json")
+    bundle_json_path = resolve_scene_artifact_path(landmarks_raw_root, scene_id, ".landmarks_bundle.json")
 
     instances_payload = {
         "scene_id": scene_id,
@@ -3614,9 +3615,9 @@ def review_instances(scene_id: str, args: argparse.Namespace, config: dict[str, 
     review_root = scene_root / _resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
     ensure_dir(review_root)
 
-    instances_json_path = raw_root / f"{scene_id}.instances.json"
-    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
-    review_log_path = review_root / f"{scene_id}.review_log.jsonl"
+    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
+    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
+    review_log_path = resolve_scene_artifact_path(review_root, scene_id, ".review_log.jsonl")
 
     raw_payload = read_json_if_exists(instances_json_path, default={})
     if not isinstance(raw_payload, dict):
@@ -3729,11 +3730,11 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
     stage2_cfg["_scene_root"] = str(scene_root)
     stage2_cfg["_review_root"] = str(review_root)
 
-    instances_json_path = raw_root / f"{scene_id}.instances.json"
+    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
     images_root = raw_root / "images"
-    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
-    review_log_path = review_root / f"{scene_id}.review_log.jsonl"
-    web_state_path = review_root / f"{scene_id}.web_review_state.json"
+    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
+    review_log_path = resolve_scene_artifact_path(review_root, scene_id, ".review_log.jsonl")
+    web_state_path = resolve_scene_artifact_path(review_root, scene_id, ".web_review_state.json")
 
     raw_payload = read_json_if_exists(instances_json_path, default={})
     if not isinstance(raw_payload, dict):
@@ -3818,7 +3819,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
         "skipped": 0,
         "failed": 0,
         "current_instance_id": None,
-        "message": "就绪",
+        "message": "Ready",
         "last_error": None,
         "started_at": None,
         "finished_at": None,
@@ -3949,10 +3950,10 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
         yaw = float(view.get("yaw_deg", 0.0) or 0.0)
         pitch = float(view.get("pitch_deg", 0.0) or 0.0)
         yaw_txt = f"{yaw:+.0f}°"
-        pitch_txt = f", 俯视{max(0.0, -pitch):.0f}°"
+        pitch_txt = f", top-down {max(0.0, -pitch):.0f}°"
         if label == "topdown":
-            return f"鸟瞰 ({yaw_txt})"
-        return f"侧视{index + 1} ({yaw_txt}{pitch_txt})"
+            return f"Top-down ({yaw_txt})"
+        return f"Side View {index + 1} ({yaw_txt}{pitch_txt})"
 
     def _get_effective_item_by_instance_id(instance_id: str) -> dict[str, Any] | None:
         base_item = next((it for it in instances if str(it.get("instance_id", "")) == instance_id), None)
@@ -3989,7 +3990,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 pcd_captions.append(_view_caption_from_meta(view, i))
         if not pcd_urls and preview_image:
             pcd_urls = [f"/raw/{preview_image.lstrip('/')}"]
-            pcd_captions = ["预览图"]
+            pcd_captions = ["Preview"]
 
         rgb_urls: list[str] = []
         rgb_captions: list[str] = []
@@ -4055,7 +4056,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                         "slot_label": direction,
                         "view_index": None,
                         "url": "",
-                        "caption": f"{direction}（遮挡）",
+                        "caption": f"{direction} (occluded)",
                         "view_direction": direction,
                         "is_query_view": False,
                         "is_valid": False,
@@ -4082,7 +4083,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                         "slot_label": "topdown",
                         "view_index": None,
                         "url": "",
-                        "caption": "topdown（遮挡）",
+                        "caption": "topdown (occluded)",
                         "view_direction": None,
                         "is_query_view": False,
                         "is_valid": False,
@@ -4274,7 +4275,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                         return
                     cancel_requested = bool(auto_label_job.get("cancel_requested", False))
                     auto_label_job["current_instance_id"] = current_instance_id
-                    auto_label_job["message"] = f"自动标注进行中: {scope} {idx}/{total} {current_instance_id}"
+                    auto_label_job["message"] = f"Auto-labeling: {scope} {idx}/{total} {current_instance_id}"
                 if cancel_requested:
                     append_jsonl(
                         review_log_path,
@@ -4293,7 +4294,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                     _write_snapshot(trigger=f"auto_label_{scope}_cancelled")
                     _finalize_auto_label_job(
                         job_id,
-                        message=f"自动标注已取消: {scope} processed={idx - 1}/{total} updated={updated} skipped={skipped} failed={failed}",
+                        message=f"Auto-labeling canceled: {scope} processed={idx - 1}/{total} updated={updated} skipped={skipped} failed={failed}",
                     )
                     return
 
@@ -4345,7 +4346,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                     auto_label_job["skipped"] = skipped
                     auto_label_job["failed"] = failed
                     auto_label_job["last_error"] = None
-                    auto_label_job["message"] = f"自动标注进行中: {scope} {idx}/{total} {current_instance_id}"
+                    auto_label_job["message"] = f"Auto-labeling: {scope} {idx}/{total} {current_instance_id}"
                 append_jsonl(
                     review_log_path,
                     {
@@ -4379,7 +4380,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
             _write_snapshot(trigger=f"auto_label_{scope}")
             _finalize_auto_label_job(
                 job_id,
-                message=f"自动标注完成: {scope} total={total} updated={updated} skipped={skipped} failed={failed}",
+                message=f"Auto-labeling finished: {scope} total={total} updated={updated} skipped={skipped} failed={failed}",
                 last_error=None if failed <= 0 else f"failed={failed}",
             )
         except Exception as exc:
@@ -4395,7 +4396,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 },
             )
             _write_snapshot(trigger=f"auto_label_{scope}_error")
-            _finalize_auto_label_job(job_id, message=f"自动标注异常中止: {scope}", last_error=str(exc))
+            _finalize_auto_label_job(job_id, message=f"Auto-labeling aborted: {scope}", last_error=str(exc))
 
     def _start_auto_label_job(scope: str, target_instance_ids: list[str], *, class_id_raw: Any = None, class_name_raw: str = "") -> tuple[bool, dict[str, Any] | None, str | None]:
         with state_lock:
@@ -4416,7 +4417,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                     "skipped": 0,
                     "failed": 0,
                     "current_instance_id": None,
-                    "message": f"自动标注已启动: {scope}",
+                    "message": f"Auto-labeling started: {scope}",
                     "last_error": None,
                     "started_at": float(time.time()),
                     "finished_at": None,
@@ -4625,17 +4626,17 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
 </head>
 <body>
         <div class='banner'>
-            <div>Stage2 Step2 Web筛选 - <code id='scene' style='margin-left:8px'></code></div>
+            <div>Stage 2 Step 2 Review Workspace - <code id='scene' style='margin-left:8px'></code></div>
             <div class='banner-actions'>
                 <label style='display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);'>
                     <input id='webCompressToggle' type='checkbox' checked onchange='toggleWebCompress(this.checked)' />
-                    <span id='webCompressLabel'>压缩显示(480P)</span>
+                    <span id='webCompressLabel'>Compressed View (480P)</span>
                 </label>
                 <label style='display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);'>
                     <input id='webBboxToggle' type='checkbox' onchange='toggleWebShowBbox(this.checked)' />
-                    <span>显示BBox</span>
+                    <span>Show BBox</span>
                 </label>
-                <button id='themeToggle' onclick='toggleTheme()'>切换主题</button>
+                <button id='themeToggle' onclick='toggleTheme()'>Toggle Theme</button>
             </div>
         </div>
     <div class='main'>
@@ -4643,8 +4644,8 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 <p class='sub-title' id='progress'></p>
                 <div class='left-tools'>
                     <select id='statusFilter' onchange='setStatusFilter(this.value)'>
-                        <option value='all'>全部状态</option>
-                        <option value='undecided'>未筛选</option>
+                        <option value='all'>All Status</option>
+                        <option value='undecided'>Unreviewed</option>
                         <option value='keep'>keep</option>
                         <option value='drop'>drop</option>
                     </select>
@@ -4654,17 +4655,17 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
 
             <div class='middle-pane'>
                 <div class='card view-card'>
-                    <p class='view-title'>第一排：点云主视图 / 点云鸟瞰 / RGB鸟瞰</p>
+                    <p class='view-title'>Row 1: Point-cloud Main View / Point-cloud Top-down / RGB Top-down</p>
                     <div class='top-grid' id='topGrid'></div>
                     <p class='view-reason' id='topReason'></p>
                 </div>
                 <div class='card view-card'>
-                    <p class='view-title'>第二排：RGB 侧视图（front → back_right）</p>
+                    <p class='view-title'>Row 2: RGB Side Views (front → back_right)</p>
                     <div class='rgb-side-grid' id='rgbGridRow1'></div>
                     <p class='view-reason' id='rgbReasonRow1'></p>
                 </div>
                 <div class='card view-card'>
-                    <p class='view-title'>第三排：RGB 侧视图（back → front_left）</p>
+                    <p class='view-title'>Row 3: RGB Side Views (back → front_left)</p>
                     <div class='rgb-side-grid' id='rgbGridRow2'></div>
                     <p class='view-reason' id='rgbReasonRow2'></p>
                 </div>
@@ -4675,7 +4676,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 <div class='row'><label>instance_id</label><input id='f_instance_id' disabled /></div>
                 <div class='row'><label>class_id</label><input id='f_class_id' /></div>
                 <div class='row'><label>class_name</label><input id='f_class_name' /></div>
-                <div class='row'><label></label><button onclick='syncClassName()'>同步到同class地标</button></div>
+                <div class='row'><label></label><button onclick='syncClassName()'>Sync to Same-Class Landmarks</button></div>
                 <div class='row'><label>point_count</label><input id='f_point_count' /></div>
                 <div class='row'><label>review_action</label><select id='f_review_action'><option>keep</option><option>drop</option></select></div>
                 <div class='row'><label>review_note</label><input id='f_review_note' /></div>
@@ -4686,7 +4687,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 <div class='row'><label>auto_label_confidence</label><input id='f_auto_label_confidence' /></div>
                 <hr/>
                 <div class='row'><label>landmark_category</label><select id='f_landmark_category'>
-                    <option value="">--请选择--</option>
+                    <option value="">--Select--</option>
                     <option value="building">building</option>
                     <option value="vehicle">vehicle</option>
                     <option value="public_facility">public_facility</option>
@@ -4699,27 +4700,27 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 <div class='row'><label>landmark_subcategory</label><input id='f_landmark_subcategory' /></div>
                 <div class='row textarea-row'><label>landmark_description</label><textarea id='f_landmark_description' oninput='autoGrowTextarea(this.id)'></textarea></div>
                 <div class='row'><label>landmark_note</label><input id='f_landmark_note' /></div>
-                <div class='row'><label>Step2初步筛选</label><div><button class='keep' onclick="decide('keep')">保留 Keep</button><button class='drop' onclick="decide('drop')">剔除 Drop</button><button onclick="decide('clear')">清除决定</button></div></div>
-                <div class='row'><label>自动标注筛选</label><div><button onclick='autoLabelSingle()'>单个</button><button onclick='autoLabelClass()'>按类别</button><button onclick='autoLabelAll()'>全局</button><button id='autoLabelCancelBtn' onclick='cancelAutoLabelTask()' disabled>取消任务</button></div></div>
-                <div class='row'><label>审核操作</label><div><button class='primary' onclick='approveAutoLabel()'>采用自动标注</button><button class='primary' onclick='saveManualReview()'>保存人工修正</button></div></div>
-                <div class='row'><label>清空自动标注</label><div><button onclick='clearAutoLabelSingle()'>当前</button><button onclick='clearAutoLabelClass()'>当类</button><button onclick='clearAutoLabelAll()'>全局</button></div></div>
+                <div class='row'><label>Step 2 Review</label><div><button class='keep' onclick="decide('keep')">Keep</button><button class='drop' onclick="decide('drop')">Drop</button><button onclick="decide('clear')">Clear</button></div></div>
+                <div class='row'><label>Auto Labeling</label><div><button onclick='autoLabelSingle()'>Current</button><button onclick='autoLabelClass()'>By Class</button><button onclick='autoLabelAll()'>Global</button><button id='autoLabelCancelBtn' onclick='cancelAutoLabelTask()' disabled>Cancel Task</button></div></div>
+                <div class='row'><label>Review Actions</label><div><button class='primary' onclick='approveAutoLabel()'>Accept Auto Label</button><button class='primary' onclick='saveManualReview()'>Save Manual Revision</button></div></div>
+                <div class='row'><label>Clear Auto Labels</label><div><button onclick='clearAutoLabelSingle()'>Current</button><button onclick='clearAutoLabelClass()'>Class</button><button onclick='clearAutoLabelAll()'>Global</button></div></div>
                                 <div class='toolbar'>
-                    <button class='nav' onclick='move(-1)'>上一项</button>
-                    <button class='nav' onclick='move(1)'>下一项</button>
-                    <button class='primary' onclick='saveItem()'>保存全部属性</button>
-                    <button onclick='refreshState()'>刷新</button>
+                    <button class='nav' onclick='move(-1)'>Previous</button>
+                    <button class='nav' onclick='move(1)'>Next</button>
+                    <button class='primary' onclick='saveItem()'>Save All Fields</button>
+                    <button onclick='refreshState()'>Refresh</button>
                 </div>
                 </div>
       </div>
     </div>
     <div class='footer'>
         <div class='footer-pane'>
-            <span class='footer-label'>操作</span>
-            <div id='opStatusLeft' class='op-status info'>就绪</div>
+            <span class='footer-label'>Actions</span>
+            <div id='opStatusLeft' class='op-status info'>Ready</div>
         </div>
         <div class='footer-pane right'>
-            <span class='footer-label'>标注</span>
-            <div id='opStatusRight' class='op-status info'>标注任务：就绪</div>
+            <span class='footer-label'>Annotation</span>
+            <div id='opStatusRight' class='op-status info'>Auto Label: Ready</div>
         </div>
     </div>
 
@@ -4775,7 +4776,7 @@ function applyWebDisplaySettings(cfg){
     const toggle = document.getElementById('webCompressToggle');
     if(toggle){ toggle.checked = !!webDisplay.compressEnabled; }
     const label = document.getElementById('webCompressLabel');
-    if(label){ label.textContent = `压缩显示(${webDisplay.maxHeight}P)`; }
+    if(label){ label.textContent = `Compressed View (${webDisplay.maxHeight}P)`; }
     const bboxToggle = document.getElementById('webBboxToggle');
     if(bboxToggle){ bboxToggle.checked = !!webDisplay.showBbox; }
 }
@@ -4804,13 +4805,13 @@ function displayImageUrl(url){
 
 function toggleWebCompress(enabled){
     webDisplay.compressEnabled = !!enabled;
-    setStatus(`Web图片压缩: ${webDisplay.compressEnabled ? '开启' : '关闭'}`, 'info');
+    setStatus(`Web image compression: ${webDisplay.compressEnabled ? 'On' : 'Off'}`, 'info');
     refreshState();
 }
 
 function toggleWebShowBbox(enabled){
     webDisplay.showBbox = !!enabled;
-    setStatus(`BBox显示: ${webDisplay.showBbox ? '开启' : '关闭'}`, 'info');
+    setStatus(`BBox display: ${webDisplay.showBbox ? 'On' : 'Off'}`, 'info');
     refreshState();
 }
 
@@ -4826,7 +4827,7 @@ function setStatus(message, level){
     if(!el) return;
     const lv = level || 'info';
     el.className = `op-status ${lv}`;
-    el.textContent = message || '就绪';
+    el.textContent = message || 'Ready';
 }
 
 function setAutoLabelStatus(message, level){
@@ -4834,7 +4835,7 @@ function setAutoLabelStatus(message, level){
     if(!el) return;
     const lv = level || 'info';
     el.className = `op-status ${lv}`;
-    el.textContent = message || '标注任务：就绪';
+    el.textContent = message || 'Auto Label: Ready';
 }
 
 function autoLabelTaskKey(task){
@@ -4864,15 +4865,15 @@ function autoLabelTaskText(task){
     const failed = Number(t.failed || 0);
     const instanceId = String(t.current_instance_id || '');
     if(t.running){
-        return `自动标注进行中: ${scope} ${processed}/${total} updated=${updated} skipped=${skipped} failed=${failed}${instanceId ? ` | ${instanceId}` : ''}`;
+        return `Auto-labeling: ${scope} ${processed}/${total} updated=${updated} skipped=${skipped} failed=${failed}${instanceId ? ` | ${instanceId}` : ''}`;
     }
     if(t.message){
         return String(t.message);
     }
     if(t.last_error){
-        return `自动标注失败: ${t.last_error}`;
+        return `Auto-labeling failed: ${t.last_error}`;
     }
-    return '就绪';
+    return 'Ready';
 }
 
 function syncAutoLabelTaskUi(task){
@@ -4884,7 +4885,7 @@ function syncAutoLabelTaskUi(task){
         autoLabelPollHandle = window.setInterval(()=>{
             refreshState().catch((err)=>{
                 console.error(err);
-                setAutoLabelStatus(`刷新自动标注状态失败: ${err}`, 'error');
+                setAutoLabelStatus(`Failed to refresh auto-label status: ${err}`, 'error');
             });
         }, 2000);
     }else if(!active && autoLabelPollHandle){
@@ -4908,7 +4909,7 @@ function syncAutoLabelTaskUi(task){
 
 function setStatusFilter(v){
     statusFilter = (v || 'all');
-    setStatus(`筛选切换为: ${statusFilter}`, 'info');
+    setStatus(`Filter changed to: ${statusFilter}`, 'info');
     refreshList();
 }
 
@@ -4959,7 +4960,7 @@ async function refreshList(){
     const filtered = statusFilter === 'all' ? listRows : listRows.filter((row)=>String(row.action||'undecided')===statusFilter);
     const box = document.getElementById('landmarkList');
     box.innerHTML = '';
-    // 按class_name+class_id分组渲染，组内编号
+    // Render grouped by class_name + class_id; index within each group
     let lastClass = null;
     let lastClassId = null;
     let classCounter = 1;
@@ -4989,10 +4990,10 @@ async function refreshList(){
         div.className = 'list-item' + (state && state.current.index===row.index ? ' active' : '');
         div.innerHTML = `[${classCounter}] ${row.instance_id} <span class="status-chip ${statusClass(action)}">${action}</span><span class="status-chip ${annotationClass(ann)}">${ann}</span>${autoLabelText ? `<span class="status-chip" title="auto_label">${autoLabelText}</span>` : ''}`;
         div.onclick = async ()=>{
-            setStatus(`切换地标 ${row.instance_id} ...`, 'info');
+            setStatus(`Switching to landmark ${row.instance_id} ...`, 'info');
             await fetch('/api/select',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({index:row.index})});
             await refreshState();
-            setStatus(`已切换到 ${row.instance_id}`, 'success');
+            setStatus(`Switched to ${row.instance_id}`, 'success');
         };
         box.appendChild(div);
         classCounter++;
@@ -5036,7 +5037,7 @@ function renderViewGrid(gridId, urls, captions, reasonId, reasonText){
         cell.className = 'grid-cell';
         const cap = document.createElement('div');
         cap.className = 'cell-caption';
-        cap.textContent = '无可用视角';
+        cap.textContent = 'No available view';
         cell.appendChild(cap);
         grid.appendChild(cell);
     }else{
@@ -5049,7 +5050,7 @@ function renderViewGrid(gridId, urls, captions, reasonId, reasonText){
             img.style.opacity = arr[i] ? '1' : '0.2';
             const cap = document.createElement('div');
             cap.className = 'cell-caption';
-            cap.textContent = capArr[i] || `视角${i+1}`;
+            cap.textContent = capArr[i] || `View ${i+1}`;
             cell.appendChild(img);
             cell.appendChild(cap);
             grid.appendChild(cell);
@@ -5072,12 +5073,12 @@ function createSimpleCell(slot){
     }else{
         const occ = document.createElement('div');
         occ.className = 'occluded-box';
-        occ.textContent = '遮挡';
+        occ.textContent = 'Occluded';
         cell.appendChild(occ);
     }
     const cap = document.createElement('div');
     cap.className = 'cell-caption';
-    cap.textContent = (slot && slot.caption) ? slot.caption : '无可用视图';
+    cap.textContent = (slot && slot.caption) ? slot.caption : 'No available view';
     cell.appendChild(cap);
     return cell;
 }
@@ -5090,29 +5091,29 @@ function bindPcd(urls, captions, reason, rgbSlots){
     let pcdMain = null;
     let pcdTop = null;
     for(let i=0;i<arr.length;i++){
-        const slot = {url: arr[i], caption: capArr[i] || `点云视图${i+1}`};
+        const slot = {url: arr[i], caption: capArr[i] || `Point-cloud View ${i+1}`};
         const c = String(slot.caption || '');
-        if(!pcdMain && c.indexOf('鸟瞰') < 0) pcdMain = slot;
-        if(!pcdTop && c.indexOf('鸟瞰') >= 0) pcdTop = slot;
+        if(!pcdMain && c.indexOf('Top-down') < 0) pcdMain = slot;
+        if(!pcdTop && c.indexOf('Top-down') >= 0) pcdTop = slot;
     }
     if(!pcdMain && arr.length > 0){
-        pcdMain = {url: arr[0], caption: capArr[0] || '点云主视图'};
+        pcdMain = {url: arr[0], caption: capArr[0] || 'Point-cloud Main View'};
     }
     if(!pcdTop && arr.length > 1){
-        pcdTop = {url: arr[1], caption: capArr[1] || '点云鸟瞰'};
+        pcdTop = {url: arr[1], caption: capArr[1] || 'Point-cloud Top-down'};
     }
 
     const rgbTopdown = slots.find((s)=>s && String(s.mode || '') === 'topdown') || null;
     const rgbTop = rgbTopdown ? {
         url: rgbTopdown.url || '',
-        caption: `RGB鸟瞰${rgbTopdown.is_valid ? ' | 有效' : ' | 无效'}`,
+        caption: `RGB Top-down${rgbTopdown.is_valid ? ' | Valid' : ' | Invalid'}`,
     } : null;
 
     const topGrid = document.getElementById('topGrid');
     topGrid.innerHTML = '';
-    topGrid.appendChild(createSimpleCell(pcdMain ? {url: pcdMain.url, caption: `点云主视图 | ${pcdMain.caption}`} : null));
-    topGrid.appendChild(createSimpleCell(pcdTop ? {url: pcdTop.url, caption: `点云鸟瞰 | ${pcdTop.caption}`} : null));
-    topGrid.appendChild(createSimpleCell(rgbTop ? {url: rgbTop.url, caption: rgbTop.caption} : {url:'', caption:'RGB鸟瞰（遮挡）'}));
+    topGrid.appendChild(createSimpleCell(pcdMain ? {url: pcdMain.url, caption: `Point-cloud Main View | ${pcdMain.caption}`} : null));
+    topGrid.appendChild(createSimpleCell(pcdTop ? {url: pcdTop.url, caption: `Point-cloud Top-down | ${pcdTop.caption}`} : null));
+    topGrid.appendChild(createSimpleCell(rgbTop ? {url: rgbTop.url, caption: rgbTop.caption} : {url:'', caption:'RGB Top-down (occluded)'}));
 
     const reasonEl = document.getElementById('topReason');
     if(reasonEl){
@@ -5121,9 +5122,9 @@ function bindPcd(urls, captions, reason, rgbSlots){
 }
 
 async function setRgbDirection(viewIndex, direction, markMain){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
-    setStatus(`设置视角方向: ${direction} ...`, 'info');
+    setStatus(`Updating view direction: ${direction} ...`, 'info');
     const res = await fetch('/api/set_view_direction', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
@@ -5136,15 +5137,15 @@ async function setRgbDirection(viewIndex, direction, markMain){
         }),
     });
     const data = await res.json();
-    if(!data.ok){ setStatus('设置方向失败', 'error'); alert('设置失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setStatus('Failed to update direction', 'error'); alert('Update failed: ' + (data.error || 'unknown')); return; }
     await refreshState();
-    setStatus('视角方向已更新', 'success');
+    setStatus('View direction updated', 'success');
 }
 
 async function setRgbValidity(viewIndex, isValid){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
-    setStatus(`设置RGB有效性: view_index=${viewIndex} ...`, 'info');
+    setStatus(`Updating RGB validity: view_index=${viewIndex} ...`, 'info');
     const res = await fetch('/api/set_rgb_view_validity', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
@@ -5156,9 +5157,9 @@ async function setRgbValidity(viewIndex, isValid){
         }),
     });
     const data = await res.json();
-    if(!data.ok){ setStatus('设置RGB有效性失败', 'error'); alert('设置失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setStatus('Failed to update RGB validity', 'error'); alert('Update failed: ' + (data.error || 'unknown')); return; }
     await refreshState();
-    setStatus('RGB有效性已更新', 'success');
+    setStatus('RGB validity updated', 'success');
 }
 
 function _renderRgbCell(slot, i){
@@ -5214,16 +5215,16 @@ function _renderRgbCell(slot, i){
     }else{
         const occ = document.createElement('div');
         occ.className = 'occluded-box';
-        occ.textContent = '遮挡';
+        occ.textContent = 'Occluded';
         cell.appendChild(occ);
     }
 
     const cap = document.createElement('div');
     cap.className = 'cell-caption';
-    const d = slot.view_direction ? ` | 方向:${slot.view_direction}` : '';
-    const q = slot.is_query_view ? ' | 主视图' : '';
-    const iv = slot.is_valid ? ' | 有效' : ' | 无效';
-    cap.textContent = `${slot.caption || `视角${i+1}`}${d}${q}${iv}`;
+    const d = slot.view_direction ? ` | Direction: ${slot.view_direction}` : '';
+    const q = slot.is_query_view ? ' | Main View' : '';
+    const iv = slot.is_valid ? ' | Valid' : ' | Invalid';
+    cap.textContent = `${slot.caption || `View ${i+1}`}${d}${q}${iv}`;
 
     const tools = document.createElement('div');
     tools.className = 'cell-tools';
@@ -5240,12 +5241,12 @@ function _renderRgbCell(slot, i){
 
     const btn = document.createElement('button');
     if(slot.is_query_view){
-        btn.textContent = '主视图✓';
+        btn.textContent = 'Main View ✓';
         btn.style.background = 'var(--accent)';
         btn.style.color = '#fff';
         btn.style.border = '2px solid var(--accent)';
     }else{
-        btn.textContent = '设为主视图';
+        btn.textContent = 'Set as Main View';
     }
     btn.disabled = !hasRealImage;
     btn.onclick = async ()=>{ await setRgbDirection(realViewIndex, sel.value, true); };
@@ -5253,10 +5254,10 @@ function _renderRgbCell(slot, i){
     const validSel = document.createElement('select');
     const optValid = document.createElement('option');
     optValid.value = 'valid';
-    optValid.textContent = '有效';
+    optValid.textContent = 'Valid';
     const optInvalid = document.createElement('option');
     optInvalid.value = 'invalid';
-    optInvalid.textContent = '无效';
+    optInvalid.textContent = 'Invalid';
     validSel.appendChild(optValid);
     validSel.appendChild(optInvalid);
     validSel.value = slot.is_valid ? 'valid' : 'invalid';
@@ -5279,7 +5280,7 @@ function bindRgb(slots, reason){
         if(found) return found;
         return {
             slot_key: direction,
-            caption: `${direction}（遮挡）`,
+            caption: `${direction} (occluded)`,
             view_index: null,
             url: '',
             view_direction: direction,
@@ -5305,7 +5306,7 @@ function bindRgb(slots, reason){
     const reason1 = document.getElementById('rgbReasonRow1');
     const reason2 = document.getElementById('rgbReasonRow2');
     if(reason1){ reason1.textContent = reason || ''; }
-    if(reason2){ reason2.textContent = '方向顺序：front → front_right → right → back_right → back → back_left → left → front_left'; }
+    if(reason2){ reason2.textContent = 'Direction order: front → front_right → right → back_right → back → back_left → left → front_left'; }
 }
 
 async function refreshState() {
@@ -5319,8 +5320,8 @@ async function refreshState() {
     const cur = state.current || {};
     const hasSel = Number(cur.index) >= 0;
     document.getElementById('progress').innerText = hasSel
-        ? `进度 ${cur.index + 1}/${state.counts.total} | keep=${state.counts.keep} drop=${state.counts.drop} undecided=${state.counts.undecided}`
-        : `未选中地标 | total=${state.counts.total} keep=${state.counts.keep} drop=${state.counts.drop} undecided=${state.counts.undecided}`;
+        ? `Progress ${cur.index + 1}/${state.counts.total} | keep=${state.counts.keep} drop=${state.counts.drop} undecided=${state.counts.undecided}`
+        : `No landmark selected | total=${state.counts.total} keep=${state.counts.keep} drop=${state.counts.drop} undecided=${state.counts.undecided}`;
   const item = state.current.item || {};
     const currentIndex = hasSel ? Number(cur.index) : -1;
     if(hasSel){
@@ -5333,7 +5334,7 @@ async function refreshState() {
         bindRgb([], '');
     }
     if(currentIndex >= 0 && currentIndex !== lastCurrentIndex){
-        setStatus(`当前地标: ${item.instance_id || '-'} (${currentIndex + 1}/${state.counts.total})`, 'info');
+        setStatus(`Current landmark: ${item.instance_id || '-'} (${currentIndex + 1}/${state.counts.total})`, 'info');
     }
     lastCurrentIndex = currentIndex;
     await refreshList();
@@ -5341,118 +5342,118 @@ async function refreshState() {
 }
 
 async function autoLabelSingle(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
-    setAutoLabelStatus(`自动标注任务启动中: ${item.instance_id || '-'}`, 'info');
+    setAutoLabelStatus(`Starting auto-label job: ${item.instance_id || '-'}`, 'info');
     const res = await fetch('/api/auto_label_single', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({instance_id:item.instance_id})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('自动标注启动失败', 'error'); alert('自动标注启动失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setAutoLabelStatus('Failed to start auto-label job', 'error'); alert('Failed to start auto-label job: ' + (data.error || 'unknown')); return; }
     await refreshState();
 }
 
 async function autoLabelClass(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const classId = document.getElementById('f_class_id').value;
     const className = document.getElementById('f_class_name').value;
-    setAutoLabelStatus(`自动标注任务启动中: class_id=${classId || '-'} ...`, 'info');
+    setAutoLabelStatus(`Starting class-level auto-label job: class_id=${classId || '-'} ...`, 'info');
     const res = await fetch('/api/auto_label_class', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({class_id:classId, class_name:className})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('按类别自动标注启动失败', 'error'); alert('按类别自动标注启动失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setAutoLabelStatus('Failed to start class-level auto-label job', 'error'); alert('Failed to start class-level auto-label job: ' + (data.error || 'unknown')); return; }
     await refreshState();
 }
 
 async function autoLabelAll(){
-    setAutoLabelStatus('全局自动标注任务启动中...', 'info');
+    setAutoLabelStatus('Starting global auto-label job...', 'info');
     const res = await fetch('/api/auto_label_all', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('全局自动标注启动失败', 'error'); alert('全局自动标注启动失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setAutoLabelStatus('Failed to start global auto-label job', 'error'); alert('Failed to start global auto-label job: ' + (data.error || 'unknown')); return; }
     await refreshState();
 }
 
 async function cancelAutoLabelTask(){
-    setAutoLabelStatus('发送取消请求中...', 'info');
+    setAutoLabelStatus('Sending cancel request...', 'info');
     const res = await fetch('/api/auto_label_cancel', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('取消自动标注失败', 'error'); alert('取消自动标注失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setAutoLabelStatus('Failed to cancel auto-label job', 'error'); alert('Failed to cancel auto-label job: ' + (data.error || 'unknown')); return; }
     await refreshState();
 }
 
 async function clearAutoLabelSingle(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
-    if(!confirm(`确认去除当前地标 ${item.instance_id || ''} 的自动标注？`)) return;
-    setAutoLabelStatus(`去除当前标注: ${item.instance_id || '-'} ...`, 'info');
+    if(!confirm(`Clear auto labels for current landmark ${item.instance_id || ''}?`)) return;
+    setAutoLabelStatus(`Clearing current auto label: ${item.instance_id || '-'} ...`, 'info');
     const res = await fetch('/api/clear_auto_label_single', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({instance_id:item.instance_id})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('去除当前标注失败', 'error'); alert('去除当前标注失败: ' + (data.error || 'unknown')); return; }
+    if(!data.ok){ setAutoLabelStatus('Failed to clear current auto label', 'error'); alert('Failed to clear current auto label: ' + (data.error || 'unknown')); return; }
     await refreshState();
-    setAutoLabelStatus(`已去除当前标注: ${item.instance_id || '-'}`, 'success');
+    setAutoLabelStatus(`Cleared current auto label: ${item.instance_id || '-'}`, 'success');
 }
 
 async function clearAutoLabelClass(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const classId = document.getElementById('f_class_id').value;
     const className = document.getElementById('f_class_name').value;
-    if(!confirm(`确认去除当类标注？class_id=${classId || '-'} class_name=${className || '-'}`)) return;
-    setAutoLabelStatus(`去除当类标注进行中: class_id=${classId || '-'} ...`, 'info');
+    if(!confirm(`Clear class-level auto labels? class_id=${classId || '-'} class_name=${className || '-'}`)) return;
+    setAutoLabelStatus(`Clearing class-level auto labels: class_id=${classId || '-'} ...`, 'info');
     const res = await fetch('/api/clear_auto_label_class', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({class_id:classId, class_name:className})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('去除当类标注失败', 'error'); alert('去除当类标注失败: ' + (data.error || 'unknown')); return; }
-    alert(`去除当类标注完成，更新 ${data.updated} 条`);
+    if(!data.ok){ setAutoLabelStatus('Failed to clear class-level auto labels', 'error'); alert('Failed to clear class-level auto labels: ' + (data.error || 'unknown')); return; }
+    alert(`Class-level auto labels cleared. Updated ${data.updated} landmarks.`);
     await refreshState();
-    setAutoLabelStatus(`去除当类标注完成，更新 ${data.updated} 条`, 'success');
+    setAutoLabelStatus(`Class-level auto labels cleared. Updated ${data.updated} landmarks.`, 'success');
 }
 
 async function clearAutoLabelAll(){
-    if(!confirm('确认去除全局自动标注？该操作会清空所有地标的自动标注字段。')) return;
-    setAutoLabelStatus('去除全局标注进行中...', 'info');
+    if(!confirm('Clear all auto labels globally? This will remove auto-label fields from every landmark.')) return;
+    setAutoLabelStatus('Clearing global auto labels...', 'info');
     const res = await fetch('/api/clear_auto_label_all', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({})
     });
     const data = await res.json();
-    if(!data.ok){ setAutoLabelStatus('去除全局标注失败', 'error'); alert('去除全局标注失败: ' + (data.error || 'unknown')); return; }
-    alert(`去除全局标注完成，更新 ${data.updated} 条`);
+    if(!data.ok){ setAutoLabelStatus('Failed to clear global auto labels', 'error'); alert('Failed to clear global auto labels: ' + (data.error || 'unknown')); return; }
+    alert(`Global auto labels cleared. Updated ${data.updated} landmarks.`);
     await refreshState();
-    setAutoLabelStatus(`去除全局标注完成，更新 ${data.updated} 条`, 'success');
+    setAutoLabelStatus(`Global auto labels cleared. Updated ${data.updated} landmarks.`, 'success');
 }
 
 async function decide(action) {
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
   const item = state.current.item || {};
     const rgbViews = state.current.rgb_slots || state.current.rgb_views || [];
     const hasMainView = Array.isArray(rgbViews) && rgbViews.some((v)=>v && v.is_query_view && !!v.url && !!v.is_valid);
         if(action === 'keep' && !hasMainView){
-                alert('Keep前请先设定主视图');
+                alert('Please set a main view before marking Keep.');
                 return;
         }
     const note = document.getElementById('f_review_note').value || '';
-    setStatus(`执行操作: ${action} ...`, 'info');
+    setStatus(`Applying action: ${action} ...`, 'info');
     const resp = await fetch('/api/decide', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -5464,26 +5465,26 @@ async function decide(action) {
     })
   });
     const data = await resp.json();
-        if(!data.ok){ setStatus(`操作失败: ${action}`, 'error'); alert('操作失败: ' + (data.error || 'unknown')); return; }
+        if(!data.ok){ setStatus(`Action failed: ${action}`, 'error'); alert('Action failed: ' + (data.error || 'unknown')); return; }
   await refreshState();
-        setStatus(`操作完成: ${action}`, 'success');
+        setStatus(`Action completed: ${action}`, 'success');
 }
 
 async function move(delta) {
-    setStatus(delta < 0 ? '切换到上一项...' : '切换到下一项...', 'info');
+    setStatus(delta < 0 ? 'Switching to previous item...' : 'Switching to next item...', 'info');
   await fetch('/api/move', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({delta: delta})
   });
   await refreshState();
-    setStatus(delta < 0 ? '已切换到上一项' : '已切换到下一项', 'success');
+    setStatus(delta < 0 ? 'Switched to previous item' : 'Switched to next item', 'success');
 }
 
 async function saveItem(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
-    setStatus(`保存属性中: ${item.instance_id || '-'}`, 'info');
+    setStatus(`Saving fields: ${item.instance_id || '-'}`, 'info');
     let patch = {
         class_id: parseMaybeNumber(document.getElementById('f_class_id').value),
         class_name: document.getElementById('f_class_name').value,
@@ -5514,11 +5515,11 @@ async function saveItem(){
         body: JSON.stringify({instance_id:item.instance_id, fields:patch})
     });
     await refreshState();
-    setStatus(`已保存属性: ${item.instance_id || '-'}`, 'success');
+    setStatus(`Fields saved: ${item.instance_id || '-'}`, 'success');
 }
 
 async function approveAutoLabel(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
     const manualNote = document.getElementById('f_landmark_note').value || '';
     const patch = {
@@ -5529,18 +5530,18 @@ async function approveAutoLabel(){
         landmark_note: manualNote || 'approved auto label',
         annotation_status: 'labeled',
     };
-    setStatus(`审核自动标注中: ${item.instance_id || '-'}`, 'info');
+    setStatus(`Reviewing auto label: ${item.instance_id || '-'}`, 'info');
     await fetch('/api/update_item', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({instance_id:item.instance_id, fields:patch})
     });
     await refreshState();
-    setStatus(`已审核自动标注: ${item.instance_id || '-'}`, 'success');
+    setStatus(`Auto label reviewed: ${item.instance_id || '-'}`, 'success');
 }
 
 async function saveManualReview(){
-    if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+    if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
     const item = state.current.item || {};
     const landmarkCategory = document.getElementById('f_landmark_category').value || null;
     const landmarkSubcategory = document.getElementById('f_landmark_subcategory').value || null;
@@ -5558,31 +5559,31 @@ async function saveManualReview(){
         landmark_note: manualNote,
         annotation_status: 'labeled',
     };
-    setStatus(`保存人工标注中: ${item.instance_id || '-'}`, 'info');
+    setStatus(`Saving manual revision: ${item.instance_id || '-'}`, 'info');
     await fetch('/api/update_item', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({instance_id:item.instance_id, fields:patch})
     });
     await refreshState();
-    setStatus(`已保存人工标注: ${item.instance_id || '-'}`, 'success');
+    setStatus(`Manual revision saved: ${item.instance_id || '-'}`, 'success');
 }
 
 async function syncClassName(){
-        if(!state || !state.current || state.current.index < 0){ alert('请先在左侧选择地标'); return; }
+        if(!state || !state.current || state.current.index < 0){ alert('Please select a landmark from the left panel first.'); return; }
         const item = state.current.item || {};
         const className = document.getElementById('f_class_name').value || '';
-        setStatus(`同步类别名称中: ${className || '-'} ...`, 'info');
+        setStatus(`Syncing class name: ${className || '-'} ...`, 'info');
         const res = await fetch('/api/sync_class_name', {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({instance_id:item.instance_id, class_name:className})
         });
         const data = await res.json();
-        if(!data.ok){ setStatus('同步类别名称失败', 'error'); alert('同步失败: ' + (data.error || 'unknown')); return; }
-        alert(`已同步 ${data.affected} 个地标`);
+        if(!data.ok){ setStatus('Failed to sync class name', 'error'); alert('Sync failed: ' + (data.error || 'unknown')); return; }
+        alert(`Synced ${data.affected} landmarks.`);
         await refreshState();
-        setStatus(`已同步类别名称，影响 ${data.affected} 项`, 'success');
+        setStatus(`Class name synced. Updated ${data.affected} items.`, 'success');
 }
 
 initTheme();
@@ -5822,7 +5823,7 @@ refreshState();
         if instance_id not in instance_overrides:
             instance_overrides[instance_id] = {}
 
-        # 保持override中的views结构
+        # Preserve the views structure in overrides
         if views_key not in instance_overrides[instance_id]:
             instance_overrides[instance_id][views_key] = [dict(v) if isinstance(v, dict) else v for v in views]
 
@@ -6025,7 +6026,7 @@ refreshState();
             if not bool(auto_label_job.get("running", False)):
                 return jsonify({"ok": False, "error": "no_running_auto_label_job", "task": _export_auto_label_task()}), 400
             auto_label_job["cancel_requested"] = True
-            auto_label_job["message"] = "自动标注取消请求已发送"
+            auto_label_job["message"] = "Auto-label cancel request sent"
         return jsonify({"ok": True, "task": _export_auto_label_task()})
 
     @app.post("/api/clear_auto_label_single")
@@ -6186,10 +6187,10 @@ def auto_label(scene_id: str, args: argparse.Namespace, config: dict[str, Any]) 
     stage2_cfg["_scene_root"] = str(scene_root)
     stage2_cfg["_review_root"] = str(review_root)
 
-    instances_json_path = raw_root / f"{scene_id}.instances.json"
-    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
-    auto_label_dump_path = auto_root / f"{scene_id}.auto_label.json"
-    landmarks_json_path = landmarks_root / f"{scene_id}.json"
+    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
+    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
+    auto_label_dump_path = resolve_scene_artifact_path(auto_root, scene_id, ".auto_label.json")
+    landmarks_json_path = resolve_scene_artifact_path(landmarks_root, scene_id, ".json")
 
     source_payload = read_json_if_exists(valid_instances_path, default={})
     source_name = "valid_instances"

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import signal
 import subprocess
 import time
@@ -466,6 +467,47 @@ def resolve_output_dir_name(config: dict[str, Any], *, key: str, default: str) -
 
     raw = str(default).strip()
     return raw or default
+
+
+def scene_id_variants(scene_id: str | None) -> list[str]:
+    raw = str(scene_id or "").strip()
+    if not raw:
+        return []
+    out: list[str] = []
+
+    def _append(value: str | None) -> None:
+        text = str(value or "").strip()
+        if text and text not in out:
+            out.append(text)
+
+    _append(raw)
+    if raw.startswith("env_"):
+        suffix = raw[4:].strip()
+        _append(suffix)
+        if suffix.isdigit():
+            _append(f"env_{int(suffix)}")
+    elif raw.isdigit():
+        _append(str(int(raw)))
+        _append(f"env_{int(raw)}")
+    else:
+        match = re.fullmatch(r"(?:.*\b)?env_(\d+)", raw)
+        if match:
+            numeric = match.group(1)
+            _append(str(int(numeric)))
+            _append(f"env_{int(numeric)}")
+    return out
+
+
+def resolve_scene_artifact_path(directory: Path, scene_id: str | None, artifact_suffix: str) -> Path:
+    base_dir = Path(directory)
+    variants = scene_id_variants(scene_id)
+    if not variants:
+        return base_dir / artifact_suffix.lstrip(".")
+    for variant in variants:
+        candidate = base_dir / f"{variant}{artifact_suffix}"
+        if candidate.exists():
+            return candidate
+    return base_dir / f"{variants[0]}{artifact_suffix}"
 
 
 def append_unified_scene_log(

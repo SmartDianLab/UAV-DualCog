@@ -51,6 +51,7 @@ from trajectory.behaviors import ELEMENT_LIBRARY, SET_LIBRARY
 from progress_utils import ProgressBar, StageLogger
 from pipeline_common import (
     cleanup_airsim_processes,
+    resolve_scene_artifact_path,
     resolve_task_pipeline_base_dir,
     resolve_task_pipeline_scene_root,
     resolve_task_pipeline_task_root,
@@ -261,7 +262,8 @@ def _load_valid_instances(scene_cfg: dict[str, Any]) -> list[dict[str, Any]]:
     scene_root = _resolve_scene_root(scene_cfg)
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     review_dir = scene_root / str((scene_cfg.get("output_layout", {}) or {}).get("stage2_review_dir", "landmarks_review"))
-    payload = json.loads((review_dir / f"{scene_id}.valid_instances.json").read_text(encoding="utf-8"))
+    valid_instances_path = resolve_scene_artifact_path(review_dir, scene_id, ".valid_instances.json")
+    payload = json.loads(valid_instances_path.read_text(encoding="utf-8"))
     rows = [it for it in list(payload.get("valid_instances", []) or []) if isinstance(it, dict)]
     kept = [it for it in rows if str(it.get("review_action", "") or "").strip().lower() in {"keep", ""}]
     kept = [it for it in kept if str(it.get("annotation_status", "") or "").strip().lower() == "labeled"]

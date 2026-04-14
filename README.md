@@ -2,6 +2,11 @@
 
 This is the official code package for **UAV-DualCog**. The corresponding paper is currently under peer review, and this release is made public under a single-blind policy.
 
+<p align="center">
+  <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
+</p>
+<p align="center"><em>UAV-DualCog benchmark overview. The benchmark organizes self-aware and environment-aware reasoning across image and video tasks, and the released code package supports the corresponding Stage 1-4 construction and evaluation workflow.</em></p>
+
 - Website: https://uav-dualcog.lozumi.com/
 - Code repo: https://github.com/SmartDianLab/UAV-DualCog
 - Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
@@ -88,6 +93,9 @@ Recommended workflow:
 Important operational notes:
 - Stage 2 Step 2-4 are completed in the internal review web (`review_instances_web` + auto-label flow).
 - Stage 3 and Stage 4 both provide internal web workbenches for inspection (behavior library, landmark/task previews, experiment outputs), but for released split generation we recommend `task_pipeline.py` batch phases.
+- Some operations are available in both CLI and web forms. In practice, we recommend:
+  - **Stage 2**: use the internal review web for Step 2-4 (screening, representative main-view confirmation, single-direction anchoring, auto-label review).
+  - **Stage 3 / Stage 4**: use `task_pipeline.py` for released-scale batch generation, and use the internal web mainly for visual inspection, prompt/debug checks, and experiment/result browsing.
 
 ### Mode B: Experiment Only (No Scene Reconstruction)
 
@@ -184,6 +192,9 @@ Fully commented templates are in:
 - `configs/uav_dualcog/templates/task_pipeline.template.yaml`
 
 Runnable examples are already provided under (env_7 shown here):
+
+scene_id values are recommended to use the canonical `env_<id>` format throughout configs and commands.
+If `--scene-id` is passed on the command line, keep it identical to `task.scene_id` in the config; do not mix forms such as `7` and `env_7` within one workspace.
 
 - `configs/uav_dualcog/task_airsim_env_7.yaml`
 - `configs/uav_dualcog/common_stage_configs.yaml`
@@ -349,26 +360,6 @@ conda env create -f environment.yml
 conda activate uav-dualcog
 ```
 
-Then follow this GitHub issue to patch AirSim client compatibility:
-- https://github.com/microsoft/AirSim/issues/3333
-
-```bash
-pip show airsim
-# locate the "Location: <path>" field
-vim <path>/airsim/client.py
-```
-
-Update `client.py` as follows:
-
-```python
-class VehicleClient:
-    def __init__(self, ip = "", port = 41451, timeout_value = 3600):
-        if (ip == ""):
-            ip = "127.0.0.1"
-        # self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value, pack_encoding = 'utf-8', unpack_encoding = 'utf-8')
-        self.client = msgpackrpc.Client(msgpackrpc.Address(ip, port), timeout = timeout_value)
-```
-
 If your server does not have a display device, you may need:
 
 ```bash
@@ -392,7 +383,7 @@ Purpose: build segmented/fused scene cloud for landmark construction.
 ```bash
 python scripts/uav_dualcog/probe_airsim_mapbound.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --workers 6 \
   --probe-source hybrid \
   --write-back \
@@ -405,7 +396,7 @@ for the current scene, then writes them back to the scene config for stable Stag
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode all \
   --engine airsim
 ```
@@ -418,7 +409,7 @@ Purpose: construct landmark instances and finalize reviewed semantic annotations
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode collect_instances
 ```
 
@@ -426,7 +417,7 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode review_instances_web \
   --host 0.0.0.0 \
   --port 20261
@@ -436,7 +427,7 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
 ```bash
 python scripts/uav_dualcog/stage2_landmark_label.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode auto_label
 ```
 
@@ -468,7 +459,7 @@ Optional internal web workbench:
 ```bash
 python scripts/uav_dualcog/stage3_generate_traj.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode web
 ```
 
@@ -495,12 +486,277 @@ Optional internal web workbench:
 ```bash
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
-  --scene-id 7 \
+  --scene-id env_7 \
   --mode web \
   --port 20264
 ```
 
-## 8) Executable Steps (Mode B: Experiment)
+## 8) Internal Web Workspaces (Stage 2-4)
+
+The internal web tools are designed for **interactive inspection, review, and run-level debugging**.
+They are especially useful when you need to confirm whether geometry, views, prompts, task rows, or
+model outputs are qualitatively correct before launching large batches.
+
+Recommended split:
+- **Stage 2 web** is the primary interface for Step 2-4 landmark review and semantic finalization.
+- **Stage 3 / Stage 4 web** are best treated as workbenches for visual validation, targeted reruns,
+  and experiment/result browsing.
+- **Released-scale generation** should still be driven by `task_pipeline.py` so selection, data
+  export, render, and experiment phases remain reproducible.
+
+### 8.1 Stage 2 Web: Landmark Review And Auto-Label
+
+Launch:
+
+```bash
+python scripts/uav_dualcog/stage2_landmark_label.py \
+  --config configs/uav_dualcog/task_airsim_env_7.yaml \
+  --scene-id env_7 \
+  --mode review_instances_web \
+  --host 0.0.0.0 \
+  --port 20261
+```
+
+This web is the operational center of **Stage 2 Step 2-4**. It combines:
+- left-side landmark list and progress counters,
+- top-down point-cloud and RGB evidence panes,
+- the eight-view RGB direction ring,
+- auto-label fields,
+- final semantic review fields.
+
+Typical usage order:
+1. **Step 2 initial screening**  
+   Use `Drop` immediately for unstable or clearly unusable candidates. Use `Keep` only after the
+   landmark has a confirmed main view and one confirmed landmark-centric direction anchor.
+2. **Main-view confirmation**  
+   In the eight-view RGB panel, select the most representative RGB view as the main view. The
+   main view does **not** need to be `front`; it is simply the clearest and most benchmark-facing
+   reference image for that landmark.
+3. **Single-direction confirmation**  
+   Reviewers only need to assign one correct direction anchor for the chosen main view. The
+   remaining seven directions in the fixed ring order
+   (`front`, `front_right`, `right`, `back_right`, `back`, `back_left`, `left`, `front_left`)
+   are then derived automatically from that anchor rather than edited one by one.
+4. **Invalid-view cleanup**  
+   Mark strongly occluded or unusable RGB views as invalid. These views should not survive as
+   reviewed evidence just because they were captured geometrically.
+5. **Class-name synchronization**  
+   If the weak class hint is not suitable, edit `class_name` before auto-labeling so the prompt
+   receives a cleaner prior.
+6. **Auto-label execution**  
+   Run auto-label by current landmark, by class, or globally. The web exposes all three actions:
+   `Single`, `By Class`, and `All`.
+7. **Auto-label review**  
+   Inspect `auto_label_category`, `auto_label_subcategory`, `auto_label_description`, and
+   confidence. If the proposal is good, use `Approve Auto Label`; otherwise edit the final
+   semantic fields manually.
+8. **Manual correction and save**  
+   Final reviewed fields are `landmark_category`, `landmark_subcategory`, and
+   `landmark_description`. Save manual fixes if the automatic suggestion is incomplete or wrong.
+
+Important page areas:
+- **Left landmark list**  
+  Shows class grouping, review status, and auto-label status so reviewers can move through one
+  semantic group at a time.
+- **Point-cloud evidence area**  
+  Use this area to confirm that the candidate remains geometrically coherent and is not a
+  fragmented or unstable instance.
+- **Eight-view RGB area**  
+  Use this area to confirm the representative image, one direction anchor, and invalid-view
+  removal.
+- **Auto-label controls**  
+  Use these controls to start, monitor, cancel, or clear annotation jobs.
+- **Final semantic fields**  
+  Use these fields to publish the reviewed landmark semantics that later prompt templates depend on.
+
+Artifacts written during this workflow:
+- `landmarks_review/<scene>.valid_instances.json`
+- `landmarks_review/<scene>.review_log.jsonl`
+- `landmarks_review/auto_label_debug/` (when debug export is enabled)
+
+<p align="center">
+  <img src="docs/internal_web/stage2_web.png" alt="Stage 2 internal review workspace" />
+</p>
+<p align="center"><em>Stage 2 internal review workspace. Point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval are combined here so that Stage 2 Step 2-4 can be completed in one continuous workflow.</em></p>
+
+### 8.2 Stage 3 Web: Mission Review, Dataset Browsing, And Experiment Tracking
+
+Launch:
+
+```bash
+python scripts/uav_dualcog/stage3_generate_traj.py \
+  --config configs/uav_dualcog/task_airsim_env_7.yaml \
+  --scene-id env_7 \
+  --mode web
+```
+
+The Stage 3 workbench exposes a multi-page mission and task interface. The main pages are:
+- `Behavior Library`
+- `Missions`
+- `Review`
+- `Generate`
+- `Dataset`
+- `Experiments`
+- `Results`
+- `Metrics`
+
+Before treating a page as empty, first switch the top-right scene, task, mission, or manifest
+selector. Several Stage 3 pages only populate after an active selection is made.
+
+Recommended use of each page:
+
+**Behavior Library**
+- Inspect composite classes, atomic classes, parameter ranges, and defaults.
+- Use this page to understand which atomic maneuvers a composite template expands into before
+  trajectory generation.
+
+**Missions**
+- Select target landmarks and configure mission mode, generation count, template selection rule,
+  and optional atomic overrides.
+- Generate panorama/preview media first, then regenerate preview or final task video when needed.
+- Use this page for **interactive mission prototyping** and for checking whether a landmark is well
+  matched to the intended composite or atomic behavior.
+
+**Review**
+- Browse generated candidate missions and mark them as approved, pending, or rejected.
+- Use this page to remove visually poor or semantically ambiguous missions before they are turned
+  into task rows.
+
+**Generate**
+- Convert approved candidates into Stage 3 benchmark manifests.
+- Control self-state and environmental task forms, sample count, seed, and whether temporal
+  localization is included.
+- Use this page for spot checks and small controlled reruns. For released-scale Stage 3 generation,
+  we recommend `task_pipeline.py --stage stage3 --phase data/render`.
+
+**Dataset**
+- Load a manifest and preview the generated sample rows.
+- Use this page to inspect prompt-facing fields, answer targets, intervals, and auxiliary media
+  such as overview images and keyframe boards.
+
+**Experiments**
+- Choose the active manifest, input one or more model aliases, and launch run jobs.
+- Control upload resolution, JPEG quality, concurrency, RPM/TPM, and optional prompt toggles such
+  as whether flight description or keyframe evaluation is enabled.
+- Use this page for targeted reruns and qualitative debugging. For released-scale experiment
+  sweeps, we recommend `task_pipeline.py --stage stage3 --phase experiment`.
+
+**Results**
+- Inspect each run report and browse sample-level outputs.
+- Use this page to check whether errors are caused by parsing, semantics, or interval prediction.
+
+**Metrics**
+- Compare models by summary cards, grouped bars, full metric tables, and progress tables.
+- Export CSV if you want to aggregate Stage 3 metrics offline.
+
+Operational recommendation:
+- Use the Stage 3 web to **inspect**, **debug**, and **spot-check**.
+- Use `task_pipeline.py --stage stage3 --phase selection/data/render/experiment` for the full
+  released workflow so that runs remain batchable and reproducible.
+
+![Stage 3 behavior library page](docs/internal_web/stage3_behavior_library.png)
+
+*Stage 3 behavior library. This page presents the hierarchical relation between composite inspection classes and atomic motion primitives before trajectory generation begins.*
+
+![Stage 3 mission generation page](docs/internal_web/stage3_mission_generation.png)
+
+*Stage 3 mission generation. Reviewers select landmarks, mission families, and generation options here, then render panorama, preview, or final task videos for interactive spot checks.*
+
+![Stage 3 manifest generation and dataset browser](docs/internal_web/stage3_manifest_generation.png)
+
+*Stage 3 manifest generation. Approved candidates are converted into benchmark-facing task rows here; the generated manifest can then be inspected in the dataset browser together with sample media and interval labels.*
+
+![Stage 3 dataset browser](docs/internal_web/stage3_dataset_browser.png)
+
+*Stage 3 dataset browser. This page is used to verify reference images, overview boards, sample videos, answer targets, and interval annotations before experiments are launched.*
+
+![Stage 3 results page](docs/internal_web/stage3_results.png)
+
+*Stage 3 results page. Run-level summaries and sample-level predictions are browsed here to distinguish semantic mistakes, parsing failures, and temporal-localization errors.*
+
+![Stage 3 metrics page](docs/internal_web/stage3_metrics.png)
+
+*Stage 3 metrics page. Summary cards, grouped comparisons, full tables, and progress views support quick diagnosis before exporting CSV for offline aggregation.*
+
+### 8.3 Stage 4 Web: Image-QA Generation, Manifest Browsing, And Evaluation
+
+Launch:
+
+```bash
+python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
+  --config configs/uav_dualcog/task_airsim_env_7.yaml \
+  --scene-id env_7 \
+  --mode web \
+  --port 20264
+```
+
+The Stage 4 workbench is organized around five pages:
+- `Generate`
+- `Dataset`
+- `Experiments`
+- `Results`
+- `Metrics`
+
+Before treating a page as empty, first switch the top-right scene, task type, manifest, or report
+selector. Several Stage 4 pages only render detailed content after an active selection is chosen.
+
+Recommended use of each page:
+
+**Generate**
+- Configure task strategy, reference-view definition, task types, category filters, difficulty, and
+  sample counts.
+- Use the estimator to check how many rows the current choice is likely to produce before actually
+  writing a manifest.
+- Use this page for interactive validation and spot checks. For released-scale Stage 4 generation,
+  we recommend `task_pipeline.py --stage stage4 --phase data/render`.
+
+**Dataset**
+- Browse manifest summaries and sample previews.
+- Use this page to verify that reference images, query images, answer options, and bbox targets are
+  aligned correctly.
+
+**Experiments**
+- Select a manifest, choose one or more models, set upload size/quality, concurrency, and limits,
+  then launch jobs.
+- Use this page for **small to medium comparative runs** and prompt/debug checks.
+- For released-scale benchmark runs and comparative sweeps, we recommend
+  `task_pipeline.py --stage stage4 --phase experiment`.
+
+**Results**
+- Open a report and inspect per-sample outputs.
+- Use this page to confirm whether an error comes from option selection, bbox grounding, or parser
+  failure.
+
+**Metrics**
+- View summary cards, grouped comparisons, the experiment matrix, and progress tables.
+- Export CSV for downstream analysis when needed.
+
+Operational recommendation:
+- Use the Stage 4 web to validate manifest quality and inspect experiment outputs qualitatively.
+- Use `task_pipeline.py --stage stage4 --phase selection/data/render/experiment` when you need
+  released-scale batch generation or large model sweeps.
+
+![Stage 4 task generation page](docs/internal_web/stage4_task_generation.png)
+
+*Stage 4 task generation. Sampling strategy, task types, difficulty settings, and per-landmark limits are configured here before new image-QA manifests are written.*
+
+![Stage 4 dataset browser](docs/internal_web/stage4_data_browser.png)
+
+*Stage 4 dataset browser. This page is the fastest place to verify that reference images, query images, option ordering, and bbox targets remain visually aligned.*
+
+![Stage 4 experiments page](docs/internal_web/stage4_experiments.png)
+
+*Stage 4 experiments page. Model aliases, upload settings, concurrency, and rate limits are managed here for qualitative reruns and small-to-medium comparison jobs.*
+
+![Stage 4 results page](docs/internal_web/stage4_results.png)
+
+*Stage 4 results page. Per-run summaries and sample-level outputs make it easy to inspect whether a failure comes from option selection, bbox grounding, or parser behavior.*
+
+![Stage 4 metrics page](docs/internal_web/stage4_metrics.png)
+
+*Stage 4 metrics page. Summary cards, grouped comparisons, experiment matrices, and progress tables provide a compact view of image-task evaluation quality.*
+
+## 9) Executable Steps (Mode B: Experiment)
 
 Purpose: run model evaluation on released task manifests without redoing scene construction.
 
@@ -520,7 +776,7 @@ python scripts/uav_dualcog/task_pipeline.py \
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-## 9) Smoke-Test Commands (Reviewer Quick Check)
+## 10) Smoke-Test Commands (Reviewer Quick Check)
 
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py --help

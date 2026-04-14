@@ -64,6 +64,7 @@ from pipeline_common import (
     prepare_airsim_runtime_unified,
     resolve_base_dir,
     resolve_output_dir_name,
+    resolve_scene_artifact_path,
     resolve_scene_root,
     resolve_task_pipeline_scene_root,
     validate_complete_indices,
@@ -763,7 +764,11 @@ def _resolve_source_instances(
             source_name = "instances"
     else:
         review_dir_name = resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
-        source_path = scene_root / review_dir_name / f"{scene_id}.valid_instances.json"
+        source_path = resolve_scene_artifact_path(
+            scene_root / review_dir_name,
+            scene_id,
+            ".valid_instances.json",
+        )
         payload = read_json_if_exists(source_path, default={})
         if not isinstance(payload, dict):
             raise ValueError(f"invalid json payload: {source_path}")
@@ -943,9 +948,9 @@ def _build_multi_landmark_composite_set(
                 composite_steps.append(step_copy)
         return {
             "set_key": "multi_landmark_composite_inspection",
-            "display_name": f"多地标巡检组合-{explicit_multi}",
+            "display_name": f"Multi-Landmark Inspection-{explicit_multi}",
             "scope": "multi-landmark",
-            "description": f"对多个地标统一执行 {explicit_multi} 复合巡检，并在地标之间做快速直飞衔接。",
+            "description": f"Apply the {explicit_multi} composite inspection pattern to multiple landmarks, with direct transit segments between landmarks.",
             "element_steps": composite_steps,
             "landmark_count_default": len(selected_landmarks),
             "allow_revisit": False,
@@ -979,9 +984,9 @@ def _build_multi_landmark_composite_set(
             composite_steps.append(step_copy)
     composite_set = {
         "set_key": "multi_landmark_composite_inspection",
-        "display_name": "多地标巡检组合",
+        "display_name": "Multi-Landmark Inspection",
         "scope": "multi-landmark",
-        "description": "按所选地标逐个拼接单地标巡检 set。",
+        "description": "Compose single-landmark inspection sets sequentially over the selected landmarks.",
         "element_steps": composite_steps,
         "landmark_count_default": len(selected_landmarks),
         "allow_revisit": False,
@@ -1713,7 +1718,7 @@ def _build_element_instances(
     if generation_kind == "composite-driven":
         set_instance = {
             "set_id": str(set_spec.get("set_key", _safe_name(str(set_spec.get("display_name", "set")) or "set"))),
-            "set_name": str(set_spec.get("display_name", "") or "复合任务"),
+            "set_name": str(set_spec.get("display_name", "") or "Composite Mission"),
             "set_scope": str(set_spec.get("scope", "single-landmark") or "single-landmark"),
             "landmark_order": [str(item.get("instance_id", "") or "") for item in landmarks_for_plan],
             "allow_revisit": bool(set_spec.get("allow_revisit", False)),
@@ -1948,15 +1953,15 @@ def _build_flight_description(
     element_names = " -> ".join(str(item.get("element_display_name", item.get("element_class", ""))) for item in element_instances)
     if set_instance is None:
         return (
-            f"本次 flight mission 以 {primary_cat} 为目标，目标描述为“{primary_desc}”。"
-            f"任务仅包含一个 atomic instance：{element_names}。"
+            f"This flight mission targets {primary_cat}, described as \"{primary_desc}\". "
+            f"The mission contains a single atomic instance: {element_names}."
         )
     secondary_text = ""
     if secondary:
-        secondary_text = "；次目标包括 " + "，".join(_landmark_description(item) for item in secondary[:4])
+        secondary_text = "; secondary targets include " + ", ".join(_landmark_description(item) for item in secondary[:4])
     return (
-        f"本次 flight mission 使用 composite instance “{set_instance.get('set_name', '')}”，"
-        f"主目标为“{primary_desc}”（{primary_cat}），atomic instances 序列为 {element_names}{secondary_text}。"
+        f"This flight mission uses the composite instance \"{set_instance.get('set_name', '')}\". "
+        f"The primary target is \"{primary_desc}\" ({primary_cat}), and the atomic-instance sequence is {element_names}{secondary_text}."
     )
 
 
@@ -5645,24 +5650,24 @@ HTML_TEMPLATE = """
             </span>
         </div>
         <div class='banner-actions'>
-            <button onclick='toggleTheme()'>切换主题</button>
+            <button onclick='toggleTheme()'>Toggle Theme</button>
         </div>
     </div>
     <div class='main'>
         <div class='card left-list'>
-            <p class='sub-title'>Stage3 实例列表</p>
+            <p class='sub-title'>Stage 3 Instance List</p>
             <div class='left-tools'>
-                <input id='q' placeholder='搜索 instance_id/class...' />
+                <input id='q' placeholder='Search instance_id / class...' />
             </div>
             <div class='left-tools'>
                 <select id='statusFilter'>
-                    <option value='all'>全部状态</option>
-                    <option value='pending'>待筛选</option>
-                    <option value='pano_ready'>全景待确认</option>
-                    <option value='pano_confirmed'>全景已确认</option>
-                    <option value='video_ready'>视频待确认</option>
-                    <option value='video_confirmed'>视频已确认</option>
-                    <option value='final_ready'>最终数据已生成</option>
+                    <option value='all'>All Status</option>
+                    <option value='pending'>Pending Review</option>
+                    <option value='pano_ready'>Panorama Pending Confirmation</option>
+                    <option value='pano_confirmed'>Panorama Confirmed</option>
+                    <option value='video_ready'>Video Pending Confirmation</option>
+                    <option value='video_confirmed'>Video Confirmed</option>
+                    <option value='final_ready'>Final Task Generated</option>
                     <option value='valid'>valid</option>
                     <option value='invalid'>invalid</option>
                 </select>
@@ -5672,7 +5677,7 @@ HTML_TEMPLATE = """
 
         <div class='middle-pane'>
             <div class='card view-card'>
-                <p class='view-title'>第一步：点云中轨迹全景图（先确认）</p>
+                <p class='view-title'>Step 1: Point-cloud Trajectory Panorama (confirm first)</p>
                 <div class='plot-grid'>
                     <div class='plot-cell'>
                         <div class='hint'>Panorama Left</div>
@@ -5684,26 +5689,26 @@ HTML_TEMPLATE = """
                     </div>
                 </div>
                 <div class='card-pad'>
-                    <div id='res-status' class='hint'>请选择实例后生成轨迹并先确认全景图</div>
+                    <div id='res-status' class='hint'>Select an instance, generate the trajectory, and confirm the panorama first.</div>
                 </div>
             </div>
 
             <div class='card view-card'>
-                <p class='view-title'>第二步：预览视频 + 最终任务视频（右侧）</p>
+                <p class='view-title'>Step 2: Preview Video + Final Task Video</p>
                 <div class='card-pad'>
                     <div class='video-grid'>
                         <div>
-                            <div class='hint'>点云预览视频</div>
+                            <div class='hint'>Point-cloud Preview Video</div>
                             <video id='traj-video' class='video-box' controls></video>
                             <img id='traj-video-fallback' class='video-fallback' alt='traj-fallback' />
                         </div>
                         <div>
-                            <div class='hint'>最终任务RGB视频 (720P@24FPS)</div>
+                            <div class='hint'>Final Task RGB Video (720P @ 24 FPS)</div>
                             <video id='final-video' class='video-box' controls></video>
                             <img id='final-video-fallback' class='video-fallback' alt='final-fallback' />
                         </div>
                     </div>
-                    <div class='hint' style='margin-top:8px;'>目标地标时间区间（按帧 / 按秒）</div>
+                    <div class='hint' style='margin-top:8px;'>Target-landmark visibility intervals (frame / second)</div>
                     <pre id='final-info'>{}</pre>
                     <pre id='res-json'>{}</pre>
                 </div>
@@ -5714,33 +5719,33 @@ HTML_TEMPLATE = """
             <div class='attrs' id='controls' style='display:none;'>
                 <div class='row'><label>instance_id</label><input id='lbl-id' disabled /></div>
                 <div class='row'><label>class_name</label><input id='lbl-class' disabled /></div>
-                <div class='row'><label>当前状态</label><input id='lbl-status' disabled /></div>
-                <div class='row'><label>行为序列</label><input id='inp-behaviors' value='B5, B1, B10' /></div>
+                <div class='row'><label>Current Status</label><input id='lbl-status' disabled /></div>
+                <div class='row'><label>Behavior Sequence</label><input id='inp-behaviors' value='B5, B1, B10' /></div>
                 <div class='toolbar'>
-                    <button class='primary' onclick='generateTrajectory()'>生成轨迹</button>
-                    <button onclick='confirmPanorama(true)'>全景通过</button>
-                    <button onclick='confirmPanorama(false)'>全景驳回</button>
-                    <button class='primary' onclick='generateVideo()'>生成视频</button>
-                    <button onclick='confirmVideo(true)'>视频通过</button>
-                    <button onclick='confirmVideo(false)'>视频驳回</button>
-                    <button class='primary' onclick='generateFinalTask()'>生成最终任务数据</button>
+                    <button class='primary' onclick='generateTrajectory()'>Generate Trajectory</button>
+                    <button onclick='confirmPanorama(true)'>Approve Panorama</button>
+                    <button onclick='confirmPanorama(false)'>Reject Panorama</button>
+                    <button class='primary' onclick='generateVideo()'>Generate Preview Video</button>
+                    <button onclick='confirmVideo(true)'>Approve Video</button>
+                    <button onclick='confirmVideo(false)'>Reject Video</button>
+                    <button class='primary' onclick='generateFinalTask()'>Generate Final Task</button>
                 </div>
 
                 <hr style='border-color: var(--line); border-style: solid; border-width: 1px 0 0 0;' />
-                <div class='row'><label>标签(label)</label><input id='inp-label' placeholder='orbit_good / collision_risk' /></div>
-                <div class='row'><label>备注(note)</label><input id='inp-note' placeholder='人工筛选备注' /></div>
+                <div class='row'><label>Label</label><input id='inp-label' placeholder='orbit_good / collision_risk' /></div>
+                <div class='row'><label>Note</label><input id='inp-note' placeholder='manual review note' /></div>
                 <div class='toolbar'>
-                    <button class='keep' onclick="saveDecision('valid')">通过 valid</button>
-                    <button class='drop' onclick="saveDecision('invalid')">驳回 invalid</button>
-                    <button onclick="saveDecision('pending')">回退 pending</button>
+                    <button class='keep' onclick="saveDecision('valid')">Mark Valid</button>
+                    <button class='drop' onclick="saveDecision('invalid')">Mark Invalid</button>
+                    <button onclick="saveDecision('pending')">Reset to Pending</button>
                 </div>
                 <p id='save-status' class='hint'></p>
             </div>
         </div>
     </div>
     <div class='footer'>
-        <div>实时写入：<code>review_index.json</code><code style='margin-left:12px'>review_log.jsonl</code></div>
-        <div id='opStatus'>就绪</div>
+        <div>Live writeback: <code>review_index.json</code><code style='margin-left:12px'>review_log.jsonl</code></div>
+        <div id='opStatus'>Ready</div>
     </div>
 
     <script>
@@ -5888,7 +5893,7 @@ HTML_TEMPLATE = """
                     }
                 }
                 const op = document.getElementById('opStatus');
-                if(op) op.innerText = `已加载实例: ${allInstances.length}`;
+                if(op) op.innerText = `Loaded instances: ${allInstances.length}`;
             });
         }
 
@@ -5897,7 +5902,7 @@ HTML_TEMPLATE = """
                 const op = document.getElementById('opStatus');
                 if(!op) return;
                 if(p && p.active){
-                    op.innerText = `[进度] ${p.message || '-'} (${p.done || 0}/${p.total || 0})`;
+                    op.innerText = `[Progress] ${p.message || '-'} (${p.done || 0}/${p.total || 0})`;
                     progressPollMs = 1000;
                 } else {
                     progressPollMs = 10000;
@@ -5928,7 +5933,7 @@ HTML_TEMPLATE = """
                 const statusClass = `status-chip status-${inst.status || 'pending'}`;
                 div.innerHTML = `
                     <div><b>${inst.instance_id}</b></div>
-                    <div><span class="${statusClass}">${inst.status || 'pending'}</span> <span class='hint'>点数: ${inst.point_count || 0}</span></div>
+                    <div><span class="${statusClass}">${inst.status || 'pending'}</span> <span class='hint'>Points: ${inst.point_count || 0}</span></div>
                     <div class="hint">traj: ${inst.latest_traj_id || '-'} | label: ${inst.label || '-'}</div>
                 `;
                 div.onclick = () => selectInstance(inst, div);
@@ -5953,7 +5958,7 @@ HTML_TEMPLATE = """
             document.getElementById('inp-note').value = inst.note || '';
             document.getElementById('res-json').innerText = '{}';
             document.getElementById('final-info').innerText = '{}';
-            document.getElementById('res-status').innerText = '已选择实例，先生成轨迹并确认全景，再生成视频。';
+            document.getElementById('res-status').innerText = 'Instance selected. Generate the trajectory and confirm the panorama before generating video.';
             const urls = inst.asset_urls || {};
             document.getElementById('pano-left').src = assetUrl(urls.panorama_left || '');
             document.getElementById('pano-right').src = assetUrl(urls.panorama_right || '');
@@ -5968,7 +5973,7 @@ HTML_TEMPLATE = """
 
         function generateTrajectory() {
             if(!currentInstance) return;
-            document.getElementById('res-status').innerText = "生成中...";
+            document.getElementById('res-status').innerText = "Generating...";
             document.getElementById('save-status').innerText = "";
             document.getElementById('res-json').innerText = "Working...";
             
@@ -5981,21 +5986,21 @@ HTML_TEMPLATE = """
             }).then(r=>r.json()).then(data => {
                 lastResult = data;
                 if(data.error) {
-                    document.getElementById('res-status').innerText = "生成失败";
+                    document.getElementById('res-status').innerText = "Generation failed";
                     document.getElementById('res-json').innerText = JSON.stringify(data, null, 2);
                     const op = document.getElementById('opStatus');
-                    if(op) op.innerText = '生成失败';
+                    if(op) op.innerText = 'Generation failed';
                 } else {
                     const kin = data.summary.kinematics_checked === false ? "SKIP" : (data.summary.kinematics_feasible ? "Pass" : "FAIL");
                     const col = data.summary.collision_free ? "Pass" : "FAIL";
-                    document.getElementById('res-status').innerText = `轨迹已生成。Kinematics: ${kin} | Collision: ${col}。请先确认全景图。`;
+                    document.getElementById('res-status').innerText = `Trajectory generated. Kinematics: ${kin} | Collision: ${col}. Please confirm the panorama first.`;
                     document.getElementById('res-json').innerText = JSON.stringify(data, null, 2);
                     const urls = data.asset_urls || {};
                     document.getElementById('pano-left').src = assetUrl(urls.panorama_left || '');
                     document.getElementById('pano-right').src = assetUrl(urls.panorama_right || '');
                     setVideoSource('traj-video', urls.video_web || urls.video || '', urls.video_frames_manifest || '');
                     const op = document.getElementById('opStatus');
-                    if(op) op.innerText = `生成完成: ${data.traj_id || '-'}`;
+                    if(op) op.innerText = `Generation finished: ${data.traj_id || '-'}`;
                     loadInstances();
                 }
             });
@@ -6008,7 +6013,7 @@ HTML_TEMPLATE = """
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({instance_id: currentInstance.instance_id, approved: !!approved})
             }).then(r=>r.json()).then(res => {
-                document.getElementById('save-status').innerText = approved ? '全景已通过' : '全景已驳回';
+                document.getElementById('save-status').innerText = approved ? 'Panorama approved' : 'Panorama rejected';
                 loadInstances();
             });
         }
@@ -6021,12 +6026,12 @@ HTML_TEMPLATE = """
                 body: JSON.stringify({instance_id: currentInstance.instance_id})
             }).then(r=>r.json()).then(data => {
                 if(data.error){
-                    document.getElementById('save-status').innerText = `视频生成失败: ${data.error}`;
+                    document.getElementById('save-status').innerText = `Video generation failed: ${data.error}`;
                     return;
                 }
                 const urls = data.asset_urls || {};
                 setVideoSource('traj-video', urls.video_web || urls.video || '', urls.video_frames_manifest || '');
-                document.getElementById('save-status').innerText = '视频已生成，请确认';
+                document.getElementById('save-status').innerText = 'Preview video generated. Please review it.';
                 loadInstances();
             });
         }
@@ -6038,14 +6043,14 @@ HTML_TEMPLATE = """
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({instance_id: currentInstance.instance_id, approved: !!approved})
             }).then(r=>r.json()).then(res => {
-                document.getElementById('save-status').innerText = approved ? '视频已通过' : '视频已驳回';
+                document.getElementById('save-status').innerText = approved ? 'Video approved' : 'Video rejected';
                 loadInstances();
             });
         }
 
         function generateFinalTask() {
             if(!currentInstance) return;
-            document.getElementById('save-status').innerText = '最终任务数据生成中...';
+            document.getElementById('save-status').innerText = 'Generating final task data...';
             progressPollMs = 500;
             if(progressTimer) clearTimeout(progressTimer);
             loadProgress();
@@ -6055,7 +6060,7 @@ HTML_TEMPLATE = """
                 body: JSON.stringify({instance_id: currentInstance.instance_id})
             }).then(r=>r.json()).then(data => {
                 if(data.error){
-                    document.getElementById('save-status').innerText = `最终数据生成失败: ${data.error}`;
+                    document.getElementById('save-status').innerText = `Final task generation failed: ${data.error}`;
                     return;
                 }
                 const urls = data.asset_urls || {};
@@ -6065,7 +6070,7 @@ HTML_TEMPLATE = """
                         document.getElementById('final-info').innerText = JSON.stringify(renderFinalIntervals(meta), null, 2);
                     }).catch(()=>{});
                 }
-                document.getElementById('save-status').innerText = '最终任务视频与数据已生成';
+                document.getElementById('save-status').innerText = 'Final task video and metadata generated';
                 loadInstances();
             });
         }
@@ -6087,10 +6092,10 @@ HTML_TEMPLATE = """
                     summary: lastResult.summary
                 })
             }).then(r=>r.json()).then(res => {
-                document.getElementById('save-status').innerText = `已保存: ${decision}`;
+                document.getElementById('save-status').innerText = `Saved: ${decision}`;
                 loadInstances();
                 const op = document.getElementById('opStatus');
-                if(op) op.innerText = `已写入筛选结果: ${decision}`;
+                if(op) op.innerText = `Review decision written: ${decision}`;
             });
         }
     </script>
@@ -6128,7 +6133,11 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
         _, _, instances = _resolve_source_instances(scene_root=scene_root, scene_id=scene_id, args=args, config=config)
     else:
         review_dir_name = resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
-        valid_path = scene_root / review_dir_name / f"{scene_id}.valid_instances.json"
+        valid_path = resolve_scene_artifact_path(
+            scene_root / review_dir_name,
+            scene_id,
+            ".valid_instances.json",
+        )
         valid_payload = read_json_if_exists(valid_path, default={})
         if not isinstance(valid_payload, dict):
             raise FileNotFoundError(f"invalid valid_instances payload: {valid_path}")

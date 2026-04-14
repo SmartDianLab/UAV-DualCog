@@ -79,6 +79,7 @@ from api_common import (
 from image_compression_utils import compression_cfg as build_image_compression_cfg
 from image_compression_utils import preferred_output_path, save_pil_image
 from prompt_templates import get_config_template, get_prompt_template, render_prompt_template
+from trajectory.behaviors import ELEMENT_LIBRARY, SET_LIBRARY
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
@@ -86,12 +87,12 @@ COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_
 GLOBAL_SCENE_ID = "__all__"
 GLOBAL_SCENE_LABEL = "ALL scenes"
 TASK_SPECS: dict[str, dict[str, Any]] = {
-    "self_instance_recognition_joint": {"task_group": "self-state", "display_name": "联合行为识别", "response_kind": "choice_with_optional_intervals", "multi_select": True},
-    "self_set_instance_recognition": {"task_group": "self-state", "display_name": "Composite 实例识别", "response_kind": "choice_with_optional_intervals", "multi_select": False},
-    "self_element_instance_recognition": {"task_group": "self-state", "display_name": "Atomic 实例识别", "response_kind": "choice_with_optional_intervals", "multi_select": True},
-    "self_composite_instance_recognition": {"task_group": "self-state", "display_name": "Composite 实例识别", "response_kind": "choice_with_optional_intervals", "multi_select": False},
-    "self_atomic_instance_recognition": {"task_group": "self-state", "display_name": "Atomic 实例识别", "response_kind": "choice_with_optional_intervals", "multi_select": True},
-    "env_visibility_reasoning": {"task_group": "environmental", "display_name": "环境感知", "response_kind": "count_and_intervals"},
+    "self_instance_recognition_joint": {"task_group": "self-state", "display_name": "Joint Behavior Recognition", "response_kind": "choice_with_optional_intervals", "multi_select": True},
+    "self_set_instance_recognition": {"task_group": "self-state", "display_name": "Composite Instance Recognition", "response_kind": "choice_with_optional_intervals", "multi_select": False},
+    "self_element_instance_recognition": {"task_group": "self-state", "display_name": "Atomic Instance Recognition", "response_kind": "choice_with_optional_intervals", "multi_select": True},
+    "self_composite_instance_recognition": {"task_group": "self-state", "display_name": "Composite Instance Recognition", "response_kind": "choice_with_optional_intervals", "multi_select": False},
+    "self_atomic_instance_recognition": {"task_group": "self-state", "display_name": "Atomic Instance Recognition", "response_kind": "choice_with_optional_intervals", "multi_select": True},
+    "env_visibility_reasoning": {"task_group": "environmental", "display_name": "Environmental Awareness", "response_kind": "count_and_intervals"},
 }
 MODE_CHOICES = ["single-landmark", "multi-landmark"]
 
@@ -328,6 +329,90 @@ def _stage3_cfg(config: dict[str, Any]) -> dict[str, Any]:
     common_cfg = dict((_load_common_stage_cfg().get("stage3_runtime_defaults", {}) or {}))
     scene_cfg = dict(config.get("stage3", {}) or config.get("trajectory", {}) or {})
     return _deep_merge_dict(common_cfg, scene_cfg)
+
+
+def _load_stage3_behavior_defaults() -> dict[str, Any]:
+    def _normalize_set_entry(set_key: str, entry: dict[str, Any]) -> dict[str, Any]:
+        out = dict(entry or {})
+        step_rows = [dict(item) for item in list(out.get("element_steps", []) or []) if isinstance(item, dict)]
+        if step_rows:
+            out["behavior_sequence"] = [
+                str(item.get("element_class", "") or "")
+                for item in step_rows
+                if str(item.get("element_class", "") or "").strip()
+            ]
+            param_overrides: dict[str, Any] = {}
+            auto_rules: dict[str, Any] = {}
+            for idx, step in enumerate(step_rows):
+                params = dict(step.get("params", {}) or {})
+                rules = dict(step.get("auto_rules", {}) or {})
+                if params:
+                    param_overrides[str(idx)] = params
+                if rules:
+                    auto_rules[str(idx)] = rules
+            if param_overrides:
+                out["element_param_overrides"] = param_overrides
+            if auto_rules:
+                out["element_auto_rules"] = auto_rules
+        return out
+
+    if not COMMON_STAGE_CONFIG_PATH.exists():
+        return {}
+    try:
+        payload = _load_yaml(COMMON_STAGE_CONFIG_PATH)
+    except Exception:
+        return {}
+    block = payload.get("stage3_behavior_library", {}) or {}
+    raw_sets = dict(block.get("sets", {}) or {}) if isinstance(block, dict) else {}
+    return {str(k): _normalize_set_entry(str(k), dict(v)) for k, v in raw_sets.items() if isinstance(v, dict)}
+
+
+def _build_default_set_step_rows(set_key: str, profile: dict[str, Any]) -> list[dict[str, Any]]:
+    sequence = [str(x).strip() for x in list(profile.get("behavior_sequence", []) or []) if str(x).strip()]
+    if not sequence:
+        spec = dict(SET_LIBRARY.get(set_key, {}) or {})
+        if isinstance(spec.get("element_steps", None), list) and list(spec.get("element_steps", []) or []):
+            return [dict(item) for item in list(spec.get("element_steps", []) or []) if isinstance(item, dict)]
+        sequence = [str(x).strip() for x in list(spec.get("element_template", []) or []) if str(x).strip()]
+    param_overrides = dict(profile.get("element_param_overrides", {}) or {})
+    auto_rules = dict(profile.get("element_auto_rules", {}) or {})
+    rows: list[dict[str, Any]] = []
+    for idx, element_key in enumerate(sequence):
+        row: dict[str, Any] = {"element_class": str(element_key)}
+        params = param_overrides.get(str(idx), {})
+        rules = auto_rules.get(str(idx), {})
+        if isinstance(params, dict) and params:
+            row["params"] = dict(params)
+        if isinstance(rules, dict) and rules:
+            row["auto_rules"] = dict(rules)
+        rows.append(row)
+    return rows
+
+
+def _write_stage3_behavior_defaults(sets_payload: dict[str, Any]) -> Path:
+    payload = _load_yaml(COMMON_STAGE_CONFIG_PATH) if COMMON_STAGE_CONFIG_PATH.exists() else {}
+    if not isinstance(payload, dict):
+        payload = {}
+    existing_block = dict(payload.get("stage3_behavior_library", {}) or {})
+    elements_block = dict(existing_block.get("elements", {}) or {})
+    shared_block = dict(existing_block.get("shared", {}) or {})
+    normalized_sets: dict[str, Any] = {}
+    for set_key, profile in dict(sets_payload or {}).items():
+        if not isinstance(profile, dict):
+            continue
+        normalized_sets[str(set_key)] = {
+            "generation_kind": str(profile.get("generation_kind", "auto") or "auto"),
+            "allow_interleave_repeat": bool(profile.get("allow_interleave_repeat", False)),
+            "max_total_elements": int(profile.get("max_total_elements", 0) or 0),
+            "element_steps": _build_default_set_step_rows(str(set_key), dict(profile)),
+        }
+    payload["stage3_behavior_library"] = {
+        "shared": shared_block,
+        "elements": elements_block,
+        "sets": normalized_sets,
+    }
+    COMMON_STAGE_CONFIG_PATH.write_text(yaml.safe_dump(payload, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    return COMMON_STAGE_CONFIG_PATH
 
 
 def _stage3_temporal_cfg(config: dict[str, Any]) -> dict[str, Any]:
@@ -979,7 +1064,10 @@ def _discover_candidates(
                 if cand.exists():
                     video_path = cand.resolve()
                     break
-        video_web_path = _resolve_path_near(final_meta_path.parent, video.get("path_web", "")) or video_path
+        raw_video_path = video_path if video_path and video_path.exists() else None
+        video_web_path = _resolve_path_near(final_meta_path.parent, video.get("path_web", ""))
+        if video_web_path is None or not video_web_path.exists():
+            video_web_path = raw_video_path
         summary_payload = dict((constraint.get("summary", {}) or {}) if isinstance(constraint.get("summary", {}), dict) else {})
         fallback_landmark_set_map = dict(summary_payload.get("landmark_set_map", {}) or {})
         if not fallback_landmark_set_map:
@@ -1009,7 +1097,7 @@ def _discover_candidates(
             },
             "traj_dir": _path_for_json(mission_dir),
             "final_meta_path": _path_for_json(final_meta_path) if has_final_task else "",
-            "video_path": _path_for_json(video_path) if video_path and video_path.exists() else "",
+            "video_path": _path_for_json(raw_video_path) if raw_video_path and raw_video_path.exists() else "",
             "video_web_path": _path_for_json(video_web_path) if video_web_path and video_web_path.exists() else "",
             "frame_manifest_path": _path_for_json(frame_manifest_path) if frame_manifest_path and frame_manifest_path.exists() else None,
             "overview_image": _path_for_json(overview) if overview.exists() and _stage3_include_overview_image(config) else None,
@@ -1955,7 +2043,7 @@ def _joint_rows_to_level_rows(rows: list[dict[str, Any]], *, level: str) -> list
         if level_key == "composite":
             clone["task_name"] = "self_composite_instance_recognition"
             clone["form"] = "self_composite_instance_recognition"
-            clone["task_display_name"] = "Composite 实例识别"
+            clone["task_display_name"] = "Composite Instance Recognition"
             clone["gold_option_ids"] = list(row.get("joint_composite_option_ids", []) or [])
             clone["pred_option_ids"] = list(row.get("pred_joint_composite_option_ids", []) or [])
             clone["gold_option_id"] = clone["gold_option_ids"][0] if clone["gold_option_ids"] else ""
@@ -1968,7 +2056,7 @@ def _joint_rows_to_level_rows(rows: list[dict[str, Any]], *, level: str) -> list
         else:
             clone["task_name"] = "self_atomic_instance_recognition"
             clone["form"] = "self_atomic_instance_recognition"
-            clone["task_display_name"] = "Atomic 实例识别"
+            clone["task_display_name"] = "Atomic Instance Recognition"
             clone["gold_option_ids"] = list(row.get("joint_atomic_option_ids", []) or [])
             clone["pred_option_ids"] = list(row.get("pred_joint_atomic_option_ids", []) or [])
             clone["gold_option_id"] = clone["gold_option_ids"][0] if clone["gold_option_ids"] else ""
@@ -3727,14 +3815,14 @@ def register_stage3_task_routes(
 
     def _shell(active_page: str) -> str:
         nav_items = [
-            ("behavior_library", "行为库"),
-            ("missions", "任务生成"),
-            ("review", "候选复核"),
-            ("generate", "数据生成"),
-            ("dataset", "任务查看"),
-            ("experiments", "实验执行"),
-            ("results", "结果查看"),
-            ("metrics", "指标汇总"),
+            ("behavior_library", "Behavior Library"),
+            ("missions", "Mission Generation"),
+            ("review", "Candidate Review"),
+            ("generate", "Manifest Generation"),
+            ("dataset", "Dataset Browser"),
+            ("experiments", "Experiments"),
+            ("results", "Results"),
+            ("metrics", "Metrics"),
         ]
         nav_html = "".join(f'<a class="nav-item {"active" if key == active_page else ""}" href="/{key}">{label}</a>' for key, label in nav_items)
         template = """
@@ -3742,7 +3830,7 @@ def register_stage3_task_routes(
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Stage 3 工作台</title>
+  <title>Stage 3 Workbench</title>
   <style>
     :root {
       --body-grad-1: #0c1016; --body-grad-2:#131923; --body-grad-3:#0f141d;
@@ -3824,14 +3912,14 @@ def register_stage3_task_routes(
 <body>
   <div class="banner">
     <div class="left">
-      <div class="brand">Stage 3 飞行任务工作台</div>
+      <div class="brand">UAV-DualCog Stage 3 Flight Workbench</div>
       <div class="nav">__NAV_HTML__</div>
     </div>
     <div class="selectors">
-      <label>引擎 <select id="engine_select" onchange="switchScene()"></select></label>
-      <label>场景 <select id="scene_select" onchange="switchScene()"></select></label>
-      <label>任务 <select id="task_pipeline_select" onchange="refreshAll()"></select></label>
-      <label>皮肤 <select id="theme_select"><option value="light">亮色</option><option value="dark">暗色</option></select></label>
+      <label>Engine <select id="engine_select" onchange="switchScene()"></select></label>
+      <label>Scene <select id="scene_select" onchange="switchScene()"></select></label>
+      <label>Task <select id="task_pipeline_select" onchange="refreshAll()"></select></label>
+      <label>Theme <select id="theme_select"><option value="light">Light</option><option value="dark">Dark</option></select></label>
     </div>
   </div>
   <div class="page">
@@ -3839,202 +3927,202 @@ def register_stage3_task_routes(
       <div class="grid-2">
         <div class="card">
           <h1>Behavior Library</h1>
-          <div class="muted">查看当前 Stage 3 的 Composite class、Atomic class、参数范围、默认值和生成说明。</div>
+          <div class="muted">View the current Stage 3 composite classes, atomic classes, parameter ranges, default values, and generation notes.</div>
           <div id="behavior_stats" class="stats" style="margin-top:14px;"></div>
           <div id="set_table" class="table-wrap" style="margin-top:14px;"></div>
         </div>
         <div class="card">
-          <h2>定义详情</h2>
-          <div id="behavior_detail" class="empty">点击左侧 Composite class 后，这里会显示 Atomic 组成、参数范围和生成说明。</div>
+          <h2>Definition Details</h2>
+          <div id="behavior_detail" class="empty">Click a composite class on the left to inspect its atomic composition, parameter ranges, and generation notes.</div>
         </div>
       </div>
     </div>
     <div id="page_missions" style="display:__DISPLAY_MISSIONS__">
       <div class="grid-2">
         <div class="card">
-          <h1>任务生成</h1>
-          <div class="muted">默认以 Composite class 或 Atomic instance 为生成单位。系统会自动实例化参数、连接轨迹，并生成 Preview 视频和 Task Video。</div>
+          <h1>Mission Generation</h1>
+          <div class="muted">Mission generation is organized around composite classes or atomic instances. The system instantiates parameters, stitches trajectories, and produces both the Preview video and the Task Video.</div>
           <div class="toolbar" style="margin-top:14px;">
-            <input id="mission_query" placeholder="按 instance_id / class / label 搜索">
+            <input id="mission_query" placeholder="Search by instance_id / class / label">
             <select id="mission_status" onchange="loadMissionInstances()">
-              <option value="all">全部状态</option>
-              <option value="pending">待生成</option>
-              <option value="pano_ready">全景已完成</option>
-              <option value="pano_confirmed">全景已确认</option>
-              <option value="video_ready">Preview 已完成</option>
-              <option value="video_confirmed">Preview 已确认</option>
-              <option value="final_ready">Task Video 已完成</option>
-              <option value="valid">通过</option>
-              <option value="invalid">未通过</option>
+              <option value="all">All statuses</option>
+              <option value="pending">Pending Generation</option>
+              <option value="pano_ready">Panorama Ready</option>
+              <option value="pano_confirmed">Panorama Confirmed</option>
+              <option value="video_ready">Preview Ready</option>
+              <option value="video_confirmed">Preview Confirmed</option>
+              <option value="final_ready">Task Video Ready</option>
+              <option value="valid">Approved</option>
+              <option value="invalid">Rejected</option>
             </select>
-            <button class="secondary" onclick="loadMissionInstances()">刷新</button>
+            <button class="secondary" onclick="loadMissionInstances()">Refresh</button>
           </div>
-          <div class="section-title">自动选择地标</div>
+          <div class="section-title">Auto-select Landmarks</div>
           <div class="toolbar">
-            <label>选择模式 <select id="mission_auto_pick_mode"><option value="single">single</option><option value="multi">multi</option></select></label>
-            <label>数量 <input id="mission_auto_pick_count" type="number" value="1" min="1" max="12"></label>
-            <label>最少点数 <input id="mission_auto_pick_min_points" type="number" value="500" min="0"></label>
+            <label>Selection Mode <select id="mission_auto_pick_mode"><option value="single">single</option><option value="multi">multi</option></select></label>
+            <label>Count <input id="mission_auto_pick_count" type="number" value="1" min="1" max="12"></label>
+            <label>Minimum Points <input id="mission_auto_pick_min_points" type="number" value="500" min="0"></label>
           </div>
           <div class="toolbar">
-            <label><input id="mission_auto_pick_diverse" type="checkbox"> 类别尽量不同</label>
-            <button class="secondary" onclick="autoSelectMissionLandmarks()">自动选择</button>
-            <button class="secondary" onclick="clearMissionSelection()">清空选择</button>
+            <label><input id="mission_auto_pick_diverse" type="checkbox"> Prefer Diverse Categories</label>
+            <button class="secondary" onclick="autoSelectMissionLandmarks()">Auto Select</button>
+            <button class="secondary" onclick="clearMissionSelection()">Clear Selection</button>
           </div>
           <div id="mission_stats" class="stats"></div>
-          <div class="section-title">地标类型选择</div>
+          <div class="section-title">Landmark Category Filter</div>
           <div id="mission_category_filter_table" class="table-wrap" style="margin-top:10px;"></div>
-          <div class="section-title">Instance 列表</div>
+          <div class="section-title">Instance List</div>
           <div id="mission_table" class="table-wrap" style="margin-top:14px;"></div>
-          <div class="section-title">所选地标</div>
-          <div id="mission_selected_summary" class="summary-list">请先选择地标。</div>
-          <div class="section-title">任务列表</div>
+          <div class="section-title">Selected Landmarks</div>
+          <div id="mission_selected_summary" class="summary-list">Please select landmarks first.</div>
+          <div class="section-title">Mission List</div>
           <div class="toolbar">
-            <button class="primary" onclick="openNewMission()">新增任务</button>
-            <button class="secondary" onclick="loadMissionHistory()">刷新任务列表</button>
-            <button class="warn" onclick="clearMissionHistory()">清空当前任务列表</button>
+            <button class="primary" onclick="openNewMission()">New Mission</button>
+            <button class="secondary" onclick="loadMissionHistory()">Refresh Mission List</button>
+            <button class="warn" onclick="clearMissionHistory()">Clear Current Mission List</button>
           </div>
           <div id="mission_history_table" class="table-wrap" style="margin-top:10px;"></div>
         </div>
         <div class="card">
-          <h2>任务详情</h2>
-          <div class="section-title">任务范围</div>
+          <h2>Mission Details</h2>
+          <div class="section-title">Mission Scope</div>
           <div class="toolbar">
-            <label>任务模式 <input id="mission_mode_display" value="single-landmark" readonly></label>
-            <label>生成数量 <input id="mission_count" type="number" value="1" min="1" max="16"></label>
+            <label>Mission Mode <input id="mission_mode_display" value="single-landmark" readonly></label>
+            <label>Generation Count <input id="mission_count" type="number" value="1" min="1" max="16"></label>
           </div>
-          <div class="section-title">Composite 配置</div>
+          <div class="section-title">Composite Configuration</div>
           <div class="toolbar">
-            <label><input id="mission_auto" type="checkbox" checked onchange="refreshMissionTemplateSelect()"> 自动选择 Composite</label>
-            <label>Composite 模板 <select id="mission_type_select"></select></label>
-            <label>选择规则 <select id="mission_auto_set_rule"><option value="heuristic">heuristic</option><option value="random">random</option><option value="round_robin">round_robin</option></select></label>
-            <label>可用 Composite <select id="mission_auto_set_candidates" multiple></select></label>
+            <label><input id="mission_auto" type="checkbox" checked onchange="refreshMissionTemplateSelect()"> Auto-select composite</label>
+            <label>Composite Template <select id="mission_type_select"></select></label>
+            <label>Selection Rule <select id="mission_auto_set_rule"><option value="heuristic">heuristic</option><option value="random">random</option><option value="round_robin">round_robin</option></select></label>
+            <label>Available Composites <select id="mission_auto_set_candidates" multiple></select></label>
           </div>
-          <div class="section-title">轨迹拼接与序列</div>
+          <div class="section-title">Trajectory Composition and Sequence</div>
           <div class="toolbar">
-            <label>生成路径 <select id="mission_generation_kind"><option value="auto">auto</option><option value="atomic-only">atomic-only</option><option value="composite-driven">composite-driven</option></select></label>
-            <label>Atomic 序列（可选覆盖） <input id="mission_behavior_override" placeholder="例如 gradual_approach,circular_orbit,gradual_depart"></label>
-            <label><input id="mission_adaptive_params" type="checkbox" checked> 逐段自适应参数</label>
+            <label>Generation Path <select id="mission_generation_kind"><option value="auto">auto</option><option value="atomic-only">atomic-only</option><option value="composite-driven">composite-driven</option></select></label>
+            <label>Atomic Sequence (optional override) <input id="mission_behavior_override" placeholder="e.g. gradual_approach,circular_orbit,gradual_depart"></label>
+            <label><input id="mission_adaptive_params" type="checkbox" checked> Per-step Adaptive Parameters</label>
           </div>
-          <div class="section-title" data-block="multi-rule">多地标重复规则</div>
+          <div class="section-title" data-block="multi-rule">Multi-Landmark Repetition Rules</div>
           <div class="toolbar" data-block="multi-rule">
-            <label><input id="mission_allow_interleave_repeat" type="checkbox"> 允许交叉重复出现</label>
-            <label>单地标 Composite 总 atomic 数 <input id="mission_max_total_elements" type="number" value="0" min="0"></label>
+            <label><input id="mission_allow_interleave_repeat" type="checkbox"> Allow Interleaved Repetition</label>
+            <label>Max Atomic Count per Landmark Composite <input id="mission_max_total_elements" type="number" value="0" min="0"></label>
           </div>
-          <div id="mission_template_summary" class="muted" style="margin-bottom:10px;">请先选择一个目标地标。默认会根据地标尺度、局部空间结构和障碍布局自动选择 Composite class。</div>
-          <div class="section-title">Atomic 参数</div>
+          <div id="mission_template_summary" class="muted" style="margin-bottom:10px;">Please select a target landmark first. The default behavior automatically chooses a composite class based on landmark scale, local spatial structure, and obstacle layout.</div>
+          <div class="section-title">Atomic Parameters</div>
           <div class="toolbar">
-            <label><input id="mission_set_params_auto" type="checkbox" checked> Composite 中各 Atomic 参数全部自动设置</label>
+            <label><input id="mission_set_params_auto" type="checkbox" checked> Auto-set all atomic parameters in the composite</label>
           </div>
-          <div id="mission_step_editor" class="empty" style="margin-bottom:12px;">这里会显示当前任务的逐段参数配置。</div>
-          <div class="section-title">媒体显示</div>
+          <div id="mission_step_editor" class="empty" style="margin-bottom:12px;">Per-step parameter settings for the current mission will appear here.</div>
+          <div class="section-title">Media Display</div>
           <div class="toolbar">
-            <label><input id="mission_media_compress" type="checkbox" checked> 图片压缩显示（默认 480P）</label>
-            <label>宽 <input id="mission_media_w" type="number" value="640" min="64"></label>
-            <label>高 <input id="mission_media_h" type="number" value="480" min="64"></label>
+            <label><input id="mission_media_compress" type="checkbox" checked> Compress images for display (default 480P)</label>
+            <label>Width <input id="mission_media_w" type="number" value="640" min="64"></label>
+            <label>Height <input id="mission_media_h" type="number" value="480" min="64"></label>
             <label>JPEG <input id="mission_media_q" type="number" value="80" min="40" max="95"></label>
-            <label><input id="mission_video_prefer_web" type="checkbox" checked> 视频优先压缩版（默认 1M）</label>
+            <label><input id="mission_video_prefer_web" type="checkbox" checked> Prefer compressed video (default 1 MB)</label>
           </div>
           <div class="toolbar">
-            <button class="primary" onclick="generateMission()">生成任务（含全景与 Preview）</button>
-            <button class="secondary" onclick="generateMissionVideo()">重新生成 Preview</button>
-            <button class="secondary" onclick="confirmMissionVideo(true)">Preview 通过</button>
-            <button class="warn" onclick="confirmMissionVideo(false)">Preview 驳回</button>
-            <button class="primary" onclick="generateMissionFinalTask()">生成 Task Video</button>
+            <button class="primary" onclick="generateMission()">Generate Mission (Panorama + Preview)</button>
+            <button class="secondary" onclick="generateMissionVideo()">Regenerate Preview</button>
+            <button class="secondary" onclick="confirmMissionVideo(true)">Approve Preview</button>
+            <button class="warn" onclick="confirmMissionVideo(false)">Reject Preview</button>
+            <button class="primary" onclick="generateMissionFinalTask()">Generate Task Video</button>
           </div>
-          <div id="mission_detail" class="empty">选择一个地标后，这里会显示其几何信息、实例化结果、保存位置和推荐 Composite 模板。</div>
+          <div id="mission_detail" class="empty">After selecting a landmark, this panel shows its geometry, instantiated mission outputs, save paths, and the recommended composite template.</div>
         </div>
       </div>
     </div>
     <div id="page_review" style="display:__DISPLAY_REVIEW__">
       <div class="grid-2">
         <div class="card">
-          <h1>候选复核</h1>
-          <div class="muted">先筛选生成好的任务视频，再将通过的样本转为时序定位任务数据。</div>
+          <h1>Candidate Review</h1>
+          <div class="muted">Review generated task videos first, then promote approved candidates into temporal-localization task data.</div>
           <div class="toolbar" style="margin-top:14px;">
-            <input id="candidate_query" placeholder="按 traj_id / category / set 搜索">
-            <select id="candidate_status" onchange="loadCandidates()"><option value="all">全部</option><option value="approved">已通过</option><option value="pending">待定</option><option value="rejected">已驳回</option></select>
-            <button class="secondary" onclick="loadCandidates()">刷新</button>
+            <input id="candidate_query" placeholder="Search by traj_id / category / set">
+            <select id="candidate_status" onchange="loadCandidates()"><option value="all">All</option><option value="approved">Approved</option><option value="pending">Pending</option><option value="rejected">Rejected</option></select>
+            <button class="secondary" onclick="loadCandidates()">Refresh</button>
           </div>
           <div id="candidate_stats" class="stats"></div>
           <div id="candidate_table" class="table-wrap" style="margin-top:14px;"></div>
         </div>
         <div class="card">
-          <h2>候选详情</h2>
-          <div id="candidate_detail" class="empty">选择一条候选任务后，这里会显示参考图、可选总览图和整秒关键帧看板。</div>
+          <h2>Candidate Details</h2>
+          <div id="candidate_detail" class="empty">After selecting a candidate mission, this panel shows its reference image, optional overview image, and whole-second keyframe board.</div>
         </div>
       </div>
     </div>
     <div id="page_generate" style="display:__DISPLAY_GENERATE__">
       <div class="grid-2">
         <div class="card">
-          <h1>任务数据生成</h1>
+          <h1>Manifest Generation</h1>
           <div class="toolbar">
-            <label>模式 <select id="gen_mode"><option value="single-landmark">single-landmark</option><option value="multi-landmark">multi-landmark</option></select></label>
-            <label>样本数 <input id="gen_sample_count" type="number" value="24" min="1" style="width:100px;"></label>
-            <label>随机种子 <input id="gen_seed" type="number" value="7" style="width:100px;"></label>
-            <label><input id="gen_approved_only" type="checkbox" checked> 仅使用已通过候选</label>
+            <label>Mode <select id="gen_mode"><option value="single-landmark">single-landmark</option><option value="multi-landmark">multi-landmark</option></select></label>
+            <label>Sample Count <input id="gen_sample_count" type="number" value="24" min="1" style="width:100px;"></label>
+            <label>Random Seed <input id="gen_seed" type="number" value="7" style="width:100px;"></label>
+            <label><input id="gen_approved_only" type="checkbox" checked> Approved Candidates Only</label>
           </div>
           <div class="muted" style="margin:8px 0 6px;">Self-State Awareness</div>
           <div class="toolbar">
-            <label><input class="gen_form" type="checkbox" value="self_instance_recognition_joint" checked> 联合实例识别</label>
-            <label><input class="gen_form" type="checkbox" value="self_set_instance_recognition" checked> Composite 实例识别</label>
-            <label><input class="gen_form" type="checkbox" value="self_element_instance_recognition" checked> Atomic 实例识别</label>
-            <label><input id="gen_include_temporal_localization" type="checkbox" checked> 加入时序定位</label>
+            <label><input class="gen_form" type="checkbox" value="self_instance_recognition_joint" checked> Joint Behavior Recognition</label>
+            <label><input class="gen_form" type="checkbox" value="self_set_instance_recognition" checked> Composite Instance Recognition</label>
+            <label><input class="gen_form" type="checkbox" value="self_element_instance_recognition" checked> Atomic Instance Recognition</label>
+            <label><input id="gen_include_temporal_localization" type="checkbox" checked> Include Temporal Localization</label>
           </div>
           <div class="muted" style="margin:8px 0 6px;">Environmental Awareness</div>
           <div class="toolbar">
-            <label><input class="gen_form" type="checkbox" value="env_visibility_reasoning" checked> 环境感知</label>
+            <label><input class="gen_form" type="checkbox" value="env_visibility_reasoning" checked> Environmental Awareness</label>
           </div>
-          <button class="primary" onclick="generateManifest()">生成 Manifest</button>
+          <button class="primary" onclick="generateManifest()">Generate Manifest</button>
           <div id="generate_feedback" class="muted" style="margin-top:12px;"></div>
         </div>
         <div class="card">
-          <h2>生成参考</h2>
-          <div id="generate_reference" class="empty">这里会显示候选统计和最新 manifest 概览。</div>
+          <h2>Generation Reference</h2>
+          <div id="generate_reference" class="empty">Candidate statistics and the latest manifest summary are shown here.</div>
         </div>
       </div>
     </div>
     <div id="page_dataset" style="display:__DISPLAY_DATASET__">
       <div class="grid-2">
         <div class="card">
-          <h1>任务数据查看</h1>
-          <div class="toolbar"><select id="manifest_select" onchange="loadManifestDetail()"></select><button class="secondary" onclick="loadManifestList()">刷新</button></div>
-          <div id="manifest_summary" class="empty">请选择一个 manifest。</div>
-          <div class="section-title">任务列表</div>
+          <h1>Dataset Browser</h1>
+          <div class="toolbar"><select id="manifest_select" onchange="loadManifestDetail()"></select><button class="secondary" onclick="loadManifestList()">Refresh</button></div>
+          <div id="manifest_summary" class="empty">Please select a manifest.</div>
+          <div class="section-title">Candidate List</div>
           <div id="manifest_sample_list" class="table-wrap"></div>
         </div>
         <div class="card">
-          <h2>样本预览</h2>
-          <div id="manifest_samples" class="empty">这里会展示样本的完整内容。</div>
+          <h2>Sample Preview</h2>
+          <div id="manifest_samples" class="empty">The full sample contents are shown here.</div>
         </div>
       </div>
     </div>
     <div id="page_experiments" style="display:__DISPLAY_EXPERIMENTS__">
       <div class="grid-2">
         <div class="card">
-          <h1>实验执行</h1>
+          <h1>Experiments</h1>
           <div class="toolbar">
             <select id="exp_manifest_select" onchange="loadExperimentManifestSummary()"></select>
-            <input id="exp_models" placeholder="多个模型用逗号分隔；留空则用默认模型" style="min-width:260px;">
-            <label>数量限制 <input id="exp_limit" type="number" min="1" style="width:90px;"></label>
+            <input id="exp_models" placeholder="Separate multiple models with commas; leave empty to use the default model." style="min-width:260px;">
+            <label>Sample Limit <input id="exp_limit" type="number" min="1" style="width:90px;"></label>
           </div>
           <div class="toolbar">
-            <label>上传宽 <input id="exp_upload_w" type="number" value="640" style="width:90px;"></label>
-            <label>上传高 <input id="exp_upload_h" type="number" value="480" style="width:90px;"></label>
+            <label>Upload Width <input id="exp_upload_w" type="number" value="640" style="width:90px;"></label>
+            <label>Upload Height <input id="exp_upload_h" type="number" value="480" style="width:90px;"></label>
             <label>JPEG <input id="exp_upload_q" type="number" value="80" style="width:90px;"></label>
-            <label>并发 <input id="exp_concurrency" type="number" value="1" style="width:90px;"></label>
+            <label>Concurrency <input id="exp_concurrency" type="number" value="1" style="width:90px;"></label>
             <label>RPM <input id="exp_rpm" type="number" value="0" style="width:90px;"></label>
             <label>TPM <input id="exp_tpm" type="number" value="0" style="width:110px;"></label>
           </div>
           <div class="toolbar">
-            <label><input id="exp_flight_description" type="checkbox" checked> 提供飞行任务描述</label>
-            <label><input id="exp_include_keyframes" type="checkbox"> 开启关键帧评测</label>
-            <button class="primary" onclick="startExperiment()">开始实验</button>
+            <label><input id="exp_flight_description" type="checkbox" checked> Provide flight-mission description</label>
+            <label><input id="exp_include_keyframes" type="checkbox"> Enable keyframe evaluation</label>
+            <button class="primary" onclick="startExperiment()">Start Experiment</button>
           </div>
           <div id="experiment_manifest_summary" class="muted"></div>
         </div>
         <div class="card">
-          <h2>实验任务</h2>
+          <h2>Experiment Jobs</h2>
           <div id="job_table" class="table-wrap"></div>
         </div>
       </div>
@@ -4042,12 +4130,12 @@ def register_stage3_task_routes(
     <div id="page_results" style="display:__DISPLAY_RESULTS__">
       <div class="grid-2">
         <div class="card">
-          <h1>实验结果查看</h1>
-          <div class="toolbar"><select id="report_select" onchange="loadReportDetail()"></select><button class="secondary" onclick="loadReportList()">刷新</button></div>
-          <div id="report_summary" class="empty">请选择一个实验报告。</div>
+          <h1>Results</h1>
+          <div class="toolbar"><select id="report_select" onchange="loadReportDetail()"></select><button class="secondary" onclick="loadReportList()">Refresh</button></div>
+          <div id="report_summary" class="empty">Please select an experiment report.</div>
         </div>
         <div class="card">
-          <h2>逐样本详情</h2>
+          <h2>Per-Sample Details</h2>
           <div id="report_rows" class="table-wrap"></div>
         </div>
       </div>
@@ -4055,30 +4143,30 @@ def register_stage3_task_routes(
     <div id="page_metrics" style="display:__DISPLAY_METRICS__">
       <div class="stack">
         <div class="card">
-          <h1>实验指标汇总</h1>
-          <div class="toolbar"><label><input id="metrics_latest_only" type="checkbox" onchange="loadMetricsMatrix()"> 按单个样本最新结果汇总</label><label><input id="metrics_by_difficulty" type="checkbox" onchange="loadMetricsMatrix()"> 按难度区分</label><button class="secondary" onclick="loadMetricsMatrix()">刷新</button><button class="secondary" onclick="exportStage3MetricsCsv()">导出 CSV</button></div>
+          <h1>Metrics</h1>
+          <div class="toolbar"><label><input id="metrics_latest_only" type="checkbox" onchange="loadMetricsMatrix()"> Aggregate by the latest result for each sample</label><label><input id="metrics_by_difficulty" type="checkbox" onchange="loadMetricsMatrix()"> Split by difficulty</label><button class="secondary" onclick="loadMetricsMatrix()">Refresh</button><button class="secondary" onclick="exportStage3MetricsCsv()">Export CSV</button></div>
           <div id="metrics_summary_cards" class="stats" style="margin-bottom:14px;"></div>
         </div>
         <div class="card">
-          <h2>分组分析</h2>
+          <h2>Grouped Analysis</h2>
           <div id="metrics_group_bars"></div>
         </div>
         <div class="card">
-          <h2>实验大表</h2>
-          <div id="metrics_matrix" class="table-wrap"><div class="muted">加载中...</div></div>
+          <h2>Experiment Matrix</h2>
+          <div id="metrics_matrix" class="table-wrap"><div class="muted">Loading...</div></div>
         </div>
         <div class="card">
-          <h2>实验进度大表</h2>
+          <h2>Experiment Progress Matrix</h2>
           <div id="metrics_progress_summary" class="summary-list" style="margin-bottom:12px;"></div>
-          <div id="metrics_progress_matrix" class="table-wrap"><div class="muted">加载中...</div></div>
+          <div id="metrics_progress_matrix" class="table-wrap"><div class="muted">Loading...</div></div>
         </div>
       </div>
     </div>
   </div>
   <footer>
-    <div class="col" id="footer_left">Stage 3 将 Composite / Atomic 生成、候选复核、数据构建和时序推理实验统一到同一个工作台中。</div>
+    <div class="col" id="footer_left">Stage 3 brings together composite / atomic mission generation, candidate review, dataset construction, and temporal reasoning experiments in one workbench.</div>
     <div class="sep"></div>
-    <div class="col" id="footer_right">建议先在“任务生成”页生成并检查实例，再到“候选复核”筛选样本，之后生成 manifest 并执行实验。</div>
+    <div class="col" id="footer_right">We recommend generating and checking missions on the Mission Generation page first, then reviewing candidates, generating manifests, and finally running experiments.</div>
   </footer>
 <script>
 const state = {
@@ -4106,7 +4194,7 @@ function esc(v) { return String(v ?? '').replace(/[&<>\"']/g, (c)=>({'&':'&amp;'
 async function api(url, options) { const resp = await fetch(url, options); const data = await resp.json(); if(!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`); return data; }
 function fmtPct(v) { return (v===null || v===undefined || Number.isNaN(Number(v))) ? '-' : `${(Number(v)*100).toFixed(1)}%`; }
 function fmtFloat(v,n=3) { return (v===null || v===undefined || Number.isNaN(Number(v))) ? '-' : Number(v).toFixed(n); }
-function footerHtml(items) { return (items || []).map((item)=>`<div>${item}</div>`).join('') || '<div class="muted">暂无内容</div>'; }
+function footerHtml(items) { return (items || []).map((item)=>`<div>${item}</div>`).join('') || '<div class="muted">No content available.</div>'; }
 function readGlobalSetProfiles() {
   return (state.missionCatalog && state.missionCatalog.behavior_defaults && typeof state.missionCatalog.behavior_defaults === 'object')
     ? state.missionCatalog.behavior_defaults
@@ -4135,8 +4223,9 @@ function missionMediaUrl(rawPath) {
 }
 function renderVideoPlayer(primaryUrl, secondaryUrl) {
   const url = missionMediaUrl(primaryUrl || secondaryUrl || '');
-  if(!url) return '<div class="empty">暂无视频</div>';
-  return `<video class="preview" controls preload="metadata" playsinline src="${esc(url)}">当前浏览器无法播放该视频。</video>`;
+  const fallback = missionMediaUrl(secondaryUrl || '');
+  if(!url) return '<div class="empty">No video available.</div>';
+  return `<video class="preview" controls preload="metadata" playsinline data-fallback="${esc(fallback)}" onerror="const fb=this.dataset.fallback||''; if(fb && this.currentSrc!==fb){ this.src=fb; this.load(); }"><source src="${esc(url)}" type="video/mp4">Your browser cannot play this video.</video>`;
 }
 function activeMissionContext() {
   const row = state.currentMissionInstance || {};
@@ -4153,7 +4242,7 @@ function missionImagePreviewUrl(rawPath) {
   const q = Number(document.getElementById('mission_media_q')?.value || 80) || 80;
   return `/artifact?path=${encodeURIComponent(path)}&resize=1&w=${encodeURIComponent(w)}&h=${encodeURIComponent(h)}&q=${encodeURIComponent(q)}`;
 }
-function renderMissionEmpty(message='点击左侧“新增任务”或选择已有 mission 后，这里才显示内容。') {
+function renderMissionEmpty(message='Content appears here after you create a new mission or select an existing one from the left panel.') {
   const box = document.getElementById('mission_detail');
   if(box) box.innerHTML = `<div class="empty">${esc(message)}</div>`;
 }
@@ -4238,7 +4327,7 @@ function updateScopeParamDependencyStates(scopeClass) {
       if(manualInput) manualInput.disabled = lock || forceAuto || !!autoBox?.checked;
       auxInputs.forEach((el)=>{ el.disabled = lock || forceAuto; });
       const tip = card.querySelector('.mission-param-tip');
-      if(tip) tip.textContent = lock ? 'landmark_track 下自动跟随' : (forceAuto ? '当前按全局默认值自动生成' : '');
+      if(tip) tip.textContent = lock ? 'Automatically follows under landmark_track' : (forceAuto ? 'Automatically generated from the global defaults' : '');
     }
   }
 }
@@ -4285,15 +4374,15 @@ function renderMissionCategoryFilterTable() {
   const categories = [...new Set((state.missionRows || []).map((row)=>String(row.class_name || '').trim()).filter(Boolean))].sort();
   const selected = new Set(selectedMissionCategoryFilters().length ? selectedMissionCategoryFilters() : categories);
   holder.innerHTML = `<div class="choice-actions" style="margin-bottom:8px;">
-    <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(true);">全选</button>
-    <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(false);">清空</button>
+    <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(true);">Select All</button>
+    <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(false);">Clear</button>
   </div>
-  <table class="compact-table"><thead><tr><th>选</th><th>类别</th><th>地标数</th></tr></thead><tbody>${
+  <table class="compact-table"><thead><tr><th>Select</th><th>Categories</th><th>Landmarks</th></tr></thead><tbody>${
     categories.map((name)=>{
       const count = (state.missionRows || []).filter((row)=>String(row.class_name || '').trim() === name).length;
       const checked = selected.has(name) ? 'checked' : '';
       return `<tr><td><input type="checkbox" class="mission-category-filter" value="${esc(name)}" ${checked}></td><td>${esc(name)}</td><td>${count}</td></tr>`;
-    }).join('') || '<tr><td colspan="3" class="empty">暂无类别</td></tr>'
+    }).join('') || '<tr><td colspan="3" class="empty">NoneCategories</td></tr>'
   }</tbody></table>`;
   holder.querySelectorAll('.mission-category-filter').forEach((el)=>el.addEventListener('change', ()=>{ if(state.currentPage === 'missions') refreshMissionSelectionUi(); }));
 }
@@ -4302,7 +4391,7 @@ function clearMissionSelection() {
   state.currentMissionHistory = null;
   state.missionDetailMode = 'blank';
   state.missionBehaviorOverrideTouched = false;
-  renderMissionEmpty('请先选择地标，然后点击左侧“新增任务”或选择已有 mission。');
+  renderMissionEmpty('Please select landmarks first, then click “New Mission” on the left or choose an existing mission.');
   refreshMissionSelectionUi();
 }
 function syncAutoPickCountByMode() {
@@ -4347,7 +4436,7 @@ function autoSelectMissionLandmarks() {
   state.currentMissionHistory = null;
   state.missionDetailMode = 'blank';
   state.missionBehaviorOverrideTouched = false;
-  renderMissionEmpty('已自动选择地标。点击左侧“新增任务”开始配置，或选择已有 mission 查看。');
+  renderMissionEmpty('Landmarks were auto-selected. Click “New Mission” on the left to start configuration, or choose an existing mission to inspect it.');
   refreshMissionSelectionUi();
 }
 function saveGlobalSetProfile(setKey) {
@@ -4381,82 +4470,82 @@ function renderFooter() {
   let rightItems = [];
   if(state.currentPage === 'behavior_library') {
     leftItems = [
-      `<strong>当前页面</strong>：Behavior Library`,
-      `<strong>Composite class</strong>：${esc((state.missionCatalog.missions || []).length)} 个`,
-      `<strong>Atomic class</strong>：${esc((state.missionCatalog.behaviors || []).length)} 个`,
+      `<strong>Current Page</strong>: Behavior Library`,
+      `<strong>Composite Classes</strong>: ${esc((state.missionCatalog.missions || []).length)}`,
+      `<strong>Atomic Classes</strong>: ${esc((state.missionCatalog.behaviors || []).length)}`,
     ];
     rightItems = [
-      `先查看 Composite 结构，再对照 Atomic 参数范围。`,
-      `切到“任务生成”页时，可直接复用这里选中的结构理解。`,
+      `Inspect the composite structure first, then compare it against the atomic parameter ranges.`,
+      `When switching to Mission Generation, reuse the structure inspected here as the reference.`,
     ];
   } else if(state.currentPage === 'missions') {
     leftItems = [
-      `<strong>当前页面</strong>：任务生成`,
-      `<strong>当前实例</strong>：${esc(current.instance_id || '-')}`,
-      `<strong>当前 Composite</strong>：${esc(result.summary?.set_id || current.latest_summary?.set_id || '-')}`,
-      `<strong>后台状态</strong>：${esc(current.traj_status || current.status || 'pending')}`,
+      `<strong>Current Page</strong>: Mission Generation`,
+      `<strong>Current Instance</strong>: ${esc(current.instance_id || '-')}`,
+      `<strong>Current Composite</strong>: ${esc(result.summary?.set_id || current.latest_summary?.set_id || '-')}`,
+      `<strong>Background Status</strong>: ${esc(current.traj_status || current.status || 'pending')}`,
     ];
     rightItems = [
-      `先生成 Preview，再确认后生成 Task Video。`,
-      `如果指定 Composite 模板，建议同时检查 Atomic 序列是否符合预期。`,
+      `Generate the Preview first, then confirm it before generating the Task Video.`,
+      `If you specify a composite template, also verify that the atomic sequence matches expectations.`,
     ];
   } else if(state.currentPage === 'review') {
     leftItems = [
-      `<strong>当前页面</strong>：候选复核`,
-      `<strong>候选实例</strong>：${esc(current.instance_id || '-')}`,
-      `<strong>复核状态</strong>：${esc(current.review_status || '-')}`,
+      `<strong>Current Page</strong>: Candidate Review`,
+      `<strong>Candidate Instance</strong>: ${esc(current.instance_id || '-')}`,
+      `<strong>Review Status</strong>: ${esc(current.review_status || '-')}`,
     ];
     rightItems = [
-      `重点核对参考图、Task Video 和关键帧明细是否一致。`,
-      `通过后再去生成 manifest，避免把坏样本带进实验。`,
+      `Verify carefully that the reference image, task video, and keyframe details remain consistent.`,
+      `Only generate the manifest after approval, so poor candidates do not enter experiments.`,
     ];
   } else if(state.currentPage === 'generate') {
     leftItems = [
-      `<strong>当前页面</strong>：数据生成`,
-      `<strong>候选数</strong>：生成参考区会显示当前可用候选统计。`,
-      `<strong>任务组</strong>：支持 Self-State 和 Environmental 两类任务。`,
+      `<strong>Current Page</strong>: Manifest Generation`,
+      `<strong>Candidate Count</strong>: the Generation Reference panel shows the currently available candidate statistics.`,
+      `<strong>Task Groups</strong>: supports both Self-State and Environmental tasks.`,
     ];
     rightItems = [
-      `先小样本生成检查 schema，再扩大样本量。`,
-      `建议分别为 self-state 和 environmental 生成独立 manifest。`,
+      `Start with a small sample batch to verify the schema before scaling the sample count.`,
+      `It is recommended to generate separate manifests for self-state and environmental tasks.`,
     ];
   } else if(state.currentPage === 'dataset') {
     leftItems = [
-      `<strong>当前页面</strong>：任务查看`,
-      `<strong>当前 Manifest</strong>：${esc(document.getElementById('manifest_select')?.value || '-')}`,
+      `<strong>Current Page</strong>: Dataset Browser`,
+      `<strong>Current Manifest</strong>: ${esc(document.getElementById('manifest_select')?.value || '-')}`,
     ];
     rightItems = [
-      `优先检查样本字段、地标描述、区间与选项是否匹配。`,
-      `如果样本结构不理想，回到生成页调整任务类型组合。`,
+      `Prioritize checking whether sample fields, landmark descriptions, intervals, and options match each other.`,
+      `If the sample structure is unsatisfactory, return to the generation page and adjust the task-type combination.`,
     ];
   } else if(state.currentPage === 'experiments') {
     const jobRows = document.querySelectorAll('#job_table tbody tr').length;
     leftItems = [
-      `<strong>当前页面</strong>：实验执行`,
-      `<strong>当前 Manifest</strong>：${esc(document.getElementById('exp_manifest_select')?.value || '-')}`,
-      `<strong>任务数</strong>：${esc(jobRows)}`,
+      `<strong>Current Page</strong>: Experiments`,
+      `<strong>Current Manifest</strong>: ${esc(document.getElementById('exp_manifest_select')?.value || '-')}`,
+      `<strong>Job Count</strong>: ${esc(jobRows)}`,
     ];
     rightItems = [
-      `本页支持后台任务轮询和取消。`,
-      `建议保持相同 manifest 条件再比较不同模型。`,
+      `This page supports background-job polling and cancellation.`,
+      `Keep the manifest conditions fixed when comparing different models.`,
     ];
   } else if(state.currentPage === 'results') {
     leftItems = [
-      `<strong>当前页面</strong>：结果查看`,
-      `<strong>当前 Report</strong>：${esc(document.getElementById('report_select')?.value || '-')}`,
+      `<strong>Current Page</strong>: Results`,
+      `<strong>Current Report</strong>: ${esc(document.getElementById('report_select')?.value || '-')}`,
     ];
     rightItems = [
-      `先看 summary，再下钻到逐样本结果。`,
-      `自我状态任务优先看 Composite / Atomic 识别与定位，环境任务优先看 count / interval。`,
+      `Read the summary first, then drill down to per-sample results.`,
+      `For self-state tasks, focus first on composite / atomic recognition and localization; for environmental tasks, focus first on count / interval quality.`,
     ];
   } else if(state.currentPage === 'metrics') {
     leftItems = [
-      `<strong>当前页面</strong>：指标汇总`,
-      `<strong>统计方式</strong>：${document.getElementById('metrics_latest_only')?.checked ? 'latest only' : 'all runs'}`,
+      `<strong>Current Page</strong>: Metrics`,
+      `<strong>Aggregation Mode</strong>: ${document.getElementById('metrics_latest_only')?.checked ? 'latest only' : 'all runs'}`,
     ];
     rightItems = [
-      `先看顶部摘要卡，再看矩阵。`,
-      `如果某类任务明显偏低，回到结果页定位对应样本。`,
+      `Read the summary cards first, then inspect the matrix.`,
+      `If one task family is substantially weaker, return to Results to locate the corresponding samples.`,
     ];
   }
   left.innerHTML = footerHtml(leftItems);
@@ -4490,7 +4579,7 @@ async function loadTaskPipelineOptions() {
   const sel = document.getElementById('task_pipeline_select');
   if(!sel) return;
   const current = selectedTaskPipeline();
-  sel.innerHTML = ['<option value="">场景内默认产物</option>', ...tasks.map((name)=>`<option value="${esc(name)}" ${String(name)===String(current)?'selected':''}>${esc(name)}</option>`)].join('');
+  sel.innerHTML = ['<option value="">Scene-local default outputs</option>', ...tasks.map((name)=>`<option value="${esc(name)}" ${String(name)===String(current)?'selected':''}>${esc(name)}</option>`)].join('');
   sel.onchange = ()=>{ localStorage.setItem(TASK_KEY, sel.value || ''); refreshAll(); };
 }
 function globalQuery() {
@@ -4517,7 +4606,7 @@ function showBehaviorDetail(setKey) {
   const detail = document.getElementById('behavior_detail');
   if(!detail) return;
   if(!row) {
-    detail.innerHTML = '<div class="empty">暂无行为库定义</div>';
+    detail.innerHTML = '<div class="empty">No behavior-library definition available.</div>';
     return;
   }
   const globalProfile = getSetProfileByKey(String(row.mission_key || ''));
@@ -4531,22 +4620,22 @@ function showBehaviorDetail(setKey) {
     const stepParamText = Object.keys(step.params || {}).length
       ? Object.entries(step.params || {}).map(([k,v])=>`${k}: ${v}`).join('<br>')
       : '-';
-    const params = Object.entries(spec.params || {}).map(([key, meta])=>`${key}: ${meta.min ?? '-'} ~ ${meta.max ?? '-'} / step ${meta.step ?? '-'} / 手动默认 ${meta.default ?? '-'}`).join('<br>');
+    const params = Object.entries(spec.params || {}).map(([key, meta])=>`${key}: ${meta.min ?? '-'} ~ ${meta.max ?? '-'} / step ${meta.step ?? '-'} / manual default ${meta.default ?? '-'}`).join('<br>');
     return `<div class="card" style="margin-bottom:12px;"><div class="kv">
       <div class="k">step</div><div>${step.step_index + 1}</div>
       <div class="k">element</div><div>${esc(spec.display_name || bid)} / ${esc(bid)}</div>
-      <div class="k">说明</div><div>${esc(spec.description || '-')}</div>
-      <div class="k">本步视线</div><div>${esc(stepCameraMode)}</div>
-      <div class="k">本步参数覆盖</div><div>${stepParamText}</div>
-      <div class="k">原子默认视线</div><div>${esc(spec.camera_mode_default || '-')}</div>
-      <div class="k">参数</div><div>${params || '-'}</div>
+      <div class="k">Description</div><div>${esc(spec.description || '-')}</div>
+      <div class="k">Step Camera Mode</div><div>${esc(stepCameraMode)}</div>
+      <div class="k">Step Parameter Overrides</div><div>${stepParamText}</div>
+      <div class="k">Atomic Default Camera Mode</div><div>${esc(spec.camera_mode_default || '-')}</div>
+      <div class="k">Parameters</div><div>${params || '-'}</div>
     </div></div>`;
   }).join('');
   const globalEditor = (row.sequence || []).map((bid, idx)=>{
     const spec = byId[String(bid)] || {};
     const params = spec.params || {};
     return `<div class="card library-scope" style="margin-bottom:12px;padding:10px;">
-      <div class="summary-item"><strong>Step ${idx + 1}</strong>：${esc(spec.display_name || bid)} / ${esc(bid)}</div>
+      <div class="summary-item"><strong>Step ${idx + 1}</strong>: ${esc(spec.display_name || bid)} / ${esc(bid)}</div>
       ${Object.entries(params).map(([paramKey, meta])=>{
         const manualValue = globalProfile?.element_param_overrides?.[String(idx)]?.[paramKey];
         const autoRule = globalProfile?.element_auto_rules?.[String(idx)]?.[paramKey];
@@ -4562,44 +4651,44 @@ function showBehaviorDetail(setKey) {
           ? `<select class="mission-manual-input" data-step-index="${idx}" data-param-key="${esc(paramKey)}">${meta.choices.map((choice)=>`<option value="${esc(choice)}" ${String(currentValue)===String(choice)?'selected':''}>${esc(choice)}</option>`).join('')}</select>`
           : `<input class="mission-manual-input" data-step-index="${idx}" data-param-key="${esc(paramKey)}" value="${esc(currentValue)}">`;
         const disabledAuto = paramKey === 'gaze_pitch_deg' || paramKey === 'yaw_offset_deg' ? 'disabled' : '';
-        const fixedTip = disabledAuto ? `<span class="muted">landmark_track 下自动跟随</span>` : '';
+        const fixedTip = disabledAuto ? `<span class="muted">Automatically follows under landmark_track</span>` : '';
         return `<div class="mission-param-card card" data-step-index="${idx}" data-param-key="${esc(paramKey)}" style="margin:8px 0;padding:10px;">
           <div><strong>${esc(paramKey)}</strong> <span class="muted">${esc(meta.label || '')}</span> ${fixedTip}</div>
           <div class="toolbar" style="margin-top:8px;">
-            <label>手动值 ${choiceOptions}</label>
-            <label><input type="checkbox" class="mission-auto-enabled" data-step-index="${idx}" data-param-key="${esc(paramKey)}" ${autoChecked ? 'checked' : ''} ${disabledAuto}> 自动</label>
+            <label>Manual Value ${choiceOptions}</label>
+            <label><input type="checkbox" class="mission-auto-enabled" data-step-index="${idx}" data-param-key="${esc(paramKey)}" ${autoChecked ? 'checked' : ''} ${disabledAuto}> Auto</label>
             <label>min <input class="mission-auto-min" value="${esc(minVal)}" ${disabledAuto}></label>
             <label>max <input class="mission-auto-max" value="${esc(maxVal)}" ${disabledAuto}></label>
             <label>step <input class="mission-auto-step" value="${esc(stepVal)}" ${disabledAuto}></label>
           </div>
           <div class="toolbar">
-            <label>生成方法 <select class="mission-auto-method" ${disabledAuto}><option value="random" ${methodValue==='random'?'selected':''}>random</option><option value="normal" ${methodValue==='normal'?'selected':''}>normal</option></select></label>
+            <label>Generation Method <select class="mission-auto-method" ${disabledAuto}><option value="random" ${methodValue==='random'?'selected':''}>random</option><option value="normal" ${methodValue==='normal'?'selected':''}>normal</option></select></label>
             <label>mean <input class="mission-auto-mean" value="${esc(meanVal)}" ${disabledAuto}></label>
             <label>std <input class="mission-auto-std" value="${esc(stdVal)}" ${disabledAuto}></label>
-            <span class="muted">手动默认值=${esc(meta.default ?? '-')}</span>
+            <span class="muted">manual default = ${esc(meta.default ?? '-')}</span>
           </div>
         </div>`;
-      }).join('') || '<div class="muted">该 element 没有可配置参数。</div>'}
+      }).join('') || '<div class="muted">This element has no configurable parameters.</div>'}
     </div>`;
   }).join('');
   detail.innerHTML = `
     <div class="kv">
       <div class="k">set</div><div>${esc(row.mission_type || '-')} / ${esc(row.mission_subtype || '-')}</div>
       <div class="k">scope</div><div>${esc(row.service_scenario || '-')}</div>
-      <div class="k">说明</div><div>${esc(row.description || '-')}</div>
-      <div class="k">生成说明</div><div>${esc(row.generation_notes || '-')}</div>
+      <div class="k">Description</div><div>${esc(row.description || '-')}</div>
+      <div class="k">Generation Notes</div><div>${esc(row.generation_notes || '-')}</div>
     </div>
-    <div style="margin-top:12px;">${parts || '<div class="empty">该 Set 没有 element</div>'}</div>
-    <div class="section-title">全局默认值</div>
+    <div style="margin-top:12px;">${parts || '<div class="empty">This set has no elements.</div>'}</div>
+    <div class="section-title">Global Defaults</div>
     <div class="toolbar">
-      <label>生成路径 <select id="library_generation_kind"><option value="auto" ${String(globalProfile.generation_kind || 'auto')==='auto'?'selected':''}>auto</option><option value="atomic-only" ${String(globalProfile.generation_kind || '')==='atomic-only'?'selected':''}>atomic-only</option><option value="composite-driven" ${String(globalProfile.generation_kind || '')==='composite-driven'?'selected':''}>composite-driven</option></select></label>
-      <label>Atomic 序列 <input id="library_behavior_sequence" value="${esc((globalProfile.behavior_sequence || []).join(','))}" placeholder="留空使用 Composite 默认序列"></label>
-      <label><input id="library_allow_interleave_repeat" type="checkbox" ${globalProfile.allow_interleave_repeat ? 'checked' : ''}> 允许交叉重复</label>
-      <label>最多 atomic <input id="library_max_total_elements" type="number" value="${esc(globalProfile.max_total_elements ?? 0)}" min="0"></label>
+      <label>Generation Path <select id="library_generation_kind"><option value="auto" ${String(globalProfile.generation_kind || 'auto')==='auto'?'selected':''}>auto</option><option value="atomic-only" ${String(globalProfile.generation_kind || '')==='atomic-only'?'selected':''}>atomic-only</option><option value="composite-driven" ${String(globalProfile.generation_kind || '')==='composite-driven'?'selected':''}>composite-driven</option></select></label>
+      <label>Atomic Sequence <input id="library_behavior_sequence" value="${esc((globalProfile.behavior_sequence || []).join(','))}" placeholder="Leave empty to use the composite default sequence"></label>
+      <label><input id="library_allow_interleave_repeat" type="checkbox" ${globalProfile.allow_interleave_repeat ? 'checked' : ''}> Allow interleaved repetition</label>
+      <label>Max Atomic Count <input id="library_max_total_elements" type="number" value="${esc(globalProfile.max_total_elements ?? 0)}" min="0"></label>
     </div>
-    ${globalEditor || '<div class="empty">暂无可编辑参数</div>'}
+    ${globalEditor || '<div class="empty">No editable parameters available.</div>'}
     <div class="toolbar" style="margin-top:12px;">
-      <button class="primary" onclick="saveGlobalSetProfile('${esc(row.mission_key)}')">保存为全局默认值</button>
+      <button class="primary" onclick="saveGlobalSetProfile('${esc(row.mission_key)}')">Save as Global Default</button>
     </div>`;
   bindScopeParamEditor('library-scope', ()=>{});
 }
@@ -4611,15 +4700,15 @@ async function loadBehaviorLibrary() {
   const stats = document.getElementById('behavior_stats');
   if(stats) {
     stats.innerHTML = `
-      <div class="stat"><div class="muted">Composite class 数</div><div class="value">${sets.length}</div></div>
-      <div class="stat"><div class="muted">Atomic class 数</div><div class="value">${behaviors.length}</div></div>
-      <div class="stat"><div class="muted">多地标 Composite</div><div class="value">${sets.filter((row)=>String(row.service_scenario || '').includes('multi')).length}</div></div>
-      <div class="stat"><div class="muted">家族数</div><div class="value">${(state.missionCatalog.families || []).length}</div></div>`;
+      <div class="stat"><div class="muted">Composite Class Count</div><div class="value">${sets.length}</div></div>
+      <div class="stat"><div class="muted">Atomic Class Count</div><div class="value">${behaviors.length}</div></div>
+      <div class="stat"><div class="muted">Multi-Landmark Composites</div><div class="value">${sets.filter((row)=>String(row.service_scenario || '').includes('multi')).length}</div></div>
+      <div class="stat"><div class="muted">Family Count</div><div class="value">${(state.missionCatalog.families || []).length}</div></div>`;
   }
   const table = document.getElementById('set_table');
   if(table) {
     table.innerHTML = `<table><thead><tr><th>set_id</th><th>set_name</th><th>scope</th><th>elements</th></tr></thead><tbody>${
-      sets.map((row)=>`<tr onclick="showBehaviorDetail('${esc(row.mission_key)}')" style="cursor:pointer;"><td>${esc(row.mission_subtype)}</td><td>${esc(row.mission_type)}</td><td>${esc(row.service_scenario || '-')}</td><td>${esc((row.sequence || []).join(', ') || '-')}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">暂无行为库</td></tr>'
+      sets.map((row)=>`<tr onclick="showBehaviorDetail('${esc(row.mission_key)}')" style="cursor:pointer;"><td>${esc(row.mission_subtype)}</td><td>${esc(row.mission_type)}</td><td>${esc(row.service_scenario || '-')}</td><td>${esc((row.sequence || []).join(', ') || '-')}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">No behavior-library entries available.</td></tr>'
     }</tbody></table>`;
   }
   showBehaviorDetail(String(sets[0]?.mission_key || ''));
@@ -4643,7 +4732,7 @@ function refreshMissionTemplateSelect() {
   });
   sel.disabled = autoEnabled;
   if(mode === 'multi-landmark') sel.disabled = true;
-  sel.innerHTML = `<option value="">自动</option>` + missions.map((row)=>`<option value="${esc(row.mission_key)}">${esc(row.mission_subtype)} | ${esc(row.mission_type)}</option>`).join('');
+  sel.innerHTML = `<option value="">Auto</option>` + missions.map((row)=>`<option value="${esc(row.mission_key)}">${esc(row.mission_subtype)} | ${esc(row.mission_type)}</option>`).join('');
   if(autoSel) {
     autoSel.innerHTML = missions.map((row)=>`<option value="${esc(row.mission_key)}">${esc(row.mission_subtype)} | ${esc(row.mission_type)}</option>`).join('');
     const desired = previousAutoValues.length ? previousAutoValues : missions.map((row)=>String(row.mission_key));
@@ -4664,9 +4753,9 @@ function refreshMissionTemplateSelect() {
   const info = document.getElementById('mission_template_summary');
   if(info) {
     if(mode === 'multi-landmark') {
-      info.innerHTML = '当前为多地标模式。请在左侧“所选地标”区域为每个地标单独指定单地标巡检 Set，或保留“自动选择”让系统逐个地标自动决定。';
+      info.innerHTML = 'The current mission is in multi-landmark mode. In the Selected Landmarks area on the left, you can assign a single-landmark inspection set to each landmark, or keep auto-selection enabled so the system decides per landmark.';
     } else if(autoEnabled) {
-      info.innerHTML = '当前启用自动 Composite 选择。系统会根据地标尺度、语义类别、局部自由空间和障碍分布自动选择 Composite class。';
+      info.innerHTML = 'Auto composite selection is enabled. The system chooses a composite class based on landmark scale, semantic category, local free space, and obstacle layout.';
     } else {
       const chosen = missions.find((row)=>row.mission_key === sel.value) || missions[0];
       if(chosen) {
@@ -4676,7 +4765,7 @@ function refreshMissionTemplateSelect() {
         }).join('');
         info.innerHTML = `<b>${esc(chosen.mission_type)}</b> / ${esc(chosen.mission_subtype)}<br>${esc(chosen.description || '-')}<br><span class="muted">${esc(chosen.generation_notes || '')}</span><div style="margin-top:8px;">${lowLevel}</div>`;
       } else {
-        info.innerHTML = '当前模式下没有可用的 Composite class。';
+        info.innerHTML = 'No composite class is available under the current configuration.';
       }
     }
   }
@@ -4705,11 +4794,11 @@ async function loadMissionInstances() {
     categories: [...new Set(rows.map((row)=>String(row.class_name || '').trim()).filter(Boolean))].length,
   };
   document.getElementById('mission_stats').innerHTML = `
-    <div class="stat"><div class="muted">地标数量</div><div class="value">${stats.total}</div></div>
-    <div class="stat"><div class="muted">已完成阶段</div><div class="value">${stats.ready}</div></div>
-    <div class="stat"><div class="muted">Task Video 完成</div><div class="value">${stats.finalReady}</div></div>
-    <div class="stat"><div class="muted">类别数</div><div class="value">${stats.categories}</div></div>`;
-  document.getElementById('mission_table').innerHTML = `<table><thead><tr><th>选</th><th>instance</th><th>class</th><th>point_count</th><th>missions</th></tr></thead><tbody>${
+    <div class="stat"><div class="muted">Landmark Count</div><div class="value">${stats.total}</div></div>
+    <div class="stat"><div class="muted">Completed Stage Count</div><div class="value">${stats.ready}</div></div>
+    <div class="stat"><div class="muted">Task Video Ready</div><div class="value">${stats.finalReady}</div></div>
+    <div class="stat"><div class="muted">Category Count</div><div class="value">${stats.categories}</div></div>`;
+  document.getElementById('mission_table').innerHTML = `<table><thead><tr><th>Select</th><th>instance</th><th>class</th><th>point_count</th><th>missions</th></tr></thead><tbody>${
     rows.map((row)=>{
       const checked = selectedMissionIds().includes(String(row.instance_id)) ? 'checked' : '';
       const active = String(state.currentMissionInstance?.instance_id || '') === String(row.instance_id) ? ' style="background:var(--list-hover);cursor:pointer;"' : ' style="cursor:pointer;"';
@@ -4717,7 +4806,7 @@ async function loadMissionInstances() {
         <td onclick="event.stopPropagation();"><input type="checkbox" ${checked} onchange="toggleMissionSelection('${esc(row.instance_id)}', this.checked)"></td>
         <td>${esc(row.instance_id)}</td><td>${esc(row.class_name || '-')}</td><td>${esc(row.point_count || 0)}</td><td>${esc(row.mission_history_count || 0)} missions</td>
       </tr>`;
-    }).join('') || '<tr><td colspan="5" class="empty">暂无地标记录</td></tr>'
+    }).join('') || '<tr><td colspan="5" class="empty">No landmark records available.</td></tr>'
   }</tbody></table>`;
   state.missionRows = rows;
   renderMissionCategoryFilterTable();
@@ -4730,7 +4819,7 @@ async function loadMissionInstances() {
   if(state.currentMissionInstance && state.missionDetailMode !== 'blank') {
     renderMissionDetail(state.currentMissionInstance, state.currentMissionHistory);
   } else {
-    renderMissionEmpty('请先选择地标，然后点击左侧“新增任务”或选择已有 mission。');
+    renderMissionEmpty('Please select landmarks first, then click “New Mission” on the left or choose an existing mission.');
   }
   state.lastAppliedSetKey = '';
   await refreshMissionSelectionUi();
@@ -4747,7 +4836,7 @@ function toggleMissionSelection(instanceId, checked) {
   state.currentMissionHistory = null;
   state.missionDetailMode = 'blank';
   state.lastAppliedSetKey = '';
-  renderMissionEmpty('地标已更新。点击左侧“新增任务”开始配置，或选择已有 mission 查看。');
+  renderMissionEmpty('Landmarks updated. Click “New Mission” on the left to start configuration, or choose an existing mission to inspect it.');
   refreshMissionSelectionUi();
 }
 async function refreshMissionSelectionUi() {
@@ -4758,9 +4847,9 @@ async function refreshMissionSelectionUi() {
       const item = (state.missionRows || []).find((row)=>String(row.instance_id) === id) || {};
       const currentSet = String((state.currentMissionSchema?.landmark_set_map || {})[id] || '');
       const options = singleLandmarkInspectionSets().map((row)=>`<option value="${esc(row.mission_key)}" ${currentSet===String(row.mission_key)?'selected':''}>${esc(row.mission_type)}</option>`).join('');
-      return `<div class="summary-item"><strong>${esc(id)}</strong> / ${esc(item.class_name || '-')}<span style="margin-left:10px;">单地标巡检 Set</span><select class="mission-landmark-set-select" data-instance-id="${esc(id)}"><option value="">自动选择</option>${options}</select></div>`;
+      return `<div class="summary-item"><strong>${esc(id)}</strong> / ${esc(item.class_name || '-')}<span style="margin-left:10px;">Single-Landmark Inspection Set</span><select class="mission-landmark-set-select" data-instance-id="${esc(id)}"><option value="">Auto Select</option>${options}</select></div>`;
     });
-    summary.innerHTML = ids.length ? rows.join('') : '请先选择地标。';
+    summary.innerHTML = ids.length ? rows.join('') : 'Please select landmarks first.';
     summary.querySelectorAll('.mission-landmark-set-select').forEach((el)=>el.addEventListener('change', ()=>refreshMissionSelectionUi()));
   }
   const modeDisplay = document.getElementById('mission_mode_display');
@@ -4792,9 +4881,9 @@ async function loadMissionHistory() {
         <td>${esc((row.landmark_instance_ids || []).join(', ') || '-')}</td>
         <td>${esc(row.traj_status || '-')}</td>
         <td>${esc(row.updated_at || row.created_at || '-')}</td>
-        <td onclick="event.stopPropagation();"><button class="warn" onclick="deleteMission('${esc(row.traj_id)}')">删除</button></td>
+        <td onclick="event.stopPropagation();"><button class="warn" onclick="deleteMission('${esc(row.traj_id)}')">Delete</button></td>
       </tr>`;
-    }).join('') || '<tr><td colspan="7" class="empty">当前范围下还没有 mission</td></tr>'
+    }).join('') || '<tr><td colspan="7" class="empty">No missions are available under the current scope.</td></tr>'
   }</tbody></table>`;
   if(state.currentMissionHistory) {
     const matched = (state.missionHistoryRows || []).find((row)=>String(row.traj_id || '') === String(state.currentMissionHistory.traj_id || ''));
@@ -4812,7 +4901,7 @@ async function deleteMission(trajId) {
   if(state.currentMissionInstance) {
     state.lastAppliedSetKey = '';
     await refreshMissionSchema();
-    if(state.missionDetailMode === 'blank') renderMissionEmpty('点击左侧“新增任务”或选择已有 mission 后，这里才显示内容。');
+    if(state.missionDetailMode === 'blank') renderMissionEmpty('Content appears here after you create a new mission or select an existing one from the left panel.');
     else renderMissionDetail(state.currentMissionInstance, state.currentMissionHistory);
   }
 }
@@ -4826,12 +4915,12 @@ async function clearMissionHistory() {
     state.lastAppliedSetKey = '';
     await refreshMissionSchema();
     state.missionDetailMode = 'blank';
-    renderMissionEmpty('任务列表已清空。点击左侧“新增任务”开始新的配置。');
+    renderMissionEmpty('The mission list was cleared. Click “New Mission” on the left to start a new configuration.');
   }
 }
 function openNewMission() {
   if(!state.currentMissionInstance) {
-    renderMissionEmpty('请先选择一个地标，再点击“新增任务”。');
+    renderMissionEmpty('Please select a landmark before clicking “New Mission”.');
     return;
   }
   state.currentMissionHistory = null;
@@ -4866,7 +4955,7 @@ async function refreshMissionSchema() {
   };
   const box = document.getElementById('mission_step_editor');
   if(!payload.instance_ids.length || !box) {
-    if(box) box.innerHTML = '这里会显示当前任务的逐段参数配置。';
+    if(box) box.innerHTML = 'Per-step parameter settings for the current mission will appear here.';
     return;
   }
   try {
@@ -4898,9 +4987,9 @@ async function refreshMissionSchema() {
     const steps = schema.steps || [];
     const forceAuto = !!payload.set_params_auto;
     const header = `<div class="summary-list" style="margin-bottom:10px;">
-      <div class="summary-item"><strong>当前生成模式</strong>：${esc(schema.mission_mode || '-')} / ${esc(schema.generation_kind || '-')}</div>
-      <div class="summary-item"><strong>当前 Composite</strong>：${esc(schema.set_spec?.set_key || schema.set_instance?.set_id || '-')} / ${esc(schema.set_spec?.display_name || schema.set_instance?.set_name || '-')}</div>
-      <div class="summary-item"><strong>Auto Composite 规则</strong>：${esc(schema.auto_set_rule || '-')}；可用 Composite：${esc((schema.auto_set_candidates || []).join(', ') || '-')}</div>
+      <div class="summary-item"><strong>Current Generation Mode</strong>: ${esc(schema.mission_mode || '-')} / ${esc(schema.generation_kind || '-')}</div>
+      <div class="summary-item"><strong>Current Composite</strong>: ${esc(schema.set_spec?.set_key || schema.set_instance?.set_id || '-')} / ${esc(schema.set_spec?.display_name || schema.set_instance?.set_name || '-')}</div>
+      <div class="summary-item"><strong>Auto Composite Rule</strong>: ${esc(schema.auto_set_rule || '-')}; available composites: ${esc((schema.auto_set_candidates || []).join(', ') || '-')}</div>
     </div>`;
     box.innerHTML = steps.map((step)=>{
       const specs = step.param_specs || {};
@@ -4915,11 +5004,11 @@ async function refreshMissionSchema() {
             : (manualValue !== undefined ? 'global-manual-default' : (Array.isArray(spec.choices) && spec.choices.length ? 'choice-default' : 'global-default'));
           const rangeText = (spec.min !== undefined && spec.min !== null && spec.max !== undefined && spec.max !== null) ? `[${spec.min}, ${spec.max}]` : '-';
           const stepText = spec.step !== undefined && spec.step !== null ? `${spec.step}` : '-';
-          return `<div class="summary-item"><strong>${esc(paramKey)}</strong>：value=${esc(String(currentValue))}；range=${esc(rangeText)}；step=${esc(stepText)}；mode=${esc(modeText)}</div>`;
+          return `<div class="summary-item"><strong>${esc(paramKey)}</strong>: value=${esc(String(currentValue))}; range=${esc(rangeText)}; step=${esc(stepText)}; mode=${esc(modeText)}</div>`;
         }).join('');
         return `<div class="card" style="margin-bottom:10px;padding:10px;">
-          <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>：${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
-          <div class="muted" style="margin-top:6px;">按全局默认值自动生成</div>
+          <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
+          <div class="muted" style="margin-top:6px;">Automatically generated from the global defaults</div>
           <div class="summary-list" style="margin-top:8px; font-size:12px; line-height:1.8;">${summaryRows || '<div class="summary-item">-</div>'}</div>
         </div>`;
       }
@@ -4942,36 +5031,36 @@ async function refreshMissionSchema() {
           ? `<select class="mission-manual-input" data-step-index="${esc(step.step_index)}" data-param-key="${esc(paramKey)}">${spec.choices.map((choice)=>`<option value="${esc(choice)}" ${String(currentValue)===String(choice)?'selected':''}>${esc(choice)}</option>`).join('')}</select>`
           : `<input class="mission-manual-input" data-step-index="${esc(step.step_index)}" data-param-key="${esc(paramKey)}" value="${esc(currentValue)}">`;
         const disabledAuto = paramKey === 'gaze_pitch_deg' || paramKey === 'yaw_offset_deg' ? 'disabled' : '';
-        const fixedTip = disabledAuto ? `<span class="muted">landmark_track 下自动跟随</span>` : '';
+        const fixedTip = disabledAuto ? `<span class="muted">Automatically follows under landmark_track</span>` : '';
         return `<div class="mission-param-card card" data-step-index="${esc(step.step_index)}" data-param-key="${esc(paramKey)}" style="margin:8px 0;padding:10px;">
           <div><strong>${esc(paramKey)}</strong> <span class="muted">${esc(spec.label || '')}</span> ${fixedTip}</div>
           <div class="toolbar" style="margin-top:8px;">
-            <label>手动值 ${manualControl}</label>
-            <label><input type="checkbox" class="mission-auto-enabled" data-step-index="${esc(step.step_index)}" data-param-key="${esc(paramKey)}" ${autoChecked ? 'checked' : ''} ${disabledAuto}> 自动</label>
+            <label>Manual Value ${manualControl}</label>
+            <label><input type="checkbox" class="mission-auto-enabled" data-step-index="${esc(step.step_index)}" data-param-key="${esc(paramKey)}" ${autoChecked ? 'checked' : ''} ${disabledAuto}> Auto</label>
             <label>min <input class="mission-auto-min" value="${esc(autoMin)}" ${disabledAuto}></label>
             <label>max <input class="mission-auto-max" value="${esc(autoMax)}" ${disabledAuto}></label>
             <label>step <input class="mission-auto-step" value="${esc(autoStep)}" ${disabledAuto}></label>
           </div>
           <div class="toolbar">
-            <label>生成方法 <select class="mission-auto-method" ${disabledAuto}><option value="random" ${methodValue==='random'?'selected':''}>random</option><option value="normal" ${methodValue==='normal'?'selected':''}>normal</option></select></label>
+            <label>Generation Method <select class="mission-auto-method" ${disabledAuto}><option value="random" ${methodValue==='random'?'selected':''}>random</option><option value="normal" ${methodValue==='normal'?'selected':''}>normal</option></select></label>
             <label>mean <input class="mission-auto-mean" value="${esc(autoMean)}" ${disabledAuto}></label>
             <label>std <input class="mission-auto-std" value="${esc(autoStd)}" ${disabledAuto}></label>
-            <span class="muted">手动默认值=${esc(spec.default ?? '-')}</span><span class="muted mission-param-tip"></span>
+            <span class="muted">manual default = ${esc(spec.default ?? '-')}</span><span class="muted mission-param-tip"></span>
           </div>
         </div>`;
       }).join('');
       return `<div class="card" style="margin-bottom:12px;">
-        <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>：${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
-        ${rows || '<div class="muted">该 element 没有可配置参数。</div>'}
+        <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
+        ${rows || '<div class="muted">This element has no configurable parameters.</div>'}
       </div>`;
-    }).join('') || '<div class="empty">当前任务没有逐段参数。</div>';
+    }).join('') || '<div class="empty">The current mission has no per-step parameters.</div>';
     box.innerHTML = header + box.innerHTML;
     bindMissionParamEditor();
     if(state.currentMissionInstance) {
       renderMissionDetail(state.currentMissionInstance, state.currentMissionHistory);
     }
   } catch(err) {
-    box.innerHTML = `<div class="empty">参数配置加载失败：${esc(err.message || err)}</div>`;
+    box.innerHTML = `<div class="empty">Failed to load parameter configuration: ${esc(err.message || err)}</div>`;
   }
 }
 function selectMissionInstance(instanceId) {
@@ -4984,7 +5073,7 @@ function selectMissionInstance(instanceId) {
     if(!selectedMissionIds().includes(String(instanceId))) {
       state.selectedMissionInstanceIds = [String(instanceId)];
     }
-    renderMissionEmpty('已选中地标。点击左侧“新增任务”开始配置，或选择已有 mission 查看。');
+    renderMissionEmpty('Landmark selected. Click “New Mission” on the left to start configuration, or choose an existing mission to inspect it.');
     refreshMissionSelectionUi();
   }
 }
@@ -5011,7 +5100,7 @@ function renderMissionDetail(row, historyRow=null) {
   const currentSetName = String(currentSchema.set_spec?.display_name || currentSchema.set_instance?.set_name || '');
   const currentSetKey = String(currentSchema.set_spec?.set_key || currentSchema.set_instance?.set_id || '');
   const landmarkSetMapText = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`${k} -> ${v}`).join(' | ');
-  const multiSetRows = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`<div class="summary-item"><strong>${esc(k)}</strong>：${esc(v)}</div>`).join('');
+  const multiSetRows = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`<div class="summary-item"><strong>${esc(k)}</strong>: ${esc(v)}</div>`).join('');
   const showMultiSetList = missionMode === 'multi-landmark' && !document.getElementById('mission_allow_interleave_repeat')?.checked;
   const previewVideoUrl = preferredMissionVideo(urls.video_web || files.video_web || '', urls.video || files.video || '');
   const instanceMarkedUrl = preferredMissionVideo(urls.final_video_marked_web || files.final_video_marked_web || '', urls.final_video_marked || files.final_video_marked || '');
@@ -5024,45 +5113,45 @@ function renderMissionDetail(row, historyRow=null) {
   const panoramaRightPath = files.panorama_right || '-';
   const metadataPath = files.final_metadata || '-';
   document.getElementById('mission_detail').innerHTML = `
-    <div class="section-title">当前配置预览</div>
+    <div class="section-title">Current Configuration Preview</div>
     <div class="kv">
-      <div class="k">当前 Composite</div><div>${esc(currentSetName || '-')} / ${esc(currentSetKey || '-')}</div>
-      <div class="k">当前模式</div><div>${esc(missionMode)}</div>
-      <div class="k">当前 Atomic 序列</div><div>${esc(currentSteps.map((it)=>it.element_display_name || it.element_class || '-').join(', ') || '-')}</div>
-      <div class="k">地标映射</div><div>${esc(landmarkSetMapText || JSON.stringify(currentSchema.landmark_set_map || {}))}</div>
+      <div class="k">Current Composite</div><div>${esc(currentSetName || '-')} / ${esc(currentSetKey || '-')}</div>
+      <div class="k">Current Mode</div><div>${esc(missionMode)}</div>
+      <div class="k">Current Atomic Sequence</div><div>${esc(currentSteps.map((it)=>it.element_display_name || it.element_class || '-').join(', ') || '-')}</div>
+      <div class="k">Landmark Mapping</div><div>${esc(landmarkSetMapText || JSON.stringify(currentSchema.landmark_set_map || {}))}</div>
     </div>
-    ${showMultiSetList ? `<div class="section-title">多地标巡检 Composite 列表</div><div class="summary-list">${multiSetRows || '<div class="summary-item">-</div>'}</div>` : ''}
-    <div class="section-title">已保存任务</div>
+    ${showMultiSetList ? `<div class="section-title">Multi-Landmark Composite List</div><div class="summary-list">${multiSetRows || '<div class="summary-item">-</div>'}</div>` : ''}
+    <div class="section-title">Saved Mission</div>
     <div class="kv">
       <div class="k">instance</div><div>${esc(row.instance_id)}</div>
-      <div class="k">类别</div><div>${esc(row.class_name || row.landmark_category || '-')}</div>
-      <div class="k">当前状态</div><div>${esc(row.traj_status || row.status || 'pending')}</div>
-      <div class="k">点云数量</div><div>${esc(row.point_count || '-')}</div>
-      <div class="k">当前 Composite</div><div>${esc(summary.set_name || summary.mission_type || '-')} / ${esc(summary.set_id || summary.mission_subtype || '-')}</div>
-      <div class="k">任务形态</div><div>${esc(summary.task_family || '-')}</div>
-      <div class="k">Atomic 序列</div><div>${esc((summary.element_sequence || summary.behavior_sequence || []).join(', ') || '-')}</div>
+      <div class="k">Categories</div><div>${esc(row.class_name || row.landmark_category || '-')}</div>
+      <div class="k">Current Status</div><div>${esc(row.traj_status || row.status || 'pending')}</div>
+      <div class="k">Point Count</div><div>${esc(row.point_count || '-')}</div>
+      <div class="k">Current Composite</div><div>${esc(summary.set_name || summary.mission_type || '-')} / ${esc(summary.set_id || summary.mission_subtype || '-')}</div>
+      <div class="k">Task Family</div><div>${esc(summary.task_family || '-')}</div>
+      <div class="k">Atomic Sequence</div><div>${esc((summary.element_sequence || summary.behavior_sequence || []).join(', ') || '-')}</div>
       <div class="k">bbox_3d</div><div>${esc(JSON.stringify(geometry || []))}</div>
-      <div class="k">任务模式</div><div>${esc(missionMode)}</div>
-      <div class="k">当前 traj</div><div>${esc(activeMission.traj_id || row.latest_traj_id || '-')}</div>
-      <div class="k">备注</div><div>${esc(row.note || '-')}</div>
+      <div class="k">Mission Mode</div><div>${esc(missionMode)}</div>
+      <div class="k">Current traj_id</div><div>${esc(activeMission.traj_id || row.latest_traj_id || '-')}</div>
+      <div class="k">Note</div><div>${esc(row.note || '-')}</div>
     </div>
-    <div class="section-title">已保存任务 Element Instances</div>
+    <div class="section-title">Saved Mission Element Instances</div>
     <div class="pill-row">
-      ${((summary.element_instances || []).map((it)=>`<span class="pill">${esc(it.element_display_name || it.element_class || '-')} / ${esc(it.target_instance_id || '-')}</span>`).join('')) || '<span class="muted">暂无实例</span>'}
+      ${((summary.element_instances || []).map((it)=>`<span class="pill">${esc(it.element_display_name || it.element_class || '-')} / ${esc(it.target_instance_id || '-')}</span>`).join('')) || '<span class="muted">No instances available.</span>'}
     </div>
-    <div class="section-title">预览与视频</div>
+    <div class="section-title">Preview and Video</div>
     <div class="preview-grid" style="margin-top:12px;">
-      <div><div class="muted">左全景</div><img class="preview" src="${esc(missionImagePreviewUrl(panoramaLeftPath))}"><div class="muted" style="margin-top:6px;word-break:break-all;">${esc(panoramaLeftPath)}</div></div>
-      <div><div class="muted">右全景</div><img class="preview" src="${esc(missionImagePreviewUrl(panoramaRightPath))}"><div class="muted" style="margin-top:6px;word-break:break-all;">${esc(panoramaRightPath)}</div></div>
-      <div><div class="muted">预览视频</div>${renderVideoPlayer(previewVideoUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(previewVideoPath)}</div></div>
-      <div><div class="muted">实例视频（检查版）</div>${renderVideoPlayer(instanceMarkedUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(instanceMarkedPath)}</div></div>
-      <div><div class="muted">实例视频（纯画面）</div>${renderVideoPlayer(instancePlainUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(instancePlainPath)}</div></div>
+      <div><div class="muted">Left Panorama</div><img class="preview" src="${esc(missionImagePreviewUrl(panoramaLeftPath))}"><div class="muted" style="margin-top:6px;word-break:break-all;">${esc(panoramaLeftPath)}</div></div>
+      <div><div class="muted">Right Panorama</div><img class="preview" src="${esc(missionImagePreviewUrl(panoramaRightPath))}"><div class="muted" style="margin-top:6px;word-break:break-all;">${esc(panoramaRightPath)}</div></div>
+      <div><div class="muted">Preview Video</div>${renderVideoPlayer(previewVideoUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(previewVideoPath)}</div></div>
+      <div><div class="muted">Instance Video (review version)</div>${renderVideoPlayer(instanceMarkedUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(instanceMarkedPath)}</div></div>
+      <div><div class="muted">Instance Video (clean version)</div>${renderVideoPlayer(instancePlainUrl, '')}<div class="muted" style="margin-top:6px;word-break:break-all;">${esc(instancePlainPath)}</div></div>
     </div>
-    <div class="section-title">Task 元数据</div>
+    <div class="section-title">Task Metadata</div>
     <div class="toolbar" style="margin-top:12px;">
-      <button class="secondary" onclick="loadMissionFinalMeta()">加载 Task 元数据</button>
+      <button class="secondary" onclick="loadMissionFinalMeta()">Load Task Metadata</button>
     </div>
-    <div id="mission_final_meta" class="muted">Task 元数据位置：${esc(metadataPath)}</div>`;
+    <div id="mission_final_meta" class="muted">Task metadata path: ${esc(metadataPath)}</div>`;
   renderFooter();
 }
 async function loadMissionFinalMeta() {
@@ -5071,14 +5160,14 @@ async function loadMissionFinalMeta() {
   const meta = activeMission.asset_urls?.final_metadata || row.asset_urls?.final_metadata || '';
   const box = document.getElementById('mission_final_meta');
   if(!box) return;
-  if(!meta) { box.innerHTML = '当前还没有 Task 元数据。'; return; }
+  if(!meta) { box.innerHTML = 'Task metadata is not available yet.'; return; }
   const data = await api(meta);
   const presence = data.target_presence || {};
   const selfState = data.task_tracks?.self_state_awareness || {};
   box.innerHTML = `<div class="kv">
-    <div class="k">可见区间</div><div>${esc(JSON.stringify(presence.intervals_sec || []))}</div>
-    <div class="k">区间数量</div><div>${esc((presence.intervals_sec || []).length)}</div>
-    <div class="k">Composite 实例</div><div>${esc(selfState.set_instance?.set_name || '-')}</div>
+    <div class="k">Visible Intervals</div><div>${esc(JSON.stringify(presence.intervals_sec || []))}</div>
+    <div class="k">Interval Count</div><div>${esc((presence.intervals_sec || []).length)}</div>
+    <div class="k">Composite Instance</div><div>${esc(selfState.set_instance?.set_name || '-')}</div>
   </div>`;
 }
 async function generateMission() {
@@ -5188,17 +5277,17 @@ async function refreshState() {
   }
   const box = document.getElementById('candidate_stats');
   if(box) box.innerHTML = `
-    <div class="stat"><div class="muted">候选数</div><div class="value">${stats.candidate_count ?? 0}</div></div>
-    <div class="stat"><div class="muted">已通过</div><div class="value">${stats.approved_count ?? 0}</div></div>
-    <div class="stat"><div class="muted">类别数</div><div class="value">${stats.category_count ?? 0}</div></div>
-    <div class="stat"><div class="muted">平均可见次数</div><div class="value">${fmtFloat(stats.avg_visible_count, 2)}</div></div>`;
+    <div class="stat"><div class="muted">Candidate Count</div><div class="value">${stats.candidate_count ?? 0}</div></div>
+    <div class="stat"><div class="muted">Approved</div><div class="value">${stats.approved_count ?? 0}</div></div>
+    <div class="stat"><div class="muted">Category Count</div><div class="value">${stats.category_count ?? 0}</div></div>
+    <div class="stat"><div class="muted">Average Visible Count</div><div class="value">${fmtFloat(stats.avg_visible_count, 2)}</div></div>`;
   const genRef = document.getElementById('generate_reference');
   if(genRef) genRef.innerHTML = `<div class="kv">
-    <div class="k">候选数</div><div>${stats.candidate_count ?? 0}</div>
-    <div class="k">可用于单地标</div><div>${stats.single_landmark_count ?? 0}</div>
-    <div class="k">可用于多地标</div><div>${stats.multi_landmark_count ?? 0}</div>
-    <div class="k">Composite 类别</div><div>${esc((stats.mission_families || []).join(', ') || '-')}</div>
-    <div class="k">最新 manifest</div><div>${esc(data.latest_manifest_path || '-')}</div>
+    <div class="k">Candidate Count</div><div>${stats.candidate_count ?? 0}</div>
+    <div class="k">Eligible for Single-Landmark</div><div>${stats.single_landmark_count ?? 0}</div>
+    <div class="k">Eligible for Multi-Landmark</div><div>${stats.multi_landmark_count ?? 0}</div>
+    <div class="k">Composite Categories</div><div>${esc((stats.mission_families || []).join(', ') || '-')}</div>
+    <div class="k">Latest Manifest</div><div>${esc(data.latest_manifest_path || '-')}</div>
   </div>`;
 }
 async function loadCandidates() {
@@ -5209,13 +5298,13 @@ async function loadCandidates() {
   document.getElementById('candidate_table').innerHTML = `<table><thead><tr><th>traj_id</th><th>mode</th><th>set</th><th>landmark</th><th>visible count</th><th>difficulty</th><th>status</th></tr></thead><tbody>${
     rows.map((row)=>`<tr onclick="loadCandidateDetail('${esc(row.traj_id)}')" style="cursor:pointer;">
       <td>${esc(row.traj_id)}</td><td>${esc(row.mode)}</td><td>${esc(row.set_id || row.mission_subtype || row.mission_type || '-')}</td><td>${esc(row.landmark_category)} / ${esc(row.landmark_id)}</td><td>${esc(row.visible_count)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.review_status)}</td>
-    </tr>`).join('') || '<tr><td colspan="7" class="empty">暂无候选任务</td></tr>'
+    </tr>`).join('') || '<tr><td colspan="7" class="empty">No candidate tasks available.</td></tr>'
   }</tbody></table>`;
 }
 async function loadCandidateDetail(trajId) {
   const data = await api(`/api/stage3_candidate?${globalQuery()}&traj_id=${encodeURIComponent(trajId)}`);
   const row = data.candidate || {};
-  let keyframeHtml = '<div class="empty">暂无关键帧</div>';
+  let keyframeHtml = '<div class="empty">No keyframes available.</div>';
   let keyframeRows = [];
   try {
     const taskMeta = row.final_meta_path ? await fetch(`/artifact?path=${encodeURIComponent(row.final_meta_path)}`).then(r=>r.json()) : null;
@@ -5235,33 +5324,33 @@ async function loadCandidateDetail(trajId) {
   }
   document.getElementById('candidate_detail').innerHTML = `
     <div class="toolbar">
-      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','approved')">通过</button>
-      <button class="warn" onclick="reviewCandidate('${esc(trajId)}','rejected')">驳回</button>
-      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','pending')">重置</button>
+      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','approved')">Approved</button>
+      <button class="warn" onclick="reviewCandidate('${esc(trajId)}','rejected')">Reject</button>
+      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','pending')">Reset</button>
     </div>
     <div class="kv">
       <div class="k">Composite</div><div>${esc(row.set_name || row.mission_type || '-')} / ${esc(row.set_id || row.mission_subtype || '-')}</div>
-      <div class="k">Atomic 序列</div><div>${esc((row.element_sequence || row.low_level_sequence || []).join(', ') || '-')}</div>
-      <div class="k">地标描述</div><div>${esc(row.landmark_description || '-')}</div>
-      <div class="k">飞行描述</div><div>${esc(row.flight_description || '-')}</div>
+      <div class="k">Atomic Sequence</div><div>${esc((row.element_sequence || row.low_level_sequence || []).join(', ') || '-')}</div>
+      <div class="k">Landmark Description</div><div>${esc(row.landmark_description || '-')}</div>
+      <div class="k">Flight Description</div><div>${esc(row.flight_description || '-')}</div>
     </div>
-    <div class="section-title">任务摘要</div>
+    <div class="section-title">Task Summary</div>
     <div class="mini-kv">
-      <div class="mini-card"><div class="muted">可见次数</div><div>${esc(row.visible_count ?? '-')}</div></div>
-      <div class="mini-card"><div class="muted">难度</div><div>${esc(row.difficulty_band || '-')}</div></div>
-      <div class="mini-card"><div class="muted">Atomic 数</div><div>${esc((row.element_instances || []).length)}</div></div>
-      <div class="mini-card"><div class="muted">地标类别</div><div>${esc(row.landmark_category || '-')}</div></div>
+      <div class="mini-card"><div class="muted">Visible Count</div><div>${esc(row.visible_count ?? '-')}</div></div>
+      <div class="mini-card"><div class="muted">Difficulty</div><div>${esc(row.difficulty_band || '-')}</div></div>
+      <div class="mini-card"><div class="muted">Atomic Count</div><div>${esc((row.element_instances || []).length)}</div></div>
+      <div class="mini-card"><div class="muted">Landmark Category</div><div>${esc(row.landmark_category || '-')}</div></div>
     </div>
     <div class="preview-grid" style="margin-top:12px;">
-      <div><div class="muted">参考图</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox || '')}"></div>
-      <div><div class="muted">总览图（可选）</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.overview_image || '')}"></div>
-      <div><div class="muted">整秒关键帧看板</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.keyframe_board_image || '')}"></div>
+      <div><div class="muted">Reference Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox || '')}"></div>
+      <div><div class="muted">Overview Image (optional)</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.overview_image || '')}"></div>
+      <div><div class="muted">Whole-Second Keyframe Board</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.keyframe_board_image || '')}"></div>
     </div>
     <div style="margin-top:14px;">
-      <div class="muted" style="margin-bottom:8px;">整秒关键帧明细</div>
+      <div class="muted" style="margin-bottom:8px;">Whole-Second Keyframe Details</div>
       ${keyframeHtml}
     </div>
-    <div class="muted" style="margin-top:12px;">当前复核状态：${esc(row.review_status || 'pending')}</div>`;
+    <div class="muted" style="margin-top:12px;">Current review status: ${esc(row.review_status || 'pending')}</div>`;
   renderFooter();
 }
 async function reviewCandidate(trajId, status) {
@@ -5283,7 +5372,7 @@ async function generateManifest() {
     include_temporal_localization: document.getElementById('gen_include_temporal_localization').checked,
   };
   const data = await api('/api/stage3_generate_manifest', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
-  document.getElementById('generate_feedback').innerText = `Manifest 已生成：${data.manifest_path}`;
+  document.getElementById('generate_feedback').innerText = `Manifest generated: ${data.manifest_path}`;
   await loadManifestList();
 }
 async function loadManifestList() {
@@ -5305,17 +5394,17 @@ async function loadManifestDetail() {
   const s = data.summary || {};
   state.activeManifestSampleId = state.activeManifestSampleId || String((data.samples || [])[0]?.sample_id || '');
   document.getElementById('manifest_summary').innerHTML = `<div class="kv">
-    <div class="k">样本数</div><div>${s.sample_count ?? 0}</div>
-    <div class="k">轨迹数</div><div>${s.mission_count ?? 0}</div>
-    <div class="k">地标数</div><div>${s.landmark_count ?? 0}</div>
-    <div class="k">类别</div><div>${esc((s.categories || []).join(', ') || '-')}</div>
-    <div class="k">任务组</div><div>${esc((s.task_groups || []).join(', ') || '-')}</div>
-    <div class="k">任务类型</div><div>${esc((s.task_names || []).join(', ') || '-')}</div>
-    <div class="k">难度</div><div>${esc((s.difficulty_bands || []).join(', ') || '-')}</div>
+    <div class="k">Sample Count</div><div>${s.sample_count ?? 0}</div>
+    <div class="k">Mission Count</div><div>${s.mission_count ?? 0}</div>
+    <div class="k">Landmarks</div><div>${s.landmark_count ?? 0}</div>
+    <div class="k">Categories</div><div>${esc((s.categories || []).join(', ') || '-')}</div>
+    <div class="k">Task Groups</div><div>${esc((s.task_groups || []).join(', ') || '-')}</div>
+    <div class="k">Task Types</div><div>${esc((s.task_names || []).join(', ') || '-')}</div>
+    <div class="k">Difficulty</div><div>${esc((s.difficulty_bands || []).join(', ') || '-')}</div>
   </div>`;
   const rows = (data.samples || []);
   document.getElementById('manifest_sample_list').innerHTML = `<table><thead><tr><th>sample_id</th><th>task</th><th>difficulty</th><th>landmark</th></tr></thead><tbody>${
-    rows.map((row)=>`<tr onclick="selectManifestSample('${esc(row.sample_id)}')" style="cursor:pointer;${String(state.activeManifestSampleId)===String(row.sample_id)?'background:var(--panel-soft);':''}"><td>${esc(row.sample_id)}</td><td>${esc(row.task_display_name || row.form)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.landmark_id)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">暂无样本</td></tr>'
+    rows.map((row)=>`<tr onclick="selectManifestSample('${esc(row.sample_id)}')" style="cursor:pointer;${String(state.activeManifestSampleId)===String(row.sample_id)?'background:var(--panel-soft);':''}"><td>${esc(row.sample_id)}</td><td>${esc(row.task_display_name || row.form)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.landmark_id)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">No samples available.</td></tr>'
   }</tbody></table>`;
   renderManifestSample(rows.find((row)=>String(row.sample_id)===String(state.activeManifestSampleId)) || rows[0] || null);
   renderFooter();
@@ -5324,41 +5413,41 @@ function renderManifestSample(row) {
   const holder = document.getElementById('manifest_samples');
   if(!holder) return;
   if(!row) {
-    holder.innerHTML = '<div class="empty">暂无样本</div>';
+    holder.innerHTML = '<div class="empty">No samples available.</div>';
     return;
   }
   state.activeManifestSampleId = String(row.sample_id || '');
   const answerItems = Array.isArray(row.answer_items) ? row.answer_items : [];
   const choiceOptions = Array.isArray(row.choice_options) ? row.choice_options : [];
   const answerText = answerItems.length
-    ? answerItems.map((it)=>`<div style="margin-bottom:8px;"><strong>${esc(it.option_id || '-')}</strong> / ${esc(it.label || '-')}<div class="muted">区间：${renderIntervals(it.intervals_sec || [])}</div></div>`).join('')
+    ? answerItems.map((it)=>`<div style="margin-bottom:8px;"><strong>${esc(it.option_id || '-')}</strong> / ${esc(it.label || '-')}<div class="muted">Intervals: ${renderIntervals(it.intervals_sec || [])}</div></div>`).join('')
     : (row.gold_environment_answer ? `<pre style="white-space:pre-wrap;">${esc(JSON.stringify(row.gold_environment_answer, null, 2))}</pre>` : '-');
   const optionText = choiceOptions.length
     ? `<div class="option-grid">${choiceOptions.map((it)=>`<div class="option-card"><div><strong>${esc(it.option_id || '-')}</strong></div><div>${esc(it.label || '-')}</div></div>`).join('')}</div>`
-    : '<div class="muted">该任务没有离散选项。</div>';
-  const behaviorText = (row.behavior_intervals_sec || []).map((it)=>`<div style="margin-bottom:8px;"><strong>${esc(it.event_label || it.behavior_id || '-')}</strong><div class="muted">区间：${renderIntervals(it.intervals_sec || [])}</div></div>`).join('') || '-';
+    : '<div class="muted">This task does not use discrete answer options.</div>';
+  const behaviorText = (row.behavior_intervals_sec || []).map((it)=>`<div style="margin-bottom:8px;"><strong>${esc(it.event_label || it.behavior_id || '-')}</strong><div class="muted">Intervals: ${renderIntervals(it.intervals_sec || [])}</div></div>`).join('') || '-';
   const envAnswerText = row.task_group === 'environmental'
-    ? `<div class="summary-item"><strong>可见次数</strong>：${esc(row.visible_count ?? 0)}</div>
-       <div class="summary-item"><strong>可见时间区间</strong>：${renderIntervals(row.visible_intervals_sec || [])}</div>`
+    ? `<div class="summary-item"><strong>Visible Count</strong>: ${esc(row.visible_count ?? 0)}</div>
+       <div class="summary-item"><strong>Visible Intervals</strong>: ${renderIntervals(row.visible_intervals_sec || [])}</div>`
     : '';
-  const referenceImg = row.reference_image_with_bbox ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">查询地标参考图</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox)}"></div>` : '';
-  const overviewImg = row.overview_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">总览图</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.overview_image)}"></div>` : '';
-  const keyframeImg = row.keyframe_board_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">关键帧看板</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.keyframe_board_image)}"></div>` : '';
-  const videoPlayer = renderVideoPlayer(row.video_web_path || row.video_path, row.video_path || row.video_web_path);
+  const referenceImg = row.reference_image_with_bbox ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Query Landmark Reference Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox)}"></div>` : '';
+  const overviewImg = row.overview_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Overview Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.overview_image)}"></div>` : '';
+  const keyframeImg = row.keyframe_board_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Keyframe Board</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.keyframe_board_image)}"></div>` : '';
+  const videoPlayer = renderVideoPlayer(row.video_path || row.video_web_path, row.video_web_path || row.video_path);
     holder.innerHTML = `
     <div class="card" style="margin-bottom:12px;">
-      <h3 style="margin-top:0;">样本总体信息</h3>
+      <h3 style="margin-top:0;">Sample Overview</h3>
       <div class="kv">
         <div class="k">sample_id</div><div>${esc(row.sample_id)}</div>
-        <div class="k">任务类型</div><div>${esc(row.task_group)} / ${esc(row.task_display_name || row.form)} / ${esc(row.difficulty_band)}</div>
+        <div class="k">Task Types</div><div>${esc(row.task_group)} / ${esc(row.task_display_name || row.form)} / ${esc(row.difficulty_band)}</div>
         <div class="k">mission_id</div><div>${esc(row.mission_id || '-')}</div>
         <div class="k">Composite / Task</div><div>${esc(row.set_id || '-')} / ${esc(row.task_type_label || '-')}</div>
-        <div class="k">查询地标</div><div>${esc(row.landmark_id)} / ${esc(row.landmark_category || '-')} / ${esc(row.landmark_subcategory || '-')}</div>
-        <div class="k">地标描述</div><div>${esc(row.landmark_description || '-')}</div>
-        <div class="k">飞行描述</div><div>${esc(row.flight_description || '-')}</div>
-        <div class="k">视频路径</div><div style="word-break:break-all;">${esc(row.video_web_path || row.video_path || '-')}</div>
-        <div class="k">候选来源</div><div style="word-break:break-all;">${esc(row.candidate_path || '-')}</div>
-        <div class="k">视频规格</div><div>${esc(row.video_width || '-')} x ${esc(row.video_height || '-')} / ${esc(row.fps || '-')} FPS / ${esc(row.frame_count || '-')} frames</div>
+        <div class="k">Query Landmark</div><div>${esc(row.landmark_id)} / ${esc(row.landmark_category || '-')} / ${esc(row.landmark_subcategory || '-')}</div>
+        <div class="k">Landmark Description</div><div>${esc(row.landmark_description || '-')}</div>
+        <div class="k">Flight Description</div><div>${esc(row.flight_description || '-')}</div>
+        <div class="k">Video Path</div><div style="word-break:break-all;">${esc(row.video_path || row.video_web_path || '-')}</div>
+        <div class="k">Candidate Source</div><div style="word-break:break-all;">${esc(row.candidate_path || '-')}</div>
+        <div class="k">Video Specs</div><div>${esc(row.video_width || '-')} x ${esc(row.video_height || '-')} / ${esc(row.fps || '-')} FPS / ${esc(row.frame_count || '-')} frames</div>
       </div>
       <div class="thumb-row" style="margin-top:12px;">
         ${referenceImg}
@@ -5366,19 +5455,19 @@ function renderManifestSample(row) {
         ${keyframeImg}
       </div>
       <div style="margin-top:14px;">
-        <div class="muted" style="margin-bottom:6px;">样本视频</div>
+        <div class="muted" style="margin-bottom:6px;">Sample Video</div>
         ${videoPlayer}
       </div>
     </div>
     <div class="card">
-      <h3 style="margin-top:0;">QA 展示</h3>
+      <h3 style="margin-top:0;">QA View</h3>
       <div class="summary-list" style="margin:8px 0 14px;">
-        <div class="summary-item"><strong>System Prompt</strong>：<pre style="white-space:pre-wrap;">${esc(row.system_prompt || '')}</pre></div>
-        <div class="summary-item"><strong>User Prompt</strong>：<pre style="white-space:pre-wrap;">${esc(row.user_prompt || row.prompt_text || '')}</pre></div>
-        <div class="summary-item"><strong>选项</strong>：${optionText}</div>
-        <div class="summary-item"><strong>标准答案</strong>：${answerText}</div>
+        <div class="summary-item"><strong>System Prompt</strong>: <pre style="white-space:pre-wrap;">${esc(row.system_prompt || '')}</pre></div>
+        <div class="summary-item"><strong>User Prompt</strong>: <pre style="white-space:pre-wrap;">${esc(row.user_prompt || row.prompt_text || '')}</pre></div>
+        <div class="summary-item"><strong>Options</strong>: ${optionText}</div>
+        <div class="summary-item"><strong>Ground Truth</strong>: ${answerText}</div>
         ${envAnswerText}
-        <div class="summary-item"><strong>行为时间区间</strong>：${behaviorText}</div>
+        <div class="summary-item"><strong>Behavior Intervals</strong>: ${behaviorText}</div>
       </div>
     </div>`;
 }
@@ -5391,7 +5480,7 @@ async function loadExperimentManifestSummary() {
   if(!path) return;
   const data = await api(`/api/stage3_manifest?path=${encodeURIComponent(path)}`);
   const s = data.summary || {};
-  document.getElementById('experiment_manifest_summary').innerText = `样本数=${s.sample_count ?? 0}；轨迹数=${s.mission_count ?? 0}；地标数=${s.landmark_count ?? 0}；任务组=${(s.task_groups || []).join(', ') || '-'}；任务类型=${(s.task_names || []).join(', ') || '-'}；难度=${(s.difficulty_bands || []).join(', ') || '-'}`;
+  document.getElementById('experiment_manifest_summary').innerText = `Sample Count=${s.sample_count ?? 0}; Mission Count=${s.mission_count ?? 0}; Landmarks=${s.landmark_count ?? 0}; Task Groups=${(s.task_groups || []).join(', ') || '-'}; Task Types=${(s.task_names || []).join(', ') || '-'}; Difficulty=${(s.difficulty_bands || []).join(', ') || '-'}`;
 }
 async function startExperiment() {
   const body = {
@@ -5416,7 +5505,7 @@ async function startExperiment() {
 async function refreshJobs() {
   const rows = await api('/api/stage3_jobs');
   document.getElementById('job_table').innerHTML = `<table><thead><tr><th>job_id</th><th>status</th><th>model</th><th>manifest</th><th>progress</th><th>runs</th><th>op</th></tr></thead><tbody>${
-    (rows || []).map((row)=>`<tr><td>${esc(row.job_id)}</td><td>${esc(row.status)}</td><td>${esc(row.payload?.model || ((row.payload?.models || [])[0] || '-'))}</td><td>${esc(row.payload?.manifest_name || '-')}</td><td>${esc(row.progress?.completed ?? 0)} / ${esc(row.progress?.total ?? 0)}<br><span class="muted">${esc(row.progress?.sample_id || '')}</span></td><td>${esc((row.runs || []).length)}</td><td>${['queued','running','cancel_requested'].includes(row.status) ? `<button class="warn" onclick="cancelJob('${esc(row.job_id)}')">取消</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="7" class="empty">暂无任务</td></tr>'
+    (rows || []).map((row)=>`<tr><td>${esc(row.job_id)}</td><td>${esc(row.status)}</td><td>${esc(row.payload?.model || ((row.payload?.models || [])[0] || '-'))}</td><td>${esc(row.payload?.manifest_name || '-')}</td><td>${esc(row.progress?.completed ?? 0)} / ${esc(row.progress?.total ?? 0)}<br><span class="muted">${esc(row.progress?.sample_id || '')}</span></td><td>${esc((row.runs || []).length)}</td><td>${['queued','running','cancel_requested'].includes(row.status) ? `<button class="warn" onclick="cancelJob('${esc(row.job_id)}')">Cancel</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="7" class="empty">No jobs available.</td></tr>'
   }</tbody></table>`;
   renderFooter();
 }
@@ -5433,18 +5522,18 @@ async function loadReportDetail() {
   const data = await api(`/api/stage3_report?path=${encodeURIComponent(path)}`);
   const s = data.summary || {};
   document.getElementById('report_summary').innerHTML = `<div class="kv">
-    <div class="k">模型</div><div>${esc(data.model || '-')}</div>
+    <div class="k">Model</div><div>${esc(data.model || '-')}</div>
     <div class="k">Manifest</div><div>${esc(data.manifest_name || '-')}</div>
-    <div class="k">自我状态样本数</div><div>${esc(s.self_state_count ?? 0)}</div>
-    <div class="k">环境观察样本数</div><div>${esc(s.environmental_count ?? 0)}</div>
-    <div class="k">次数完全正确率</div><div>${fmtPct(s.count_exact_acc)}</div>
-    <div class="k">Composite 实例识别准确率</div><div>${fmtPct(s.set_instance_acc)}</div>
-    <div class="k">Atomic 实例识别 F1</div><div>${fmtPct(s.element_instance_f1)}</div>
-    <div class="k">自我感知时序定位 F1@0.5</div><div>${fmtPct(s['self_temporal_loc_f1@0.5'])}</div>
-    <div class="k">自我感知时序定位 mean tIoU</div><div>${fmtPct(s['self_temporal_loc_mean_tIoU'])}</div>
-    <div class="k">次数 ±1 正确率</div><div>${fmtPct(s.count_within1_acc)}</div>
-    <div class="k">区间 F1@0.5</div><div>${fmtPct(s['segment_f1@0.5'])}</div>
-    <div class="k">环境区间 mean tIoU</div><div>${fmtPct(s['mean_best_tIoU'])}</div>
+    <div class="k">Self-State Sample Count</div><div>${esc(s.self_state_count ?? 0)}</div>
+    <div class="k">Environmental Sample Count</div><div>${esc(s.environmental_count ?? 0)}</div>
+    <div class="k">Count Exact Accuracy</div><div>${fmtPct(s.count_exact_acc)}</div>
+    <div class="k">Composite Instance Accuracy</div><div>${fmtPct(s.set_instance_acc)}</div>
+    <div class="k">Atomic Instance F1</div><div>${fmtPct(s.element_instance_f1)}</div>
+    <div class="k">Self Temporal Localization F1@0.5</div><div>${fmtPct(s['self_temporal_loc_f1@0.5'])}</div>
+    <div class="k">Self Temporal Localization mean tIoU</div><div>${fmtPct(s['self_temporal_loc_mean_tIoU'])}</div>
+    <div class="k">Count ±1 Accuracy</div><div>${fmtPct(s.count_within1_acc)}</div>
+    <div class="k">Interval F1@0.5</div><div>${fmtPct(s['segment_f1@0.5'])}</div>
+    <div class="k">Environmental mean tIoU</div><div>${fmtPct(s['mean_best_tIoU'])}</div>
   </div>`;
   const rows = data.rows || [];
   const byTask = {};
@@ -5455,7 +5544,7 @@ async function loadReportDetail() {
     return rows.map((item)=>`
       <div class="mini-card" style="margin-bottom:8px;">
         <div><strong>${esc(item.option_id || '-')}</strong> / ${esc(item.label || '-')}</div>
-        <div class="muted">区间：${renderIntervals(item.intervals_sec || [])}</div>
+        <div class="muted">Intervals: ${renderIntervals(item.intervals_sec || [])}</div>
       </div>`).join('');
   }
   document.getElementById('report_rows').innerHTML = Object.entries(byTask).map(([task, taskRows])=>{
@@ -5496,7 +5585,7 @@ async function loadReportDetail() {
       </div>`;
     }).join('');
     return `<div style="margin-bottom:16px;"><div class="section-title">${esc(task)}</div>${cards}</div>`;
-  }).join('') || '<div class="empty">暂无结果</div>';
+  }).join('') || '<div class="empty">No results available.</div>';
   renderFooter();
 }
 async function loadMetricsMatrix() {
@@ -5505,8 +5594,8 @@ async function loadMetricsMatrix() {
   const mq = globalQuery();
   const mmEl = document.getElementById('metrics_matrix');
   const pmEl = document.getElementById('metrics_progress_matrix');
-  if(mmEl) mmEl.innerHTML = '<div class="muted">加载中...</div>';
-  if(pmEl) pmEl.innerHTML = '<div class="muted">加载中...</div>';
+  if(mmEl) mmEl.innerHTML = '<div class="muted">Loading...</div>';
+  if(pmEl) pmEl.innerHTML = '<div class="muted">Loading...</div>';
   const psEl = document.getElementById('metrics_progress_summary');
   if(psEl) psEl.innerHTML = '';
   let reports = [];
@@ -5520,7 +5609,7 @@ async function loadMetricsMatrix() {
     ]);
   } catch (e) {
     const msg = esc(String((e && e.message) || e));
-    if(mmEl) mmEl.innerHTML = `<div class="warn">加载失败：${msg}</div>`;
+    if(mmEl) mmEl.innerHTML = `<div class="warn">Load failed: ${msg}</div>`;
     if(pmEl) pmEl.innerHTML = '';
     renderFooter();
     return;
@@ -5535,9 +5624,9 @@ async function loadMetricsMatrix() {
     const totalCombos = columns.length;
     const filled = rows.reduce((acc, row)=>acc + Object.values(row.combos || {}).filter((cell)=>Number(cell.count || 0) > 0).length, 0);
     summaryCards.innerHTML = `
-      <div class="stat"><div class="muted">模型数</div><div class="value">${totalModels}</div></div>
-      <div class="stat"><div class="muted">组合数</div><div class="value">${totalCombos}</div></div>
-      <div class="stat"><div class="muted">已填充单元</div><div class="value">${filled}</div></div>
+      <div class="stat"><div class="muted">Model Count</div><div class="value">${totalModels}</div></div>
+      <div class="stat"><div class="muted">Combination Count</div><div class="value">${totalCombos}</div></div>
+      <div class="stat"><div class="muted">Filled Cells</div><div class="value">${filled}</div></div>
       <div class="stat"><div class="muted">Parse Success</div><div class="value">${fmtPct(latestSummary.parse_success_rate)}</div></div>
       <div class="stat"><div class="muted">Composite</div><div class="value">${fmtPct(latestSummary.set_instance_acc)}</div></div>
       <div class="stat"><div class="muted">Atomic F1</div><div class="value">${fmtPct(latestSummary.element_instance_f1)}</div></div>
@@ -5545,12 +5634,12 @@ async function loadMetricsMatrix() {
       <div class="stat"><div class="muted">Segment F1@0.5</div><div class="value">${fmtPct(latestSummary['segment_f1@0.5'])}</div></div>
       <div class="stat"><div class="muted">Env tIoU</div><div class="value">${fmtPct(latestSummary['mean_best_tIoU'])}</div></div>
       <div class="stat"><div class="muted">Self tIoU</div><div class="value">${fmtPct(latestSummary['self_temporal_loc_mean_tIoU'])}</div></div>
-      <div class="stat"><div class="muted">统计方式</div><div class="value">${latestOnly === '1' ? 'latest only' : 'all runs'}</div></div>`;
+      <div class="stat"><div class="muted">Aggregation Mode</div><div class="value">${latestOnly === '1' ? 'latest only' : 'all runs'}</div></div>`;
   }
   const grouped = latestSummary.grouped || {};
   const groupHolder = document.getElementById('metrics_group_bars');
   function barSection(title, payload) {
-    if(!payload || Object.keys(payload).length === 0) return `<div class="muted">${title}: 暂无数据</div>`;
+    if(!payload || Object.keys(payload).length === 0) return `<div class="muted">${title}: No data available.</div>`;
     return `<div style="margin-bottom:18px;"><h3>${title}</h3><div class="bars">${Object.entries(payload).map(([name, item])=>`
       <div class="bar-row">
         <div>${esc(name)}</div>
@@ -5560,9 +5649,9 @@ async function loadMetricsMatrix() {
   }
   if(groupHolder) {
     groupHolder.innerHTML = [
-      barSection('按任务类型主指标', grouped.form),
-      barSection('按模式主指标', grouped.mode),
-      barSection('按难度主指标', grouped.difficulty_band),
+      barSection('Primary Metrics by Task Type', grouped.form),
+      barSection('Primary Metrics by Mode', grouped.mode),
+      barSection('Primary Metrics by Difficulty', grouped.difficulty_band),
     ].join('');
   }
   const groups = [];
@@ -5575,12 +5664,12 @@ async function loadMetricsMatrix() {
   const mid = groups.map((g)=>g.columns.map((c)=>`<th colspan="${(c.metrics || []).length || 0}">${esc(c.difficulty)}</th>`).join('')).join('');
   const metricLabels = {main_metric:'Main','segment_f1@0.5':'SegF1@0.5','mean_best_tIoU':'tIoU','self_temporal_loc_f1@0.5':'SelfF1@0.5','self_temporal_loc_mean_tIoU':'tIoU','bbox_acc@50iou':'BBox'};
   const bottom = columns.map((col)=>(col.metrics || []).map((key)=>`<th>${esc(metricLabels[key] || key)}</th>`).join('')).join('');
-  document.getElementById('metrics_matrix').innerHTML = `<table><thead><tr><th rowspan="3">模型</th>${top}</tr><tr>${mid}</tr><tr>${bottom}</tr></thead><tbody>${
-    rows.map((row)=>`<tr><td>${esc(row.model)}</td>${columns.map((col)=>{ const cell = row.combos?.[col.combo_id] || {}; return (col.metrics || []).map((key)=>`<td>${fmtPct(cell[key])}</td>`).join(''); }).join('')}</tr>`).join('') || `<tr><td colspan="${1 + columns.reduce((acc,col)=>acc + ((col.metrics || []).length || 0),0)}" class="empty">暂无实验结果</td></tr>`
+  document.getElementById('metrics_matrix').innerHTML = `<table><thead><tr><th rowspan="3">Model</th>${top}</tr><tr>${mid}</tr><tr>${bottom}</tr></thead><tbody>${
+    rows.map((row)=>`<tr><td>${esc(row.model)}</td>${columns.map((col)=>{ const cell = row.combos?.[col.combo_id] || {}; return (col.metrics || []).map((key)=>`<td>${fmtPct(cell[key])}</td>`).join(''); }).join('')}</tr>`).join('') || `<tr><td colspan="${1 + columns.reduce((acc,col)=>acc + ((col.metrics || []).length || 0),0)}" class="empty">No experiment results available.</td></tr>`
   }</tbody></table>`;
   const progressSummary = document.getElementById('metrics_progress_summary');
   if(progressSummary) {
-    progressSummary.innerHTML = `<div class="summary-item"><strong>总体进度</strong>：${esc(progressData.overall_completed || 0)} / ${esc(progressData.overall_total || 0)} (${fmtPct(progressData.overall_ratio)})</div>`;
+    progressSummary.innerHTML = `<div class="summary-item"><strong>Overall Progress</strong>: ${esc(progressData.overall_completed || 0)} / ${esc(progressData.overall_total || 0)} (${fmtPct(progressData.overall_ratio)})</div>`;
   }
   const progressHolder = document.getElementById('metrics_progress_matrix');
   if(progressHolder) {
@@ -5588,8 +5677,8 @@ async function loadMetricsMatrix() {
     const progressRows = progressData.rows || [];
     const head = progressScenes.map((scene)=>`<th>${esc(scene.scene_id)}</th>`).join('');
     const totalCols = 2 + progressScenes.length + 1;
-    progressHolder.innerHTML = `<table><thead><tr><th>模型</th>${head}<th>汇总</th></tr></thead><tbody>${
-      progressRows.map((row)=>`<tr><td>${esc(row.model)}</td>${progressScenes.map((scene)=>{ const cell = row.scenes?.[scene.scene_id] || {}; return `<td>${esc(cell.completed ?? 0)} / ${esc(cell.total ?? 0)} (${fmtPct(cell.ratio)})</td>`; }).join('')}<td>${esc(row.total_completed ?? 0)} / ${esc(row.total_samples ?? 0)} (${fmtPct(row.total_ratio)})</td></tr>`).join('') || `<tr><td colspan="${totalCols}" class="empty">暂无实验进度</td></tr>`
+    progressHolder.innerHTML = `<table><thead><tr><th>Model</th>${head}<th>Overall</th></tr></thead><tbody>${
+      progressRows.map((row)=>`<tr><td>${esc(row.model)}</td>${progressScenes.map((scene)=>{ const cell = row.scenes?.[scene.scene_id] || {}; return `<td>${esc(cell.completed ?? 0)} / ${esc(cell.total ?? 0)} (${fmtPct(cell.ratio)})</td>`; }).join('')}<td>${esc(row.total_completed ?? 0)} / ${esc(row.total_samples ?? 0)} (${fmtPct(row.total_ratio)})</td></tr>`).join('') || `<tr><td colspan="${totalCols}" class="empty">No experiment progress available.</td></tr>`
     }</tbody></table>`;
   }
   renderFooter();
@@ -5679,6 +5768,59 @@ loadCatalog().then(refreshAll);
     @app.get("/api/task_pipeline_tasks")
     def _api_task_pipeline_tasks() -> Any:
         return jsonify({"tasks": list_task_pipeline_tasks(workspace_root=WORKSPACE_ROOT)})
+
+    @app.get("/api/stage3_mission_catalog")
+    def _api_stage3_mission_catalog() -> Any:
+        behavior_defaults = _load_stage3_behavior_defaults()
+        mission_rows = []
+        for key, spec in SET_LIBRARY.items():
+            step_rows = [dict(x) for x in list(spec.get("element_steps", []) or []) if isinstance(x, dict)]
+            sequence = [str(x) for x in list(spec.get("element_template", []) or [])]
+            if step_rows:
+                sequence = [str(row.get("element_class", "") or "") for row in step_rows if str(row.get("element_class", "") or "").strip()]
+            mission_rows.append(
+                {
+                    "mission_key": key,
+                    "mission_family": "flight_set",
+                    "mission_type": str(spec.get("display_name", "") or ""),
+                    "mission_subtype": str(key),
+                    "service_scenario": str(spec.get("scope", "") or ""),
+                    "sequence": sequence,
+                    "element_steps": step_rows,
+                    "mode_steps": [{"mode_key": str(x), "target": "primary"} for x in sequence],
+                    "description": str(spec.get("description", "") or ""),
+                    "generation_notes": f"scope={spec.get('scope', '')} allow_revisit={spec.get('allow_revisit', False)}",
+                    "multi_landmark_component": bool(spec.get("multi_landmark_component", False)),
+                }
+            )
+        behavior_rows = []
+        for key in sorted(ELEMENT_LIBRARY):
+            spec = dict(ELEMENT_LIBRARY.get(key, {}) or {})
+            row = {"behavior_id": key}
+            row.update(spec)
+            behavior_rows.append(row)
+        return jsonify(
+            {
+                "missions": mission_rows,
+                "behaviors": behavior_rows,
+                "families": sorted({row["mission_family"] for row in mission_rows if row["mission_family"]}),
+                "service_scenarios": sorted({row["service_scenario"] for row in mission_rows if row["service_scenario"]}),
+                "behavior_defaults": behavior_defaults,
+                "behavior_defaults_path": str(COMMON_STAGE_CONFIG_PATH),
+            }
+        )
+
+    @app.post("/api/stage3_behavior_defaults")
+    def _api_stage3_behavior_defaults() -> Any:
+        payload = request.json or {}
+        set_key = str(payload.get("set_key", "") or "").strip()
+        profile = dict(payload.get("profile", {}) or {}) if isinstance(payload.get("profile", {}), dict) else {}
+        if not set_key:
+            return jsonify({"error": "set_key_required"}), 400
+        existing = _load_stage3_behavior_defaults()
+        existing[set_key] = profile
+        path = _write_stage3_behavior_defaults(existing)
+        return jsonify({"ok": True, "config_path": str(path), "set_key": set_key})
 
     @app.get("/api/stage3_task_state")
     def _api_stage3_task_state() -> Any:
