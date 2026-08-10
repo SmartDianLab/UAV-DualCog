@@ -24,10 +24,6 @@ Northwestern Polytechnical University
 <strong>The 40th Annual AAAI Conference on Artificial Intelligence (AAAI-26)</strong>
 </div>
 
-# UAV-DualCog Official Code Package
-
-This is the official code package for **UAV-DualCog**.
-
 <p align="center">
   <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
 </p>
