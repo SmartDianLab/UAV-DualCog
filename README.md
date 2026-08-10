@@ -1,6 +1,31 @@
+<!-- <p align="center">
+    <img src="assets/a-logo-representing - omnicreator - -a-powerful-ai-t.png" width="150" style="margin-bottom: 0.2;"/>
+<p> -->
+<h2 align="center"> Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs</h2>
+<!-- ![](./assets/logo_long.png#gh-light-mode-only){: width="50%"} -->
+<!-- ![](./assets/logo_long_dark.png#gh-dark-mode-only=100x20) -->
+<div align="center">
+<!-- <img src='assets/logo_long.png' style="height:100px"></img> -->
+
+
+
+
+_**[Like Liu](https://likeliu.com),Zhengzheng Xu,Haitao He,Hongzhe Li,Shuchang Zhang,[Dian Shao](https://scholar.google.com/citations?user=amxDSLoAAAAJ&hl=en)<sup>†</sup>**_
+<br><br>
+<sup>†</sup>Corresponding Author
+<br>
+Northwestern Polytechnical University
+
+<h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for latest update.  </h2>
+ <a href='https://arxiv.org/abs/2607.16193'><img src='https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg'></a> &nbsp;
+ <a href='https://uav-dualcog.lozumi.com/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; 
+ <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-Orange'></a> &nbsp; 
+<br>
+<strong>The 40th Annual AAAI Conference on Artificial Intelligence (AAAI-26)</strong>
+</div>
 # UAV-DualCog Official Code Package
 
-This is the official code package for **UAV-DualCog**. The corresponding paper is currently under peer review, and this release is made public under a single-blind policy.
+This is the official code package for **UAV-DualCog**.
 
 <p align="center">
   <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
@@ -789,6 +814,21 @@ python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualco
 ```
 
 These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.
+
+## Citing
+If you use FineCog-Nav in your research, please cite the following paper:
+
+```
+@misc{liu2026uavdualcog,
+      title={Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs}, 
+      author={Like Liu and Zhengzheng Xu and Haitao He and Hongzhe Li and Shuchang Zhang and Dian Shao},
+      year={2026},
+      eprint={2607.16193},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2607.16193}, 
+}
+```
 
 ## Acknowledgement
 
