@@ -20,9 +20,12 @@ Northwestern Polytechnical University
  <a href='https://arxiv.org/abs/2607.16193'><img src='https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg'></a> &nbsp;
  <a href='https://uav-dualcog.lozumi.com/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; 
  <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-orange'></a> &nbsp; 
+ <a href='https://github.com/SmartDianLab/UAV-DualCog'><img src='https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog'></a> &nbsp;  
 <br>
 <strong>arXiv 2026</strong>
 </div>
+
+# UAV-DualCog Official Code Package
 
 This is the official code package for **UAV-DualCog**.
 
