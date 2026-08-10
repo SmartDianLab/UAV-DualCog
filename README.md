@@ -21,8 +21,10 @@ Northwestern Polytechnical University
  <a href='https://uav-dualcog.lozumi.com/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; 
  <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-orange'></a> &nbsp; 
 <br>
-<strong>The 40th Annual AAAI Conference on Artificial Intelligence (AAAI-26)</strong>
+<strong>arXiv 2026</strong>
 </div>
+
+This is the official code package for **UAV-DualCog**.
 
 <p align="center">
   <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
