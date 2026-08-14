@@ -7,9 +7,6 @@
 <div align="center">
 <!-- <img src='assets/logo_long.png' style="height:100px"></img> -->
 
-
-
-
 _**[Like Liu](https://likeliu.com), Zhengzheng Xu, Haitao He, Hongzhe Li, Shuchang Zhang, [Dian Shao](https://scholar.google.com/citations?user=amxDSLoAAAAJ&hl=en)<sup>†</sup>**_
 <br><br>
 <sup>†</sup>Corresponding Author
@@ -21,8 +18,6 @@ Northwestern Polytechnical University
  <a href='https://uav-dualcog.lozumi.com/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; 
  <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-orange'></a> &nbsp; 
  <a href='https://github.com/SmartDianLab/UAV-DualCog'><img src='https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog'></a> &nbsp;  
-<br>
-<strong>arXiv 2026</strong>
 </div>
 
 # UAV-DualCog Official Code Package
