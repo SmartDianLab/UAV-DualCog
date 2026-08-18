@@ -11,7 +11,7 @@ _**[Like Liu](https://likeliu.com), Zhengzheng Xu, Haitao He, Hongzhe Li, Shucha
 <br><br>
 <sup>†</sup>Corresponding Author
 <br>
-Northwestern Polytechnical University
+Northwestern Polytechnical University, China University of Petroleum
 
 <h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for latest update.  </h2>
  <a href='https://arxiv.org/abs/2607.16193'><img src='https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg'></a> &nbsp;
