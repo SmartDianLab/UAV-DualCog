@@ -32,7 +32,7 @@ This is the official code package for **UAV-DualCog**.
 - Website: https://uav-dualcog.lozumi.com/
 - Code repo: https://github.com/SmartDianLab/UAV-DualCog
 - Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
-- Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog (preparing)
+- Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
 For benchmark definitions, leaderboard interpretation, and detailed supplementary explanations, please read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Usage.
