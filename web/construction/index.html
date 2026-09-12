@@ -1,0 +1,1198 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Construction | UAV-DualCog</title><meta name="description" content="Benchmark for aerial multiview spatiotemporal dual cognition across image and video tasks."><link rel="icon" type="image/png" href="/UAV-Dual-Cognition-Reasoning-Benchmark/media/title.png"><link rel="stylesheet" href="/UAV-Dual-Cognition-Reasoning-Benchmark/_astro/analysis.CKWcNMeU.css"></head> <body id="top"> <header class="site-header"> <div class="shell header-inner"> <a href="/UAV-Dual-Cognition-Reasoning-Benchmark/" class="brand"> <img class="brand-mark" src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/title.png" alt="UAV-DualCog"> </a> <nav class="nav"> <a href="/UAV-Dual-Cognition-Reasoning-Benchmark/" class> Home </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark" class> Benchmark </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/construction" class="is-active" aria-current="page"> Construction </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/evaluation" class> Evaluation </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/leaderboard" class> Leaderboard </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/analysis" class> Analysis </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/training" class> Training </a><a href="/UAV-Dual-Cognition-Reasoning-Benchmark/usage" class> Usage </a> </nav> </div> </header> <aside class="page-sidebar"> <div class="page-sidebar-inner"> <p class="page-sidebar-title">CONTENT</p> <nav class="page-sidebar-nav" aria-label="CONTENT"> <a href="#funnel" class="page-sidebar-link" data-section="funnel"> Release Funnel </a><a href="#pipeline" class="page-sidebar-link" data-section="pipeline"> Pipeline Architecture </a><a href="#susp" class="page-sidebar-link" data-section="susp"> SUSP Simulation Platform </a><a href="#stage1" class="page-sidebar-link" data-section="stage1"> Stage 1 · Scene Scanning </a><a href="#stage2" class="page-sidebar-link" data-section="stage2"> Stage 2 · Landmark Review </a><a href="#dccs" class="page-sidebar-link" data-section="dccs"> DCCS Capture System </a><a href="#stage3" class="page-sidebar-link" data-section="stage3"> Stage 3 · Video Module </a><a href="#stage4" class="page-sidebar-link" data-section="stage4"> Stage 4 · Image Module </a><a href="#reproduce" class="page-sidebar-link" data-section="reproduce"> Reproducibility </a> </nav> </div> </aside> <main class="shell main-content">  <section class="page-hero"> <p class="eyebrow">Construction</p> <h1>Dataset Construction Pipeline</h1> <p class="lede">
+Scene assets are transformed into reviewed landmarks, then into image and video benchmark
+      tasks through a stage-by-stage pipeline with explicit handoff files and quality-control
+      points.
+</p> </section> <nav class="section-nav-grid" aria-label="Page sections"><a class="section-link-card" href="#funnel"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4 8h6l2 3 3-5 3 9 2-4h6M4 18h16"></path> </svg></span><span class="section-link-copy"><strong>Release Funnel</strong><small>How raw assets are filtered into the released benchmark split.</small></span></a><a class="section-link-card" href="#pipeline"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4 6.5h16M4 12h16M4 17.5h10M15.5 15.5l4 4M19.5 15.5l-4 4"></path> </svg></span><span class="section-link-copy"><strong>Pipeline Architecture</strong><small>Two-layer design connecting simulation substrate with task capture modules.</small></span></a><a class="section-link-card" href="#susp"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M8 8.5 4.5 12 8 15.5M16 8.5 19.5 12 16 15.5M13.5 5.5 10.5 18.5"></path> </svg></span><span class="section-link-copy"><strong>SUSP Platform (Stages 1–2)</strong><small>Unified simulation APIs, sensor sync, scene scanning, and reviewed landmarks.</small></span></a><a class="section-link-card" href="#dccs"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 6.5h10l4 4v8A2 2 0 0 1 17 20.5H7A2 2 0 0 1 5 18.5v-12A2 2 0 0 1 7 4.5h8M15 4.5v6h6"></path> </svg></span><span class="section-link-copy"><strong>DCCS System (Stages 3–4)</strong><small>Trajectory kinematics, verification workflows, and image/video task synthesis.</small></span></a><a class="section-link-card" href="#reproduce"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 18.5h14M6 15.5V9.5M10 15.5V5.5M14 15.5v-3M18 15.5V7.5"></path> </svg></span><span class="section-link-copy"><strong>Reproducibility</strong><small>How the released pipeline remains reconstructable from explicit handoffs.</small></span></a></nav> <section class="section-divider" id="funnel"> <div class="section-head"> <p class="section-kicker">Release Funnel</p> <h2>From Raw Capture to Released Tasks</h2> <p class="sublede">
+These counts come from the current release statistics and summarize how raw scene assets are
+        narrowed into the released split.
+        The public benchmark release preserves explicit stage-by-stage counts, input-output
+        handoff files, and standardized media contracts.
+</p> </div> <div class="article-block" style="margin-bottom: 22px;"> <p>
+The funnel below should be read as a quality-controlled release path rather than a simple
+        downsampling process. UAV-DualCog first starts from a broader reviewed scene pool, then
+        progressively restricts that pool through landmark validation, task construction
+        constraints, and benchmark split selection until the public release retains only the rows
+        that satisfy the intended evaluation contract.
+</p> <p>
+In practice, the largest reductions do not come from rendering image or video tasks
+        themselves, but from the earlier stages that determine whether a scene is suitable for
+        release, whether a landmark is sufficiently stable and recognizable, and whether a mission
+        or observation should be exposed as benchmark-facing media. This is why the left-hand funnel
+        is best interpreted as evidence of curation rigor: each retained count already reflects
+        review, filtering, and release-boundary decisions rather than raw generation volume alone.
+</p> <p>
+The Stage Snapshot on the right complements these counts by summarizing the media contract
+        that the released benchmark actually exposes. Together, the funnel and the snapshot explain
+        both <em>how much</em> data survives each stage and <em>what form</em> that surviving data
+        takes once it reaches public use, including image resolution, frame sampling, aspect-ratio
+        consistency, and compression policy. Unlike many earlier embodied QA benchmarks that only
+        release relatively low-resolution observations, UAV-DualCog preserves 4K-grade source
+        imagery and adopts the internationally standardized DCI 4K 4:3 setting, which is also
+        compatible with mainstream UAV capture configurations such as DJI Mavic 4 Pro. This allows
+        the same release to support evaluation under multiple resolution settings: researchers may
+        retain the original high-resolution assets for fine spatial reasoning tests or derive
+        lower-resolution variants for controlled efficiency comparisons without changing benchmark
+        semantics.
+</p> </div> <div class="article-grid tight"> <section class="stack"> <div class="section-head"> <h2>Construction Funnel</h2> <p class="sublede">Counts exported from the current release statistics.</p> </div> <article class="chart-panel"> <div class="bar-list"> <div class="bar-row"> <div class="bar-meta"> <strong>Raw Landmark Candidates</strong> <span>2626.00</span> </div> <div class="bar-track"> <div class="bar-fill" style="width:64.111328125%"></div> </div> <div class="bar-note">Stage 1 + Stage 2 candidate pool</div> </div><div class="bar-row"> <div class="bar-meta"> <strong>Reviewed Valid Landmarks</strong> <span>746.00</span> </div> <div class="bar-track"> <div class="bar-fill" style="width:18.212890625%"></div> </div> <div class="bar-note">After review keep/discard and semantic annotation</div> </div><div class="bar-row"> <div class="bar-meta"> <strong>Released Split Landmarks</strong> <span>512.00</span> </div> <div class="bar-track"> <div class="bar-fill" style="width:12.5%"></div> </div> <div class="bar-note">Landmarks selected into UAV-DualCog</div> </div><div class="bar-row"> <div class="bar-meta"> <strong>Stage 4 Samples</strong> <span>4096.00</span> </div> <div class="bar-track"> <div class="bar-fill" style="width:100%"></div> </div> <div class="bar-note">Image QA rows exported from the released split</div> </div><div class="bar-row"> <div class="bar-meta"> <strong>Stage 3 Samples</strong> <span>2048.00</span> </div> <div class="bar-track"> <div class="bar-fill" style="width:50%"></div> </div> <div class="bar-note">Video benchmark rows exported from the released split</div> </div> </div> </article> <p class="table-note"> <strong>Construction Funnel.</strong> The largest reductions happen before the benchmark rows are finalized: scene review narrows the raw environment pool first, then landmark validation and task-side filtering further trim the candidate space before public export. By the time the release reaches 512 landmarks, 4096 image rows, and 2048 video rows, each retained item has already passed multiple rounds of geometric, semantic, and release-boundary screening rather than simple random subsampling. </p> </section> <section class="stack"> <div class="section-head"> <h2>Stage Snapshot</h2> <p class="sublede">The construction chain stays compact because each stage has a narrow role and a concrete handoff artifact.</p> </div> <div class="stat-grid"> <article class="card stat-card"> <div class="stat-value">DCI 4K</div> <div class="stat-label">Image &amp; Frame Capture</div> <p>4096×3072 for both video-task frame capture and image-task asset rendering</p> </article><article class="card stat-card"> <div class="stat-value">4:3</div> <div class="stat-label">Aspect Ratio</div> <p>used consistently across released media and aligned with common UAV capture settings</p> </article><article class="card stat-card"> <div class="stat-value">JPEG quality 80</div> <div class="stat-label">Compression Policy</div> <p>balances image quality and file size in the public release</p> </article><article class="card stat-card"> <div class="stat-value">1080P</div> <div class="stat-label">Stage 3 Video</div> <p>1440x1080 · 10 Mbps · H.264 / MP4 · YUV420p, with on-demand resolution support up to 4096×3072</p> </article><article class="card stat-card"> <div class="stat-value">10 FPS</div> <div class="stat-label">Video Frame Rate</div> <p>captures rapid action changes while remaining practical for MLLM temporal reasoning</p> </article> </div> </section> </div> </section> <section class="section-divider" id="pipeline"> <a id="platform"></a> <a id="stages"></a> <div class="section-head"> <p class="section-kicker">Pipeline Architecture</p> <h2>A state-aware platform supports two DualCog-aware capture modules</h2> <p class="sublede">
+The construction pipeline adopts a two-layer decoupled design: the
+<strong>State-aware UAV Simulation Platform (SUSP)</strong> consolidates scene scanning and
+        landmark-asset construction through AirSim extensions for pose, camera, coordinates,
+        semantic point clouds, visibility, and collision state. The
+<strong>DualCog-aware Capture System (DCCS)</strong> then branches into an image module driven
+        by multiview landmark structure and a video module driven by hierarchical flight patterns.
+        The four concrete construction stages are organized under these two foundational layers.
+</p> </div> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/paper/fig_benchmark_construction_process.jpg" data-lightbox-alt="UAV-DualCog construction pipeline figure" aria-label="Open enlarged image: UAV-DualCog construction pipeline figure"> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/paper/fig_benchmark_construction_process.jpg" alt="UAV-DualCog construction pipeline figure" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Construction Pipeline.</strong>  The State-aware UAV Simulation Platform (SUSP) produces reusable synchronized landmark assets for the image and video modules of the DualCog-aware Capture System (DCCS). </figcaption> </figure> <div class="metric-grid"> <article class="metric-strip"> <p class="section-kicker">STAGE1</p> <h3>Scene Point-Cloud Collection and Semantic Fusion</h3> <p>Build a scene-level geometric backbone aligned with RGB, segmentation, LiDAR, and pose data.</p> <p><strong>Inputs.</strong> Scene config, sampled poses, simulator-side RGB/segmentation/LiDAR streams</p> <p><strong>Outputs.</strong> scene_data/&lt;scene&gt;/pcd_map/*.pcd; semantic_lidar_compact.npy; instance-aware fusion metadata</p> </article><article class="metric-strip"> <p class="section-kicker">STAGE2</p> <h3>Landmark Review and Semantic Annotation</h3> <p>Turn the fused scene cloud into a reviewed, semantically named landmark pool.</p> <p><strong>Inputs.</strong> Fused semantic / instance clouds; multiview RGB evidence; review state</p> <p><strong>Outputs.</strong> landmarks_raw/; landmarks_review/; valid_instances.json</p> </article><article class="metric-strip"> <p class="section-kicker">STAGE3</p> <h3>Behavior-Driven Video Task Generation</h3> <p>Compose missions, repair trajectories, render benchmark videos, and export video manifests and metrics.</p> <p><strong>Inputs.</strong> valid_instances.json; atomic/composite behavior templates; collision-aware render config</p> <p><strong>Outputs.</strong> stage3_tasks/missions/*/final_task; stage3 manifests; parsed predictions and metrics CSV</p> </article><article class="metric-strip"> <p class="section-kicker">STAGE4</p> <h3>Image QA Generation, Render-Only Asset Refresh, and Evaluation</h3> <p>Sample structured image QA rows and keep assets refreshable without changing task semantics.</p> <p><strong>Inputs.</strong> valid_instances.json; view-definition rules; difficulty filters; render_requests sidecars</p> <p><strong>Outputs.</strong> qa/manifests; qa/render_requests; qa/assets; stage4 metrics CSV</p> </article> </div> </section> <section class="section-divider" id="susp"> <div class="section-head"> <p class="section-kicker">Layer 1 · Simulation Platform</p> <h2>State-aware UAV Simulation Platform (SUSP)</h2> <p class="sublede">
+The <strong>State-aware UAV Simulation Platform (SUSP)</strong> extends the AirSim simulation engine
+        to expose unified simulation APIs, microsecond-accurate sensor synchronization, physically bounded trajectory
+        generation, and multi-stage verification workflows that ground the <strong>DualCog-aware Capture System (DCCS)</strong>.
+        to expose unified simulation APIs, microsecond-accurate sensor synchronization, and high-fidelity point cloud
+        scanning that anchor Stage 1 (Scene Scanning) and Stage 2 (Landmark Extraction).
+</p> </div> <div class="reading-grid"> <article class="article-block"> <p class="section-kicker">Simulation APIs (SUSP)</p> <h3>Unified Telemetry, Sensor, and Physics Interfaces</h3> <p>
+Built upon an extended AirSim backend in Unreal Engine 5, SUSP provides a unified Python RPC interface that isolates
+          the simulator's underlying physics state from task generation logic:
+</p> <ul style="margin: 12px 0 16px 20px; line-height: 1.6;"> <li><strong>6-DoF Kinematic State (<code>getMultirotorState()</code> / <code>simGetVehiclePose()</code>):</strong> Returns position <code>p = [x, y, z]</code>, orientation quaternion <code>q = [w, x, y, z]</code>, linear velocity <code>v</code>, angular velocity <code>&omega;</code>, and linear acceleration <code>a</code> in NED coordinates at 50 Hz.</li> <li><strong>Camera Intrinsics & Extrinsics (<code>simGetCameraInfo()</code>):</strong> Exposes pinhole calibration matrices <code>K &in; &Ropf;<sup>3&times;3</sup></code> (horizontal FOV 90&deg;, focal length <code>f<sub>x</sub> = f<sub>y</sub></code>, principal point <code>[c<sub>x</sub>, c<sub>y</sub>]</code>) and relative 6-DoF mount extrinsics <code>[R<sub>cam</sub> | t<sub>cam</sub>]</code>.</li> <li><strong>Multimodal Visual Streams (<code>simGetImages()</code>):</strong> Synchronously queries RGB framebuffers, pixel-aligned depth maps, surface normal vectors, and ground-truth semantic instance masks.</li> <li><strong>3D LiDAR Point Cloud (<code>simGetLidarData()</code>):</strong> Captures 32-channel laser scans with point coordinates <code>[x, y, z]</code>, intensity values, and attached object instance segmentation IDs.</li> <li><strong>Collision & Proximity Detection (<code>simGetCollisionInfo()</code>):</strong> Real-time geometric collision testing against environment mesh surfaces, returning contact normals, penetration depths, and collision object names.</li> </ul> </article> <article class="article-block"> <p class="section-kicker">Sensor Synchronization</p> <h3>Microsecond Temporal Coherence Across Modalities</h3> <p>
+To prevent temporal aliasing or drift between video frames, LiDAR clouds, and spatial telemetry, SUSP enforces a
+          strict simulation-epoch clock synchronization protocol:
+</p> <div class="table-wrap"> <table> <thead> <tr> <th>Sensor Stream</th> <th>Rate</th> <th>Resolution / Specs</th> <th>Sync Protocol</th> </tr> </thead> <tbody> <tr> <td><strong>RGB Camera</strong></td> <td>10 FPS</td> <td>DCI 4K (4096&times;3072) / 1080P</td> <td>Unified epoch timestamp &tau;, frame-locked physics tick</td> </tr> <tr> <td><strong>3D LiDAR</strong></td> <td>20 Hz</td> <td>32 channels, 360&deg; FOV, 100m range</td> <td>Rotational sweep timestamp alignment</td> </tr> <tr> <td><strong>IMU & State</strong></td> <td>50 Hz</td> <td>6-DoF pose, velocity, acceleration</td> <td>Sub-millisecond hardware-sim clock interpolation</td> </tr> <tr> <td><strong>Instance Mask</strong></td> <td>10 FPS</td> <td>Exact pixel-aligned with RGB</td> <td>Buffer-swapped simultaneously with RGB render pass</td> </tr> </tbody> </table> </div> <p class="table-note" style="margin-top: 8px;">
+All multimodal sensor packets are stamped with unified simulation epoch time &tau;, guaranteeing zero-drift
+          temporal coherence across RGB, LiDAR, and state metadata.
+</p> </article> </div> <div class="stack construction-stage-stack" style="margin-top: 28px;"> <section class="construction-stage-panel" id="stage1"> <p class="section-kicker">Stage 1 · SUSP Scene Scanning</p> <h2>Scene Point-Cloud Collection and Semantic Fusion</h2> <p class="sublede">Build a scene-level geometric backbone aligned with RGB, segmentation, LiDAR, and pose data.</p> <p>
+Stage 1 starts from the simulator scene itself together with the runtime configuration
+          that defines sensor settings, sampling bounds, altitude, and pose coverage. The goal is
+          not to generate benchmark questions directly, but to reconstruct a
+<strong>stable scene-level geometric backbone</strong> that later stages can mine
+          repeatedly without returning to image space.
+</p> <p>
+In the current implementation, this stage follows the same logic described in the paper:
+          multi-pose sampling, raw chunk capture, and global semantic fusion. RGB, segmentation,
+          LiDAR, and pose metadata are captured at every sampled pose, then transformed into a
+          unified scene coordinate system so that semantic and instance identities remain attached
+          to the fused point cloud. The result is a scene-scale representation that Stage 2 can
+          split directly into landmark candidates rather than re-detecting objects from scratch.
+</p> <p>
+The key output of Stage 1 is therefore not a benchmark row but a
+<strong>geometric substrate</strong>. By the time this stage finishes, every released
+          scene already has a stable map boundary, fused point cloud, global coordinate system, and
+          scan preview record. That <strong>shared spatial backbone</strong> is what lets later
+          stages reason about landmark visibility, relative position, orbit feasibility, and scene
+          coverage without repeatedly solving low-level mapping problems.
+</p> <div class="article-grid tight" style="margin-top: 18px;"> <article class="article-block"> <p class="section-kicker">Inputs</p> <p>
+Scene configs define <code>MapBound</code>, altitude, yaw sweep, and runtime capture
+              parameters; each sampled pose records synchronized RGB, segmentation, LiDAR, and pose
+              metadata.
+</p> </article> <article class="article-block"> <p class="section-kicker">Core Transform</p> <p>
+Raw chunks are fused into a scene-scale semantic point cloud while preserving
+              semantic and instance identities, so Stage 2 can aggregate landmark candidates
+              directly from geometry-aware assets.
+</p> </article> <article class="article-block"> <p class="section-kicker">Outputs</p> <p>
+The released handoff is a set of scene-scale assets such as fused point-cloud files,
+              scan preview media, and scene metadata that keep Stage 1 coverage auditable before
+              landmark mining begins.
+</p> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark#stats">Open Benchmark Scene Coverage →</a> </div> </article> <article class="article-block"> <p class="section-kicker">Reproduce</p> <div class="schema-block">python scripts/flightmvstg/stage1_collect_pcd.py --config configs/flightmvstg/task_airsim_env_7.yaml --mode all --scene-id env_7 --engine airsim</div> </article> </div> <p style="margin-top: 18px;">
+The scene scanning library below exposes benchmark-facing panoramas for the released test
+          scenes while keeping Stage 1 metadata visible. Each entry now combines two released RGB
+          scene snapshots with two segmented point-cloud panoramas rendered in top-down and oblique
+          views, together with the configured scene boundary, mapped area, and the complete
+          unscreened landmark-candidate count that Stage 2 begins from.
+</p> <section class="stack">  <article class="chart-panel scene-library-gallery scene-scanning-library-shell" id="construction-scene-scanning-library">  <div class="showcase-gallery-meta"> <h4 id="construction-scene-scanning-library-title">ENV 7 · Waterfront City</h4> <p class="gallery-meta-line">Two RGB scene snapshots + two segmented point-cloud panoramas + Stage 2 raw candidate pool</p> <div class="showcase-meta-grid"> <div> <strong>Scene Boundary</strong> <span id="construction-scene-scanning-library-boundary">x[-219, 191] · y[-270, 268] · z[-50, 52]</span> </div> <div> <strong>Mapped Area</strong> <span id="construction-scene-scanning-library-area">220580 m²</span> </div> <div> <strong>Raw Landmark Candidates</strong> <span id="construction-scene-scanning-library-raw">167</span> </div> <div> <strong>Reviewed Valid Landmarks</strong> <span id="construction-scene-scanning-library-valid">86</span> </div> </div> </div> <div class="scene-library-media"> <div class="scene-library-grid scene-scanning-grid" id="construction-scene-scanning-library-grid"> <figure class="scene-library-card scene-scanning-card"> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-1.jpg" alt="ENV 7 · Waterfront City RGB Top-Down Panorama" loading="lazy"> <figcaption>RGB Top-Down Panorama</figcaption> </figure><figure class="scene-library-card scene-scanning-card"> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-2.jpg" alt="ENV 7 · Waterfront City RGB Oblique Panorama" loading="lazy"> <figcaption>RGB Oblique Panorama</figcaption> </figure><figure class="scene-library-card scene-scanning-card"> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-top.png" alt="ENV 7 · Waterfront City Segmented Point Cloud Top-Down" loading="lazy"> <figcaption>Segmented Point Cloud Top-Down</figcaption> </figure><figure class="scene-library-card scene-scanning-card"> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-oblique.png" alt="ENV 7 · Waterfront City Segmented Point Cloud Oblique" loading="lazy"> <figcaption>Segmented Point Cloud Oblique</figcaption> </figure> </div> <div class="showcase-gallery-controls"> <button type="button" class="button button-secondary" id="construction-scene-scanning-library-prev">Previous</button> <span id="construction-scene-scanning-library-counter">1 / 12</span> <button type="button" class="button button-secondary autoplay-toggle is-on" id="construction-scene-scanning-library-autoplay">Auto-play: On</button> <button type="button" class="button button-secondary" id="construction-scene-scanning-library-next">Next</button> </div> </div>  </article> </section> <script type="application/json" id="construction-scene-scanning-library-data">[{"scene_id":"env_7","label":"ENV 7 · Waterfront City","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-oblique.png"}],"boundary":"x[-219, 191] · y[-270, 268] · z[-50, 52]","area_m2":220580,"raw_landmark_candidates":167,"reviewed_valid_landmarks":86},{"scene_id":"env_8","label":"ENV 8 · Southern Village","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s8-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s8-oblique.png"}],"boundary":"x[-207, 221] · y[-334, 332] · z[-45, 42]","area_m2":285048,"raw_landmark_candidates":7,"reviewed_valid_landmarks":4},{"scene_id":"env_9","label":"ENV 9 · Industrial Zone","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s9-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s9-oblique.png"}],"boundary":"x[-235, 223] · y[-235, 203] · z[-48, 69]","area_m2":200604,"raw_landmark_candidates":114,"reviewed_valid_landmarks":48},{"scene_id":"env_10","label":"ENV 10 · Riverside Town","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s10-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s10-oblique.png"}],"boundary":"x[-118, 121] · y[-650, 650] · z[-50, 49]","area_m2":310700,"raw_landmark_candidates":107,"reviewed_valid_landmarks":48},{"scene_id":"env_11","label":"ENV 11 · Nighttime City","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s11-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s11-oblique.png"}],"boundary":"x[-186, 119] · y[-196, 194] · z[-50, 47]","area_m2":118950,"raw_landmark_candidates":256,"reviewed_valid_landmarks":56},{"scene_id":"env_13","label":"ENV 13 · European Town","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s13-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s13-oblique.png"}],"boundary":"x[-552, 550] · y[-209, 209] · z[-50, 49]","area_m2":460636,"raw_landmark_candidates":36,"reviewed_valid_landmarks":8},{"scene_id":"env_16","label":"ENV 16 · Modern Metropolis","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s16-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s16-oblique.png"}],"boundary":"x[-228, 275] · y[-371, 454] · z[-50, 64]","area_m2":414975,"raw_landmark_candidates":524,"reviewed_valid_landmarks":126},{"scene_id":"env_17","label":"ENV 17 · Rail Station","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s17-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s17-oblique.png"}],"boundary":"x[-271, 271] · y[-315, 318] · z[-50, 41]","area_m2":343086,"raw_landmark_candidates":101,"reviewed_valid_landmarks":8},{"scene_id":"env_20","label":"ENV 20 · Abandoned Port","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s20-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s20-oblique.png"}],"boundary":"x[-180, 188] · y[-204, 200] · z[-50, 39]","area_m2":148672,"raw_landmark_candidates":232,"reviewed_valid_landmarks":61},{"scene_id":"env_21","label":"ENV 21 · Container Wharf","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s21-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s21-oblique.png"}],"boundary":"x[-146, 236] · y[-358, 277] · z[-50, 55]","area_m2":242570,"raw_landmark_candidates":48,"reviewed_valid_landmarks":16},{"scene_id":"env_23","label":"ENV 23 · Japanese City","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s23-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s23-oblique.png"}],"boundary":"x[-96, 97] · y[-150, 150] · z[-50, 56]","area_m2":57900,"raw_landmark_candidates":141,"reviewed_valid_landmarks":41},{"scene_id":"env_24","label":"ENV 24 · Hong Kong City","images":[{"label":"RGB Top-Down Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-1.jpg"},{"label":"RGB Oblique Panorama","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-2.jpg"},{"label":"Segmented Point Cloud Top-Down","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s24-top.png"},{"label":"Segmented Point Cloud Oblique","url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s24-oblique.png"}],"boundary":"x[-400, 400] · y[-400, 400] · z[0, 100]","area_m2":640000,"raw_landmark_candidates":12,"reviewed_valid_landmarks":10}]</script> <script>(function(){const idPrefix = "construction-scene-scanning-library";
+
+  (() => {
+    const dataNode = document.getElementById(`${idPrefix}-data`);
+    let scenes = [];
+    try {
+      scenes = dataNode ? JSON.parse(dataNode.textContent || "[]") : [];
+    } catch {
+      scenes = [];
+    }
+    if (!Array.isArray(scenes) || scenes.length === 0) return;
+
+    let currentIndex = 0;
+    const grid = document.getElementById(`${idPrefix}-grid`);
+    const counter = document.getElementById(`${idPrefix}-counter`);
+    const title = document.getElementById(`${idPrefix}-title`);
+    const boundary = document.getElementById(`${idPrefix}-boundary`);
+    const area = document.getElementById(`${idPrefix}-area`);
+    const raw = document.getElementById(`${idPrefix}-raw`);
+    const valid = document.getElementById(`${idPrefix}-valid`);
+    const autoplayButton = document.getElementById(`${idPrefix}-autoplay`);
+    let autoplayEnabled = true;
+    let timer = null;
+
+    const stopTimer = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const updateAutoplayButton = () => {
+      if (!autoplayButton) return;
+      autoplayButton.textContent = `Auto-play: ${autoplayEnabled ? "On" : "Off"}`;
+      autoplayButton.classList.toggle("is-on", autoplayEnabled);
+      autoplayButton.classList.toggle("is-off", !autoplayEnabled);
+    };
+
+    const startTimer = () => {
+      stopTimer();
+      if (!autoplayEnabled || scenes.length <= 1) return;
+      timer = window.setInterval(() => {
+        currentIndex = (currentIndex + 1) % scenes.length;
+        render();
+      }, 2800);
+    };
+
+    const render = () => {
+      const item = scenes[currentIndex];
+      if (!item || !grid) return;
+      grid.innerHTML = (item.images || [])
+        .map(
+          (image) => `
+            <figure class="scene-library-card scene-scanning-card">
+              <img src="${image.url}" alt="${item.label} ${image.label}" loading="lazy" />
+              <figcaption>${image.label}</figcaption>
+            </figure>
+          `,
+        )
+        .join("");
+      if (counter) counter.textContent = `${currentIndex + 1} / ${scenes.length}`;
+      if (title) title.textContent = item.label || "";
+      if (boundary) boundary.textContent = item.boundary || "-";
+      if (area) area.textContent = `${Number(item.area_m2 || 0).toFixed(0)} m²`;
+      if (raw) raw.textContent = String(item.raw_landmark_candidates ?? 0);
+      if (valid) valid.textContent = String(item.reviewed_valid_landmarks ?? 0);
+    };
+
+    document.getElementById(`${idPrefix}-prev`)?.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + scenes.length) % scenes.length;
+      render();
+    });
+    document.getElementById(`${idPrefix}-next`)?.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % scenes.length;
+      render();
+    });
+    autoplayButton?.addEventListener("click", () => {
+      autoplayEnabled = !autoplayEnabled;
+      updateAutoplayButton();
+      startTimer();
+    });
+    document.getElementById(idPrefix)?.addEventListener("mouseenter", stopTimer);
+    document.getElementById(idPrefix)?.addEventListener("mouseleave", startTimer);
+    updateAutoplayButton();
+    startTimer();
+  })();
+})();</script> <p class="table-note" style="margin-top: 18px;"> <strong>Scene Scanning Library.</strong> Two benchmark-facing RGB scene snapshots and
+          two segmented point-cloud panoramas are shown for each released test environment together
+          with Stage 1 boundary metadata and the unscreened Stage 2 candidate pool.
+</p> </section> <section class="construction-stage-panel" id="stage2"> <p class="section-kicker">Stage 2 · SUSP Landmark Extraction</p> <h2>Landmark Review and Semantic Annotation</h2> <p class="sublede">Turn the fused scene cloud into a reviewed, semantically named landmark pool.</p> <p>
+Stage 2 consumes the fused semantic and instance-aware cloud from Stage 1 and converts it
+          into <strong>reviewed landmark assets</strong>. The pipeline first groups points by
+          semantic class and instance identity, then renders <strong>multiview RGB and point-cloud
+          evidence</strong> around each candidate so that geometric structure, appearance, and view
+          direction are all available before any benchmark task is built.
+</p> <p>
+For each landmark candidate, the pipeline computes <strong>eight orbit-view capture
+          poses</strong> from the <strong>3D bounding box and instance center</strong>, covering
+          the canonical directions <strong>front, front-right, right, back-right, back, back-left,
+          left, and front-left</strong>. The associated segmented point-cloud views are then used to
+          perform <strong>occlusion-aware validity checks</strong>, so heavily blocked or
+          non-informative directions can be excluded before benchmark-facing landmark assets are
+          finalized.
+</p> <p>
+This is the stage where <strong>scene geometry becomes benchmark object assets</strong>.
+          Review removes unstable or uninformative candidates, confirms the main view, and finalizes
+          the <strong>reviewed landmark manifest</strong> used by both Stage 3 and Stage 4. After
+          review, the pipeline runs a <strong>constrained auto-label prompt</strong> to add coarse
+          category, fine-grained subcategory, and a short discriminative description that later
+          prompts can reuse.
+</p> <p>
+The important shift is that Stage 2 turns a fused but still machine-oriented scene map
+          into <strong>benchmark-facing semantic objects</strong>. Candidate aggregation, multiview
+          review, and prompt-constrained annotation are linked in one chain: only after geometry,
+          visibility, and main-view consistency are confirmed does the pipeline allow a landmark to
+          receive the semantic fields that later prompt templates depend on.
+</p> <p> <strong>Step 1 · Candidate Aggregation.</strong> The pipeline first partitions the fused
+          semantic cloud by semantic class and instance identity. Each resulting candidate is then
+          packaged with multiview RGB evidence, point-cloud views, 3D center metadata, and 3D box
+          support so that later review decisions are made against geometry-aware evidence rather
+          than isolated screenshots. At this stage the pool is intentionally permissive: the goal
+          is to surface all plausible landmark candidates before benchmark-facing filtering begins.
+</p> <p> <strong>Step 2 · Review and Main-View Confirmation.</strong> Human review then removes
+          unstable or uninformative instances, confirms the most representative main view, verifies
+          one landmark-centric direction anchor, and checks bbox validity. The main view is not
+          required to be the <strong>front</strong> image; it is simply the clearest and most
+          benchmark-facing reference view. Once that anchor direction is confirmed, the remaining
+          seven directions are derived automatically in the fixed orbit order rather than being
+          edited independently. At this step, reviewers also <strong>manually remove unusable view
+          images</strong> that remain visually ambiguous, severely occluded, or otherwise unsuitable
+          even after the earlier geometric filtering. Candidates can be dropped immediately, but a
+          landmark is only kept after the main-view and direction checks are complete. The accepted
+          pool is frozen in the reviewed landmark manifest (<code>valid_instances.json</code>),
+          which becomes the only stable Stage 2 handoff consumed by both later stages. In practice
+          this step turns a broad candidate inventory into a controlled landmark repository whose
+          direction labels, representative views, and spatial references can be trusted downstream.
+</p> <p> <strong>Step 3 · Prompt-Constrained Semantic Annotation.</strong> After geometric review,
+          the pipeline runs a constrained auto-label prompt to enrich each landmark with benchmark-
+          facing semantics. This is not free-form captioning: the prompt explicitly constrains
+          category choices, subtype naming, and JSON formatting so that landmark semantics remain
+          short, discriminative, and machine-parseable. The result is a semantic layer that later
+          prompt templates can reuse directly without re-describing each landmark from scratch.
+</p> <p>
+In practice, <strong>Stage 2 Step 2-4 are completed in the internal review web</strong>.
+          That interface is where reviewers perform candidate screening, main-view confirmation,
+          single-direction anchoring, invalid-view cleanup, auto-label launch, and final semantic
+          audit. The command line remains useful for collection and standalone auto-label reruns,
+          but the web is the recommended working surface whenever view quality and semantic
+          correctness need to be judged together from visual evidence.
+</p> <div class="semantic-layer-grid" style="margin-top: 18px;"> <article class="overview-item"> <p><strong>Layer 1 · Coarse Category.</strong> A closed eight-class ontology anchors every landmark before later task generation.</p> <p style="margin-top: 10px;">The prompt must choose exactly one coarse category from the fixed benchmark-facing list: building, vehicle, public_facility, urban_landscape, transport_infrastructure, industrial_infrastructure, vegetation, or other.</p> </article><article class="overview-item"> <p><strong>Layer 2 · Fine-Grained Subcategory.</strong> The second layer stays flexible but must remain category-consistent and generic.</p> <p style="margin-top: 10px;">Subcategories cannot be proper nouns or brands; they act as reusable landmark types such as mid-rise building, trash bin, shipping container stack, or deciduous tree.</p> </article><article class="overview-item"> <p><strong>Layer 3 · Discriminative Description.</strong> A short noun phrase captures the identifying cues that later prompts can reuse.</p> <p style="margin-top: 10px;">Descriptions must stay under twenty words while preserving subtype, color, shape or texture, and any local visual cue that helps distinguish nearby landmarks.</p> </article> </div> <p style="margin-top: 18px;">
+The reviewed landmark scanning library below makes that Stage 2 handoff concrete: it shows
+          each retained landmark view together with the <strong>paired segmented point-cloud
+          rendering</strong> captured from the same scanning pose. This is the evidence basis from
+          which later prompt templates, mission planners, and image-task constructors all reuse
+          Stage 2 landmark assets after review and semantic labeling are finalized.
+</p> <section class="stack">  <article class="chart-panel landmark-view-gallery landmark-scanning-gallery" id="construction-stage2-landmark-gallery"> <div class="landmark-gallery-sidebar"> <label class="gallery-label" for="construction-stage2-landmark-gallery-select">Landmark</label> <select id="construction-stage2-landmark-gallery-select" class="gallery-select"> <option value="0">Mid Rise Building · ENV 7</option><option value="1">High Rise Building · ENV 16</option><option value="2">Prefabricated Container Building · ENV 9</option><option value="3">High Rise Building · ENV 11</option><option value="4">Wooden Scaffolding Structure · ENV 20</option><option value="5">Mid Rise Building · ENV 10</option><option value="6">Mid Rise Residential Building · ENV 7</option><option value="7">Mid Rise Building · ENV 7</option><option value="8">Small Shed · ENV 9</option><option value="9">Sedan Car · ENV 23</option> </select> <div class="showcase-gallery-controls landmark-gallery-controls"> <button type="button" class="button button-secondary" id="construction-stage2-landmark-gallery-prev">Previous</button> <button type="button" class="button button-secondary autoplay-toggle is-on" id="construction-stage2-landmark-gallery-autoplay">Auto-play: On</button> <button type="button" class="button button-secondary" id="construction-stage2-landmark-gallery-next">Next</button> </div> <div class="gallery-meta"> <h4 id="construction-stage2-landmark-gallery-title">Mid Rise Building</h4> <p class="gallery-meta-line" id="construction-stage2-landmark-gallery-meta">Building · Mid Rise Building · ENV 7</p> <p id="construction-stage2-landmark-gallery-description">light gray mid-rise building with red tiled roof and dormer windows</p> </div> </div> <div class="landmark-gallery-grid" id="construction-stage2-landmark-gallery-grid"> <figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front.jpg" alt="Mid Rise Building Front RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_pcd.jpg" alt="Mid Rise Building Front segmented point cloud" loading="lazy"> </div> </div> <figcaption>Front</figcaption> </figure><figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_right.jpg" alt="Mid Rise Building Front Right RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_right_pcd.jpg" alt="Mid Rise Building Front Right segmented point cloud" loading="lazy"> </div> </div> <figcaption>Front Right</figcaption> </figure><figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_right.jpg" alt="Mid Rise Building Right RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_right_pcd.jpg" alt="Mid Rise Building Right segmented point cloud" loading="lazy"> </div> </div> <figcaption>Right</figcaption> </figure><figure class="landmark-gallery-card is-placeholder landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-gallery-placeholder"> <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span> </div> <div class="landmark-gallery-placeholder"> <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span> </div> </div> <figcaption>Back Right</figcaption> </figure><figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_back.jpg" alt="Mid Rise Building Back RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_back_pcd.jpg" alt="Mid Rise Building Back segmented point cloud" loading="lazy"> </div> </div> <figcaption>Back</figcaption> </figure><figure class="landmark-gallery-card is-placeholder landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-gallery-placeholder"> <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span> </div> <div class="landmark-gallery-placeholder"> <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span> </div> </div> <figcaption>Back Left</figcaption> </figure><figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_left.jpg" alt="Mid Rise Building Left RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_left_pcd.jpg" alt="Mid Rise Building Left segmented point cloud" loading="lazy"> </div> </div> <figcaption>Left</figcaption> </figure><figure class="landmark-gallery-card landmark-scanning-card"> <div class="landmark-scanning-pair"> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">RGB</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_left.jpg" alt="Mid Rise Building Front Left RGB" loading="lazy"> </div> <div class="landmark-scanning-pane"> <span class="landmark-scanning-badge">Point Cloud</span> <img src="/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_left_pcd.jpg" alt="Mid Rise Building Front Left segmented point cloud" loading="lazy"> </div> </div> <figcaption>Front Left</figcaption> </figure> </div> </article> </section> <script type="application/json" id="construction-stage2-landmark-gallery-data">[{"id":"env_7_27_237","landmark_id":"27_237","landmark_name":"Mid Rise Building","label":"Mid Rise Building","scene_label":"ENV 7","category":"Building","subcategory":"Mid Rise Building","description":"light gray mid-rise building with red tiled roof and dormer windows","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":137.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":92.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_right_pcd.jpg"},{"key":"right","label":"Right","angle_deg":47.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_right_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-42.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_back_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-132.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":-177.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_left_pcd.jpg"}]},{"id":"env_16_33_403","landmark_id":"33_403","landmark_name":"High Rise Building","label":"High Rise Building","scene_label":"ENV 16","category":"Building","subcategory":"High Rise Building","description":"tall gray high-rise building with vertical windows and a flat roof","source_tasks":["image","video"],"views":[{"key":"front","label":"Front","angle_deg":108.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":63.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":-26.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_right_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":-116.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-161.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_left_pcd.jpg"}]},{"id":"env_9_26_107","landmark_id":"26_107","landmark_name":"Prefabricated Container Building","label":"Prefabricated Container Building","scene_label":"ENV 9","category":"Building","subcategory":"Prefabricated Container Building","description":"green rectangular prefabricated container building with multiple windows","source_tasks":["image","video"],"views":[{"key":"front","label":"Front","angle_deg":1.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":-43.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_right_pcd.jpg"},{"key":"right","label":"Right","angle_deg":-88.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":-133.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_right_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-178.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":136.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":91.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":46.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_left_pcd.jpg"}]},{"id":"env_11_45_627","landmark_id":"45_627","landmark_name":"High Rise Building","label":"High Rise Building","scene_label":"ENV 11","category":"Building","subcategory":"High Rise Building","description":"dark high-rise building with many lit windows","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":-174.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":140.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":50.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_back_right_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-84.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_left_pcd.jpg"}]},{"id":"env_20_31_273","landmark_id":"31_273","landmark_name":"Wooden Scaffolding Structure","label":"Wooden Scaffolding Structure","scene_label":"ENV 20","category":"Building","subcategory":"Wooden Scaffolding Structure","description":"tall wooden scaffolding structure with cross-bracing and ladder access attached to the side of a brick building","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":90.5,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-89.5,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":-134.5,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-179.5,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":135.5,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_left_pcd.jpg"}]},{"id":"env_10_23_94","landmark_id":"23_94","landmark_name":"Mid Rise Building","label":"Mid Rise Building","scene_label":"ENV 10","category":"Building","subcategory":"Mid Rise Building","description":"multi-story brick building with stepped gable roof and white window frames","source_tasks":["video"],"views":[{"key":"front","label":"Front","angle_deg":-37.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":-82.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_right_pcd.jpg"},{"key":"right","label":"Right","angle_deg":-127.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_right_pcd.jpg"},{"key":"left","label":"Left","angle_deg":52.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":7.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_left_pcd.jpg"}]},{"id":"env_7_20_134","landmark_id":"20_134","landmark_name":"Mid Rise Residential Building","label":"Mid Rise Residential Building","scene_label":"ENV 7","category":"Building","subcategory":"Mid Rise Residential Building","description":"red brick mid-rise residential building with gabled roof and dormer windows","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":158,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":23,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_right_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-22,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":-67,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-112,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":-157,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_left_pcd.jpg"}]},{"id":"env_7_27_243","landmark_id":"27_243","landmark_name":"Mid Rise Building","label":"Mid Rise Building","scene_label":"ENV 7","category":"Building","subcategory":"Mid Rise Building","description":"light gray mid-rise building with red roof and dormer windows","source_tasks":["image","video"],"views":[{"key":"front","label":"Front","angle_deg":25,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":-20,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":-110,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_back_right_pcd.jpg"},{"key":"left","label":"Left","angle_deg":115,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":70,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_left_pcd.jpg"}]},{"id":"env_9_49_230","landmark_id":"49_230","landmark_name":"Small Shed","label":"Small Shed","scene_label":"ENV 9","category":"Building","subcategory":"Small Shed","description":"small gray corrugated metal shed with a single door and two small windows","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":1.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":-43.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_right_pcd.jpg"},{"key":"right","label":"Right","angle_deg":-88.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":-133.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_right_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-178.6,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":136.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":91.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":46.4,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_left_pcd.jpg"}]},{"id":"env_23_10_34","landmark_id":"10_34","landmark_name":"Sedan Car","label":"Sedan Car","scene_label":"ENV 23","category":"Vehicle","subcategory":"Sedan Car","description":"blue sedan car with a visible rear spoiler and white headlights","source_tasks":["image"],"views":[{"key":"front","label":"Front","angle_deg":171.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_pcd.jpg"},{"key":"front_right","label":"Front Right","angle_deg":126.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_right_pcd.jpg"},{"key":"back_right","label":"Back Right","angle_deg":36.8,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back_right.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_right_pcd.jpg"},{"key":"back","label":"Back","angle_deg":-8.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_pcd.jpg"},{"key":"back_left","label":"Back Left","angle_deg":-53.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_left_pcd.jpg"},{"key":"left","label":"Left","angle_deg":-98.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_left_pcd.jpg"},{"key":"front_left","label":"Front Left","angle_deg":-143.2,"url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front_left.jpg","pcd_url":"/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_left_pcd.jpg"}]}]</script> <script>(function(){const idPrefix = "construction-stage2-landmark-gallery";
+const canonicalViewOrder = ["Front","Front Right","Right","Back Right","Back","Back Left","Left","Front Left"];
+
+  (() => {
+    const select = document.getElementById(`${idPrefix}-select`);
+    const grid = document.getElementById(`${idPrefix}-grid`);
+    const title = document.getElementById(`${idPrefix}-title`);
+    const meta = document.getElementById(`${idPrefix}-meta`);
+    const desc = document.getElementById(`${idPrefix}-description`);
+    const payload = document.getElementById(`${idPrefix}-data`);
+    const root = document.getElementById(idPrefix);
+    const autoplayButton = document.getElementById(`${idPrefix}-autoplay`);
+    let landmarks = [];
+    try {
+      landmarks = payload ? JSON.parse(payload.textContent || "[]") : [];
+    } catch {
+      landmarks = [];
+    }
+    if (!Array.isArray(landmarks) || landmarks.length === 0) return;
+    let currentIndex = 0;
+    let autoplayEnabled = true;
+    let timer = null;
+
+    const normalizeViewLabel = (label) =>
+      String(label || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+
+    const slottedViews = (views) => {
+      const items = Array.isArray(views) ? views : [];
+      const byLabel = new Map(items.map((view) => [normalizeViewLabel(view.label), view]));
+      return canonicalViewOrder.map((label) => byLabel.get(normalizeViewLabel(label)) || null);
+    };
+
+    const stopTimer = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const updateAutoplayButton = () => {
+      if (!autoplayButton) return;
+      autoplayButton.textContent = `Auto-play: ${autoplayEnabled ? "On" : "Off"}`;
+      autoplayButton.classList.toggle("is-on", autoplayEnabled);
+      autoplayButton.classList.toggle("is-off", !autoplayEnabled);
+    };
+
+    const render = (index) => {
+      const item = landmarks[index];
+      if (!item || !grid) return;
+      currentIndex = index;
+      if (select instanceof HTMLSelectElement) {
+        select.value = String(index);
+      }
+      if (title) title.textContent = item.label;
+      if (meta) meta.textContent = `${item.category} · ${item.subcategory} · ${item.scene_label}`;
+      if (desc) desc.textContent = item.description;
+      const views = slottedViews(item.views);
+      grid.innerHTML = views.map((view, slotIndex) => {
+        if (!view) {
+          return `
+            <figure class="landmark-gallery-card is-placeholder landmark-scanning-card">
+              <div class="landmark-scanning-pair">
+                <div class="landmark-gallery-placeholder">
+                  <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span>
+                </div>
+                <div class="landmark-gallery-placeholder">
+                  <span class="landmark-gallery-placeholder-title">Occluded / Invalid</span>
+                </div>
+              </div>
+              <figcaption>${canonicalViewOrder[slotIndex] || "Unavailable"}</figcaption>
+            </figure>
+          `;
+        }
+        return `
+          <figure class="landmark-gallery-card landmark-scanning-card">
+            <div class="landmark-scanning-pair">
+              <div class="landmark-scanning-pane">
+                <span class="landmark-scanning-badge">RGB</span>
+                <img src="${view.url}" alt="${item.label} ${view.label} RGB" loading="lazy" />
+              </div>
+              <div class="landmark-scanning-pane">
+                <span class="landmark-scanning-badge">Point Cloud</span>
+                ${view.pcd_url
+                  ? `<img src="${view.pcd_url}" alt="${item.label} ${view.label} segmented point cloud" loading="lazy" />`
+                  : `<div class="landmark-gallery-placeholder"><span class="landmark-gallery-placeholder-title">No Point Cloud</span></div>`}
+              </div>
+            </div>
+            <figcaption>${view.label}</figcaption>
+          </figure>
+        `;
+      }).join("");
+    };
+
+    const startTimer = () => {
+      stopTimer();
+      if (!autoplayEnabled || landmarks.length <= 1) return;
+      timer = window.setInterval(() => {
+        currentIndex = (currentIndex + 1) % landmarks.length;
+        render(currentIndex);
+      }, 2800);
+    };
+
+    select?.addEventListener("change", (event) => {
+      const target = event.target;
+      const index = target instanceof HTMLSelectElement ? Number(target.value || 0) : 0;
+      render(index);
+    });
+    document.getElementById(`${idPrefix}-prev`)?.addEventListener("click", () => {
+      render((currentIndex - 1 + landmarks.length) % landmarks.length);
+    });
+    document.getElementById(`${idPrefix}-next`)?.addEventListener("click", () => {
+      render((currentIndex + 1) % landmarks.length);
+    });
+    autoplayButton?.addEventListener("click", () => {
+      autoplayEnabled = !autoplayEnabled;
+      updateAutoplayButton();
+      startTimer();
+    });
+    root?.addEventListener("mouseenter", stopTimer);
+    root?.addEventListener("mouseleave", startTimer);
+    updateAutoplayButton();
+    startTimer();
+  })();
+})();</script> <p class="table-note" style="margin-top: 18px;"> <strong>Landmark Scanning Library.</strong> Reviewed landmark-centric RGB side views are
+          shown together with their corresponding segmented point-cloud views, preserving the
+          scan-level evidence that underlies later image and video task construction.
+</p> <article class="aside-panel" style="margin-top: 18px;"> <p class="section-kicker">Auto-Label Prompt Package</p> <div class="article-grid tight" style="margin-top: 6px;"> <div class="article-block"> <p class="section-kicker">System Prompt</p> <div class="prompt-block">You are an aerial landmark recognition expert. Only use image evidence.</div> </div> <div class="article-block"> <p class="section-kicker">Output Schema</p> <div class="schema-block">{&quot;category&quot;:&quot;building|vehicle|public_facility|urban_landscape|transport_infrastructure|industrial_infrastructure|vegetation|other&quot;,&quot;subcategory&quot;:&quot;...&quot;,&quot;description&quot;:&quot;...&quot;,&quot;confidence&quot;:0.0}</div> </div> </div> <div class="article-block" style="margin-top: 18px; max-width: none;"> <p class="section-kicker">User Prompt Template</p> <div class="schema-block">- class_name: {class_name or &#39;(empty)&#39;} (user-filled weak hint from Step 2, optional)
+- images: up to 4 views (front/back/left/right preferred, some directions may be missing)
+- Each uploaded image has a red bounding box marking the landmark, and the side label (e.g., &#39;Visible Side: Front (Landmark-centric)&#39;) at the top-left corner shows the visible side of the landmark in the object-centric (landmark-centric) frame.
+category candidates (must choose from list):
+[building, vehicle, public_facility, urban_landscape,transport_infrastructure, industrial_infrastructure, vegetation, other]
+
+subcategory requirements:
+- flexible generic subtype, not a proper noun or brand name
+- must stay category-consistent
+- examples below are illustrative only; use other common descriptive terms or phrases if they better match the landmark
+  • building: low-rise building, mid-rise building, high-rise building, warehouse, pagoda, chapel, factory shed, rural farmhouse, glass skyscraper, brick schoolhouse
+  • vehicle: sedan car, delivery van, city bus, cargo truck, motorcycle, construction excavator
+  • public_facility: street lamp post, bus shelter, public bench, trash bin, fire hydrant, antenna
+  • urban_landscape: sculpture, plaza, fountain, city square, urban garden, landscape installation, signboard, billboard, advertising board, wayfinding sign, landmark signage
+  • transport_infrastructure: arch bridge, overpass, railway track, tunnel entrance, roundabout, pedestrian crosswalk, subway station entrance, traffic island, railway platform
+  • industrial_infrastructure: shipping container stack, oil storage tank, grain silo, crane tower, pipeline
+  • vegetation: deciduous tree, coniferous tree, palm tree, shrub cluster, hedge row, grassy lawn
+  • other: temporary tent, rubble pile, playground slide, inflatable archway, construction barrier
+
+description constraints (`description`):
+- one noun phrase, &lt;= 20 words
+- must include: subcategory, color, shape/texture
+- may include surrounding relation, visible text/pattern cues to distinguish the landmark
+- positive examples:
+  - dark red middle-rise building with white neon light featuring the word &quot;HOTEL&quot; on the top
+  - gray pagoda-like tower with layered roof edges beside roadside trees
+  - white arch bridge with curved span above a narrow river channel
+  - dark stone obelisk with sharp top in open paved square
+
+Output JSON (no extra explanation text):
+{
+  &quot;category&quot;: &quot;building|vehicle|public_facility|urban_landscape|transport_infrastructure|industrial_infrastructure|vegetation|other&quot;,
+  &quot;subcategory&quot;: &quot;...&quot;,
+  &quot;description&quot;: &quot;...&quot;,
+  &quot;confidence&quot;: 0.0
+}</div> </div> </article> <div class="article-grid tight" style="margin-top: 18px;"> <article class="article-block"> <p class="section-kicker">Outputs and Bridge</p> <p>
+The released Stage 2 outputs live in the raw and reviewed landmark bundles; reviewed
+              RGB views, main-view tags, semantic layers, and short descriptions then become the
+              common substrate reused by Stage 3 and Stage 4.
+</p> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark#stats">Open Benchmark Landmark Statistics →</a> </div> </article> <article class="article-block"> <p class="section-kicker">Reproduce</p> <div class="schema-block">python scripts/flightmvstg/stage2_landmark_label.py --config configs/flightmvstg/task_airsim_env_7.yaml --scene-id env_7 --mode review_instances_web --port 20261</div> </article> </div> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/usage#internal-web">Open Stage 2 Web Guide</a> </div> </section> </div> </section> <section class="section-divider" id="dccs"> <div class="section-head"> <p class="section-kicker">Layer 2 · Task Capture System</p> <h2>DualCog-aware Capture System (DCCS)</h2> <p class="sublede">
+Building upon SUSP's synchronized assets, the <strong>DualCog-aware Capture System (DCCS)</strong> generates
+        multimodal benchmark tasks across two parallel modules: a <strong>Video Module</strong> driven by
+        hierarchical flight behaviors (Stage 3) and an <strong>Image Module</strong> driven by dual-cognition
+        spatial QA and bounding box grounding (Stage 4).
+</p> </div> <div class="reading-grid"> <article class="article-block"> <p class="section-kicker">Trajectory Parameters (DCCS Video)</p> <h3>Kinematic Constraints & Hierarchical Flight Modeling</h3> <p>
+Video trajectories are parameterized to reflect realistic multirotor flight behavior while enforcing strict collision safety:
+</p> <ul style="margin: 12px 0 16px 20px; line-height: 1.6;"> <li><strong>Flight Speed Range:</strong> <code>v &in; [2.0, 8.0] m/s</code> (mean cruising velocity 3.8 m/s).</li> <li><strong>Flight Altitude Range:</strong> <code>h &in; [5.0, 35.0] m</code> Above Ground Level (AGL), adapted to urban structures and canopy heights.</li> <li><strong>Attitude Limits:</strong> Pitch <code>&theta; &in; [-25&deg;, +15&deg;]</code>, Roll <code>&phi; &in; [-20&deg;, +20&deg;]</code>, Yaw angular velocity <code>&psi;&#775; &le; 45&deg;/s</code>.</li> <li><strong>Collision Safety Buffer:</strong> Minimum distance <code>&delta;<sub>safe</sub> &ge; 1.5 m</code> maintained from all obstacle surfaces via continuous sphere-mesh swept collision checks.</li> <li><strong>B-Spline Smoothing:</strong> Waypoints are smoothed via continuous 3rd-order B-splines to ensure bounded acceleration and jerk profiles.</li> <li><strong>Release Scale:</strong> 1,024 validated trajectories totaling 19,633.30 seconds of first-person flight video across 12 diverse scenarios.</li> </ul> </article> <article class="article-block"> <p class="section-kicker">Verification Workflows</p> <h3>Automated Sanity Checks & 2-Round Expert Review</h3> <p>
+Candidate tasks must pass both automated geometric/temporal filtering and dual-blind human validation before benchmark inclusion:
+</p> <ul style="margin: 12px 0 16px 20px; line-height: 1.6;"> <li><strong>Ray-cast Line-of-Sight (LoS) Checks:</strong> High-density ray casting from camera optical center to landmark 3D bounding box corners and mesh surface.</li> <li><strong>Frustum Occlusion Thresholds:</strong> Landmark must occupy &ge; 1.0% of the image area and have visible surface ratio &ge; 30% (severely occluded or marginal items are pruned).</li> <li><strong>2D Bounding Box Projection:</strong> 3D oriented bounding boxes (OBB) are projected onto image planes via camera matrix <code>K</code> and normalized to <code>[x<sub>1</sub>, y<sub>1</sub>, x<sub>2</sub>, y<sub>2</sub>] &in; [0, 1]<sup>4</sup></code>.</li> <li><strong>Temporal Interval Validation:</strong> Start/end timestamps of flight maneuvers and visibility intervals are cross-verified against ground-truth kinematic mode transitions.</li> <li><strong>Human Reference Audit:</strong> Seven complete observed questionnaires are retained and reported separately from 23 stratified bootstrap questionnaires. The resulting augmented reference is explicitly simulation-based and is not presented as 30 independent participants.</li> </ul> </article> </div> <div class="stack construction-stage-stack" style="margin-top: 28px;"> <section class="construction-stage-panel" id="stage3"> <p class="section-kicker">Stage 3 · DCCS Video Module</p> <h2>Behavior-Driven Video Task Generation</h2> <p class="sublede">Compose missions, repair trajectories, render benchmark videos, and export video manifests and metrics.</p> <p>
+Stage 3 begins from reviewed Stage 2 landmarks and an explicit two-layer behavior system.
+          In the current single-landmark release, each valid landmark is bound to one atomic mission
+          and one composite mission. Those missions are not just labels: they expand into executable
+          trajectories, camera-control programs, temporal supervision tracks, and final benchmark
+          manifest rows.
+</p> <p>
+The <strong>flight-mode library</strong> is designed as a benchmark primitive rather than
+          a loose collection of cinematic motions. The intent is to keep released trajectories close
+          to common UAV operating scenarios, so that the resulting video tasks reflect recognizable
+          drone behavior patterns instead of synthetic camera sweeps with little operational
+          meaning. At the low level, the atomic motions borrow from the design logic behind DJI's
+          automated “MasterShots”-style capture patterns, where approach, orbit, rise, and mapping
+          maneuvers are defined as reusable camera-flight units. At the high level, the
+<strong>hierarchical flight-mode design</strong> organizes composite classes around common
+          inspection and mapping needs, so that the benchmark's temporal reasoning tasks remain tied
+          to realistic patrol, inspection, and surveying workflows.
+</p> <section class="stack"> <article class="chart-panel behavior-architecture-shell" id="construction-behavior-architecture"> <div class="showcase-gallery-controls behavior-architecture-controls"> <span>Composite relations</span> <button type="button" class="button button-secondary autoplay-toggle is-on" id="construction-behavior-architecture-autoplay">Auto-play: On</button> </div> <svg class="behavior-architecture-connectors" aria-hidden="true"></svg> <div class="behavior-architecture-layer behavior-architecture-layer-composite"> <button type="button" class="behavior-architecture-card behavior-architecture-card-composite is-active" data-composite-id="circular_inspection" data-index="0"> Circular Inspection </button><button type="button" class="behavior-architecture-card behavior-architecture-card-composite " data-composite-id="spiral_inspection" data-index="1"> Spiral Inspection </button><button type="button" class="behavior-architecture-card behavior-architecture-card-composite " data-composite-id="square_inspection" data-index="2"> Square Inspection </button><button type="button" class="behavior-architecture-card behavior-architecture-card-composite " data-composite-id="triangular_inspection" data-index="3"> Triangular Inspection </button><button type="button" class="behavior-architecture-card behavior-architecture-card-composite " data-composite-id="surface_mapping_inspection" data-index="4"> Surface-Mapping Inspection </button> </div> <div class="behavior-architecture-layer behavior-architecture-layer-atomic"> <div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="gradual_approach"> Gradual Approach </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="gradual_depart"> Gradual Depart </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="circular_orbit"> Circular Orbit </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="figure8_orbit"> Figure-Eight Orbit </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="spiral_orbit"> Spiral Orbit </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="square_orbit"> Square Orbit </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="triangular_orbit"> Triangular Orbit </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="surface_mapping"> Surface Mapping </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="comet"> Comet Trajectory </div><div class="behavior-architecture-card behavior-architecture-card-atomic" data-atomic-id="sky_rise"> Sky Rise </div> </div> <div class="behavior-architecture-footer"> <div class="behavior-architecture-band behavior-architecture-band-atomic">Low-level Atomic Classes</div> <div class="behavior-architecture-arrow" aria-hidden="true">→</div> <div class="behavior-architecture-band behavior-architecture-band-composite">High-level Composite Classes</div> </div> </article> </section> <script type="application/json" id="construction-behavior-architecture-data">{"relationships":[{"id":"circular_inspection","title":"Circular Inspection","atomic_ids":["gradual_approach","circular_orbit","gradual_depart"]},{"id":"spiral_inspection","title":"Spiral Inspection","atomic_ids":["gradual_approach","spiral_orbit","gradual_depart"]},{"id":"square_inspection","title":"Square Inspection","atomic_ids":["gradual_approach","square_orbit","gradual_depart"]},{"id":"triangular_inspection","title":"Triangular Inspection","atomic_ids":["gradual_approach","triangular_orbit","gradual_depart"]},{"id":"surface_mapping_inspection","title":"Surface-Mapping Inspection","atomic_ids":["gradual_approach","surface_mapping","gradual_depart"]}]}</script> <script>(function(){const idPrefix = "construction-behavior-architecture";
+
+  (() => {
+    const root = document.getElementById(idPrefix);
+    const payload = document.getElementById(`${idPrefix}-data`);
+    let data = {};
+    try {
+      data = payload ? JSON.parse(payload.textContent || "{}") : {};
+    } catch {
+      data = {};
+    }
+    const relationships = Array.isArray(data.relationships) ? data.relationships : [];
+    if (root && relationships.length) {
+      const compositeButtons = Array.from(root.querySelectorAll("[data-composite-id]"));
+      const atomicCards = Array.from(root.querySelectorAll("[data-atomic-id]"));
+      const connectorSvg = root.querySelector(".behavior-architecture-connectors");
+      const autoplayButton = document.getElementById(`${idPrefix}-autoplay`);
+      let activeIndex = 0;
+      let timer = null;
+      let resumeTimer = null;
+      let autoplayEnabled = true;
+
+      const renderConnectors = (active) => {
+        if (!connectorSvg) return;
+        const activeButton = root.querySelector(`[data-composite-id="${active.id}"]`);
+        const compositeRect = activeButton?.getBoundingClientRect();
+        const rootRect = root.getBoundingClientRect();
+        if (!activeButton || !compositeRect || !rootRect.width || !rootRect.height) {
+          connectorSvg.innerHTML = "";
+          return;
+        }
+        const activeIds = new Set(Array.isArray(active.atomic_ids) ? active.atomic_ids : []);
+        const relatedAtomicNodes = atomicCards.filter((node) => activeIds.has(node.getAttribute("data-atomic-id")));
+        const lines = relatedAtomicNodes
+          .map((node) => {
+            const rect = node.getBoundingClientRect();
+            const x1 = compositeRect.left + compositeRect.width / 2 - rootRect.left;
+            const y1 = compositeRect.bottom - rootRect.top + 8;
+            const x2 = rect.left + rect.width / 2 - rootRect.left;
+            const y2 = rect.top - rootRect.top - 8;
+            const midY = y1 + Math.max(18, (y2 - y1) * 0.42);
+            return {
+              points: `${x1},${y1} ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
+            };
+          })
+          .map(
+            ({ points }) =>
+              `<polyline points="${points}" class="behavior-architecture-connector-line" />`,
+          )
+          .join("");
+        connectorSvg.setAttribute("viewBox", `0 0 ${rootRect.width} ${rootRect.height}`);
+        connectorSvg.innerHTML = lines;
+      };
+
+      const render = (index) => {
+        const active = relationships[index] || relationships[0];
+        const activeIds = new Set(Array.isArray(active.atomic_ids) ? active.atomic_ids : []);
+        compositeButtons.forEach((node, nodeIndex) => {
+          node.classList.toggle("is-active", nodeIndex === index);
+        });
+        atomicCards.forEach((node) => {
+          const atomicId = node.getAttribute("data-atomic-id");
+          node.classList.toggle("is-related", activeIds.has(atomicId));
+        });
+        renderConnectors(active);
+        activeIndex = index;
+      };
+
+      const stopTimer = () => {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      const stopResumeTimer = () => {
+        if (resumeTimer) {
+          window.clearTimeout(resumeTimer);
+          resumeTimer = null;
+        }
+      };
+
+      const startTimer = () => {
+        stopTimer();
+        stopResumeTimer();
+        if (!autoplayEnabled) return;
+        timer = window.setInterval(() => {
+          if (relationships.length <= 1) return;
+          render((activeIndex + 1) % relationships.length);
+        }, 1800);
+      };
+
+      const updateAutoplayButton = () => {
+        if (!autoplayButton) return;
+        autoplayButton.textContent = `Auto-play: ${autoplayEnabled ? "On" : "Off"}`;
+        autoplayButton.classList.toggle("is-on", autoplayEnabled);
+        autoplayButton.classList.toggle("is-off", !autoplayEnabled);
+      };
+
+      const scheduleResume = () => {
+        stopResumeTimer();
+        resumeTimer = window.setTimeout(() => {
+          startTimer();
+        }, 3600);
+      };
+
+      compositeButtons.forEach((node, index) => {
+        node.addEventListener("click", () => {
+          stopTimer();
+          render(index);
+          if (autoplayEnabled) scheduleResume();
+        });
+      });
+
+      autoplayButton?.addEventListener("click", () => {
+        autoplayEnabled = !autoplayEnabled;
+        updateAutoplayButton();
+        startTimer();
+      });
+
+      root.addEventListener("mouseenter", () => {
+        stopTimer();
+        stopResumeTimer();
+      });
+
+      root.addEventListener("mouseleave", () => {
+        startTimer();
+      });
+
+      window.addEventListener("resize", () => {
+        render(activeIndex);
+      });
+
+      render(0);
+      updateAutoplayButton();
+      startTimer();
+    }
+  })();
+})();</script> <p class="table-note"> <strong>Behavior Hierarchy.</strong> Composite inspection classes are instantiated by
+          chaining atomic maneuvers, and the highlighted links show which primitives each composite
+          template reuses in the released Stage 3 library.
+</p> <p>
+The implemented chain is mission generation, trajectory search, trajectory repair, video
+          recording, and temporal task organization. Collision checks and safety buffers can
+          trigger radius, height, or scan-width adjustments before a trajectory is accepted, so the
+          final videos are filtered task assets rather than naïve recordings of an idealized path.
+          Parallel rendering is also scheduled to keep missions spatially separated and reduce
+          multi-UAV contamination in the frame.
+</p> <p>
+Once rendering succeeds, Stage 3 exports both mission-level supervision bundles and the
+          benchmark-facing datasets used for <em>Flight Behavior Recognition and Temporal
+          Localization</em> and <em>Landmark Visibility Counting and Interval Reasoning</em>.
+<strong>Archived 4K frame captures</strong> and <strong>released 1080P H.264 MP4s</strong>
+are separated on purpose, which lets the benchmark keep high-resolution supervision
+          upstream while distributing efficient evaluation videos downstream.
+</p> <p>
+In other words, Stage 3 is where motion programs become auditable temporal tasks. The
+          stage has to satisfy two goals at once: trajectories must remain executable under
+          collision and safety constraints, and the final media must preserve enough temporal
+          structure that interval localization remains meaningful for large multimodal models. That
+          is why mission repair, behavior templating, and supervision export are treated as one
+          connected pipeline rather than three independent utilities.
+</p> <p>
+The media contract used at this stage is therefore worth exposing directly. Internally,
+          missions still retain higher-resolution archived frame captures for supervision and
+          refresh, while the released benchmark distributes a lighter 1080P H.264 video stream at a
+          fixed frame rate. This separation keeps temporal evaluation efficient for public use while
+          preserving enough upstream visual detail to support rerendering, inspection, and
+          higher-resolution downstream analysis when needed.
+</p> <p>
+The <strong>Stage 3 internal web</strong> is used here as an interactive mission and task
+          workbench. It exposes pages for the behavior library, mission generation, candidate
+          review, manifest browsing, experiments, result inspection, and metrics. This makes it
+          well suited for qualitative verification and targeted reruns, whereas
+<strong><code>task_pipeline.py</code> remains the recommended interface for batch
+          selection, data export, render, and released-scale experiment phases</strong>.
+</p> <section class="stack">  <div class="stat-grid"> <article class="card stat-card"> <div class="stat-value">DCI 4K</div> <div class="stat-label">Capture Frames</div> <p>4096×3072 archived frames are retained for upstream supervision and rerender flexibility</p> </article><article class="card stat-card"> <div class="stat-value">1080P</div> <div class="stat-label">Released Video</div> <p>1440x1080 · 10 Mbps · H.264 / MP4 · YUV420p</p> </article><article class="card stat-card"> <div class="stat-value">10 FPS</div> <div class="stat-label">Frame Rate</div> <p>keeps rapid UAV motion changes visible while remaining practical for MLLM temporal reasoning</p> </article> </div> </section> <p class="table-note"> <strong>Stage 3 Media Specs.</strong> Mission rendering retains 4K-grade archived frame
+          captures upstream, while the released benchmark exposes 1080P H.264 videos at a fixed 10
+          FPS evaluation contract.
+</p> <div class="article-grid tight" style="margin-top: 18px;"> <article class="article-block"> <p class="section-kicker">Mission Expansion and Repair</p> <p>
+Composite and atomic behavior templates expand into executable trajectories, then pass
+              through repair routines that can adjust radius, altitude, or scan width before render
+              so that accepted missions remain physically valid and visually clean.
+</p> </article> <article class="article-block"> <p class="section-kicker">Format Constraints and Handoffs</p> <p>
+Mission folders preserve a mission supervision bundle
+              (<code>task_data.json</code>, <code>frames_manifest.json</code>, and
+<code>frame_index_map.json</code>) alongside the final video, while released datasets
+              keep semantic answers and interval targets as separate fields so temporal quality can
+              be scored independently.
+</p> </article> <article class="article-block"> <p class="section-kicker">Outputs</p> <p>
+The public handoff includes per-scene dataset manifests and mission folders; the
+              scene-level dataset manifest is the benchmark-facing interface, while each
+              mission-level <code>task_data.json</code> keeps the denser temporal supervision
+              contract.
+</p> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark#examples">Open Benchmark Video Examples</a> </div> </article> <article class="article-block"> <p class="section-kicker">Reproduce</p> <div class="schema-block">python scripts/flightmvstg/task_pipeline.py --spec configs/flightmvstg/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage3 --phase render</div> </article> </div> <section class="stack">  <article class="chart-panel behavior-library-shell" id="construction-behavior-library"> <div class="behavior-library-sidebar" id="construction-behavior-library-sidebar"> <div class="behavior-library-summary-grid"> <div class="behavior-stat-card"> <strong>Composite Classes</strong> <span>5</span> </div> <div class="behavior-stat-card"> <strong>Atomic Classes</strong> <span>10</span> </div> </div> <div class="showcase-gallery-controls behavior-library-controls"> <span>Behavior sets</span> <button type="button" class="button button-secondary autoplay-toggle is-on" id="construction-behavior-library-autoplay">Auto-play: On</button> </div> <div class="table-wrap behavior-library-table-wrap"> <table> <thead> <tr> <th>Set Name</th> <th>scope</th> <th>elements</th> </tr> </thead> <tbody id="construction-behavior-library-list"> <tr class="behavior-row is-active" data-index="0"> <td>Circular Inspection</td> <td>Single Landmark</td> <td>Gradual Approach, Circular Orbit, Circular Orbit, Gradual Depart</td> </tr><tr class="behavior-row " data-index="1"> <td>Spiral Inspection</td> <td>Single Landmark</td> <td>Gradual Approach, Spiral Orbit, Spiral Orbit, Gradual Depart</td> </tr><tr class="behavior-row " data-index="2"> <td>Square Inspection</td> <td>Single Landmark</td> <td>Gradual Approach, Square Orbit, Square Orbit, Gradual Depart</td> </tr><tr class="behavior-row " data-index="3"> <td>Triangular Inspection</td> <td>Single Landmark</td> <td>Gradual Approach, Triangular Orbit, Triangular Orbit, Gradual Depart</td> </tr><tr class="behavior-row " data-index="4"> <td>Surface-Mapping Inspection</td> <td>Single Landmark</td> <td>Gradual Approach, Surface Mapping, Gradual Depart</td> </tr><tr class="behavior-row " data-index="5"> <td>Atomic Circular Orbit</td> <td>Single Landmark</td> <td>Circular Orbit</td> </tr><tr class="behavior-row " data-index="6"> <td>Atomic Comet Trajectory</td> <td>Single Landmark</td> <td>Comet Trajectory</td> </tr><tr class="behavior-row " data-index="7"> <td>Atomic Figure-Eight Orbit</td> <td>Single Landmark</td> <td>Figure-Eight Orbit</td> </tr><tr class="behavior-row " data-index="8"> <td>Atomic Gradual Approach</td> <td>Single Landmark</td> <td>Gradual Approach</td> </tr><tr class="behavior-row " data-index="9"> <td>Atomic Gradual Depart</td> <td>Single Landmark</td> <td>Gradual Depart</td> </tr><tr class="behavior-row " data-index="10"> <td>Atomic Sky Rise</td> <td>Single Landmark</td> <td>Sky Rise</td> </tr><tr class="behavior-row " data-index="11"> <td>Atomic Spiral Orbit</td> <td>Single Landmark</td> <td>Spiral Orbit</td> </tr><tr class="behavior-row " data-index="12"> <td>Atomic Square Orbit</td> <td>Single Landmark</td> <td>Square Orbit</td> </tr><tr class="behavior-row " data-index="13"> <td>Atomic Surface Mapping</td> <td>Single Landmark</td> <td>Surface Mapping</td> </tr><tr class="behavior-row " data-index="14"> <td>Atomic Triangular Orbit</td> <td>Single Landmark</td> <td>Triangular Orbit</td> </tr>  </tbody> </table> </div> </div> <div class="behavior-library-detail" id="construction-behavior-library-detail"> <div>
+    <div class="behavior-library-header">
+      <div>
+        <h4>Circular Inspection</h4>
+        <p class="gallery-meta-line">Composite · Single Landmark · 109 released missions</p>
+      </div>
+      <span class="behavior-count-badge">4 steps</span>
+    </div>
+    <p>Approach, perform two circular orbit segments, and depart.</p>
+    <div class="behavior-meta-grid">
+      <div>
+        <strong>Generation notes</strong>
+        <span>This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.</span>
+      </div>
+      <div>
+        <strong>Allow interleave repeat</strong>
+        <span>No</span>
+      </div>
+      <div>
+        <strong>Max total atomic</strong>
+        <span>Library default</span>
+      </div>
+      <div>
+        <strong>Step sequence</strong>
+        <span>Gradual Approach → Circular Orbit → Circular Orbit → Gradual Depart</span>
+      </div>
+    </div>
+    <div class="behavior-step-list">
+      <article class="behavior-step-card">
+            <div class="behavior-step-head">
+              <span class="behavior-step-index">Step 1</span>
+              <div>
+                <h5>Gradual Approach</h5>
+                <p>gradual_approach · Inspection</p>
+              </div>
+            </div>
+            <p>Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.</p>
+            <div class="table-wrap behavior-param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Range</th>
+                    <th>Step</th>
+                    <th>Choices</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody><tr>
+        <td>Travel Distance (m)</td>
+        <td>40</td>
+        <td>30 to 120</td>
+        <td>10</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Descent (m)</td>
+        <td>15</td>
+        <td>5 to 40</td>
+        <td>5</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Yaw Offset (deg)</td>
+        <td>0</td>
+        <td>-35 to 35</td>
+        <td>5</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Speed (m/s)</td>
+        <td>20</td>
+        <td>15 to 25</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Gaze Pitch (deg)</td>
+        <td>-12</td>
+        <td>-45 to 0</td>
+        <td>3</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Camera Mode</td>
+        <td>landmark_track</td>
+        <td>-</td>
+        <td>-</td>
+        <td>look_forward</td>
+        <td>override</td>
+      </tr></tbody>
+              </table>
+            </div>
+          </article><article class="behavior-step-card">
+            <div class="behavior-step-head">
+              <span class="behavior-step-index">Step 2</span>
+              <div>
+                <h5>Circular Orbit</h5>
+                <p>circular_orbit · Orbit</p>
+              </div>
+            </div>
+            <p>Orbit the landmark with a radius extension around the target center.</p>
+            <div class="table-wrap behavior-param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Range</th>
+                    <th>Step</th>
+                    <th>Choices</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody><tr>
+        <td>Extension (m)</td>
+        <td>12</td>
+        <td>4 to 36</td>
+        <td>2</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Arc (deg)</td>
+        <td>180</td>
+        <td>45 to 720</td>
+        <td>90</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Direction</td>
+        <td>cw</td>
+        <td>-</td>
+        <td>-</td>
+        <td>cw, ccw</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Altitude Offset (m)</td>
+        <td>8</td>
+        <td>-20 to 40</td>
+        <td>2</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Speed (m/s)</td>
+        <td>20</td>
+        <td>15 to 25</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Camera Mode</td>
+        <td>look_forward</td>
+        <td>-</td>
+        <td>-</td>
+        <td>look_forward</td>
+        <td>override</td>
+      </tr><tr>
+        <td>Gaze Pitch (deg)</td>
+        <td>0</td>
+        <td>0 to 0</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr></tbody>
+              </table>
+            </div>
+          </article><article class="behavior-step-card">
+            <div class="behavior-step-head">
+              <span class="behavior-step-index">Step 3</span>
+              <div>
+                <h5>Circular Orbit</h5>
+                <p>circular_orbit · Orbit</p>
+              </div>
+            </div>
+            <p>Orbit the landmark with a radius extension around the target center.</p>
+            <div class="table-wrap behavior-param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Range</th>
+                    <th>Step</th>
+                    <th>Choices</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody><tr>
+        <td>Extension (m)</td>
+        <td>12</td>
+        <td>4 to 36</td>
+        <td>2</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Arc (deg)</td>
+        <td>180</td>
+        <td>45 to 720</td>
+        <td>90</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Direction</td>
+        <td>cw</td>
+        <td>-</td>
+        <td>-</td>
+        <td>cw, ccw</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Altitude Offset (m)</td>
+        <td>8</td>
+        <td>-20 to 40</td>
+        <td>2</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Speed (m/s)</td>
+        <td>20</td>
+        <td>15 to 25</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Camera Mode</td>
+        <td>landmark_track</td>
+        <td>-</td>
+        <td>-</td>
+        <td>look_forward</td>
+        <td>override</td>
+      </tr><tr>
+        <td>Gaze Pitch (deg)</td>
+        <td>0</td>
+        <td>0 to 0</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr></tbody>
+              </table>
+            </div>
+          </article><article class="behavior-step-card">
+            <div class="behavior-step-head">
+              <span class="behavior-step-index">Step 4</span>
+              <div>
+                <h5>Gradual Depart</h5>
+                <p>gradual_depart · Inspection</p>
+              </div>
+            </div>
+            <p>Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.</p>
+            <div class="table-wrap behavior-param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Range</th>
+                    <th>Step</th>
+                    <th>Choices</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody><tr>
+        <td>Travel Distance (m)</td>
+        <td>40</td>
+        <td>30 to 120</td>
+        <td>10</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Rise (m)</td>
+        <td>15</td>
+        <td>5 to 40</td>
+        <td>5</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Yaw Offset (deg)</td>
+        <td>0</td>
+        <td>-35 to 35</td>
+        <td>5</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Speed (m/s)</td>
+        <td>20</td>
+        <td>15 to 25</td>
+        <td>1</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Gaze Pitch (deg)</td>
+        <td>-10</td>
+        <td>-45 to 0</td>
+        <td>3</td>
+        <td>-</td>
+        <td>default</td>
+      </tr><tr>
+        <td>Camera Mode</td>
+        <td>look_forward</td>
+        <td>-</td>
+        <td>-</td>
+        <td>landmark_track</td>
+        <td>override</td>
+      </tr></tbody>
+              </table>
+            </div>
+          </article>
+    </div></div> </div> </article> </section> <script type="application/json" id="construction-behavior-library-data">{"summary":{"composite_count":5,"atomic_count":10,"family_count":5,"multi_landmark_count":0,"safety_distance_m":"2"},"sets":[{"id":"circular_inspection","title":"Circular Inspection","kind":"Composite","scope":"Single Landmark","description":"Approach, perform two circular orbit segments, and depart.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":109,"sequence":["Gradual Approach","Circular Orbit","Circular Orbit","Gradual Depart"],"element_count":4,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":2,"element_id":"circular_orbit","title":"Circular Orbit","family":"Orbit","description":"Orbit the landmark with a radius extension around the target center.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"12","range":"4 to 36","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"45 to 720","step":"90","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = look_forward"},{"step_index":3,"element_id":"circular_orbit","title":"Circular Orbit","family":"Orbit","description":"Orbit the landmark with a radius extension around the target center.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"12","range":"4 to 36","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"45 to 720","step":"90","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":4,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = look_forward"}]},{"id":"spiral_inspection","title":"Spiral Inspection","kind":"Composite","scope":"Single Landmark","description":"Approach, perform two spiral orbit segments, and depart.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":103,"sequence":["Gradual Approach","Spiral Orbit","Spiral Orbit","Gradual Depart"],"element_count":4,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":2,"element_id":"spiral_orbit","title":"Spiral Orbit","family":"Orbit","description":"Move around the landmark along a spiral path while retreating and gaining altitude.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"start_extension_m","label":"Start Extension (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"end_extension_m","label":"End Extension (m)","default_value":"24","range":"10 to 52","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"90 to 720","step":"90","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"24","range":"8 to 80","step":"4","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-22","range":"-75 to 0","step":"3","choices":"-","source":"default"}],"override_summary":"Camera Mode = look_forward"},{"step_index":3,"element_id":"spiral_orbit","title":"Spiral Orbit","family":"Orbit","description":"Move around the landmark along a spiral path while retreating and gaining altitude.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"start_extension_m","label":"Start Extension (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"end_extension_m","label":"End Extension (m)","default_value":"24","range":"10 to 52","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"90 to 720","step":"90","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"24","range":"8 to 80","step":"4","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-22","range":"-75 to 0","step":"3","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":4,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = look_forward"}]},{"id":"square_inspection","title":"Square Inspection","kind":"Composite","scope":"Single Landmark","description":"Approach, perform two square orbit segments, and depart.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":103,"sequence":["Gradual Approach","Square Orbit","Square Orbit","Gradual Depart"],"element_count":4,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":2,"element_id":"square_orbit","title":"Square Orbit","family":"Orbit","description":"Traverse a square orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 40","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"4","range":"2 to 8","step":"1","choices":"-","source":"override"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = look_forward, Edge Count = 4"},{"step_index":3,"element_id":"square_orbit","title":"Square Orbit","family":"Orbit","description":"Traverse a square orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 40","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"4","range":"2 to 8","step":"1","choices":"-","source":"override"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track, Edge Count = 4"},{"step_index":4,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = look_forward"}]},{"id":"triangular_inspection","title":"Triangular Inspection","kind":"Composite","scope":"Single Landmark","description":"Approach, perform two triangular orbit segments, and depart.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":99,"sequence":["Gradual Approach","Triangular Orbit","Triangular Orbit","Gradual Depart"],"element_count":4,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":2,"element_id":"triangular_orbit","title":"Triangular Orbit","family":"Orbit","description":"Traverse a triangular orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 44","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"3","range":"2 to 6","step":"1","choices":"-","source":"override"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"rotation_deg","label":"Rotation (deg)","default_value":"0","range":"0 to 330","step":"30","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = look_forward, Edge Count = 3"},{"step_index":3,"element_id":"triangular_orbit","title":"Triangular Orbit","family":"Orbit","description":"Traverse a triangular orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 44","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"3","range":"2 to 6","step":"1","choices":"-","source":"override"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"rotation_deg","label":"Rotation (deg)","default_value":"0","range":"0 to 330","step":"30","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track, Edge Count = 3"},{"step_index":4,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = look_forward"}]},{"id":"surface_mapping_inspection","title":"Surface-Mapping Inspection","kind":"Composite","scope":"Single Landmark","description":"Approach, perform an aerial mapping sweep, and depart.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":98,"sequence":["Gradual Approach","Surface Mapping","Gradual Depart"],"element_count":3,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"},{"step_index":2,"element_id":"surface_mapping","title":"Surface Mapping","family":"Survey","description":"Perform a bird's-eye S-shaped lane-by-lane scan over a rectangular region above the landmark.","camera_mode_default":"look_forward","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_x_m","label":"Extension X (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"extension_y_m","label":"Extension Y (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"lane_count","label":"Lane Count","default_value":"6","range":"3 to 12","step":"1","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"18","range":"10 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track, look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-85","range":"-90 to -60","step":"5","choices":"-","source":"default"}],"override_summary":"Camera Mode = look_forward"},{"step_index":3,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = look_forward"}]},{"id":"atomic_circular_orbit","title":"Atomic Circular Orbit","kind":"Atomic","scope":"Single Landmark","description":"A single orbit segment around the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":56,"sequence":["Circular Orbit"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"circular_orbit","title":"Circular Orbit","family":"Orbit","description":"Orbit the landmark with a radius extension around the target center.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"12","range":"4 to 36","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"45 to 720","step":"90","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_comet","title":"Atomic Comet Trajectory","kind":"Atomic","scope":"Single Landmark","description":"A single elongated loop that swings around the landmark and returns.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":54,"sequence":["Comet Trajectory"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"comet","title":"Comet Trajectory","family":"Transition","description":"Start from the initial position, swing in an elongated loop behind the landmark, and return near the starting side.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"18","range":"10 to 50","step":"2","choices":"-","source":"default"},{"key":"semi_major_m","label":"Semi Major (m)","default_value":"60","range":"20 to 140","step":"5","choices":"-","source":"default"},{"key":"eccentricity","label":"Eccentricity","default_value":"0.55","range":"0.2 to 0.9","step":"0.05","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-15","range":"-60 to 0","step":"3","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"360","range":"180 to 720","step":"15","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_figure8_orbit","title":"Atomic Figure-Eight Orbit","kind":"Atomic","scope":"Single Landmark","description":"A single figure-eight motion around the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":54,"sequence":["Figure-Eight Orbit"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"figure8_orbit","title":"Figure-Eight Orbit","family":"Orbit","description":"Perform a figure-eight dual-loop motion around the landmark.","camera_mode_default":"look_forward","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"12","range":"6 to 36","step":"2","choices":"-","source":"default"},{"key":"cycles","label":"Cycles","default_value":"1","range":"1 to 2","step":"1","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"override"}],"override_summary":"Camera Mode = look_forward, Gaze Pitch (deg) = 0"}]},{"id":"atomic_gradual_approach","title":"Atomic Gradual Approach","kind":"Atomic","scope":"Single Landmark","description":"A single approach maneuver that moves toward the landmark while descending and keeping it in view.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":54,"sequence":["Gradual Approach"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_approach","title":"Gradual Approach","family":"Inspection","description":"Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"descent_m","label":"Descent (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-12","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_gradual_depart","title":"Atomic Gradual Depart","kind":"Atomic","scope":"Single Landmark","description":"A single departure maneuver that backs away from the landmark while rising.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":53,"sequence":["Gradual Depart"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"gradual_depart","title":"Gradual Depart","family":"Inspection","description":"Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"travel_distance_m","label":"Travel Distance (m)","default_value":"40","range":"30 to 120","step":"10","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"15","range":"5 to 40","step":"5","choices":"-","source":"default"},{"key":"yaw_offset_deg","label":"Yaw Offset (deg)","default_value":"0","range":"-35 to 35","step":"5","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-10","range":"-45 to 0","step":"3","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"landmark_track","source":"override"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_sky_rise","title":"Atomic Sky Rise","kind":"Atomic","scope":"Single Landmark","description":"A single climb that rises above the landmark into a top-down view.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":53,"sequence":["Sky Rise"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"sky_rise","title":"Sky Rise","family":"Vertical","description":"Climb vertically after reaching the landmark overhead and observe it from a top-down viewpoint.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"rise_m","label":"Rise (m)","default_value":"30","range":"30 to 80","step":"5","choices":"-","source":"default"},{"key":"top_extension_m","label":"Top Extension (m)","default_value":"2","range":"0 to 8","step":"1","choices":"-","source":"default"},{"key":"hover_sec","label":"Hover Sec","default_value":"4","range":"1 to 12","step":"1","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"landmark_track","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-75","range":"-90 to -45","step":"5","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_spiral_orbit","title":"Atomic Spiral Orbit","kind":"Atomic","scope":"Single Landmark","description":"A single spiral orbit that changes altitude while circling the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":49,"sequence":["Spiral Orbit"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"spiral_orbit","title":"Spiral Orbit","family":"Orbit","description":"Move around the landmark along a spiral path while retreating and gaining altitude.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"start_extension_m","label":"Start Extension (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"end_extension_m","label":"End Extension (m)","default_value":"24","range":"10 to 52","step":"2","choices":"-","source":"default"},{"key":"arc_deg","label":"Arc (deg)","default_value":"180","range":"90 to 720","step":"90","choices":"-","source":"default"},{"key":"rise_m","label":"Rise (m)","default_value":"24","range":"8 to 80","step":"4","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-22","range":"-75 to 0","step":"3","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_square_orbit","title":"Atomic Square Orbit","kind":"Atomic","scope":"Single Landmark","description":"A single square-pattern orbit around the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":49,"sequence":["Square Orbit"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"square_orbit","title":"Square Orbit","family":"Orbit","description":"Traverse a square orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 40","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"4","range":"2 to 8","step":"1","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]},{"id":"atomic_surface_mapping","title":"Atomic Surface Mapping","kind":"Atomic","scope":"Single Landmark","description":"A single area-scanning pass above the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":45,"sequence":["Surface Mapping"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"surface_mapping","title":"Surface Mapping","family":"Survey","description":"Perform a bird's-eye S-shaped lane-by-lane scan over a rectangular region above the landmark.","camera_mode_default":"look_forward","applied_camera_mode":"look_forward","parameter_defaults":[{"key":"extension_x_m","label":"Extension X (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"extension_y_m","label":"Extension Y (m)","default_value":"10","range":"4 to 28","step":"2","choices":"-","source":"default"},{"key":"lane_count","label":"Lane Count","default_value":"6","range":"3 to 12","step":"1","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"18","range":"10 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"look_forward","range":"-","step":"-","choices":"landmark_track, look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"-85","range":"-90 to -60","step":"5","choices":"-","source":"override"}],"override_summary":"Camera Mode = look_forward, Gaze Pitch (deg) = -85"}]},{"id":"atomic_triangular_orbit","title":"Atomic Triangular Orbit","kind":"Atomic","scope":"Single Landmark","description":"A single triangular-pattern orbit around the landmark.","generation_notes":"This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.","released_count":45,"sequence":["Triangular Orbit"],"element_count":1,"allow_interleave_repeat":false,"max_total_elements":0,"steps":[{"step_index":1,"element_id":"triangular_orbit","title":"Triangular Orbit","family":"Orbit","description":"Traverse a triangular orbit around the landmark, with each step corresponding to one edge.","camera_mode_default":"landmark_track","applied_camera_mode":"landmark_track","parameter_defaults":[{"key":"extension_m","label":"Extension (m)","default_value":"14","range":"6 to 44","step":"2","choices":"-","source":"default"},{"key":"edge_count","label":"Edge Count","default_value":"3","range":"2 to 6","step":"1","choices":"-","source":"default"},{"key":"direction","label":"Direction","default_value":"cw","range":"-","step":"-","choices":"cw, ccw","source":"default"},{"key":"rotation_deg","label":"Rotation (deg)","default_value":"0","range":"0 to 330","step":"30","choices":"-","source":"default"},{"key":"altitude_offset_m","label":"Altitude Offset (m)","default_value":"8","range":"-20 to 40","step":"2","choices":"-","source":"default"},{"key":"speed_mps","label":"Speed (m/s)","default_value":"20","range":"15 to 25","step":"1","choices":"-","source":"default"},{"key":"camera_mode","label":"Camera Mode","default_value":"landmark_track","range":"-","step":"-","choices":"look_forward","source":"override"},{"key":"gaze_pitch_deg","label":"Gaze Pitch (deg)","default_value":"0","range":"0 to 0","step":"1","choices":"-","source":"default"}],"override_summary":"Camera Mode = landmark_track"}]}]}</script> <script>(function(){const idPrefix = "construction-behavior-library";
+
+  (() => {
+    const payload = document.getElementById(`${idPrefix}-data`);
+    let library = {};
+    try {
+      library = payload ? JSON.parse(payload.textContent || "{}") : {};
+    } catch {
+      library = {};
+    }
+    const sets = Array.isArray(library.sets) ? library.sets : [];
+    const listRoot = document.getElementById(`${idPrefix}-list`);
+    const detailRoot = document.getElementById(`${idPrefix}-detail`);
+    const shell = document.getElementById(idPrefix);
+    const sidebar = document.getElementById(`${idPrefix}-sidebar`);
+    const autoplayButton = document.getElementById(`${idPrefix}-autoplay`);
+    let currentIndex = 0;
+    let autoplayEnabled = true;
+    let timer = null;
+
+  const stopTimer = () => {
+    if (timer) {
+      window.clearInterval(timer);
+      timer = null;
+    }
+  };
+
+  const updateAutoplayButton = () => {
+    if (!autoplayButton) return;
+    autoplayButton.textContent = `Auto-play: ${autoplayEnabled ? "On" : "Off"}`;
+    autoplayButton.classList.toggle("is-on", autoplayEnabled);
+    autoplayButton.classList.toggle("is-off", !autoplayEnabled);
+  };
+
+  const syncHeight = () => {
+    if (!sidebar || !detailRoot) return;
+    const targetHeight = sidebar.offsetHeight + 18;
+    if (targetHeight > 0) {
+      if (shell) {
+        shell.style.height = `${targetHeight}px`;
+        shell.style.maxHeight = `${targetHeight}px`;
+      }
+      detailRoot.style.height = "auto";
+      detailRoot.style.maxHeight = `${targetHeight}px`;
+    }
+  };
+
+  const startTimer = () => {
+    stopTimer();
+    if (!autoplayEnabled || sets.length <= 1) return;
+    timer = window.setInterval(() => {
+      activate((currentIndex + 1) % sets.length);
+    }, 3000);
+  };
+
+  const esc = (value) =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+
+  const renderParams = (params) => {
+    if (!Array.isArray(params) || !params.length) {
+      return '<tr><td colspan="6" class="empty">No default parameters.</td></tr>';
+    }
+    return params
+      .map(
+        (param) => `<tr>
+          <td>${esc(param.label || "-")}</td>
+          <td>${esc(param.default_value || "-")}</td>
+          <td>${esc(param.range || "-")}</td>
+          <td>${esc(param.step || "-")}</td>
+          <td>${esc(param.choices || "-")}</td>
+          <td>${esc(param.source || "-")}</td>
+        </tr>`,
+      )
+      .join("");
+  };
+
+  const renderDetail = (setRow) => {
+    if (!detailRoot || !setRow) return;
+    detailRoot.innerHTML = `
+      <div class="behavior-library-header">
+        <div>
+          <h4>${esc(setRow.title || "-")}</h4>
+          <p class="gallery-meta-line">${esc(setRow.kind || "-")} · ${esc(setRow.scope || "-")} · ${esc(setRow.released_count ?? 0)} released missions</p>
+        </div>
+        <span class="behavior-count-badge">${esc(setRow.element_count ?? 0)} steps</span>
+      </div>
+      <p>${esc(setRow.description || "-")}</p>
+      <div class="behavior-meta-grid">
+        <div>
+          <strong>Generation notes</strong>
+          <span>${esc(setRow.generation_notes || "-")}</span>
+        </div>
+        <div>
+          <strong>Allow interleave repeat</strong>
+          <span>${setRow.allow_interleave_repeat ? "Yes" : "No"}</span>
+        </div>
+        <div>
+          <strong>Max total atomic</strong>
+          <span>${setRow.max_total_elements > 0 ? esc(setRow.max_total_elements) : "Library default"}</span>
+        </div>
+        <div>
+          <strong>Step sequence</strong>
+          <span>${esc((setRow.sequence || []).join(" → ") || "-")}</span>
+        </div>
+      </div>
+      <div class="behavior-step-list">
+        ${(setRow.steps || [])
+          .map(
+            (step) => `<article class="behavior-step-card">
+              <div class="behavior-step-head">
+                <span class="behavior-step-index">Step ${esc(step.step_index)}</span>
+                <div>
+                  <h5>${esc(step.title || "-")}</h5>
+                  <p>${esc(step.element_id || "-")} · ${esc(step.family || "-")}</p>
+                </div>
+              </div>
+              <p>${esc(step.description || "-")}</p>
+              <div class="table-wrap behavior-param-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Default</th>
+                      <th>Range</th>
+                      <th>Step</th>
+                      <th>Choices</th>
+                      <th>Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>${renderParams(step.parameter_defaults)}</tbody>
+                </table>
+              </div>
+            </article>`,
+          )
+          .join("")}
+      </div>`;
+      syncHeight();
+  };
+
+  const activate = (index) => {
+    const setRow = sets[index];
+    if (!setRow) return;
+    currentIndex = index;
+    renderDetail(setRow);
+    listRoot?.querySelectorAll(".behavior-row").forEach((node, nodeIndex) => {
+      node.classList.toggle("is-active", nodeIndex === index);
+    });
+  };
+
+    listRoot?.addEventListener("click", (event) => {
+      const target = event.target;
+      const row = target instanceof Element ? target.closest(".behavior-row") : null;
+      if (!row) return;
+      const index = Number(row.getAttribute("data-index") || 0);
+      activate(index);
+    });
+    autoplayButton?.addEventListener("click", () => {
+      autoplayEnabled = !autoplayEnabled;
+      updateAutoplayButton();
+      startTimer();
+    });
+    shell?.addEventListener("mouseenter", stopTimer);
+    shell?.addEventListener("mouseleave", startTimer);
+    window.addEventListener("resize", syncHeight);
+    updateAutoplayButton();
+    activate(0);
+    startTimer();
+  })();
+})();</script> <p class="table-note"> <strong>Behavior Library.</strong> The released Stage 3 defaults expose the composite set
+          templates, atomic building blocks, and parameter defaults that drive mission generation.
+</p> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/usage#internal-web">Open Stage 3 Web Guide</a> </div> </section> <section class="construction-stage-panel" id="stage4"> <p class="section-kicker">Stage 4 · DCCS Image Module</p> <h2>Image QA Generation, Render-Only Asset Refresh, and Evaluation</h2> <p class="sublede">Sample structured image QA rows and keep assets refreshable without changing task semantics.</p> <p>
+Stage 4 reuses the reviewed Stage 2 landmark pool, but its target product is
+<strong>structured image QA</strong> rather than temporal supervision. In the current
+          single-landmark core release, every valid landmark contributes four task families under
+          two difficulty settings, which yields a fixed 512 x 2 x 4 = 4096-sample lattice before
+          experiments begin.
+</p> <p>
+The <strong>image-task library</strong> is designed to make
+<strong>dual cognition visible at the level of question formulation</strong> rather than
+          only at the level of evaluation metrics. The agent-state branch asks where the UAV is and
+          what it will see after a described motion, while the world-state branch asks where
+          the target lies and what action is appropriate under the current landmark-relative
+          situation. This split ensures that image tasks are not just generic multiple-choice
+          perception items: they are built to separate self-state reasoning from target-oriented
+          situational reasoning under the same landmark-centered world model.
+</p> <p>
+The image branch is not assembled by randomly pairing screenshots.
+<em>Self-relative Position Reasoning</em> and <em>Action-conditioned Future Observation Prediction</em>
+share landmark-centric reference families but ask different questions about current
+          position and motion-induced future observation. <em>Landmark-relative Position Reasoning</em>
+and <em>Goal-conditioned Action Decision</em> share the same egocentric observation so
+          that target direction reasoning and action decision are grounded in identical evidence.
+          For the world-state branch, the pipeline repeatedly resamples observation poses and
+          camera yaw until the landmark stays fully visible and its final bbox is valid.
+</p> <p>
+Stage 4 therefore exports both <strong>semantic QA rows</strong> and
+<strong>rendering sidecars</strong>. The manifests keep the benchmark interface stable,
+          while rerender request files preserve the capture recipe that allows assets to be
+          refreshed later without changing sample ids, options, or answers.
+</p> <p>
+This stage is also where the image benchmark becomes deliberately
+<strong>paired and evidence aware</strong>. Reference images, query observations, answer
+          options, and normalized bbox targets are emitted together so that semantic selection and
+          spatial grounding can be evaluated on the same sample instead of in disconnected
+          protocols.
+</p> <p>
+The release-side media specification stays explicit here as well. Stage 4 keeps image
+          assets at the same DCI 4K capture standard used upstream, preserves a uniform 4:3 aspect
+          ratio across the branch, and applies a bounded JPEG compression policy so that public QA
+          assets remain compact without discarding the visual detail needed for fine landmark
+          grounding.
+</p> <p>
+The <strong>Stage 4 internal web</strong> plays a similar role on the image side: it is
+          the place to inspect generated manifests, preview task rows, launch comparison runs,
+          browse per-sample outputs, and read metric summaries. For small interactive checks, this
+          web surface is the fastest way to verify that reference images, query observations,
+          option layouts, and bbox targets are aligned; for released-scale generation and
+          experiment batches, the recommended path is still <strong><code>task_pipeline.py</code>
+under Stage 4 selection/data/render/experiment phases</strong>.
+</p> <section class="stack">  <div class="stat-grid"> <article class="card stat-card"> <div class="stat-value">DCI 4K</div> <div class="stat-label">Image Assets</div> <p>4096×3072 landmark-centric renders preserve high-frequency spatial details for grounding</p> </article><article class="card stat-card"> <div class="stat-value">4:3</div> <div class="stat-label">Aspect Ratio</div> <p>kept consistent with mainstream UAV capture settings and the benchmark-wide media contract</p> </article><article class="card stat-card"> <div class="stat-value">JPEG 80</div> <div class="stat-label">Compression</div> <p>balances public-release file size and landmark-level visual fidelity in the exported QA assets</p> </article> </div> </section> <p class="table-note"> <strong>Stage 4 Media Specs.</strong> Released image tasks preserve DCI 4K landmark
+          renders under a uniform 4:3 aspect ratio and a JPEG 80 export policy so that semantic QA
+          and spatial grounding share the same high-resolution evidence contract.
+</p> <div class="article-grid tight" style="margin-top: 18px;"> <article class="article-block"> <p class="section-kicker">Sample Construction Logic</p> <p>
+The four image task families are generated from shared landmark-centered evidence
+              pools: paired tasks deliberately reuse reference or query views so that agent-state and
+              world-state reasoning remain directly comparable.
+</p> </article> <article class="article-block"> <p class="section-kicker">Format Constraints and Outputs</p> <p>
+Released manifests package prompt text, answer options, target images, and normalized
+              bbox targets in one stable contract, while <code>render_requests</code> keep assets
+              refreshable without changing task semantics.
+</p> </article> <article class="article-block"> <p class="section-kicker">Outputs</p> <p>
+The benchmark-facing image interface is the per-scene QA manifest, while
+<code>render_requests</code> preserve the rerender recipe that allows released media
+              to be refreshed later without changing ids, options, or answers.
+</p> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark#examples">Open Benchmark Image Examples</a> </div> </article> <article class="article-block"> <p class="section-kicker">Reproduce</p> <div class="schema-block">python scripts/flightmvstg/task_pipeline.py --spec configs/flightmvstg/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage4 --phase render</div> </article> </div> <div class="button-row" style="margin-top: 18px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/usage#internal-web">Open Stage 4 Web Guide</a> </div> </section> </div> </section> <section class="section-divider" id="reproduce"> <article class="article-block"> <p class="section-kicker">Reproducibility</p> <h2>The released benchmark remains reconstructable because handoff artifacts are explicit</h2> <p>
+The pipeline exposes concrete handoff files between stages: scene point clouds, reviewed
+        landmarks, mission folders, manifests, rerender requests, and metric exports. This keeps
+        the released benchmark traceable as an inspectable file hierarchy rather than hidden runtime
+        state, so benchmark media can be refreshed and evaluation can be rerun without guessing
+        intermediate decisions.
+</p> <p>
+The release is also practical to reuse: both the dataset assets and the public codebase are
+        already published, so external users do not need to reconstruct the benchmark from scratch
+        before they can inspect files, load manifests, or run evaluation. The Usage page collects
+        the currently released download channels together with the anonymous code repository and
+        access notes.
+</p> <div class="button-row" style="margin-top: 14px;"> <a class="button" href="/UAV-Dual-Cognition-Reasoning-Benchmark/usage">Open Usage & Release Access</a> </div> <div class="overview-list" style="margin-top: 16px;"> <div class="overview-item"> <p><strong>Reviewer workflow.</strong> Read Benchmark for released scope and sample balance. Read Construction for stage-by-stage provenance and handoff files. Read Evaluation for exact prompt templates, JSON contracts, and scoring rules. Download leaderboard JSON / CSV files to verify tables or regenerate figures.</p> </div><div class="overview-item"> <p><strong>Dataset user workflow.</strong> Start from scene_data reviewed landmarks and task_pipeline manifests. Use Stage 4 manifests plus render_requests to reproduce image tasks without changing semantics. Use Stage 3 mission folders plus task_data.json to inspect video supervision and media specs. Use exported metric matrices when comparing model runs outside the website.</p> </div><div class="overview-item"> <p><strong>Maintainer workflow.</strong> Regenerate Stage 4 and Stage 3 media through task_pipeline render phases. Rerun experiment phases for the desired stage. Export latest metrics CSV files. Refresh site data and rebuild the static website.</p> </div> </div> </article> </section> <nav class="chapter-pager" aria-label="Chapter navigation"> <div class="chapter-pager-slot"> <a class="chapter-pager-link is-prev" href="/UAV-Dual-Cognition-Reasoning-Benchmark/benchmark"> <span class="chapter-pager-direction">Previous</span> <span class="chapter-pager-label">Benchmark</span> </a> </div> <div class="chapter-pager-slot is-next"> <a class="chapter-pager-link is-next" href="/UAV-Dual-Cognition-Reasoning-Benchmark/evaluation"> <span class="chapter-pager-direction">Next</span> <span class="chapter-pager-label">Evaluation</span> </a> </div> </nav>  </main> <div class="image-lightbox is-hidden" id="image-lightbox" aria-hidden="true"> <button type="button" class="image-lightbox-close" id="image-lightbox-close" aria-label="Close enlarged image">×</button> <img class="image-lightbox-media" id="image-lightbox-media" src="" alt=""> </div> <a class="back-to-top" href="#top" aria-label="Back to top">↑</a> <footer class="site-footer"> <div class="shell footer-inner"> <p>UAV-DualCog benchmarks aerial dual-cognition reasoning across image and video tasks.</p> <p>© 2026 <span>Anonymous Authors</span>. All rights reserved.</p> </div> </footer> <script type="module">const d=document.querySelector(".page-sidebar");if(d){const n=Array.from(d.querySelectorAll(".page-sidebar-link")),o=n.map(e=>document.getElementById(e.dataset.section)).filter(Boolean),r=e=>{n.forEach(t=>{const i=t.dataset.section===e;t.classList.toggle("is-active",i),i?t.setAttribute("aria-current","location"):t.removeAttribute("aria-current")})},c=()=>{if(!o.length)return;const e=window.innerHeight*.28;let t=o[0];for(const i of o)if(i.getBoundingClientRect().top<=e)t=i;else break;r(t.id)};n.forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.section;t&&r(t)})});let s=!1;const a=()=>{s||(s=!0,window.requestAnimationFrame(()=>{c(),s=!1}))};c(),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a),window.addEventListener("hashchange",()=>{const e=window.location.hash.replace("#","");e&&r(e)})}</script> <script type="module">const e=document.getElementById("image-lightbox"),i=document.getElementById("image-lightbox-media"),d=document.getElementById("image-lightbox-close"),n=(t,s)=>{!e||!i||!t||(i.setAttribute("src",t),i.setAttribute("alt",s||"Enlarged image"),e.classList.remove("is-hidden"),e.setAttribute("aria-hidden","false"),document.body.classList.add("lightbox-open"))},o=()=>{!e||!i||(e.classList.add("is-hidden"),e.setAttribute("aria-hidden","true"),i.setAttribute("src",""),i.setAttribute("alt",""),document.body.classList.remove("lightbox-open"))};document.addEventListener("click",t=>{const s=t.target.closest("[data-lightbox-src]");if(s){n(s.getAttribute("data-lightbox-src"),s.getAttribute("data-lightbox-alt"));return}t.target===e&&o()});d?.addEventListener("click",o);document.addEventListener("keydown",t=>{t.key==="Escape"&&o()});</script> </body> </html>

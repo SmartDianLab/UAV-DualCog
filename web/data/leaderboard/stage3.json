@@ -1,0 +1,1050 @@
+{
+  "generated_at": "2026-09-11",
+  "sort_metric": "summary_score",
+  "sort_note": "Derived reporting view for the 26 video models in the ICRA manuscript.",
+  "rows": [
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "summary_score": 47.98,
+      "composite_main_metric": 49.32,
+      "atomic_main_metric": 35.69,
+      "env_count_accuracy": 55.18,
+      "self_temporal_tiou": 51.7,
+      "env_temporal_tiou": 44.32,
+      "row_count": 3
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "summary_score": 44.99,
+      "composite_main_metric": 35.93,
+      "atomic_main_metric": 30.22,
+      "env_count_accuracy": 58.5,
+      "self_temporal_tiou": 47.42,
+      "env_temporal_tiou": 50.44,
+      "row_count": 3
+    },
+    {
+      "model": "mimo-v2-omni-Instant",
+      "model_group": "proprietary",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "summary_score": 42.3,
+      "composite_main_metric": 27.8,
+      "atomic_main_metric": 30.74,
+      "env_count_accuracy": 59.38,
+      "self_temporal_tiou": 41.09,
+      "env_temporal_tiou": 53.71,
+      "row_count": 3
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 40.97,
+      "composite_main_metric": 32.59,
+      "atomic_main_metric": 27.29,
+      "env_count_accuracy": 52.34,
+      "self_temporal_tiou": 41.13,
+      "env_temporal_tiou": 51.3,
+      "row_count": 3
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 38.85,
+      "composite_main_metric": 33.0,
+      "atomic_main_metric": 25.0,
+      "env_count_accuracy": 52.25,
+      "self_temporal_tiou": 38.09,
+      "env_temporal_tiou": 46.68,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 37.66,
+      "composite_main_metric": 21.63,
+      "atomic_main_metric": 27.96,
+      "env_count_accuracy": 54.1,
+      "self_temporal_tiou": 36.83,
+      "env_temporal_tiou": 48.6,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 36.44,
+      "composite_main_metric": 14.62,
+      "atomic_main_metric": 30.03,
+      "env_count_accuracy": 51.37,
+      "self_temporal_tiou": 36.97,
+      "env_temporal_tiou": 48.66,
+      "row_count": 3
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "summary_score": 35.41,
+      "composite_main_metric": 23.41,
+      "atomic_main_metric": 19.52,
+      "env_count_accuracy": 52.83,
+      "self_temporal_tiou": 37.25,
+      "env_temporal_tiou": 42.2,
+      "row_count": 3
+    },
+    {
+      "model": "kimi-k2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "summary_score": 35.3,
+      "composite_main_metric": 13.26,
+      "atomic_main_metric": 30.48,
+      "env_count_accuracy": 50.49,
+      "self_temporal_tiou": 35.89,
+      "env_temporal_tiou": 45.82,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 34.91,
+      "composite_main_metric": 21.24,
+      "atomic_main_metric": 23.82,
+      "env_count_accuracy": 48.44,
+      "self_temporal_tiou": 33.12,
+      "env_temporal_tiou": 49.75,
+      "row_count": 3
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 34.2,
+      "composite_main_metric": 6.55,
+      "atomic_main_metric": 34.04,
+      "env_count_accuracy": 53.61,
+      "self_temporal_tiou": 30.89,
+      "env_temporal_tiou": 49.24,
+      "row_count": 3
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 33.55,
+      "composite_main_metric": 9.82,
+      "atomic_main_metric": 30.22,
+      "env_count_accuracy": 50.78,
+      "self_temporal_tiou": 32.2,
+      "env_temporal_tiou": 46.11,
+      "row_count": 3
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "summary_score": 32.68,
+      "composite_main_metric": 12.11,
+      "atomic_main_metric": 32.3,
+      "env_count_accuracy": 39.94,
+      "self_temporal_tiou": 34.2,
+      "env_temporal_tiou": 43.3,
+      "row_count": 3
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 31.91,
+      "composite_main_metric": 2.43,
+      "atomic_main_metric": 32.07,
+      "env_count_accuracy": 53.22,
+      "self_temporal_tiou": 28.48,
+      "env_temporal_tiou": 46.78,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 31.45,
+      "composite_main_metric": 9.87,
+      "atomic_main_metric": 28.85,
+      "env_count_accuracy": 50.68,
+      "self_temporal_tiou": 31.26,
+      "env_temporal_tiou": 36.79,
+      "row_count": 3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 27.46,
+      "composite_main_metric": 27.41,
+      "atomic_main_metric": 23.76,
+      "env_count_accuracy": 51.86,
+      "self_temporal_tiou": 20.2,
+      "env_temporal_tiou": 21.32,
+      "row_count": 3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 26.94,
+      "composite_main_metric": 33.08,
+      "atomic_main_metric": 23.42,
+      "env_count_accuracy": 54.49,
+      "self_temporal_tiou": 14.0,
+      "env_temporal_tiou": 22.66,
+      "row_count": 3
+    },
+    {
+      "model": "glm-4.6v-Instant",
+      "model_group": "open_weight",
+      "model_family": "GLM",
+      "reasoning_mode": "Instant",
+      "summary_score": 26.8,
+      "composite_main_metric": 32.4,
+      "atomic_main_metric": 34.27,
+      "env_count_accuracy": 31.25,
+      "self_temporal_tiou": 14.54,
+      "env_temporal_tiou": 33.81,
+      "row_count": 3
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceOm",
+      "reasoning_mode": "Instant",
+      "summary_score": 24.12,
+      "composite_main_metric": 33.22,
+      "atomic_main_metric": 27.78,
+      "env_count_accuracy": 32.32,
+      "self_temporal_tiou": 8.6,
+      "env_temporal_tiou": 34.23,
+      "row_count": 3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 23.23,
+      "composite_main_metric": 31.0,
+      "atomic_main_metric": 21.91,
+      "env_count_accuracy": 34.57,
+      "self_temporal_tiou": 9.8,
+      "env_temporal_tiou": 32.31,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.7,
+      "composite_main_metric": 5.19,
+      "atomic_main_metric": 26.63,
+      "env_count_accuracy": 40.43,
+      "self_temporal_tiou": 16.09,
+      "env_temporal_tiou": 31.77,
+      "row_count": 3
+    },
+    {
+      "model": "SpaceR-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceR",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.09,
+      "composite_main_metric": 23.97,
+      "atomic_main_metric": 27.73,
+      "env_count_accuracy": 33.69,
+      "self_temporal_tiou": 8.2,
+      "env_temporal_tiou": 30.75,
+      "row_count": 3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 21.78,
+      "composite_main_metric": 15.26,
+      "atomic_main_metric": 25.5,
+      "env_count_accuracy": 43.95,
+      "self_temporal_tiou": 16.68,
+      "env_temporal_tiou": 12.59,
+      "row_count": 3
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceThinker",
+      "reasoning_mode": "Instant",
+      "summary_score": 19.85,
+      "composite_main_metric": 18.96,
+      "atomic_main_metric": 23.6,
+      "env_count_accuracy": 33.69,
+      "self_temporal_tiou": 7.88,
+      "env_temporal_tiou": 27.09,
+      "row_count": 3
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 17.75,
+      "composite_main_metric": 6.37,
+      "atomic_main_metric": 10.0,
+      "env_count_accuracy": 33.89,
+      "self_temporal_tiou": 2.11,
+      "env_temporal_tiou": 51.99,
+      "row_count": 3
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "model_group": "specialized",
+      "model_family": "ViLaSR",
+      "reasoning_mode": "Instant",
+      "summary_score": 13.03,
+      "composite_main_metric": 5.34,
+      "atomic_main_metric": 9.98,
+      "env_count_accuracy": 35.94,
+      "self_temporal_tiou": 3.15,
+      "env_temporal_tiou": 20.6,
+      "row_count": 3
+    }
+  ],
+  "form_rows": [
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 23.41,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 30.52,
+      "self_temporal_loc_mean_tIoU": 35.09
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 19.52,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 40.04,
+      "self_temporal_loc_mean_tIoU": 39.4
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 52.83,
+      "segment_f1@0.5": 44.1,
+      "mean_best_tIoU": 42.2,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 49.32,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 51.88,
+      "self_temporal_loc_mean_tIoU": 56.75
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 35.69,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 53.11,
+      "self_temporal_loc_mean_tIoU": 46.64
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 55.18,
+      "segment_f1@0.5": 45.01,
+      "mean_best_tIoU": 44.32,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "mimo-v2-omni-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 27.8,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 33.1,
+      "self_temporal_loc_mean_tIoU": 35.31
+    },
+    {
+      "model": "mimo-v2-omni-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 30.74,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 54.55,
+      "self_temporal_loc_mean_tIoU": 46.87
+    },
+    {
+      "model": "mimo-v2-omni-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 59.38,
+      "segment_f1@0.5": 52.67,
+      "mean_best_tIoU": 53.71,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 6.55,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 11.82,
+      "self_temporal_loc_mean_tIoU": 12.32
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 34.04,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 62.57,
+      "self_temporal_loc_mean_tIoU": 49.45
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 53.61,
+      "segment_f1@0.5": 56.8,
+      "mean_best_tIoU": 49.24,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 9.82,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 16.55,
+      "self_temporal_loc_mean_tIoU": 16.95
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 30.22,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 46.83,
+      "self_temporal_loc_mean_tIoU": 47.44
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 50.78,
+      "segment_f1@0.5": 52.16,
+      "mean_best_tIoU": 46.11,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 33.0,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 33.68,
+      "self_temporal_loc_mean_tIoU": 38.34
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 25.0,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 48.12,
+      "self_temporal_loc_mean_tIoU": 37.85
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 52.25,
+      "segment_f1@0.5": 52.69,
+      "mean_best_tIoU": 46.68,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 2.43,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 8.99,
+      "self_temporal_loc_mean_tIoU": 9.14
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 32.07,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 47.96,
+      "self_temporal_loc_mean_tIoU": 47.81
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 53.22,
+      "segment_f1@0.5": 54.22,
+      "mean_best_tIoU": 46.78,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 32.59,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 35.81,
+      "self_temporal_loc_mean_tIoU": 39.66
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 27.29,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 53.1,
+      "self_temporal_loc_mean_tIoU": 42.61
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 52.34,
+      "segment_f1@0.5": 58.28,
+      "mean_best_tIoU": 51.3,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "glm-4.6v-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 32.4,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 1.25,
+      "self_temporal_loc_mean_tIoU": 6.44
+    },
+    {
+      "model": "glm-4.6v-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 34.27,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 22.73,
+      "self_temporal_loc_mean_tIoU": 22.64
+    },
+    {
+      "model": "glm-4.6v-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 31.25,
+      "segment_f1@0.5": 17.36,
+      "mean_best_tIoU": 33.81,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 15.26,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 5.79,
+      "self_temporal_loc_mean_tIoU": 8.72
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 25.5,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 25.41,
+      "self_temporal_loc_mean_tIoU": 24.65
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 43.95,
+      "segment_f1@0.5": 8.15,
+      "mean_best_tIoU": 12.59,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 33.08,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 3.91,
+      "self_temporal_loc_mean_tIoU": 10.6
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 23.42,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 16.64,
+      "self_temporal_loc_mean_tIoU": 17.41
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 54.49,
+      "segment_f1@0.5": 14.36,
+      "mean_best_tIoU": 22.66,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 27.41,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 8.47,
+      "self_temporal_loc_mean_tIoU": 14.31
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 23.76,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 25.78,
+      "self_temporal_loc_mean_tIoU": 26.09
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 51.86,
+      "segment_f1@0.5": 16.69,
+      "mean_best_tIoU": 21.32,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 31.0,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 3.46,
+      "self_temporal_loc_mean_tIoU": 7.52
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 21.91,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 12.53,
+      "self_temporal_loc_mean_tIoU": 12.08
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 34.57,
+      "segment_f1@0.5": 17.11,
+      "mean_best_tIoU": 32.31,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "kimi-k2.5-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 13.26,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 21.64,
+      "self_temporal_loc_mean_tIoU": 22.91
+    },
+    {
+      "model": "kimi-k2.5-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 30.48,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 55.43,
+      "self_temporal_loc_mean_tIoU": 48.87
+    },
+    {
+      "model": "kimi-k2.5-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 50.49,
+      "segment_f1@0.5": 50.26,
+      "mean_best_tIoU": 45.82,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 12.11,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 19.06,
+      "self_temporal_loc_mean_tIoU": 19.74
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 32.3,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 57.82,
+      "self_temporal_loc_mean_tIoU": 48.67
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 39.94,
+      "segment_f1@0.5": 48.31,
+      "mean_best_tIoU": 43.3,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 35.93,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 43.95,
+      "self_temporal_loc_mean_tIoU": 48.74
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 30.22,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 53.31,
+      "self_temporal_loc_mean_tIoU": 46.09
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 58.5,
+      "segment_f1@0.5": 54.36,
+      "mean_best_tIoU": 50.44,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 5.19,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 1.73,
+      "self_temporal_loc_mean_tIoU": 2.23
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 26.63,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 31.98,
+      "self_temporal_loc_mean_tIoU": 29.96
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 40.43,
+      "segment_f1@0.5": 21.22,
+      "mean_best_tIoU": 31.77,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 21.24,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 28.38,
+      "self_temporal_loc_mean_tIoU": 31.72
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 23.82,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 39.96,
+      "self_temporal_loc_mean_tIoU": 34.52
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 48.44,
+      "segment_f1@0.5": 46.66,
+      "mean_best_tIoU": 49.75,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 21.63,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 21.5,
+      "self_temporal_loc_mean_tIoU": 23.0
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 27.96,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 55.93,
+      "self_temporal_loc_mean_tIoU": 50.65
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 54.1,
+      "segment_f1@0.5": 50.01,
+      "mean_best_tIoU": 48.6,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 14.62,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 21.93,
+      "self_temporal_loc_mean_tIoU": 23.23
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 30.03,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 55.81,
+      "self_temporal_loc_mean_tIoU": 50.71
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 51.37,
+      "segment_f1@0.5": 52.17,
+      "mean_best_tIoU": 48.66,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 9.87,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 10.15,
+      "self_temporal_loc_mean_tIoU": 11.24
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 28.85,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 56.84,
+      "self_temporal_loc_mean_tIoU": 51.28
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 50.68,
+      "segment_f1@0.5": 33.85,
+      "mean_best_tIoU": 36.79,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 6.37,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 1.31,
+      "self_temporal_loc_mean_tIoU": 1.4
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 10.0,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 3.04,
+      "self_temporal_loc_mean_tIoU": 2.82
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 33.89,
+      "segment_f1@0.5": 45.18,
+      "mean_best_tIoU": 51.99,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 33.22,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 0.0,
+      "self_temporal_loc_mean_tIoU": 3.21
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 27.78,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 17.96,
+      "self_temporal_loc_mean_tIoU": 13.98
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 32.32,
+      "segment_f1@0.5": 17.65,
+      "mean_best_tIoU": 34.23,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "SpaceR-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 23.97,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 0.0,
+      "self_temporal_loc_mean_tIoU": 2.46
+    },
+    {
+      "model": "SpaceR-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 27.73,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 16.52,
+      "self_temporal_loc_mean_tIoU": 13.93
+    },
+    {
+      "model": "SpaceR-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 33.69,
+      "segment_f1@0.5": 16.47,
+      "mean_best_tIoU": 30.75,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 18.96,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 0.0,
+      "self_temporal_loc_mean_tIoU": 1.62
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 23.6,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 19.78,
+      "self_temporal_loc_mean_tIoU": 14.13
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 33.69,
+      "segment_f1@0.5": 14.33,
+      "mean_best_tIoU": 27.09,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "form": "self_composite_instance_recognition",
+      "main_metric": 5.34,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 0.0,
+      "self_temporal_loc_mean_tIoU": 0.67
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "form": "self_atomic_instance_recognition",
+      "main_metric": 9.98,
+      "segment_f1@0.5": null,
+      "mean_best_tIoU": null,
+      "self_temporal_loc_f1@0.5": 3.54,
+      "self_temporal_loc_mean_tIoU": 5.62
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "form": "env_visibility_reasoning",
+      "main_metric": 35.94,
+      "segment_f1@0.5": 10.44,
+      "mean_best_tIoU": 20.6,
+      "self_temporal_loc_f1@0.5": null,
+      "self_temporal_loc_mean_tIoU": null
+    }
+  ],
+  "difficulty_rows": []
+}

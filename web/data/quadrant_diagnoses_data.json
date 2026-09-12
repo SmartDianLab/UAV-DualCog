@@ -1,0 +1,651 @@
+{
+  "title": "Four-Quadrant Dual Cognition Qualitative Diagnoses",
+  "description": "Directly diagnoses the coupling and decoupling between semantic correctness and evidence grounding (BBox IoU >= 0.5 or tIoU >= 0.5).",
+  "quadrants": [
+    {
+      "id": "both",
+      "name": "Quadrant I · Both Correct",
+      "badge": "Semantic ✓ · Evidence ✓",
+      "theme": "success",
+      "description": "The model successfully solves both the cognitive reasoning task and grounds its decision in high-fidelity spatial/temporal evidence. Demonstrates coordinated dual cognition.",
+      "cases": [
+        {
+          "case_id": "quad_both_img_1",
+          "task_id": "self_where",
+          "task_title": "Landmark-Relative Position Reasoning",
+          "modality": "image",
+          "sample_id": "env_21_1_12_self_shared_4way_000029_where",
+          "scene_id": "env_21",
+          "diagnostic_focus": "Coordinated spatial perception and frame transformation. Both high-level direction and physical bounding box align precisely with ground truth.",
+          "prompt": "Image 1 shows the Right facade of stack of white and blue shipping containers with 'super cargo' text in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\nA. Back\nB. Left\nC. Front\nD. Right",
+          "gold": {
+            "option": "Option B (Left)",
+            "bbox": "[0.367, 0.417, 0.634, 0.663]",
+            "bbox_norm": [
+              0.3671875,
+              0.4169921875,
+              0.634033203125,
+              0.6627604166666666
+            ]
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Reference View (Right facade)",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
+            },
+            {
+              "kind": "image",
+              "label": "Query Observation (Front View)",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
+              "overlays": [
+                {
+                  "label": "Ground Truth",
+                  "color": "#16a34a",
+                  "bbox": [
+                    0.367,
+                    0.417,
+                    0.634,
+                    0.663
+                  ]
+                },
+                {
+                  "label": "Mimo v2 Omni",
+                  "color": "#2563eb",
+                  "bbox": [
+                    0.367,
+                    0.425,
+                    0.639,
+                    0.661
+                  ]
+                },
+                {
+                  "label": "GPT 5.3 Chat",
+                  "color": "#d97706",
+                  "bbox": [
+                    0.35,
+                    0.3,
+                    0.65,
+                    0.7
+                  ]
+                }
+              ]
+            }
+          ],
+          "predictions": [
+            {
+              "model": "Mimo v2 Omni",
+              "answer": "B",
+              "answer_status": "correct",
+              "bbox": "[0.367, 0.425, 0.639, 0.661]",
+              "bbox_status": "correct",
+              "metric": "IoU = 0.943",
+              "quadrant_status": "Both Correct",
+              "note": "Near-perfect spatial grounding (IoU 0.943) alongside correct 90° frame transformation."
+            },
+            {
+              "model": "GPT 5.3 Chat",
+              "answer": "B",
+              "answer_status": "correct",
+              "bbox": "[0.350, 0.300, 0.650, 0.700]",
+              "bbox_status": "correct",
+              "metric": "IoU = 0.547",
+              "quadrant_status": "Both Correct",
+              "note": "Valid bounding box pass (IoU 0.547) and correct direction choice."
+            }
+          ]
+        },
+        {
+          "case_id": "quad_both_vid_1",
+          "task_id": "env_visibility_reasoning",
+          "task_title": "Landmark Visibility Reasoning",
+          "modality": "video",
+          "sample_id": "env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218",
+          "scene_id": "env_20",
+          "diagnostic_focus": "Temporal continuity and persistence. Correct appearance count combined with exact flight interval boundaries.",
+          "prompt": "The image shows the landmark in env_20. How many times does this landmark appear in your first-person flight video? Return the full visible time intervals in seconds.",
+          "gold": {
+            "count": "1",
+            "intervals": "[[12.3, 16.9]]",
+            "duration_sec": 20.0
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Landmark Reference",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+            },
+            {
+              "kind": "video",
+              "label": "First-Person Flight Video",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+            }
+          ],
+          "timeline": {
+            "duration_sec": 20.0,
+            "tracks": [
+              {
+                "label": "Ground Truth",
+                "color": "#16a34a",
+                "segments": [
+                  {
+                    "start_sec": 12.3,
+                    "end_sec": 16.9,
+                    "label": "Visible [12.3s - 16.9s]"
+                  }
+                ]
+              },
+              {
+                "label": "Mimo v2 Omni",
+                "color": "#2563eb",
+                "segments": [
+                  {
+                    "start_sec": 12.5,
+                    "end_sec": 16.5,
+                    "label": "Visible [12.5s - 16.5s]"
+                  }
+                ]
+              },
+              {
+                "label": "Claude Sonnet 4.6",
+                "color": "#7c3aed",
+                "segments": [
+                  {
+                    "start_sec": 12.4,
+                    "end_sec": 16.8,
+                    "label": "Visible [12.4s - 16.8s]"
+                  }
+                ]
+              }
+            ]
+          },
+          "predictions": [
+            {
+              "model": "Mimo v2 Omni",
+              "count": "1",
+              "count_status": "correct",
+              "intervals": "[[12.5, 16.5]]",
+              "interval_status": "correct",
+              "metric": "tIoU = 0.870",
+              "quadrant_status": "Both Correct",
+              "note": "Exact count and tight temporal boundary localization (tIoU 0.870)."
+            },
+            {
+              "model": "Claude Sonnet 4.6",
+              "count": "1",
+              "count_status": "correct",
+              "intervals": "[[12.4, 16.8]]",
+              "interval_status": "correct",
+              "metric": "tIoU = 0.941",
+              "quadrant_status": "Both Correct",
+              "note": "High-confidence temporal grounding with minimal boundary offset."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "semantic_only",
+      "name": "Quadrant II · Semantic Only",
+      "badge": "Semantic ✓ · Evidence ✕",
+      "theme": "warning",
+      "description": "The model outputs the correct discrete answer, but completely fails evidence localization (BBox IoU < 0.5 or tIoU < 0.5). Diagnoses shortcut guessing, heuristic elimination, or collapsed placeholder bounding boxes.",
+      "cases": [
+        {
+          "case_id": "quad_sem_img_1",
+          "task_id": "self_where",
+          "task_title": "Self-Relative Position Reasoning",
+          "modality": "image",
+          "sample_id": "env_7_27_237_self_shared_4way_000149_where",
+          "scene_id": "env_7",
+          "diagnostic_focus": "Shortcut reasoning without physical localization. GLM-4.6V selects the correct option but outputs dummy out-of-bounds bounding boxes [1,1,1,1].",
+          "prompt": "Image 1 shows the Front facade of light gray mid-rise building with red tiled roof and dormer windows in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\nA. Right\nB. Back\nC. Left\nD. Front",
+          "gold": {
+            "option": "Option A (Right)",
+            "bbox": "[0.398, 0.384, 0.562, 0.674]",
+            "bbox_norm": [
+              0.398193359375,
+              0.3841145833333333,
+              0.56201171875,
+              0.6741536458333334
+            ]
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Reference View",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
+            },
+            {
+              "kind": "image",
+              "label": "Query Observation",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
+              "overlays": [
+                {
+                  "label": "Ground Truth",
+                  "color": "#16a34a",
+                  "bbox": [
+                    0.398,
+                    0.384,
+                    0.562,
+                    0.674
+                  ]
+                },
+                {
+                  "label": "GLM 4.6V (Dummy [1,1,1,1])",
+                  "color": "#dc2626",
+                  "bbox": [
+                    0.98,
+                    0.98,
+                    1.0,
+                    1.0
+                  ]
+                }
+              ]
+            }
+          ],
+          "predictions": [
+            {
+              "model": "GLM 4.6V",
+              "answer": "A",
+              "answer_status": "correct",
+              "bbox": "[1.000, 1.000, 1.000, 1.000]",
+              "bbox_status": "incorrect",
+              "metric": "IoU = 0.000",
+              "quadrant_status": "Semantic Only",
+              "note": "Correct option guessed, but output collapsed to dummy coordinate corner [1,1,1,1] (IoU 0.000)."
+            },
+            {
+              "model": "Qwen3.5-4B Thinking (Table 11 env_21_3_31)",
+              "answer": "C",
+              "answer_status": "correct",
+              "bbox": "[0.320, 0.250, 0.660, 0.780]",
+              "bbox_status": "incorrect",
+              "metric": "IoU = 0.118",
+              "quadrant_status": "Semantic Only",
+              "note": "Correct discrete action choice, but predicted bounding box significantly misses the target landmark."
+            }
+          ]
+        },
+        {
+          "case_id": "quad_sem_vid_1",
+          "task_id": "env_visibility_reasoning",
+          "task_title": "Landmark Visibility Reasoning",
+          "modality": "video",
+          "sample_id": "env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218",
+          "scene_id": "env_20",
+          "diagnostic_focus": "Discrete counting without temporal grounding. The model outputs count '1' correctly, but the predicted interval severely truncates, yielding tIoU < 0.5.",
+          "prompt": "How many times does this landmark appear in your first-person flight video? Return the full visible time intervals in seconds.",
+          "gold": {
+            "count": "1",
+            "intervals": "[[12.3, 16.9]]",
+            "duration_sec": 20.0
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Landmark Reference",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+            },
+            {
+              "kind": "video",
+              "label": "First-Person Flight Video",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+            }
+          ],
+          "timeline": {
+            "duration_sec": 20.0,
+            "tracks": [
+              {
+                "label": "Ground Truth",
+                "color": "#16a34a",
+                "segments": [
+                  {
+                    "start_sec": 12.3,
+                    "end_sec": 16.9,
+                    "label": "Ground Truth [12.3s - 16.9s]"
+                  }
+                ]
+              },
+              {
+                "label": "Gemini 3 Flash",
+                "color": "#e11d48",
+                "segments": [
+                  {
+                    "start_sec": 13.5,
+                    "end_sec": 15.5,
+                    "label": "Truncated [13.5s - 15.5s]"
+                  }
+                ]
+              }
+            ]
+          },
+          "predictions": [
+            {
+              "model": "Gemini 3 Flash",
+              "count": "1",
+              "count_status": "correct",
+              "intervals": "[[13.5, 15.5]]",
+              "interval_status": "incorrect",
+              "metric": "tIoU = 0.435",
+              "quadrant_status": "Semantic Only",
+              "note": "Discrete count is correct (1), but temporal localization is truncated to 2.0s, failing the 0.5 tIoU threshold."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence_only",
+      "name": "Quadrant III · Evidence Only",
+      "badge": "Semantic ✕ · Evidence ✓",
+      "theme": "info",
+      "description": "The model accurately localizes the landmark or flight interval with high precision (IoU >= 0.5 or tIoU >= 0.5), but fails cognitive reasoning (direction, future view, or action choice). Diagnoses strong perception but defective mental coordinate rotation.",
+      "cases": [
+        {
+          "case_id": "quad_ev_img_1",
+          "task_id": "self_where",
+          "task_title": "Landmark-Relative Position Reasoning",
+          "modality": "image",
+          "sample_id": "env_21_1_18_self_shared_4way_000057_where",
+          "scene_id": "env_21",
+          "diagnostic_focus": "Frame transformation breakdown. Gemini 3.1 Pro Instant localizes the shipping container with IoU 0.893, but inverts the landmark-centric coordinate frame.",
+          "prompt": "Image 1 shows the Front facade of stack of white, yellow, and blue shipping containers with 'supercargo' text in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\nA. Left\nB. Right\nC. Back\nD. Front",
+          "gold": {
+            "option": "Option B (Right)",
+            "bbox": "[0.400, 0.345, 0.595, 0.671]",
+            "bbox_norm": [
+              0.399658203125,
+              0.3453776041666667,
+              0.595458984375,
+              0.6708984375
+            ]
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Reference View (Front facade)",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
+            },
+            {
+              "kind": "image",
+              "label": "Query Observation",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
+              "overlays": [
+                {
+                  "label": "Ground Truth",
+                  "color": "#16a34a",
+                  "bbox": [
+                    0.367,
+                    0.417,
+                    0.634,
+                    0.663
+                  ]
+                },
+                {
+                  "label": "Gemini 3.1 Pro (IoU 0.893)",
+                  "color": "#0284c7",
+                  "bbox": [
+                    0.39,
+                    0.34,
+                    0.6,
+                    0.68
+                  ]
+                },
+                {
+                  "label": "Qwen 3.6-Plus (IoU 0.626)",
+                  "color": "#7c3aed",
+                  "bbox": [
+                    0.35,
+                    0.38,
+                    0.61,
+                    0.62
+                  ]
+                }
+              ]
+            }
+          ],
+          "predictions": [
+            {
+              "model": "Gemini 3.1 Pro Instant",
+              "answer": "C (Back)",
+              "answer_status": "incorrect",
+              "bbox": "[0.390, 0.340, 0.600, 0.680]",
+              "bbox_status": "correct",
+              "metric": "IoU = 0.893",
+              "quadrant_status": "Evidence Only",
+              "note": "Remarkably accurate bounding box (IoU 0.893), but misjudges position direction as 'Back' instead of 'Right'."
+            },
+            {
+              "model": "Qwen 3.6-Plus",
+              "answer": "A (Back)",
+              "answer_status": "incorrect",
+              "bbox": "[0.350, 0.380, 0.610, 0.620]",
+              "bbox_status": "correct",
+              "metric": "IoU = 0.626",
+              "quadrant_status": "Evidence Only",
+              "note": "Successful visual grounding (IoU 0.626), but frame conversion produces wrong discrete choice."
+            }
+          ]
+        },
+        {
+          "case_id": "quad_ev_vid_1",
+          "task_id": "env_visibility_reasoning",
+          "task_title": "Landmark Visibility Reasoning",
+          "modality": "video",
+          "sample_id": "env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218",
+          "scene_id": "env_20",
+          "diagnostic_focus": "Interval tracking without semantic discrete count. Kimi K2.5 grounds the temporal interval tightly, but outputs count 2 (over-counting).",
+          "prompt": "How many times does this landmark appear in your first-person flight video? Return the full visible time intervals in seconds.",
+          "gold": {
+            "count": "1",
+            "intervals": "[[12.3, 16.9]]",
+            "duration_sec": 20.0
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Landmark Reference",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+            },
+            {
+              "kind": "video",
+              "label": "First-Person Flight Video",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+            }
+          ],
+          "timeline": {
+            "duration_sec": 20.0,
+            "tracks": [
+              {
+                "label": "Ground Truth",
+                "color": "#16a34a",
+                "segments": [
+                  {
+                    "start_sec": 12.3,
+                    "end_sec": 16.9,
+                    "label": "GT Count 1 [12.3s - 16.9s]"
+                  }
+                ]
+              },
+              {
+                "label": "Kimi K2.5",
+                "color": "#0284c7",
+                "segments": [
+                  {
+                    "start_sec": 12.5,
+                    "end_sec": 16.5,
+                    "label": "Pred Count 2 [12.5s - 16.5s]"
+                  }
+                ]
+              }
+            ]
+          },
+          "predictions": [
+            {
+              "model": "Kimi K2.5",
+              "count": "2",
+              "count_status": "incorrect",
+              "intervals": "[[12.5, 16.5]]",
+              "interval_status": "correct",
+              "metric": "tIoU = 0.870",
+              "quadrant_status": "Evidence Only",
+              "note": "Precise interval localization (tIoU 0.870), but hallucinated an extra count (count 2 vs GT 1)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "neither",
+      "name": "Quadrant IV · Neither Correct",
+      "badge": "Semantic ✕ · Evidence ✕",
+      "theme": "danger",
+      "description": "The model fails both semantic reasoning and spatial/temporal localization. Indicates severe perception collapse, landmark confusion, or total loss of spatio-temporal orientation.",
+      "cases": [
+        {
+          "case_id": "quad_nei_img_1",
+          "task_id": "self_where",
+          "task_title": "Self-Relative Position Reasoning",
+          "modality": "image",
+          "sample_id": "env_16_39_583_self_shared_8way_000091_where",
+          "scene_id": "env_16",
+          "diagnostic_focus": "Simultaneous breakdown in spatial relation judgment and landmark localization (Table 11 case).",
+          "prompt": "Image 1 shows the Front-Right facade of dark green conical evergreen tree with dense foliage in a square planter in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\nA. Back-Right\nB. Front-Left\nC. Left\nD. Front",
+          "gold": {
+            "option": "Option B (Front-Left)",
+            "bbox": "[0.467, 0.347, 0.520, 0.673]",
+            "bbox_norm": [
+              0.466796875,
+              0.3466796875,
+              0.51953125,
+              0.6725260416666666
+            ]
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Reference View",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_reference.jpg"
+            },
+            {
+              "kind": "image",
+              "label": "Query Observation",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_target.jpg",
+              "overlays": [
+                {
+                  "label": "Ground Truth",
+                  "color": "#16a34a",
+                  "bbox": [
+                    0.438,
+                    0.315,
+                    0.542,
+                    0.74
+                  ]
+                },
+                {
+                  "label": "Qwen3.5-4B Thinking (IoU 0.066)",
+                  "color": "#dc2626",
+                  "bbox": [
+                    0.35,
+                    0.05,
+                    0.65,
+                    0.85
+                  ]
+                }
+              ]
+            }
+          ],
+          "predictions": [
+            {
+              "model": "Qwen3.5-4B Thinking",
+              "answer": "A (Back-Right)",
+              "answer_status": "incorrect",
+              "bbox": "[0.350, 0.050, 0.650, 0.850]",
+              "bbox_status": "incorrect",
+              "metric": "IoU = 0.066",
+              "quadrant_status": "Neither Correct",
+              "note": "Complete orientation collapse: selects inverted direction while bounding box drifts over background water (IoU 0.066)."
+            },
+            {
+              "model": "Claude Sonnet 4.6",
+              "answer": "A (Front-Right)",
+              "answer_status": "incorrect",
+              "bbox": "[0.520, 0.050, 0.630, 0.580]",
+              "bbox_status": "incorrect",
+              "metric": "IoU = 0.059",
+              "quadrant_status": "Neither Correct",
+              "note": "Confuses adjacent background building and completely misses landmark bounding box."
+            }
+          ]
+        },
+        {
+          "case_id": "quad_nei_vid_1",
+          "task_id": "self_instance_recognition_joint",
+          "task_title": "Flight Behavior Recognition",
+          "modality": "video",
+          "sample_id": "env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165",
+          "scene_id": "env_16",
+          "diagnostic_focus": "Total action semantic and temporal hallucination. GLM 4.6V selects unrelated action option and predicts inaccurate time boundaries.",
+          "prompt": "Which of the following actions have you ever adopted in this first-person flight video? Select one or more options and return the matching time intervals in seconds.",
+          "gold": {
+            "option": "Option C (spiral clockwise around landmark)",
+            "intervals": "[[11.8, 27.2]]",
+            "duration_sec": 30.0
+          },
+          "media": [
+            {
+              "kind": "image",
+              "label": "Landmark Reference",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
+            },
+            {
+              "kind": "video",
+              "label": "First-Person Flight Video",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
+            }
+          ],
+          "timeline": {
+            "duration_sec": 30.0,
+            "tracks": [
+              {
+                "label": "Ground Truth",
+                "color": "#16a34a",
+                "segments": [
+                  {
+                    "start_sec": 11.8,
+                    "end_sec": 27.2,
+                    "label": "Option C [11.8s - 27.2s]"
+                  }
+                ]
+              },
+              {
+                "label": "GLM 4.6V",
+                "color": "#dc2626",
+                "segments": [
+                  {
+                    "start_sec": 0.0,
+                    "end_sec": 5.0,
+                    "label": "Option H [0.0s - 5.0s]"
+                  }
+                ]
+              }
+            ]
+          },
+          "predictions": [
+            {
+              "model": "GLM 4.6V",
+              "answer": "H",
+              "answer_status": "incorrect",
+              "intervals": "[[0.0, 5.0]]",
+              "interval_status": "incorrect",
+              "metric": "tIoU = 0.088",
+              "quadrant_status": "Neither Correct",
+              "note": "Selects wrong action primitive (Option H) and hallucinates interval during initial ascent phase."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

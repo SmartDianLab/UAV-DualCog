@@ -1,0 +1,3 @@
+section,table_name,source,note
+leaderboard,stage3,web/data/leaderboard/stage3.json,Released Stage 3 metric snapshot used by the website leaderboard.
+leaderboard,stage4,web/data/leaderboard/stage4.json,Released Stage 4 metric snapshot used by the website leaderboard.

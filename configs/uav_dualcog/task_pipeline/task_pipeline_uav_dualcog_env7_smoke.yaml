@@ -1,0 +1,35 @@
+task_name: UAV-DualCog-V1-Env7-Smoke
+task_pipeline_root_dir: task_pipeline_data
+stage: both
+phase: selection
+seed: 29
+
+scene_ids: [env_7]
+landmark_list:
+  artifact_name: UAV-DualCog-env7-smoke-landmarks
+  scene_ids: [env_7]
+  scene_landmark_counts:
+    env_7: 20
+  seed: 29
+
+stage3:
+  single_landmark:
+    landmark_count: 20
+    atomic_classes_per_landmark: 1
+    composite_classes_per_landmark: 1
+    instances_per_class: 1
+    self_state_forms: [self_instance_recognition_joint]
+    environmental_forms: [env_visibility_reasoning]
+    qa_samples_per_task: 1
+  manifest_mode: all
+  rerender_existing: false
+  final_video_width: 1440
+  final_video_height: 1080
+
+stage4:
+  rerender_existing: false
+  landmark_count: 20
+  per_landmark:
+    task_types: [self_where, self_what, env_where, env_how]
+    qa_samples_per_difficulty: 1
+  difficulties: [4way, 8way]

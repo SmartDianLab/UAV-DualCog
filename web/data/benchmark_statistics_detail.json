@@ -1,0 +1,5651 @@
+{
+  "generated_at": "2026-04-11T09:40:27.019596+00:00",
+  "overall_statistics": {
+    "intro": "The released benchmark split is carved out from a larger reviewed scene pool. The released statistics below describe the benchmark-facing subset, while the figure retains the paper-level overview of released scenes, landmarks, and task counts.",
+    "cards": [
+      {
+        "label": "Released Scenes",
+        "value": 12
+      },
+      {
+        "label": "Released Landmarks",
+        "value": 512
+      },
+      {
+        "label": "Image Samples",
+        "value": 4096
+      },
+      {
+        "label": "Video Samples",
+        "value": 2048
+      },
+      {
+        "label": "Source Images",
+        "value": 4840
+      },
+      {
+        "label": "Video Duration",
+        "value": "5h 27m 13s"
+      }
+    ]
+  },
+  "landmark_category": {
+    "intro": "Released landmarks cover eight coarse categories and a long-tailed set of fine-grained subcategories. The table lists the dominant coarse categories in the released split, while the dual-ring chart shows how those coarse categories expand into their constituent subcategories.",
+    "top_categories": [
+      {
+        "id": "building",
+        "label": "Building",
+        "value": 176,
+        "share": 34.38,
+        "color": "#123f86"
+      },
+      {
+        "id": "industrial_infrastructure",
+        "label": "Industrial Infrastructure",
+        "value": 90,
+        "share": 17.58,
+        "color": "#2f67bf"
+      },
+      {
+        "id": "public_facility",
+        "label": "Public Facility",
+        "value": 81,
+        "share": 15.82,
+        "color": "#4f86d9"
+      },
+      {
+        "id": "vegetation",
+        "label": "Vegetation",
+        "value": 80,
+        "share": 15.62,
+        "color": "#6ba3e7"
+      },
+      {
+        "id": "urban_landscape",
+        "label": "Urban Landscape",
+        "value": 36,
+        "share": 7.03,
+        "color": "#4d7c0f"
+      },
+      {
+        "id": "other",
+        "label": "Other",
+        "value": 32,
+        "share": 6.25,
+        "color": "#9a6700"
+      },
+      {
+        "id": "transport_infrastructure",
+        "label": "Transport Infrastructure",
+        "value": 11,
+        "share": 2.15,
+        "color": "#7c3aed"
+      },
+      {
+        "id": "vehicle",
+        "label": "Vehicle",
+        "value": 6,
+        "share": 1.17,
+        "color": "#9f1239"
+      }
+    ],
+    "top_subcategories": [
+      {
+        "subcategory": "Mid Rise Building",
+        "category": "Building",
+        "count": 80,
+        "share": 15.62
+      },
+      {
+        "subcategory": "Deciduous Tree",
+        "category": "Vegetation",
+        "count": 72,
+        "share": 14.06
+      },
+      {
+        "subcategory": "Street Lamp Post",
+        "category": "Public Facility",
+        "count": 35,
+        "share": 6.84
+      },
+      {
+        "subcategory": "Low Rise Building",
+        "category": "Building",
+        "count": 24,
+        "share": 4.69
+      },
+      {
+        "subcategory": "High Rise Building",
+        "category": "Building",
+        "count": 19,
+        "share": 3.71
+      },
+      {
+        "subcategory": "Signboard",
+        "category": "Urban Landscape",
+        "count": 18,
+        "share": 3.52
+      },
+      {
+        "subcategory": "Billboard",
+        "category": "Urban Landscape",
+        "count": 14,
+        "share": 2.73
+      },
+      {
+        "subcategory": "Public Bench",
+        "category": "Public Facility",
+        "count": 14,
+        "share": 2.73
+      }
+    ],
+    "representative_gallery": [
+      {
+        "id": "env_10_20_77",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_10_20_77_deciduous_tree.jpg",
+        "view_label": "Front",
+        "category": "Vegetation",
+        "subcategory": "Deciduous Tree",
+        "description": "leafy green deciduous tree with a full canopy situated beside a canal",
+        "scene_label": "ENV 10"
+      },
+      {
+        "id": "env_10_35_159",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_10_35_159_mid-rise_building.jpg",
+        "view_label": "Front",
+        "category": "Building",
+        "subcategory": "Mid Rise Building",
+        "description": "gray tiled roof with chimneys on a mid-rise building",
+        "scene_label": "ENV 10"
+      },
+      {
+        "id": "env_10_35_168",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_10_35_168_low-rise_building.jpg",
+        "view_label": "Front",
+        "category": "Building",
+        "subcategory": "Low Rise Building",
+        "description": "red brick low-rise building with gabled roof and awnings",
+        "scene_label": "ENV 10"
+      },
+      {
+        "id": "env_10_39_182",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_10_39_182_street_lamp_post.jpg",
+        "view_label": "Front",
+        "category": "Public Facility",
+        "subcategory": "Street Lamp Post",
+        "description": "black metal street lamp post with a lantern-style head",
+        "scene_label": "ENV 10"
+      },
+      {
+        "id": "env_11_44_601",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_11_44_601_high-rise_building.jpg",
+        "view_label": "Front",
+        "category": "Building",
+        "subcategory": "High Rise Building",
+        "description": "gray multi-story building with grid-like windows and flat roof",
+        "scene_label": "ENV 11"
+      },
+      {
+        "id": "env_16_32_281",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_16_32_281_signboard.jpg",
+        "view_label": "Front",
+        "category": "Urban Landscape",
+        "subcategory": "Signboard",
+        "description": "white rectangular signboard with silhouette of a person playing piano and text",
+        "scene_label": "ENV 16"
+      },
+      {
+        "id": "env_16_32_283",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_16_32_283_billboard.jpg",
+        "view_label": "Front",
+        "category": "Urban Landscape",
+        "subcategory": "Billboard",
+        "description": "dark green rectangular billboard with white text reading 'charlie's chocolate' and a hexagon symbol",
+        "scene_label": "ENV 16"
+      },
+      {
+        "id": "env_16_51_688",
+        "image_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/subcategory_gallery/env_16_51_688_public_bench.jpg",
+        "view_label": "Front",
+        "category": "Public Facility",
+        "subcategory": "Public Bench",
+        "description": "dark wooden public bench with a central planter box",
+        "scene_label": "ENV 16"
+      }
+    ],
+    "donut": {
+      "inner": [
+        {
+          "id": "building",
+          "label": "Building",
+          "value": 176,
+          "share": 34.38,
+          "color": "#123f86"
+        },
+        {
+          "id": "industrial_infrastructure",
+          "label": "Industrial Infrastructure",
+          "value": 90,
+          "share": 17.58,
+          "color": "#2f67bf"
+        },
+        {
+          "id": "public_facility",
+          "label": "Public Facility",
+          "value": 81,
+          "share": 15.82,
+          "color": "#4f86d9"
+        },
+        {
+          "id": "vegetation",
+          "label": "Vegetation",
+          "value": 80,
+          "share": 15.62,
+          "color": "#6ba3e7"
+        },
+        {
+          "id": "urban_landscape",
+          "label": "Urban Landscape",
+          "value": 36,
+          "share": 7.03,
+          "color": "#4d7c0f"
+        },
+        {
+          "id": "other",
+          "label": "Other",
+          "value": 32,
+          "share": 6.25,
+          "color": "#9a6700"
+        },
+        {
+          "id": "transport_infrastructure",
+          "label": "Transport Infrastructure",
+          "value": 11,
+          "share": 2.15,
+          "color": "#7c3aed"
+        },
+        {
+          "id": "vehicle",
+          "label": "Vehicle",
+          "value": 6,
+          "share": 1.17,
+          "color": "#9f1239"
+        }
+      ],
+      "outer": [
+        {
+          "id": "building:mid-rise building",
+          "parent_id": "building",
+          "label": "Mid Rise Building",
+          "value": 80,
+          "share": 15.62,
+          "color": "#123f86",
+          "text_label": "Mid Rise Building"
+        },
+        {
+          "id": "vegetation:deciduous tree",
+          "parent_id": "vegetation",
+          "label": "Deciduous Tree",
+          "value": 72,
+          "share": 14.06,
+          "color": "#6ba3e7",
+          "text_label": "Deciduous Tree"
+        },
+        {
+          "id": "public_facility:street lamp post",
+          "parent_id": "public_facility",
+          "label": "Street Lamp Post",
+          "value": 35,
+          "share": 6.84,
+          "color": "#4f86d9",
+          "text_label": "Street Lamp Post"
+        },
+        {
+          "id": "building:low-rise building",
+          "parent_id": "building",
+          "label": "Low Rise Building",
+          "value": 24,
+          "share": 4.69,
+          "color": "#2e5695",
+          "text_label": "Low Rise Building"
+        },
+        {
+          "id": "building:high-rise building",
+          "parent_id": "building",
+          "label": "High Rise Building",
+          "value": 19,
+          "share": 3.71,
+          "color": "#4b6da3",
+          "text_label": "High Rise Building"
+        },
+        {
+          "id": "urban_landscape:signboard",
+          "parent_id": "urban_landscape",
+          "label": "Signboard",
+          "value": 18,
+          "share": 3.52,
+          "color": "#4d7c0f",
+          "text_label": "Signboard"
+        },
+        {
+          "id": "urban_landscape:billboard",
+          "parent_id": "urban_landscape",
+          "label": "Billboard",
+          "value": 14,
+          "share": 2.73,
+          "color": "#628c2c",
+          "text_label": "Billboard"
+        },
+        {
+          "id": "public_facility:public bench",
+          "parent_id": "public_facility",
+          "label": "Public Bench",
+          "value": 14,
+          "share": 2.73,
+          "color": "#6495de",
+          "text_label": "Public Bench"
+        },
+        {
+          "id": "industrial_infrastructure:shipping container stack",
+          "parent_id": "industrial_infrastructure",
+          "label": "Shipping Container Stack",
+          "value": 11,
+          "share": 2.15,
+          "color": "#2f67bf",
+          "text_label": "Shipping Container Stack"
+        },
+        {
+          "id": "building:attic",
+          "parent_id": "building",
+          "label": "Attic",
+          "value": 10,
+          "share": 1.95,
+          "color": "#6784b2",
+          "text_label": "Attic"
+        },
+        {
+          "id": "industrial_infrastructure:oil storage tank",
+          "parent_id": "industrial_infrastructure",
+          "label": "Oil Storage Tank",
+          "value": 8,
+          "share": 1.56,
+          "color": "#4879c7",
+          "text_label": "1.6%"
+        },
+        {
+          "id": "industrial_infrastructure:water tower",
+          "parent_id": "industrial_infrastructure",
+          "label": "Water Tower",
+          "value": 8,
+          "share": 1.56,
+          "color": "#618bce",
+          "text_label": "1.6%"
+        },
+        {
+          "id": "public_facility:antenna",
+          "parent_id": "public_facility",
+          "label": "Antenna",
+          "value": 7,
+          "share": 1.37,
+          "color": "#79a3e2",
+          "text_label": "1.4%"
+        },
+        {
+          "id": "building:mid-rise residential building",
+          "parent_id": "building",
+          "label": "Mid Rise Residential Building",
+          "value": 7,
+          "share": 1.37,
+          "color": "#849bc0",
+          "text_label": "1.4%"
+        },
+        {
+          "id": "public_facility:telephone booth",
+          "parent_id": "public_facility",
+          "label": "Telephone Booth",
+          "value": 6,
+          "share": 1.17,
+          "color": "#8eb2e7",
+          "text_label": "1.2%"
+        },
+        {
+          "id": "building:low-rise industrial building",
+          "parent_id": "building",
+          "label": "Low Rise Industrial Building",
+          "value": 5,
+          "share": 0.98,
+          "color": "#94a9c9",
+          "text_label": "1.0%"
+        },
+        {
+          "id": "public_facility:trash bin",
+          "parent_id": "public_facility",
+          "label": "Trash Bin",
+          "value": 5,
+          "share": 0.98,
+          "color": "#a3c0eb",
+          "text_label": "1.0%"
+        },
+        {
+          "id": "industrial_infrastructure:factory chimney",
+          "parent_id": "industrial_infrastructure",
+          "label": "Factory Chimney",
+          "value": 4,
+          "share": 0.78,
+          "color": "#7a9ed6",
+          "text_label": "0.8%"
+        },
+        {
+          "id": "industrial_infrastructure:grain silo",
+          "parent_id": "industrial_infrastructure",
+          "label": "Grain Silo",
+          "value": 4,
+          "share": 0.78,
+          "color": "#93b0de",
+          "text_label": "0.8%"
+        },
+        {
+          "id": "industrial_infrastructure:hvac unit",
+          "parent_id": "industrial_infrastructure",
+          "label": "Hvac Unit",
+          "value": 4,
+          "share": 0.78,
+          "color": "#a1bbe2",
+          "text_label": "0.8%"
+        },
+        {
+          "id": "building:multi-story residential building",
+          "parent_id": "building",
+          "label": "Multi Story Residential Building",
+          "value": 4,
+          "share": 0.78,
+          "color": "#94a9c9",
+          "text_label": "0.8%"
+        },
+        {
+          "id": "public_facility:newsstand",
+          "parent_id": "public_facility",
+          "label": "Newsstand",
+          "value": 4,
+          "share": 0.78,
+          "color": "#b0c9ee",
+          "text_label": "0.8%"
+        },
+        {
+          "id": "building:brick building",
+          "parent_id": "building",
+          "label": "Brick Building",
+          "value": 3,
+          "share": 0.59,
+          "color": "#94a9c9",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "industrial_infrastructure:crane",
+          "parent_id": "industrial_infrastructure",
+          "label": "Crane",
+          "value": 3,
+          "share": 0.59,
+          "color": "#a1bbe2",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "industrial_infrastructure:crane tower",
+          "parent_id": "industrial_infrastructure",
+          "label": "Crane Tower",
+          "value": 3,
+          "share": 0.59,
+          "color": "#a1bbe2",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "industrial_infrastructure:factory building",
+          "parent_id": "industrial_infrastructure",
+          "label": "Factory Building",
+          "value": 3,
+          "share": 0.59,
+          "color": "#a1bbe2",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "building:mid-rise brick building",
+          "parent_id": "building",
+          "label": "Mid Rise Brick Building",
+          "value": 3,
+          "share": 0.59,
+          "color": "#94a9c9",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "public_facility:planter",
+          "parent_id": "public_facility",
+          "label": "Planter",
+          "value": 3,
+          "share": 0.59,
+          "color": "#b0c9ee",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "vehicle:sedan car",
+          "parent_id": "vehicle",
+          "label": "Sedan Car",
+          "value": 3,
+          "share": 0.59,
+          "color": "#9f1239",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "industrial_infrastructure:tower crane",
+          "parent_id": "industrial_infrastructure",
+          "label": "Tower Crane",
+          "value": 3,
+          "share": 0.59,
+          "color": "#a1bbe2",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "transport_infrastructure:traffic island",
+          "parent_id": "transport_infrastructure",
+          "label": "Traffic Island",
+          "value": 3,
+          "share": 0.59,
+          "color": "#7c3aed",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "other:ventilation unit",
+          "parent_id": "other",
+          "label": "Ventilation Unit",
+          "value": 3,
+          "share": 0.59,
+          "color": "#9a6700",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "other:wooden ladder",
+          "parent_id": "other",
+          "label": "Wooden Ladder",
+          "value": 3,
+          "share": 0.59,
+          "color": "#a6791f",
+          "text_label": "0.6%"
+        },
+        {
+          "id": "building:brick warehouse",
+          "parent_id": "building",
+          "label": "Brick Warehouse",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:concrete hopper",
+          "parent_id": "industrial_infrastructure",
+          "label": "Concrete Hopper",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "vegetation:evergreen tree",
+          "parent_id": "vegetation",
+          "label": "Evergreen Tree",
+          "value": 2,
+          "share": 0.39,
+          "color": "#7daeea",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:factory shed",
+          "parent_id": "industrial_infrastructure",
+          "label": "Factory Shed",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "building:industrial building",
+          "parent_id": "building",
+          "label": "Industrial Building",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:industrial shed",
+          "parent_id": "industrial_infrastructure",
+          "label": "Industrial Shed",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:light pole",
+          "parent_id": "industrial_infrastructure",
+          "label": "Light Pole",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "other:metal gate",
+          "parent_id": "other",
+          "label": "Metal Gate",
+          "value": 2,
+          "share": 0.39,
+          "color": "#b28b3d",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:metal walkway",
+          "parent_id": "industrial_infrastructure",
+          "label": "Metal Walkway",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "transport_infrastructure:pedestrian bridge",
+          "parent_id": "transport_infrastructure",
+          "label": "Pedestrian Bridge",
+          "value": 2,
+          "share": 0.39,
+          "color": "#8c52ef",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "vegetation:potted tree",
+          "parent_id": "vegetation",
+          "label": "Potted Tree",
+          "value": 2,
+          "share": 0.39,
+          "color": "#8fb9ed",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "public_facility:red telephone booth",
+          "parent_id": "public_facility",
+          "label": "Red Telephone Booth",
+          "value": 2,
+          "share": 0.39,
+          "color": "#b0c9ee",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:shipping container",
+          "parent_id": "industrial_infrastructure",
+          "label": "Shipping Container",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "vegetation:shrub",
+          "parent_id": "vegetation",
+          "label": "Shrub",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a0c4f0",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "building:small shed",
+          "parent_id": "building",
+          "label": "Small Shed",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "vehicle:tanker truck",
+          "parent_id": "vehicle",
+          "label": "Tanker Truck",
+          "value": 2,
+          "share": 0.39,
+          "color": "#ab2e51",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "public_facility:traffic signal",
+          "parent_id": "public_facility",
+          "label": "Traffic Signal",
+          "value": 2,
+          "share": 0.39,
+          "color": "#b0c9ee",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "other:wooden crate",
+          "parent_id": "other",
+          "label": "Wooden Crate",
+          "value": 2,
+          "share": 0.39,
+          "color": "#be9e5c",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "building:wooden scaffolding structure",
+          "parent_id": "building",
+          "label": "Wooden Scaffolding Structure",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "building:wooden shack",
+          "parent_id": "building",
+          "label": "Wooden Shack",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "building:wooden shed",
+          "parent_id": "building",
+          "label": "Wooden Shed",
+          "value": 2,
+          "share": 0.39,
+          "color": "#94a9c9",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "industrial_infrastructure:wooden water tower",
+          "parent_id": "industrial_infrastructure",
+          "label": "Wooden Water Tower",
+          "value": 2,
+          "share": 0.39,
+          "color": "#a1bbe2",
+          "text_label": "0.4%"
+        },
+        {
+          "id": "vehicle:bicycle",
+          "parent_id": "vehicle",
+          "label": "Bicycle",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b64b69",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:blue brick building",
+          "parent_id": "building",
+          "label": "Blue Brick Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "public_facility:blue mailbox",
+          "parent_id": "public_facility",
+          "label": "Blue Mailbox",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b0c9ee",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:brick chimney",
+          "parent_id": "industrial_infrastructure",
+          "label": "Brick Chimney",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:brick factory building",
+          "parent_id": "industrial_infrastructure",
+          "label": "Brick Factory Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:brick factory tower",
+          "parent_id": "industrial_infrastructure",
+          "label": "Brick Factory Tower",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:colorful residential building",
+          "parent_id": "building",
+          "label": "Colorful Residential Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:colorful townhouse",
+          "parent_id": "building",
+          "label": "Colorful Townhouse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "vegetation:coniferous tree",
+          "parent_id": "vegetation",
+          "label": "Coniferous Tree",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b2cff3",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:conveyor belt",
+          "parent_id": "industrial_infrastructure",
+          "label": "Conveyor Belt",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:curb",
+          "parent_id": "other",
+          "label": "Curb",
+          "value": 1,
+          "share": 0.2,
+          "color": "#cab07a",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "transport_infrastructure:curved cobblestone sidewalk",
+          "parent_id": "transport_infrastructure",
+          "label": "Curved Cobblestone Sidewalk",
+          "value": 1,
+          "share": 0.2,
+          "color": "#9b69f1",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:curved concrete barrier",
+          "parent_id": "other",
+          "label": "Curved Concrete Barrier",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:flag",
+          "parent_id": "other",
+          "label": "Flag",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "public_facility:flag pole",
+          "parent_id": "public_facility",
+          "label": "Flag Pole",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b0c9ee",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:glass skyscraper",
+          "parent_id": "building",
+          "label": "Glass Skyscraper",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:industrial gate",
+          "parent_id": "industrial_infrastructure",
+          "label": "Industrial Gate",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:industrial warehouse",
+          "parent_id": "building",
+          "label": "Industrial Warehouse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:l-shaped modular seating",
+          "parent_id": "other",
+          "label": "L Shaped Modular Seating",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "urban_landscape:landmark signage",
+          "parent_id": "urban_landscape",
+          "label": "Landmark Signage",
+          "value": 1,
+          "share": 0.2,
+          "color": "#789b49",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "urban_landscape:landscape installation",
+          "parent_id": "urban_landscape",
+          "label": "Landscape Installation",
+          "value": 1,
+          "share": 0.2,
+          "color": "#8dab65",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:low-rise residential building",
+          "parent_id": "building",
+          "label": "Low Rise Residential Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:low-rise warehouse",
+          "parent_id": "building",
+          "label": "Low Rise Warehouse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:metal fence gate",
+          "parent_id": "other",
+          "label": "Metal Fence Gate",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:metal framework",
+          "parent_id": "industrial_infrastructure",
+          "label": "Metal Framework",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:metal gantry",
+          "parent_id": "industrial_infrastructure",
+          "label": "Metal Gantry",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:metal silo",
+          "parent_id": "industrial_infrastructure",
+          "label": "Metal Silo",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:metal support column",
+          "parent_id": "industrial_infrastructure",
+          "label": "Metal Support Column",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "public_facility:outdoor cafe table",
+          "parent_id": "public_facility",
+          "label": "Outdoor Cafe Table",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b0c9ee",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:outdoor dining table",
+          "parent_id": "other",
+          "label": "Outdoor Dining Table",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:outdoor seating",
+          "parent_id": "other",
+          "label": "Outdoor Seating",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:outdoor table",
+          "parent_id": "other",
+          "label": "Outdoor Table",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:outdoor table set",
+          "parent_id": "other",
+          "label": "Outdoor Table Set",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "urban_landscape:paved area",
+          "parent_id": "urban_landscape",
+          "label": "Paved Area",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a2bb82",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "transport_infrastructure:pedestrian crossing sign",
+          "parent_id": "transport_infrastructure",
+          "label": "Pedestrian Crossing Sign",
+          "value": 1,
+          "share": 0.2,
+          "color": "#ab81f3",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:pipeline",
+          "parent_id": "industrial_infrastructure",
+          "label": "Pipeline",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:potted plant",
+          "parent_id": "other",
+          "label": "Potted Plant",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:prefabricated container building",
+          "parent_id": "building",
+          "label": "Prefabricated Container Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:prefabricated modular building",
+          "parent_id": "building",
+          "label": "Prefabricated Modular Building",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "transport_infrastructure:railway track",
+          "parent_id": "transport_infrastructure",
+          "label": "Railway Track",
+          "value": 1,
+          "share": 0.2,
+          "color": "#bb99f6",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:red box",
+          "parent_id": "other",
+          "label": "Red Box",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:roof air conditioning unit",
+          "parent_id": "other",
+          "label": "Roof Air Conditioning Unit",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:rooftop ventilation unit",
+          "parent_id": "other",
+          "label": "Rooftop Ventilation Unit",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "building:rural farmhouse",
+          "parent_id": "building",
+          "label": "Rural Farmhouse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#94a9c9",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:rusty metal cart",
+          "parent_id": "other",
+          "label": "Rusty Metal Cart",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:rusty metal frame",
+          "parent_id": "other",
+          "label": "Rusty Metal Frame",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:rusty metal winch",
+          "parent_id": "other",
+          "label": "Rusty Metal Winch",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "urban_landscape:sculpture",
+          "parent_id": "urban_landscape",
+          "label": "Sculpture",
+          "value": 1,
+          "share": 0.2,
+          "color": "#afc493",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:ship capstan",
+          "parent_id": "industrial_infrastructure",
+          "label": "Ship Capstan",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:shipyard crane",
+          "parent_id": "industrial_infrastructure",
+          "label": "Shipyard Crane",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:shipyard winch",
+          "parent_id": "industrial_infrastructure",
+          "label": "Shipyard Winch",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:steel framework structure",
+          "parent_id": "industrial_infrastructure",
+          "label": "Steel Framework Structure",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:steel gantry",
+          "parent_id": "industrial_infrastructure",
+          "label": "Steel Gantry",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:steel support column",
+          "parent_id": "industrial_infrastructure",
+          "label": "Steel Support Column",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "transport_infrastructure:stone staircase",
+          "parent_id": "transport_infrastructure",
+          "label": "Stone Staircase",
+          "value": 1,
+          "share": 0.2,
+          "color": "#c4a6f7",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:storage tank",
+          "parent_id": "industrial_infrastructure",
+          "label": "Storage Tank",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "public_facility:traffic light",
+          "parent_id": "public_facility",
+          "label": "Traffic Light",
+          "value": 1,
+          "share": 0.2,
+          "color": "#b0c9ee",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "vegetation:tree",
+          "parent_id": "vegetation",
+          "label": "Tree",
+          "value": 1,
+          "share": 0.2,
+          "color": "#bcd6f4",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:ventilation shaft",
+          "parent_id": "industrial_infrastructure",
+          "label": "Ventilation Shaft",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "urban_landscape:vertical signboard",
+          "parent_id": "urban_landscape",
+          "label": "Vertical Signboard",
+          "value": 1,
+          "share": 0.2,
+          "color": "#afc493",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:warehouse",
+          "parent_id": "industrial_infrastructure",
+          "label": "Warehouse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wire cage",
+          "parent_id": "other",
+          "label": "Wire Cage",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wooden barricade",
+          "parent_id": "other",
+          "label": "Wooden Barricade",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wooden bollard",
+          "parent_id": "other",
+          "label": "Wooden Bollard",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "transport_infrastructure:wooden bridge",
+          "parent_id": "transport_infrastructure",
+          "label": "Wooden Bridge",
+          "value": 1,
+          "share": 0.2,
+          "color": "#c4a6f7",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wooden construction barrier",
+          "parent_id": "other",
+          "label": "Wooden Construction Barrier",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:wooden crane",
+          "parent_id": "industrial_infrastructure",
+          "label": "Wooden Crane",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:wooden frames",
+          "parent_id": "industrial_infrastructure",
+          "label": "Wooden Frames",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wooden mooring post",
+          "parent_id": "other",
+          "label": "Wooden Mooring Post",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:wooden platform",
+          "parent_id": "industrial_infrastructure",
+          "label": "Wooden Platform",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "other:wooden sawhorse",
+          "parent_id": "other",
+          "label": "Wooden Sawhorse",
+          "value": 1,
+          "share": 0.2,
+          "color": "#d2bb8c",
+          "text_label": "0.2%"
+        },
+        {
+          "id": "industrial_infrastructure:wooden water tank",
+          "parent_id": "industrial_infrastructure",
+          "label": "Wooden Water Tank",
+          "value": 1,
+          "share": 0.2,
+          "color": "#a1bbe2",
+          "text_label": "0.2%"
+        }
+      ]
+    }
+  },
+  "scene_coverage": {
+    "intro": "The selected benchmark split spans twelve scenes rather than collapsing around a single environment. The released split keeps landmark, image-task, and video-task contributions visible scene by scene.",
+    "rows": [
+      {
+        "scene_id": "env_10",
+        "label": "ENV 10",
+        "landmarks": 48,
+        "image_samples": 384,
+        "video_samples": 192,
+        "area_m2": 310700.0
+      },
+      {
+        "scene_id": "env_11",
+        "label": "ENV 11",
+        "landmarks": 56,
+        "image_samples": 448,
+        "video_samples": 224,
+        "area_m2": 118950.0
+      },
+      {
+        "scene_id": "env_13",
+        "label": "ENV 13",
+        "landmarks": 8,
+        "image_samples": 64,
+        "video_samples": 32,
+        "area_m2": 460636.0
+      },
+      {
+        "scene_id": "env_16",
+        "label": "ENV 16",
+        "landmarks": 126,
+        "image_samples": 1008,
+        "video_samples": 504,
+        "area_m2": 414975.0
+      },
+      {
+        "scene_id": "env_17",
+        "label": "ENV 17",
+        "landmarks": 8,
+        "image_samples": 64,
+        "video_samples": 32,
+        "area_m2": 343086.0
+      },
+      {
+        "scene_id": "env_20",
+        "label": "ENV 20",
+        "landmarks": 61,
+        "image_samples": 488,
+        "video_samples": 244,
+        "area_m2": 148672.0
+      },
+      {
+        "scene_id": "env_21",
+        "label": "ENV 21",
+        "landmarks": 16,
+        "image_samples": 128,
+        "video_samples": 64,
+        "area_m2": 242570.0
+      },
+      {
+        "scene_id": "env_23",
+        "label": "ENV 23",
+        "landmarks": 41,
+        "image_samples": 328,
+        "video_samples": 164,
+        "area_m2": 57900.0
+      },
+      {
+        "scene_id": "env_24",
+        "label": "ENV 24",
+        "landmarks": 10,
+        "image_samples": 80,
+        "video_samples": 40,
+        "area_m2": 640000.0
+      },
+      {
+        "scene_id": "env_7",
+        "label": "ENV 7",
+        "landmarks": 86,
+        "image_samples": 688,
+        "video_samples": 344,
+        "area_m2": 220580.0
+      },
+      {
+        "scene_id": "env_8",
+        "label": "ENV 8",
+        "landmarks": 4,
+        "image_samples": 32,
+        "video_samples": 16,
+        "area_m2": 285048.0
+      },
+      {
+        "scene_id": "env_9",
+        "label": "ENV 9",
+        "landmarks": 48,
+        "image_samples": 384,
+        "video_samples": 192,
+        "area_m2": 200604.0
+      }
+    ],
+    "library": [
+      {
+        "scene_id": "env_7",
+        "label": "ENV 7 · Waterfront City",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-2.jpg"
+        ],
+        "landmarks": 86,
+        "image_samples": 688,
+        "video_samples": 344,
+        "area_m2": 220580.0
+      },
+      {
+        "scene_id": "env_8",
+        "label": "ENV 8 · Southern Village",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-2.jpg"
+        ],
+        "landmarks": 4,
+        "image_samples": 32,
+        "video_samples": 16,
+        "area_m2": 285048.0
+      },
+      {
+        "scene_id": "env_9",
+        "label": "ENV 9 · Industrial Zone",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-2.jpg"
+        ],
+        "landmarks": 48,
+        "image_samples": 384,
+        "video_samples": 192,
+        "area_m2": 200604.0
+      },
+      {
+        "scene_id": "env_10",
+        "label": "ENV 10 · Riverside Town",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-2.jpg"
+        ],
+        "landmarks": 48,
+        "image_samples": 384,
+        "video_samples": 192,
+        "area_m2": 310700.0
+      },
+      {
+        "scene_id": "env_11",
+        "label": "ENV 11 · Nighttime City",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-2.jpg"
+        ],
+        "landmarks": 56,
+        "image_samples": 448,
+        "video_samples": 224,
+        "area_m2": 118950.0
+      },
+      {
+        "scene_id": "env_13",
+        "label": "ENV 13 · European Town",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-2.jpg"
+        ],
+        "landmarks": 8,
+        "image_samples": 64,
+        "video_samples": 32,
+        "area_m2": 460636.0
+      },
+      {
+        "scene_id": "env_16",
+        "label": "ENV 16 · Modern Metropolis",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-2.jpg"
+        ],
+        "landmarks": 126,
+        "image_samples": 1008,
+        "video_samples": 504,
+        "area_m2": 414975.0
+      },
+      {
+        "scene_id": "env_17",
+        "label": "ENV 17 · Rail Station",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-2.jpg"
+        ],
+        "landmarks": 8,
+        "image_samples": 64,
+        "video_samples": 32,
+        "area_m2": 343086.0
+      },
+      {
+        "scene_id": "env_20",
+        "label": "ENV 20 · Abandoned Port",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-2.jpg"
+        ],
+        "landmarks": 61,
+        "image_samples": 488,
+        "video_samples": 244,
+        "area_m2": 148672.0
+      },
+      {
+        "scene_id": "env_21",
+        "label": "ENV 21 · Container Wharf",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-2.jpg"
+        ],
+        "landmarks": 16,
+        "image_samples": 128,
+        "video_samples": 64,
+        "area_m2": 242570.0
+      },
+      {
+        "scene_id": "env_23",
+        "label": "ENV 23 · Japanese City",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-2.jpg"
+        ],
+        "landmarks": 41,
+        "image_samples": 328,
+        "video_samples": 164,
+        "area_m2": 57900.0
+      },
+      {
+        "scene_id": "env_24",
+        "label": "ENV 24 · Hong Kong City",
+        "images": [
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-1.jpg",
+          "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-2.jpg"
+        ],
+        "landmarks": 10,
+        "image_samples": 80,
+        "video_samples": 40,
+        "area_m2": 640000.0
+      }
+    ]
+  },
+  "task_distribution": {
+    "intro": "Task allocation is balanced first at the cognition level and then at the task-family level. The inner ring aggregates samples by the two cognition axes, while the outer ring expands them into the six released tasks.",
+    "rows": [
+      {
+        "cognition": "Self-Aware",
+        "task": "Landmark-Relative Position Reasoning",
+        "count": 1024,
+        "modality": "image"
+      },
+      {
+        "cognition": "Self-Aware",
+        "task": "Future Observation Prediction",
+        "count": 1024,
+        "modality": "image"
+      },
+      {
+        "cognition": "Environment-Aware",
+        "task": "Self-Relative Position Reasoning",
+        "count": 1024,
+        "modality": "image"
+      },
+      {
+        "cognition": "Environment-Aware",
+        "task": "Landmark-Driven Action Decision",
+        "count": 1024,
+        "modality": "image"
+      },
+      {
+        "cognition": "Self-Aware",
+        "task": "Flight Behavior Recognition and Temporal Localization",
+        "count": 1024,
+        "modality": "video"
+      },
+      {
+        "cognition": "Environment-Aware",
+        "task": "Landmark Visibility Counting and Interval Reasoning",
+        "count": 1024,
+        "modality": "video"
+      }
+    ],
+    "donut": {
+      "inner": [
+        {
+          "id": "Self-Aware",
+          "label": "Self-Aware",
+          "value": 3072,
+          "share": 50.0,
+          "color": "#123f86"
+        },
+        {
+          "id": "Environment-Aware",
+          "label": "Environment-Aware",
+          "value": 3072,
+          "share": 50.0,
+          "color": "#4d7c0f"
+        }
+      ],
+      "outer": [
+        {
+          "id": "self_where",
+          "parent_id": "Self-Aware",
+          "label": "Landmark-Relative Position Reasoning",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#2e5695",
+          "text_label": "Landmark-Relative Position Reasoning"
+        },
+        {
+          "id": "self_what",
+          "parent_id": "Self-Aware",
+          "label": "Future Observation Prediction",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#41659e",
+          "text_label": "Future Observation Prediction"
+        },
+        {
+          "id": "env_where",
+          "parent_id": "Environment-Aware",
+          "label": "Self-Relative Position Reasoning",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#7fa152",
+          "text_label": "Self-Relative Position Reasoning"
+        },
+        {
+          "id": "env_how",
+          "parent_id": "Environment-Aware",
+          "label": "Landmark-Driven Action Decision",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#628c2c",
+          "text_label": "Landmark-Driven Action Decision"
+        },
+        {
+          "id": "self_instance_recognition_joint",
+          "parent_id": "Self-Aware",
+          "label": "Flight Behavior Recognition and Temporal Localization",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#41659e",
+          "text_label": "Flight Behavior Recognition and Temporal Localization"
+        },
+        {
+          "id": "env_visibility_reasoning",
+          "parent_id": "Environment-Aware",
+          "label": "Landmark Visibility Counting and Interval Reasoning",
+          "value": 1024,
+          "share": 16.67,
+          "color": "#7fa152",
+          "text_label": "Landmark Visibility Counting and Interval Reasoning"
+        }
+      ]
+    }
+  },
+  "image_branch": {
+    "intro": "Image tasks are built from landmark-centric multiview evidence. Each released landmark may contribute up to eight canonical orbit views, and Stage 4 additionally captures task-specific observation images such as the query views used by environment-aware tasks.",
+    "gallery_intro": "The selector below shows ten released landmarks that preserve the full eight-view coverage used by the image-task pipeline.",
+    "gallery": [
+      {
+        "id": "env_7_27_237",
+        "landmark_id": "27_237",
+        "landmark_name": "Mid Rise Building",
+        "label": "Mid Rise Building",
+        "scene_label": "ENV 7",
+        "category": "Building",
+        "subcategory": "Mid Rise Building",
+        "description": "light gray mid-rise building with red tiled roof and dormer windows",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 137.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": 92.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_right_pcd.jpg"
+          },
+          {
+            "key": "right",
+            "label": "Right",
+            "angle_deg": 47.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_right_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -42.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_back_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -132.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": -177.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_237_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_16_33_403",
+        "landmark_id": "33_403",
+        "landmark_name": "High Rise Building",
+        "label": "High Rise Building",
+        "scene_label": "ENV 16",
+        "category": "Building",
+        "subcategory": "High Rise Building",
+        "description": "tall gray high-rise building with vertical windows and a flat roof",
+        "source_tasks": [
+          "image",
+          "video"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 108.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": 63.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": -26.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_right_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": -116.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -161.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_16_33_403_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_16_33_403_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_9_26_107",
+        "landmark_id": "26_107",
+        "landmark_name": "Prefabricated Container Building",
+        "label": "Prefabricated Container Building",
+        "scene_label": "ENV 9",
+        "category": "Building",
+        "subcategory": "Prefabricated Container Building",
+        "description": "green rectangular prefabricated container building with multiple windows",
+        "source_tasks": [
+          "image",
+          "video"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 1.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": -43.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_right_pcd.jpg"
+          },
+          {
+            "key": "right",
+            "label": "Right",
+            "angle_deg": -88.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": -133.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_right_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -178.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": 136.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": 91.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": 46.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_26_107_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_11_45_627",
+        "landmark_id": "45_627",
+        "landmark_name": "High Rise Building",
+        "label": "High Rise Building",
+        "scene_label": "ENV 11",
+        "category": "Building",
+        "subcategory": "High Rise Building",
+        "description": "dark high-rise building with many lit windows",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": -174.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": 140.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": 50.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_back_right_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -84.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_11_45_627_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_11_45_627_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_20_31_273",
+        "landmark_id": "31_273",
+        "landmark_name": "Wooden Scaffolding Structure",
+        "label": "Wooden Scaffolding Structure",
+        "scene_label": "ENV 20",
+        "category": "Building",
+        "subcategory": "Wooden Scaffolding Structure",
+        "description": "tall wooden scaffolding structure with cross-bracing and ladder access attached to the side of a brick building",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 90.5,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -89.5,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": -134.5,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -179.5,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": 135.5,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_20_31_273_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_10_23_94",
+        "landmark_id": "23_94",
+        "landmark_name": "Mid Rise Building",
+        "label": "Mid Rise Building",
+        "scene_label": "ENV 10",
+        "category": "Building",
+        "subcategory": "Mid Rise Building",
+        "description": "multi-story brick building with stepped gable roof and white window frames",
+        "source_tasks": [
+          "video"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": -37.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": -82.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_right_pcd.jpg"
+          },
+          {
+            "key": "right",
+            "label": "Right",
+            "angle_deg": -127.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_right_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": 52.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": 7.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_10_23_94_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_7_20_134",
+        "landmark_id": "20_134",
+        "landmark_name": "Mid Rise Residential Building",
+        "label": "Mid Rise Residential Building",
+        "scene_label": "ENV 7",
+        "category": "Building",
+        "subcategory": "Mid Rise Residential Building",
+        "description": "red brick mid-rise residential building with gabled roof and dormer windows",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 158.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": 23.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_right_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -22.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": -67.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -112.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": -157.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_20_134_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_7_27_243",
+        "landmark_id": "27_243",
+        "landmark_name": "Mid Rise Building",
+        "label": "Mid Rise Building",
+        "scene_label": "ENV 7",
+        "category": "Building",
+        "subcategory": "Mid Rise Building",
+        "description": "light gray mid-rise building with red roof and dormer windows",
+        "source_tasks": [
+          "image",
+          "video"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 25.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": -20.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": -110.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_back_right_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": 115.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": 70.0,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_7_27_243_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_9_49_230",
+        "landmark_id": "49_230",
+        "landmark_name": "Small Shed",
+        "label": "Small Shed",
+        "scene_label": "ENV 9",
+        "category": "Building",
+        "subcategory": "Small Shed",
+        "description": "small gray corrugated metal shed with a single door and two small windows",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 1.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": -43.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_right_pcd.jpg"
+          },
+          {
+            "key": "right",
+            "label": "Right",
+            "angle_deg": -88.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": -133.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_right_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -178.6,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": 136.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": 91.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": 46.4,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_9_49_230_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_left_pcd.jpg"
+          }
+        ]
+      },
+      {
+        "id": "env_23_10_34",
+        "landmark_id": "10_34",
+        "landmark_name": "Sedan Car",
+        "label": "Sedan Car",
+        "scene_label": "ENV 23",
+        "category": "Vehicle",
+        "subcategory": "Sedan Car",
+        "description": "blue sedan car with a visible rear spoiler and white headlights",
+        "source_tasks": [
+          "image"
+        ],
+        "views": [
+          {
+            "key": "front",
+            "label": "Front",
+            "angle_deg": 171.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_pcd.jpg"
+          },
+          {
+            "key": "front_right",
+            "label": "Front Right",
+            "angle_deg": 126.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_right_pcd.jpg"
+          },
+          {
+            "key": "back_right",
+            "label": "Back Right",
+            "angle_deg": 36.8,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back_right.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_right_pcd.jpg"
+          },
+          {
+            "key": "back",
+            "label": "Back",
+            "angle_deg": -8.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_pcd.jpg"
+          },
+          {
+            "key": "back_left",
+            "label": "Back Left",
+            "angle_deg": -53.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_back_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_left_pcd.jpg"
+          },
+          {
+            "key": "left",
+            "label": "Left",
+            "angle_deg": -98.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_left_pcd.jpg"
+          },
+          {
+            "key": "front_left",
+            "label": "Front Left",
+            "angle_deg": -143.2,
+            "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_views/env_23_10_34_front_left.jpg",
+            "pcd_url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_left_pcd.jpg"
+          }
+        ]
+      }
+    ],
+    "cards": [
+      {
+        "label": "Image Tasks",
+        "value": 4096,
+        "detail": "Released image QA samples across four task families"
+      },
+      {
+        "label": "Valid Landmark Views",
+        "value": 3816,
+        "detail": "All valid RGB views attached to released landmarks"
+      },
+      {
+        "label": "Extra Observation Images",
+        "value": 1024,
+        "detail": "Task-specific egocentric captures added during Stage 4 generation"
+      },
+      {
+        "label": "Mean Description Length",
+        "value": "10.6 words",
+        "detail": "Average landmark-description length in the released split"
+      }
+    ],
+    "view_count_distribution": [
+      {
+        "label": "4",
+        "value": 73
+      },
+      {
+        "label": "5",
+        "value": 93
+      },
+      {
+        "label": "6",
+        "value": 73
+      },
+      {
+        "label": "7",
+        "value": 75
+      },
+      {
+        "label": "8",
+        "value": 198
+      }
+    ],
+    "description_length_distribution": [
+      {
+        "label": "5",
+        "value": 1
+      },
+      {
+        "label": "6",
+        "value": 9
+      },
+      {
+        "label": "7",
+        "value": 24
+      },
+      {
+        "label": "8",
+        "value": 45
+      },
+      {
+        "label": "9",
+        "value": 103
+      },
+      {
+        "label": "10",
+        "value": 101
+      },
+      {
+        "label": "11",
+        "value": 81
+      },
+      {
+        "label": "12",
+        "value": 48
+      },
+      {
+        "label": "13",
+        "value": 38
+      },
+      {
+        "label": "14",
+        "value": 31
+      },
+      {
+        "label": "15",
+        "value": 18
+      },
+      {
+        "label": "16",
+        "value": 5
+      },
+      {
+        "label": "17",
+        "value": 6
+      },
+      {
+        "label": "18",
+        "value": 2
+      }
+    ]
+  },
+  "video_branch": {
+    "intro": "Video tasks are assembled from an explicit Stage 3 behavior library. Atomic modes define the primitive maneuvers, while composite modes chain those primitives into inspection-style missions that support both behavior recognition and visibility reasoning.",
+    "behavior_library": {
+      "summary": {
+        "composite_count": 5,
+        "atomic_count": 10,
+        "family_count": 5,
+        "multi_landmark_count": 0,
+        "safety_distance_m": "2"
+      },
+      "sets": [
+        {
+          "id": "circular_inspection",
+          "title": "Circular Inspection",
+          "kind": "Composite",
+          "scope": "Single Landmark",
+          "description": "Approach, perform two circular orbit segments, and depart.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 109,
+          "sequence": [
+            "Gradual Approach",
+            "Circular Orbit",
+            "Circular Orbit",
+            "Gradual Depart"
+          ],
+          "element_count": 4,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 2,
+              "element_id": "circular_orbit",
+              "title": "Circular Orbit",
+              "family": "Orbit",
+              "description": "Orbit the landmark with a radius extension around the target center.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "12",
+                  "range": "4 to 36",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "45 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            },
+            {
+              "step_index": 3,
+              "element_id": "circular_orbit",
+              "title": "Circular Orbit",
+              "family": "Orbit",
+              "description": "Orbit the landmark with a radius extension around the target center.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "12",
+                  "range": "4 to 36",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "45 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 4,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            }
+          ]
+        },
+        {
+          "id": "spiral_inspection",
+          "title": "Spiral Inspection",
+          "kind": "Composite",
+          "scope": "Single Landmark",
+          "description": "Approach, perform two spiral orbit segments, and depart.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 103,
+          "sequence": [
+            "Gradual Approach",
+            "Spiral Orbit",
+            "Spiral Orbit",
+            "Gradual Depart"
+          ],
+          "element_count": 4,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 2,
+              "element_id": "spiral_orbit",
+              "title": "Spiral Orbit",
+              "family": "Orbit",
+              "description": "Move around the landmark along a spiral path while retreating and gaining altitude.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "start_extension_m",
+                  "label": "Start Extension (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "end_extension_m",
+                  "label": "End Extension (m)",
+                  "default_value": "24",
+                  "range": "10 to 52",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "90 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "24",
+                  "range": "8 to 80",
+                  "step": "4",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-22",
+                  "range": "-75 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            },
+            {
+              "step_index": 3,
+              "element_id": "spiral_orbit",
+              "title": "Spiral Orbit",
+              "family": "Orbit",
+              "description": "Move around the landmark along a spiral path while retreating and gaining altitude.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "start_extension_m",
+                  "label": "Start Extension (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "end_extension_m",
+                  "label": "End Extension (m)",
+                  "default_value": "24",
+                  "range": "10 to 52",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "90 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "24",
+                  "range": "8 to 80",
+                  "step": "4",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-22",
+                  "range": "-75 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 4,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            }
+          ]
+        },
+        {
+          "id": "square_inspection",
+          "title": "Square Inspection",
+          "kind": "Composite",
+          "scope": "Single Landmark",
+          "description": "Approach, perform two square orbit segments, and depart.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 103,
+          "sequence": [
+            "Gradual Approach",
+            "Square Orbit",
+            "Square Orbit",
+            "Gradual Depart"
+          ],
+          "element_count": 4,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 2,
+              "element_id": "square_orbit",
+              "title": "Square Orbit",
+              "family": "Orbit",
+              "description": "Traverse a square orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "4",
+                  "range": "2 to 8",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "override"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward, Edge Count = 4"
+            },
+            {
+              "step_index": 3,
+              "element_id": "square_orbit",
+              "title": "Square Orbit",
+              "family": "Orbit",
+              "description": "Traverse a square orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "4",
+                  "range": "2 to 8",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "override"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track, Edge Count = 4"
+            },
+            {
+              "step_index": 4,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            }
+          ]
+        },
+        {
+          "id": "triangular_inspection",
+          "title": "Triangular Inspection",
+          "kind": "Composite",
+          "scope": "Single Landmark",
+          "description": "Approach, perform two triangular orbit segments, and depart.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 99,
+          "sequence": [
+            "Gradual Approach",
+            "Triangular Orbit",
+            "Triangular Orbit",
+            "Gradual Depart"
+          ],
+          "element_count": 4,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 2,
+              "element_id": "triangular_orbit",
+              "title": "Triangular Orbit",
+              "family": "Orbit",
+              "description": "Traverse a triangular orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 44",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "3",
+                  "range": "2 to 6",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "override"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "rotation_deg",
+                  "label": "Rotation (deg)",
+                  "default_value": "0",
+                  "range": "0 to 330",
+                  "step": "30",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward, Edge Count = 3"
+            },
+            {
+              "step_index": 3,
+              "element_id": "triangular_orbit",
+              "title": "Triangular Orbit",
+              "family": "Orbit",
+              "description": "Traverse a triangular orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 44",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "3",
+                  "range": "2 to 6",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "override"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "rotation_deg",
+                  "label": "Rotation (deg)",
+                  "default_value": "0",
+                  "range": "0 to 330",
+                  "step": "30",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track, Edge Count = 3"
+            },
+            {
+              "step_index": 4,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            }
+          ]
+        },
+        {
+          "id": "surface_mapping_inspection",
+          "title": "Surface-Mapping Inspection",
+          "kind": "Composite",
+          "scope": "Single Landmark",
+          "description": "Approach, perform an aerial mapping sweep, and depart.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 98,
+          "sequence": [
+            "Gradual Approach",
+            "Surface Mapping",
+            "Gradual Depart"
+          ],
+          "element_count": 3,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            },
+            {
+              "step_index": 2,
+              "element_id": "surface_mapping",
+              "title": "Surface Mapping",
+              "family": "Survey",
+              "description": "Perform a bird's-eye S-shaped lane-by-lane scan over a rectangular region above the landmark.",
+              "camera_mode_default": "look_forward",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_x_m",
+                  "label": "Extension X (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "extension_y_m",
+                  "label": "Extension Y (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "lane_count",
+                  "label": "Lane Count",
+                  "default_value": "6",
+                  "range": "3 to 12",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "18",
+                  "range": "10 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track, look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-85",
+                  "range": "-90 to -60",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            },
+            {
+              "step_index": 3,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward"
+            }
+          ]
+        },
+        {
+          "id": "atomic_circular_orbit",
+          "title": "Atomic Circular Orbit",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single orbit segment around the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 56,
+          "sequence": [
+            "Circular Orbit"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "circular_orbit",
+              "title": "Circular Orbit",
+              "family": "Orbit",
+              "description": "Orbit the landmark with a radius extension around the target center.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "12",
+                  "range": "4 to 36",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "45 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_comet",
+          "title": "Atomic Comet Trajectory",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single elongated loop that swings around the landmark and returns.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 54,
+          "sequence": [
+            "Comet Trajectory"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "comet",
+              "title": "Comet Trajectory",
+              "family": "Transition",
+              "description": "Start from the initial position, swing in an elongated loop behind the landmark, and return near the starting side.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "18",
+                  "range": "10 to 50",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "semi_major_m",
+                  "label": "Semi Major (m)",
+                  "default_value": "60",
+                  "range": "20 to 140",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "eccentricity",
+                  "label": "Eccentricity",
+                  "default_value": "0.55",
+                  "range": "0.2 to 0.9",
+                  "step": "0.05",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-15",
+                  "range": "-60 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "360",
+                  "range": "180 to 720",
+                  "step": "15",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_figure8_orbit",
+          "title": "Atomic Figure-Eight Orbit",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single figure-eight motion around the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 54,
+          "sequence": [
+            "Figure-Eight Orbit"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "figure8_orbit",
+              "title": "Figure-Eight Orbit",
+              "family": "Orbit",
+              "description": "Perform a figure-eight dual-loop motion around the landmark.",
+              "camera_mode_default": "look_forward",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "12",
+                  "range": "6 to 36",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "cycles",
+                  "label": "Cycles",
+                  "default_value": "1",
+                  "range": "1 to 2",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward, Gaze Pitch (deg) = 0"
+            }
+          ]
+        },
+        {
+          "id": "atomic_gradual_approach",
+          "title": "Atomic Gradual Approach",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single approach maneuver that moves toward the landmark while descending and keeping it in view.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 54,
+          "sequence": [
+            "Gradual Approach"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_approach",
+              "title": "Gradual Approach",
+              "family": "Inspection",
+              "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "descent_m",
+                  "label": "Descent (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-12",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_gradual_depart",
+          "title": "Atomic Gradual Depart",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single departure maneuver that backs away from the landmark while rising.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 53,
+          "sequence": [
+            "Gradual Depart"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "gradual_depart",
+              "title": "Gradual Depart",
+              "family": "Inspection",
+              "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "travel_distance_m",
+                  "label": "Travel Distance (m)",
+                  "default_value": "40",
+                  "range": "30 to 120",
+                  "step": "10",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "15",
+                  "range": "5 to 40",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "yaw_offset_deg",
+                  "label": "Yaw Offset (deg)",
+                  "default_value": "0",
+                  "range": "-35 to 35",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-10",
+                  "range": "-45 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_sky_rise",
+          "title": "Atomic Sky Rise",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single climb that rises above the landmark into a top-down view.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 53,
+          "sequence": [
+            "Sky Rise"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "sky_rise",
+              "title": "Sky Rise",
+              "family": "Vertical",
+              "description": "Climb vertically after reaching the landmark overhead and observe it from a top-down viewpoint.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "30",
+                  "range": "30 to 80",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "top_extension_m",
+                  "label": "Top Extension (m)",
+                  "default_value": "2",
+                  "range": "0 to 8",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "hover_sec",
+                  "label": "Hover Sec",
+                  "default_value": "4",
+                  "range": "1 to 12",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-75",
+                  "range": "-90 to -45",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_spiral_orbit",
+          "title": "Atomic Spiral Orbit",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single spiral orbit that changes altitude while circling the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 49,
+          "sequence": [
+            "Spiral Orbit"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "spiral_orbit",
+              "title": "Spiral Orbit",
+              "family": "Orbit",
+              "description": "Move around the landmark along a spiral path while retreating and gaining altitude.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "start_extension_m",
+                  "label": "Start Extension (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "end_extension_m",
+                  "label": "End Extension (m)",
+                  "default_value": "24",
+                  "range": "10 to 52",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "arc_deg",
+                  "label": "Arc (deg)",
+                  "default_value": "180",
+                  "range": "90 to 720",
+                  "step": "90",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "rise_m",
+                  "label": "Rise (m)",
+                  "default_value": "24",
+                  "range": "8 to 80",
+                  "step": "4",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-22",
+                  "range": "-75 to 0",
+                  "step": "3",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_square_orbit",
+          "title": "Atomic Square Orbit",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single square-pattern orbit around the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 49,
+          "sequence": [
+            "Square Orbit"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "square_orbit",
+              "title": "Square Orbit",
+              "family": "Orbit",
+              "description": "Traverse a square orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "4",
+                  "range": "2 to 8",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "atomic_surface_mapping",
+          "title": "Atomic Surface Mapping",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single area-scanning pass above the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 45,
+          "sequence": [
+            "Surface Mapping"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "surface_mapping",
+              "title": "Surface Mapping",
+              "family": "Survey",
+              "description": "Perform a bird's-eye S-shaped lane-by-lane scan over a rectangular region above the landmark.",
+              "camera_mode_default": "look_forward",
+              "applied_camera_mode": "look_forward",
+              "parameter_defaults": [
+                {
+                  "key": "extension_x_m",
+                  "label": "Extension X (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "extension_y_m",
+                  "label": "Extension Y (m)",
+                  "default_value": "10",
+                  "range": "4 to 28",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "lane_count",
+                  "label": "Lane Count",
+                  "default_value": "6",
+                  "range": "3 to 12",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "18",
+                  "range": "10 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "look_forward",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "landmark_track, look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "-85",
+                  "range": "-90 to -60",
+                  "step": "5",
+                  "choices": "-",
+                  "source": "override"
+                }
+              ],
+              "override_summary": "Camera Mode = look_forward, Gaze Pitch (deg) = -85"
+            }
+          ]
+        },
+        {
+          "id": "atomic_triangular_orbit",
+          "title": "Atomic Triangular Orbit",
+          "kind": "Atomic",
+          "scope": "Single Landmark",
+          "description": "A single triangular-pattern orbit around the landmark.",
+          "generation_notes": "This set uses the released Stage 3 defaults and only applies explicit step-level overrides when the template specifies them.",
+          "released_count": 45,
+          "sequence": [
+            "Triangular Orbit"
+          ],
+          "element_count": 1,
+          "allow_interleave_repeat": false,
+          "max_total_elements": 0,
+          "steps": [
+            {
+              "step_index": 1,
+              "element_id": "triangular_orbit",
+              "title": "Triangular Orbit",
+              "family": "Orbit",
+              "description": "Traverse a triangular orbit around the landmark, with each step corresponding to one edge.",
+              "camera_mode_default": "landmark_track",
+              "applied_camera_mode": "landmark_track",
+              "parameter_defaults": [
+                {
+                  "key": "extension_m",
+                  "label": "Extension (m)",
+                  "default_value": "14",
+                  "range": "6 to 44",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "edge_count",
+                  "label": "Edge Count",
+                  "default_value": "3",
+                  "range": "2 to 6",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "direction",
+                  "label": "Direction",
+                  "default_value": "cw",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "cw, ccw",
+                  "source": "default"
+                },
+                {
+                  "key": "rotation_deg",
+                  "label": "Rotation (deg)",
+                  "default_value": "0",
+                  "range": "0 to 330",
+                  "step": "30",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "altitude_offset_m",
+                  "label": "Altitude Offset (m)",
+                  "default_value": "8",
+                  "range": "-20 to 40",
+                  "step": "2",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "speed_mps",
+                  "label": "Speed (m/s)",
+                  "default_value": "20",
+                  "range": "15 to 25",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                },
+                {
+                  "key": "camera_mode",
+                  "label": "Camera Mode",
+                  "default_value": "landmark_track",
+                  "range": "-",
+                  "step": "-",
+                  "choices": "look_forward",
+                  "source": "override"
+                },
+                {
+                  "key": "gaze_pitch_deg",
+                  "label": "Gaze Pitch (deg)",
+                  "default_value": "0",
+                  "range": "0 to 0",
+                  "step": "1",
+                  "choices": "-",
+                  "source": "default"
+                }
+              ],
+              "override_summary": "Camera Mode = landmark_track"
+            }
+          ]
+        }
+      ],
+      "atomic_classes": [
+        {
+          "id": "gradual_approach",
+          "title": "Gradual Approach",
+          "family": "Inspection",
+          "description": "Track the landmark while moving forward, descending gradually, and approaching from a forward oblique direction.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "travel_distance_m",
+              "label": "Travel Distance (m)",
+              "default_value": "40",
+              "range": "30 to 120",
+              "step": "10",
+              "choices": "-"
+            },
+            {
+              "key": "descent_m",
+              "label": "Descent (m)",
+              "default_value": "15",
+              "range": "5 to 40",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "yaw_offset_deg",
+              "label": "Yaw Offset (deg)",
+              "default_value": "0",
+              "range": "-35 to 35",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-12",
+              "range": "-45 to 0",
+              "step": "3",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            }
+          ]
+        },
+        {
+          "id": "gradual_depart",
+          "title": "Gradual Depart",
+          "family": "Inspection",
+          "description": "Track the landmark while moving backward, rising gradually, and departing toward a rear oblique direction.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "travel_distance_m",
+              "label": "Travel Distance (m)",
+              "default_value": "40",
+              "range": "30 to 120",
+              "step": "10",
+              "choices": "-"
+            },
+            {
+              "key": "rise_m",
+              "label": "Rise (m)",
+              "default_value": "15",
+              "range": "5 to 40",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "yaw_offset_deg",
+              "label": "Yaw Offset (deg)",
+              "default_value": "0",
+              "range": "-35 to 35",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-10",
+              "range": "-45 to 0",
+              "step": "3",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "landmark_track",
+              "range": "-",
+              "step": "-",
+              "choices": "landmark_track"
+            }
+          ]
+        },
+        {
+          "id": "circular_orbit",
+          "title": "Circular Orbit",
+          "family": "Orbit",
+          "description": "Orbit the landmark with a radius extension around the target center.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "extension_m",
+              "label": "Extension (m)",
+              "default_value": "12",
+              "range": "4 to 36",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "arc_deg",
+              "label": "Arc (deg)",
+              "default_value": "180",
+              "range": "45 to 720",
+              "step": "90",
+              "choices": "-"
+            },
+            {
+              "key": "direction",
+              "label": "Direction",
+              "default_value": "cw",
+              "range": "-",
+              "step": "-",
+              "choices": "cw, ccw"
+            },
+            {
+              "key": "altitude_offset_m",
+              "label": "Altitude Offset (m)",
+              "default_value": "8",
+              "range": "-20 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "0",
+              "range": "0 to 0",
+              "step": "1",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "figure8_orbit",
+          "title": "Figure-Eight Orbit",
+          "family": "Orbit",
+          "description": "Perform a figure-eight dual-loop motion around the landmark.",
+          "camera_mode_default": "look_forward",
+          "default_parameters": [
+            {
+              "key": "extension_m",
+              "label": "Extension (m)",
+              "default_value": "12",
+              "range": "6 to 36",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "cycles",
+              "label": "Cycles",
+              "default_value": "1",
+              "range": "1 to 2",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "altitude_offset_m",
+              "label": "Altitude Offset (m)",
+              "default_value": "8",
+              "range": "-20 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "0",
+              "range": "0 to 0",
+              "step": "1",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "spiral_orbit",
+          "title": "Spiral Orbit",
+          "family": "Orbit",
+          "description": "Move around the landmark along a spiral path while retreating and gaining altitude.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "start_extension_m",
+              "label": "Start Extension (m)",
+              "default_value": "10",
+              "range": "4 to 28",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "end_extension_m",
+              "label": "End Extension (m)",
+              "default_value": "24",
+              "range": "10 to 52",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "arc_deg",
+              "label": "Arc (deg)",
+              "default_value": "180",
+              "range": "90 to 720",
+              "step": "90",
+              "choices": "-"
+            },
+            {
+              "key": "rise_m",
+              "label": "Rise (m)",
+              "default_value": "24",
+              "range": "8 to 80",
+              "step": "4",
+              "choices": "-"
+            },
+            {
+              "key": "direction",
+              "label": "Direction",
+              "default_value": "cw",
+              "range": "-",
+              "step": "-",
+              "choices": "cw, ccw"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-22",
+              "range": "-75 to 0",
+              "step": "3",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "square_orbit",
+          "title": "Square Orbit",
+          "family": "Orbit",
+          "description": "Traverse a square orbit around the landmark, with each step corresponding to one edge.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "extension_m",
+              "label": "Extension (m)",
+              "default_value": "14",
+              "range": "6 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "edge_count",
+              "label": "Edge Count",
+              "default_value": "4",
+              "range": "2 to 8",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "direction",
+              "label": "Direction",
+              "default_value": "cw",
+              "range": "-",
+              "step": "-",
+              "choices": "cw, ccw"
+            },
+            {
+              "key": "altitude_offset_m",
+              "label": "Altitude Offset (m)",
+              "default_value": "8",
+              "range": "-20 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "0",
+              "range": "0 to 0",
+              "step": "1",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "triangular_orbit",
+          "title": "Triangular Orbit",
+          "family": "Orbit",
+          "description": "Traverse a triangular orbit around the landmark, with each step corresponding to one edge.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "extension_m",
+              "label": "Extension (m)",
+              "default_value": "14",
+              "range": "6 to 44",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "edge_count",
+              "label": "Edge Count",
+              "default_value": "3",
+              "range": "2 to 6",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "direction",
+              "label": "Direction",
+              "default_value": "cw",
+              "range": "-",
+              "step": "-",
+              "choices": "cw, ccw"
+            },
+            {
+              "key": "rotation_deg",
+              "label": "Rotation (deg)",
+              "default_value": "0",
+              "range": "0 to 330",
+              "step": "30",
+              "choices": "-"
+            },
+            {
+              "key": "altitude_offset_m",
+              "label": "Altitude Offset (m)",
+              "default_value": "8",
+              "range": "-20 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "0",
+              "range": "0 to 0",
+              "step": "1",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "surface_mapping",
+          "title": "Surface Mapping",
+          "family": "Survey",
+          "description": "Perform a bird's-eye S-shaped lane-by-lane scan over a rectangular region above the landmark.",
+          "camera_mode_default": "look_forward",
+          "default_parameters": [
+            {
+              "key": "extension_x_m",
+              "label": "Extension X (m)",
+              "default_value": "10",
+              "range": "4 to 28",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "extension_y_m",
+              "label": "Extension Y (m)",
+              "default_value": "10",
+              "range": "4 to 28",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "lane_count",
+              "label": "Lane Count",
+              "default_value": "6",
+              "range": "3 to 12",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "altitude_offset_m",
+              "label": "Altitude Offset (m)",
+              "default_value": "18",
+              "range": "10 to 40",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "landmark_track, look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-85",
+              "range": "-90 to -60",
+              "step": "5",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "comet",
+          "title": "Comet Trajectory",
+          "family": "Transition",
+          "description": "Start from the initial position, swing in an elongated loop behind the landmark, and return near the starting side.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "extension_m",
+              "label": "Extension (m)",
+              "default_value": "18",
+              "range": "10 to 50",
+              "step": "2",
+              "choices": "-"
+            },
+            {
+              "key": "semi_major_m",
+              "label": "Semi Major (m)",
+              "default_value": "60",
+              "range": "20 to 140",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "eccentricity",
+              "label": "Eccentricity",
+              "default_value": "0.55",
+              "range": "0.2 to 0.9",
+              "step": "0.05",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "look_forward",
+              "range": "-",
+              "step": "-",
+              "choices": "look_forward"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-15",
+              "range": "-60 to 0",
+              "step": "3",
+              "choices": "-"
+            },
+            {
+              "key": "arc_deg",
+              "label": "Arc (deg)",
+              "default_value": "360",
+              "range": "180 to 720",
+              "step": "15",
+              "choices": "-"
+            }
+          ]
+        },
+        {
+          "id": "sky_rise",
+          "title": "Sky Rise",
+          "family": "Vertical",
+          "description": "Climb vertically after reaching the landmark overhead and observe it from a top-down viewpoint.",
+          "camera_mode_default": "landmark_track",
+          "default_parameters": [
+            {
+              "key": "rise_m",
+              "label": "Rise (m)",
+              "default_value": "30",
+              "range": "30 to 80",
+              "step": "5",
+              "choices": "-"
+            },
+            {
+              "key": "top_extension_m",
+              "label": "Top Extension (m)",
+              "default_value": "2",
+              "range": "0 to 8",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "hover_sec",
+              "label": "Hover Sec",
+              "default_value": "4",
+              "range": "1 to 12",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "speed_mps",
+              "label": "Speed (m/s)",
+              "default_value": "20",
+              "range": "15 to 25",
+              "step": "1",
+              "choices": "-"
+            },
+            {
+              "key": "camera_mode",
+              "label": "Camera Mode",
+              "default_value": "landmark_track",
+              "range": "-",
+              "step": "-",
+              "choices": "landmark_track"
+            },
+            {
+              "key": "gaze_pitch_deg",
+              "label": "Gaze Pitch (deg)",
+              "default_value": "-75",
+              "range": "-90 to -45",
+              "step": "5",
+              "choices": "-"
+            }
+          ]
+        }
+      ]
+    },
+    "behavior_distribution": [
+      {
+        "label": "Circular Inspection",
+        "value": 109
+      },
+      {
+        "label": "Spiral Inspection",
+        "value": 103
+      },
+      {
+        "label": "Square Inspection",
+        "value": 103
+      },
+      {
+        "label": "Triangular Inspection",
+        "value": 99
+      },
+      {
+        "label": "Surface-Mapping Inspection",
+        "value": 98
+      },
+      {
+        "label": "Atomic Circular Orbit",
+        "value": 56
+      },
+      {
+        "label": "Atomic Comet Trajectory",
+        "value": 54
+      },
+      {
+        "label": "Atomic Figure-Eight Orbit",
+        "value": 54
+      },
+      {
+        "label": "Atomic Gradual Approach",
+        "value": 54
+      },
+      {
+        "label": "Atomic Gradual Depart",
+        "value": 53
+      },
+      {
+        "label": "Atomic Sky Rise",
+        "value": 53
+      },
+      {
+        "label": "Atomic Spiral Orbit",
+        "value": 49
+      },
+      {
+        "label": "Atomic Square Orbit",
+        "value": 49
+      },
+      {
+        "label": "Atomic Surface Mapping",
+        "value": 45
+      },
+      {
+        "label": "Atomic Triangular Orbit",
+        "value": 45
+      }
+    ],
+    "trajectory_length_distribution": [
+      {
+        "label": "0-200",
+        "atomic": 263,
+        "composite": 37
+      },
+      {
+        "label": "200-400",
+        "atomic": 105,
+        "composite": 182
+      },
+      {
+        "label": "400-600",
+        "atomic": 77,
+        "composite": 169
+      },
+      {
+        "label": "600-800",
+        "atomic": 38,
+        "composite": 87
+      },
+      {
+        "label": "800-1000",
+        "atomic": 9,
+        "composite": 28
+      },
+      {
+        "label": "1000-1200",
+        "atomic": 7,
+        "composite": 8
+      },
+      {
+        "label": "1200-1400",
+        "atomic": 5,
+        "composite": 1
+      },
+      {
+        "label": "1400-1600",
+        "atomic": 2,
+        "composite": 0
+      },
+      {
+        "label": "1600-1800",
+        "atomic": 4,
+        "composite": 0
+      },
+      {
+        "label": "1800-2000",
+        "atomic": 2,
+        "composite": 0
+      }
+    ],
+    "video_duration_distribution": [
+      {
+        "label": "0-10",
+        "atomic": 276,
+        "composite": 4
+      },
+      {
+        "label": "10-20",
+        "atomic": 108,
+        "composite": 198
+      },
+      {
+        "label": "20-30",
+        "atomic": 71,
+        "composite": 182
+      },
+      {
+        "label": "30-40",
+        "atomic": 28,
+        "composite": 84
+      },
+      {
+        "label": "40-50",
+        "atomic": 14,
+        "composite": 35
+      },
+      {
+        "label": "50-60",
+        "atomic": 3,
+        "composite": 9
+      },
+      {
+        "label": "60-70",
+        "atomic": 5,
+        "composite": 0
+      },
+      {
+        "label": "70-80",
+        "atomic": 2,
+        "composite": 0
+      },
+      {
+        "label": "80-90",
+        "atomic": 2,
+        "composite": 0
+      },
+      {
+        "label": "90-100",
+        "atomic": 1,
+        "composite": 0
+      },
+      {
+        "label": "100-110",
+        "atomic": 2,
+        "composite": 0
+      }
+    ]
+  }
+}

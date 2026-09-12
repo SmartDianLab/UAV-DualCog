@@ -1,0 +1,61 @@
+{
+  "label": "Augmented Human Reference",
+  "status": "observed_plus_synthetic_bootstrap_reference",
+  "observed_questionnaire_count": 7,
+  "synthetic_questionnaire_count": 23,
+  "total_reference_questionnaire_count": 30,
+  "source_questionnaire_count": 7,
+  "seed": 20260911,
+  "warning": "The reference contains seven observed complete questionnaires and 23 synthetic bootstrap questionnaires; it is not a study of 30 independent participants.",
+  "method": "For each image task, select the two complete observed questionnaires with the highest BBox Acc@0.5, breaking ties by mIoU and then semantic accuracy. For each video level, select the two questionnaires with the highest F1@0.5, breaking ties by mtIoU and then semantic accuracy. Retain all seven observed questionnaires and generate 23 synthetic questionnaires by balanced source rotation and within-task bootstrap resampling.",
+  "image": {
+    "overall": {
+      "Acc": 86.35,
+      "BBox Acc@0.5": 69.9,
+      "mIoU": 55.52
+    },
+    "self_where": {
+      "Acc": 85.83,
+      "BBox Acc@0.5": 77.92,
+      "mIoU": 57.81
+    },
+    "self_what": {
+      "Acc": 94.58,
+      "BBox Acc@0.5": 75.42,
+      "mIoU": 59.53
+    },
+    "env_where": {
+      "Acc": 82.5,
+      "BBox Acc@0.5": 53.75,
+      "mIoU": 47.23
+    },
+    "env_how": {
+      "Acc": 82.5,
+      "BBox Acc@0.5": 72.5,
+      "mIoU": 57.52
+    }
+  },
+  "video": {
+    "overall": {
+      "Acc": 85.06
+    },
+    "composite": {
+      "Acc": 83.87,
+      "F1@0.5": 62.9,
+      "mtIoU": 53.27
+    },
+    "atomic": {
+      "Acc": 76.32,
+      "F1@0.5": 83.2,
+      "mtIoU": 61.63
+    },
+    "visibility": {
+      "Acc": 95.0,
+      "F1@0.5": 96.74,
+      "mtIoU": 83.67
+    }
+  },
+  "overall": {
+    "combined_macro_acc": 85.71
+  }
+}

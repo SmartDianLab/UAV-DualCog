@@ -1,0 +1,33 @@
+{
+  "version": "0.3.0",
+  "generated_at": "2026-04-11T09:42:04.535530+00:00",
+  "dataset_available": true,
+  "bootstrap_only": false,
+  "task_name": "UAV-DualCog-V1",
+  "spec_path": "configs/uav_dualcog/task_pipeline_uav_dualcog_v1.yaml",
+  "example_config_path": "web/data/task_examples.json",
+  "copied_local_csv": {
+    "stage3_metrics_latest.csv": true,
+    "stage4_metrics_latest.csv": true
+  },
+  "leaderboard_metric_sources": {
+    "stage3": "web/data/leaderboard/stage3.json",
+    "stage4": "web/data/leaderboard/stage4.json"
+  },
+  "files": {
+    "benchmark_summary": "data/benchmark_summary.json",
+    "benchmark_statistics_detail": "data/benchmark_statistics_detail.json",
+    "task_definitions": "data/task_definitions.json",
+    "pipeline_summary": "data/pipeline_summary.json",
+    "scene_stats": "data/scene_stats.json",
+    "category_stats": "data/category_stats.json",
+    "evaluation_protocol": "data/evaluation_protocol.json",
+    "sample_gallery_stage3": "data/sample_gallery_stage3.json",
+    "sample_gallery_stage4": "data/sample_gallery_stage4.json",
+    "task_examples": "data/task_examples.json",
+    "stage3_leaderboard": "data/leaderboard/stage3.json",
+    "stage4_leaderboard": "data/leaderboard/stage4.json",
+    "overall_leaderboard": "data/leaderboard/overall.json",
+    "analysis_insights": "data/analysis/insights.json"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-04-11T09:40:14.420725+00:00",
+  "available": true,
+  "summary": {
+    "coarse_category_count": 8,
+    "fine_subcategory_count": 127
+  },
+  "rows": [
+    {
+      "category": "building",
+      "count": 176,
+      "split": "selected_split"
+    },
+    {
+      "category": "industrial_infrastructure",
+      "count": 90,
+      "split": "selected_split"
+    },
+    {
+      "category": "other",
+      "count": 32,
+      "split": "selected_split"
+    },
+    {
+      "category": "public_facility",
+      "count": 81,
+      "split": "selected_split"
+    },
+    {
+      "category": "transport_infrastructure",
+      "count": 11,
+      "split": "selected_split"
+    },
+    {
+      "category": "urban_landscape",
+      "count": 36,
+      "split": "selected_split"
+    },
+    {
+      "category": "vegetation",
+      "count": 80,
+      "split": "selected_split"
+    },
+    {
+      "category": "vehicle",
+      "count": 6,
+      "split": "selected_split"
+    }
+  ]
+}

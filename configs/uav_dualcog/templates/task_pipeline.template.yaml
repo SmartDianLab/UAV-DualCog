@@ -1,0 +1,104 @@
+# -----------------------------------------------------------------------------
+# UAV-DualCog task-pipeline template (cross-scene orchestrator)
+# -----------------------------------------------------------------------------
+# Execute with:
+#   python scripts/uav_dualcog/task_pipeline.py \
+#     --spec configs/uav_dualcog/task_pipeline/task_pipeline_demo.yaml
+# -----------------------------------------------------------------------------
+
+# Optional fallback scene config when landmark_list is not used.
+config_path: configs/uav_dualcog/task_airsim_env_7.yaml
+
+# Benchmark artifact namespace.
+task_name: UAV-DualCog-V1-Demo
+task_pipeline_root_dir: task_pipeline_data
+
+# Stage selector: both | stage3 | stage4
+stage: both
+# Phase selector: selection | data | render | experiment | analyze | both
+phase: selection
+
+# Random seed for deterministic sampling.
+seed: 29
+
+# Clear generated outputs before rerun.
+clear_existing_stage3: false
+clear_existing_stage4: false
+
+# Global experiment defaults.
+experiment_model: openai/gpt-5.3-chat
+experiment_models: []
+experiment_concurrency: 4
+experiment_model_parallelism: 0
+timeout_s: 600
+
+# Scene list for the benchmark split.
+scene_ids:
+  - env_7
+
+# Optional reusable cross-scene landmark selection artifact.
+landmark_list:
+  artifact_name: UAV-DualCog-env7-landmarks
+  scene_ids: [env_7]
+  scene_landmark_counts:
+    env_7: all
+  seed: 29
+
+# Optional reuse of an existing landmark list artifact.
+landmark_list_path: ""
+
+stage3:
+  # Stage 3 single-landmark sampling policy.
+  single_landmark:
+    # "all" means use all selected landmarks from stage2 review.
+    landmark_count: all
+    # How many atomic/composite classes to sample per landmark.
+    atomic_classes_per_landmark: 1
+    composite_classes_per_landmark: 1
+    # Mission instances per sampled class.
+    instances_per_class: 1
+    # Self-aware video task forms.
+    self_state_forms: [self_instance_recognition_joint]
+    # Environment-aware video task forms.
+    environmental_forms: [env_visibility_reasoning]
+    # QA rows per task form and difficulty branch.
+    qa_samples_per_task: 1
+
+  # Multi-landmark generation controls (set to 0 to disable).
+  pair_count: 0
+  triple_count: 0
+  pair_max_range_m: 100.0
+  triple_max_range_m: 100.0
+
+  # Render/extraction switches.
+  rerender_existing: false
+  include_temporal_localization: true
+  # Manifest branch: single-landmark | multi-landmark | all
+  manifest_mode: all
+
+  # Released benchmark video spec.
+  final_video_width: 1440
+  final_video_height: 1080
+  # Archive frame capture spec.
+  final_capture_width: 1440
+  final_capture_height: 1080
+  final_capture_parallel_workers: 8
+  record_parallel_workers: 8
+
+stage4:
+  # Regenerate existing assets if true.
+  rerender_existing: false
+  # Parallel overlay rendering and env-image capture workers.
+  overlay_parallel_workers: 16
+  env_capture_parallel_workers: 4
+
+  # Stage 4 landmark sampling policy.
+  landmark_count: all
+  per_landmark:
+    # Task families released in UAV-DualCog.
+    task_types: [self_where, self_what, env_where, env_how]
+    # Sample count per difficulty branch.
+    qa_samples_per_difficulty: 1
+
+  # Difficulty branches for image tasks.
+  difficulties: [4way, 8way]

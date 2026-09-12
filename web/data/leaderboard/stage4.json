@@ -1,0 +1,1297 @@
+{
+  "generated_at": "2026-09-11",
+  "sort_metric": "summary_score",
+  "sort_note": "Derived reporting view for the 33 image models in the ICRA manuscript.",
+  "rows": [
+    {
+      "model": "mimo-v2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "summary_score": 35.67,
+      "option_accuracy": 40.33,
+      "bbox_acc@50iou": 32.81,
+      "bbox_mean_iou": 33.87,
+      "row_count": 4096
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "summary_score": 32.28,
+      "option_accuracy": 36.82,
+      "bbox_acc@50iou": 27.42,
+      "bbox_mean_iou": 32.59,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "summary_score": 31.83,
+      "option_accuracy": 52.61,
+      "bbox_acc@50iou": 17.65,
+      "bbox_mean_iou": 25.22,
+      "row_count": 4096
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "summary_score": 30.76,
+      "option_accuracy": 50.22,
+      "bbox_acc@50iou": 18.58,
+      "bbox_mean_iou": 23.49,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 30.71,
+      "option_accuracy": 43.31,
+      "bbox_acc@50iou": 20.26,
+      "bbox_mean_iou": 28.55,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 29.91,
+      "option_accuracy": 44.29,
+      "bbox_acc@50iou": 18.68,
+      "bbox_mean_iou": 26.75,
+      "row_count": 4096
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "model_group": "open_weight",
+      "model_family": "GLM",
+      "reasoning_mode": "Instant",
+      "summary_score": 29.56,
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 25.83,
+      "bbox_mean_iou": 30.04,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 29.32,
+      "option_accuracy": 41.65,
+      "bbox_acc@50iou": 18.75,
+      "bbox_mean_iou": 27.55,
+      "row_count": 4096
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "summary_score": 28.3,
+      "option_accuracy": 47.83,
+      "bbox_acc@50iou": 13.67,
+      "bbox_mean_iou": 23.41,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 27.5,
+      "option_accuracy": 42.29,
+      "bbox_acc@50iou": 15.65,
+      "bbox_mean_iou": 24.55,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 26.47,
+      "option_accuracy": 40.87,
+      "bbox_acc@50iou": 13.87,
+      "bbox_mean_iou": 24.68,
+      "row_count": 4096
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "model_group": "proprietary",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "summary_score": 26.2,
+      "option_accuracy": 31.18,
+      "bbox_acc@50iou": 22.12,
+      "bbox_mean_iou": 25.3,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 25.95,
+      "option_accuracy": 40.92,
+      "bbox_acc@50iou": 13.79,
+      "bbox_mean_iou": 23.13,
+      "row_count": 4096
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 25.36,
+      "option_accuracy": 37.72,
+      "bbox_acc@50iou": 15.48,
+      "bbox_mean_iou": 22.88,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 24.73,
+      "option_accuracy": 38.53,
+      "bbox_acc@50iou": 13.18,
+      "bbox_mean_iou": 22.48,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "summary_score": 24.5,
+      "option_accuracy": 37.33,
+      "bbox_acc@50iou": 12.11,
+      "bbox_mean_iou": 24.06,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 24.48,
+      "option_accuracy": 39.31,
+      "bbox_acc@50iou": 10.99,
+      "bbox_mean_iou": 23.15,
+      "row_count": 4096
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "summary_score": 23.57,
+      "option_accuracy": 34.81,
+      "bbox_acc@50iou": 13.53,
+      "bbox_mean_iou": 22.36,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.83,
+      "option_accuracy": 38.99,
+      "bbox_acc@50iou": 9.33,
+      "bbox_mean_iou": 20.16,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.79,
+      "option_accuracy": 41.92,
+      "bbox_acc@50iou": 10.35,
+      "bbox_mean_iou": 16.09,
+      "row_count": 4096
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.52,
+      "option_accuracy": 34.11,
+      "bbox_acc@50iou": 12.94,
+      "bbox_mean_iou": 20.51,
+      "row_count": 4096
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "model_group": "proprietary",
+      "model_family": "Claude",
+      "reasoning_mode": "Instant",
+      "summary_score": 22.49,
+      "option_accuracy": 42.72,
+      "bbox_acc@50iou": 6.62,
+      "bbox_mean_iou": 18.13,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "summary_score": 19.9,
+      "option_accuracy": 39.36,
+      "bbox_acc@50iou": 5.13,
+      "bbox_mean_iou": 15.2,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 19.14,
+      "option_accuracy": 27.12,
+      "bbox_acc@50iou": 8.64,
+      "bbox_mean_iou": 21.66,
+      "row_count": 4096
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "model_group": "open_weight",
+      "model_family": "Intern",
+      "reasoning_mode": "Instant",
+      "summary_score": 18.54,
+      "option_accuracy": 28.42,
+      "bbox_acc@50iou": 8.23,
+      "bbox_mean_iou": 18.97,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 18.13,
+      "option_accuracy": 31.13,
+      "bbox_acc@50iou": 5.98,
+      "bbox_mean_iou": 17.27,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 16.02,
+      "option_accuracy": 32.01,
+      "bbox_acc@50iou": 3.44,
+      "bbox_mean_iou": 12.6,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "summary_score": 15.45,
+      "option_accuracy": 27.76,
+      "bbox_acc@50iou": 3.98,
+      "bbox_mean_iou": 14.62,
+      "row_count": 4096
+    },
+    {
+      "model": "x-ai/grok-4.1-fast-Instant",
+      "model_group": "proprietary",
+      "model_family": "Grok",
+      "reasoning_mode": "Instant",
+      "summary_score": 14.04,
+      "option_accuracy": 27.42,
+      "bbox_acc@50iou": 2.32,
+      "bbox_mean_iou": 12.37,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceR-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceR",
+      "reasoning_mode": "Instant",
+      "summary_score": 13.8,
+      "option_accuracy": 33.96,
+      "bbox_acc@50iou": 2.05,
+      "bbox_mean_iou": 5.39,
+      "row_count": 4096
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "model_group": "specialized",
+      "model_family": "ViLaSR",
+      "reasoning_mode": "Instant",
+      "summary_score": 13.41,
+      "option_accuracy": 33.42,
+      "bbox_acc@50iou": 2.39,
+      "bbox_mean_iou": 4.42,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceOm",
+      "reasoning_mode": "Instant",
+      "summary_score": 13.38,
+      "option_accuracy": 29.3,
+      "bbox_acc@50iou": 2.66,
+      "bbox_mean_iou": 8.17,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceThinker",
+      "reasoning_mode": "Instant",
+      "summary_score": 11.48,
+      "option_accuracy": 28.76,
+      "bbox_acc@50iou": 1.07,
+      "bbox_mean_iou": 4.61,
+      "row_count": 4096
+    }
+  ],
+  "task_rows": [
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 61.04,
+      "bbox_acc@50iou": 8.59,
+      "bbox_mean_iou": 19.87
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 48.54,
+      "bbox_acc@50iou": 9.57,
+      "bbox_mean_iou": 20.22
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 23.63,
+      "bbox_acc@50iou": 3.42,
+      "bbox_mean_iou": 14.19
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.7,
+      "bbox_acc@50iou": 4.88,
+      "bbox_mean_iou": 18.23
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 35.94,
+      "bbox_acc@50iou": 9.28,
+      "bbox_mean_iou": 20.8
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 9.67,
+      "bbox_mean_iou": 21.11
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 30.08,
+      "bbox_acc@50iou": 42.58,
+      "bbox_mean_iou": 42.78
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.69,
+      "bbox_acc@50iou": 48.14,
+      "bbox_mean_iou": 45.67
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 51.27,
+      "bbox_acc@50iou": 5.08,
+      "bbox_mean_iou": 12.24
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 56.15,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 13.52
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 45.9,
+      "bbox_acc@50iou": 30.66,
+      "bbox_mean_iou": 34.33
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 33.59,
+      "bbox_mean_iou": 33.85
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 53.61,
+      "bbox_acc@50iou": 17.87,
+      "bbox_mean_iou": 24.74
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 65.43,
+      "bbox_acc@50iou": 17.58,
+      "bbox_mean_iou": 25.06
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 53.42,
+      "bbox_acc@50iou": 15.72,
+      "bbox_mean_iou": 24.92
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.99,
+      "bbox_acc@50iou": 19.43,
+      "bbox_mean_iou": 26.17
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 36.04,
+      "bbox_acc@50iou": 12.01,
+      "bbox_mean_iou": 23.55
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 37.79,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 24.45
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.6,
+      "bbox_acc@50iou": 11.33,
+      "bbox_mean_iou": 24.11
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.89,
+      "bbox_acc@50iou": 12.21,
+      "bbox_mean_iou": 24.15
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "env_how",
+      "option_accuracy": 62.3,
+      "bbox_acc@50iou": 15.43,
+      "bbox_mean_iou": 22.45
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "env_where",
+      "option_accuracy": 56.54,
+      "bbox_acc@50iou": 14.94,
+      "bbox_mean_iou": 22.52
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "self_what",
+      "option_accuracy": 37.3,
+      "bbox_acc@50iou": 12.4,
+      "bbox_mean_iou": 25.18
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "self_where",
+      "option_accuracy": 35.16,
+      "bbox_acc@50iou": 11.91,
+      "bbox_mean_iou": 23.48
+    },
+    {
+      "model": "x-ai/grok-4.1-fast-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 32.62,
+      "bbox_acc@50iou": 1.56,
+      "bbox_mean_iou": 7.51
+    },
+    {
+      "model": "x-ai/grok-4.1-fast-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 33.01,
+      "bbox_acc@50iou": 1.86,
+      "bbox_mean_iou": 8.15
+    },
+    {
+      "model": "x-ai/grok-4.1-fast-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 22.95,
+      "bbox_acc@50iou": 2.25,
+      "bbox_mean_iou": 17.45
+    },
+    {
+      "model": "x-ai/grok-4.1-fast-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 21.09,
+      "bbox_acc@50iou": 3.61,
+      "bbox_mean_iou": 16.38
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 38.18,
+      "bbox_acc@50iou": 9.18,
+      "bbox_mean_iou": 17.34
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 36.52,
+      "bbox_acc@50iou": 8.79,
+      "bbox_mean_iou": 17.61
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 21.29,
+      "bbox_acc@50iou": 29.79,
+      "bbox_mean_iou": 29.74
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.71,
+      "bbox_acc@50iou": 40.72,
+      "bbox_mean_iou": 36.51
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 43.36,
+      "bbox_acc@50iou": 18.75,
+      "bbox_mean_iou": 26.97
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 55.37,
+      "bbox_acc@50iou": 18.36,
+      "bbox_mean_iou": 26.69
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 34.57,
+      "bbox_acc@50iou": 19.53,
+      "bbox_mean_iou": 28.61
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.3,
+      "bbox_acc@50iou": 18.36,
+      "bbox_mean_iou": 27.95
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 42.48,
+      "bbox_acc@50iou": 5.96,
+      "bbox_mean_iou": 19.86
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 48.44,
+      "bbox_acc@50iou": 7.42,
+      "bbox_mean_iou": 18.97
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 33.5,
+      "bbox_acc@50iou": 13.96,
+      "bbox_mean_iou": 26.69
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 16.6,
+      "bbox_mean_iou": 27.09
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 56.74,
+      "bbox_acc@50iou": 18.55,
+      "bbox_mean_iou": 25.81
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 62.7,
+      "bbox_acc@50iou": 19.43,
+      "bbox_mean_iou": 27.08
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 28.71,
+      "bbox_acc@50iou": 18.46,
+      "bbox_mean_iou": 29.27
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 25.1,
+      "bbox_acc@50iou": 24.61,
+      "bbox_mean_iou": 32.02
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 48.93,
+      "bbox_acc@50iou": 8.3,
+      "bbox_mean_iou": 20.01
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 9.67,
+      "bbox_mean_iou": 19.32
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 13.38,
+      "bbox_mean_iou": 23.52
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.61,
+      "bbox_acc@50iou": 21.39,
+      "bbox_mean_iou": 27.08
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 54.49,
+      "bbox_acc@50iou": 8.89,
+      "bbox_mean_iou": 20.06
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 52.44,
+      "bbox_acc@50iou": 8.79,
+      "bbox_mean_iou": 19.36
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 28.91,
+      "bbox_acc@50iou": 15.92,
+      "bbox_mean_iou": 23.27
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.83,
+      "bbox_acc@50iou": 21.58,
+      "bbox_mean_iou": 29.82
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 44.24,
+      "bbox_acc@50iou": 10.16,
+      "bbox_mean_iou": 20.62
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 29.2,
+      "bbox_acc@50iou": 9.47,
+      "bbox_mean_iou": 19.99
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.05,
+      "bbox_acc@50iou": 36.23,
+      "bbox_mean_iou": 36.54
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 30.76,
+      "bbox_acc@50iou": 47.46,
+      "bbox_mean_iou": 42.99
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.27,
+      "bbox_acc@50iou": 3.22,
+      "bbox_mean_iou": 14.03
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 27.83,
+      "bbox_acc@50iou": 2.73,
+      "bbox_mean_iou": 13.67
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.17,
+      "bbox_acc@50iou": 9.57,
+      "bbox_mean_iou": 21.34
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.39,
+      "bbox_acc@50iou": 17.38,
+      "bbox_mean_iou": 26.84
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.8,
+      "bbox_acc@50iou": 5.18,
+      "bbox_mean_iou": 15.26
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 50.1,
+      "bbox_acc@50iou": 5.37,
+      "bbox_mean_iou": 16.17
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.07,
+      "bbox_acc@50iou": 20.02,
+      "bbox_mean_iou": 25.97
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.91,
+      "bbox_acc@50iou": 31.35,
+      "bbox_mean_iou": 34.11
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.31,
+      "bbox_acc@50iou": 1.27,
+      "bbox_mean_iou": 7.3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 35.35,
+      "bbox_acc@50iou": 0.59,
+      "bbox_mean_iou": 7.56
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.02,
+      "bbox_acc@50iou": 7.03,
+      "bbox_mean_iou": 15.53
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.34,
+      "bbox_acc@50iou": 4.88,
+      "bbox_mean_iou": 20.0
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.31,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 11.95
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 28.52,
+      "bbox_acc@50iou": 4.69,
+      "bbox_mean_iou": 12.92
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 31.93,
+      "bbox_acc@50iou": 6.64,
+      "bbox_mean_iou": 21.99
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 22.75,
+      "bbox_acc@50iou": 7.62,
+      "bbox_mean_iou": 22.22
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.76,
+      "bbox_acc@50iou": 2.54,
+      "bbox_mean_iou": 11.43
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 24.71,
+      "bbox_acc@50iou": 4.2,
+      "bbox_mean_iou": 12.27
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.51,
+      "bbox_acc@50iou": 8.11,
+      "bbox_mean_iou": 28.7
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.52,
+      "bbox_acc@50iou": 19.73,
+      "bbox_mean_iou": 34.24
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 36.72,
+      "bbox_acc@50iou": 0.98,
+      "bbox_mean_iou": 7.49
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 22.36,
+      "bbox_acc@50iou": 0.98,
+      "bbox_mean_iou": 8.05
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.37,
+      "bbox_acc@50iou": 10.84,
+      "bbox_mean_iou": 23.17
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 25.59,
+      "bbox_acc@50iou": 3.12,
+      "bbox_mean_iou": 19.78
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.08,
+      "bbox_acc@50iou": 4.69,
+      "bbox_mean_iou": 14.36
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 39.36,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 15.55
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 32.71,
+      "bbox_acc@50iou": 15.04,
+      "bbox_mean_iou": 21.73
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 34.28,
+      "bbox_acc@50iou": 27.05,
+      "bbox_mean_iou": 30.4
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 28.03,
+      "bbox_acc@50iou": 10.84,
+      "bbox_mean_iou": 20.43
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 42.77,
+      "bbox_acc@50iou": 12.3,
+      "bbox_mean_iou": 21.95
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 32.32,
+      "bbox_acc@50iou": 8.89,
+      "bbox_mean_iou": 18.58
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 36.13,
+      "bbox_acc@50iou": 22.07,
+      "bbox_mean_iou": 28.49
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 27.83,
+      "bbox_mean_iou": 31.49
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 51.17,
+      "bbox_acc@50iou": 26.56,
+      "bbox_mean_iou": 30.75
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.34,
+      "bbox_acc@50iou": 33.59,
+      "bbox_mean_iou": 34.97
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.11,
+      "bbox_acc@50iou": 43.26,
+      "bbox_mean_iou": 38.27
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 46.19,
+      "bbox_acc@50iou": 4.39,
+      "bbox_mean_iou": 13.86
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.95,
+      "bbox_acc@50iou": 2.83,
+      "bbox_mean_iou": 13.01
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 35.84,
+      "bbox_acc@50iou": 9.96,
+      "bbox_mean_iou": 21.36
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.44,
+      "bbox_acc@50iou": 3.32,
+      "bbox_mean_iou": 12.58
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.02,
+      "bbox_acc@50iou": 6.84,
+      "bbox_mean_iou": 18.78
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 6.05,
+      "bbox_mean_iou": 19.39
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.79,
+      "bbox_acc@50iou": 20.61,
+      "bbox_mean_iou": 28.44
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.62,
+      "bbox_acc@50iou": 29.1,
+      "bbox_mean_iou": 31.58
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 57.52,
+      "bbox_acc@50iou": 7.23,
+      "bbox_mean_iou": 18.53
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 53.22,
+      "bbox_acc@50iou": 6.05,
+      "bbox_mean_iou": 14.51
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.44,
+      "bbox_acc@50iou": 0.49,
+      "bbox_mean_iou": 0.83
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.49,
+      "bbox_acc@50iou": 27.64,
+      "bbox_mean_iou": 30.48
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 50.59,
+      "bbox_acc@50iou": 7.52,
+      "bbox_mean_iou": 20.96
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 57.81,
+      "bbox_acc@50iou": 7.32,
+      "bbox_mean_iou": 20.38
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.11,
+      "bbox_acc@50iou": 17.09,
+      "bbox_mean_iou": 25.76
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 31.64,
+      "bbox_acc@50iou": 42.77,
+      "bbox_mean_iou": 39.89
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 52.25,
+      "bbox_acc@50iou": 11.52,
+      "bbox_mean_iou": 22.15
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 53.22,
+      "bbox_acc@50iou": 10.25,
+      "bbox_mean_iou": 20.9
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 17.77,
+      "bbox_mean_iou": 29.85
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 15.92,
+      "bbox_mean_iou": 25.81
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 47.46,
+      "bbox_acc@50iou": 6.35,
+      "bbox_mean_iou": 17.96
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.46,
+      "bbox_acc@50iou": 6.84,
+      "bbox_mean_iou": 17.77
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 30.18,
+      "bbox_acc@50iou": 11.23,
+      "bbox_mean_iou": 21.7
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 30.86,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 23.21
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 1.76,
+      "bbox_mean_iou": 6.48
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 35.16,
+      "bbox_acc@50iou": 2.44,
+      "bbox_mean_iou": 8.59
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.51,
+      "bbox_acc@50iou": 3.61,
+      "bbox_mean_iou": 10.93
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 24.71,
+      "bbox_acc@50iou": 2.83,
+      "bbox_mean_iou": 6.68
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 48.83,
+      "bbox_acc@50iou": 2.34,
+      "bbox_mean_iou": 6.93
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 42.38,
+      "bbox_acc@50iou": 2.15,
+      "bbox_mean_iou": 6.5
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.02,
+      "bbox_acc@50iou": 1.17,
+      "bbox_mean_iou": 1.89
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 20.61,
+      "bbox_acc@50iou": 2.54,
+      "bbox_mean_iou": 6.25
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 34.28,
+      "bbox_acc@50iou": 0.68,
+      "bbox_mean_iou": 4.66
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 0.59,
+      "bbox_mean_iou": 5.09
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 25.39,
+      "bbox_acc@50iou": 1.86,
+      "bbox_mean_iou": 5.67
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 22.56,
+      "bbox_acc@50iou": 1.17,
+      "bbox_mean_iou": 3.03
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 1.46,
+      "bbox_mean_iou": 3.17
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 43.07,
+      "bbox_acc@50iou": 1.86,
+      "bbox_mean_iou": 3.5
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 22.07,
+      "bbox_acc@50iou": 1.95,
+      "bbox_mean_iou": 3.38
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 18.85,
+      "bbox_acc@50iou": 4.3,
+      "bbox_mean_iou": 7.63
+    }
+  ],
+  "difficulty_rows": []
+}

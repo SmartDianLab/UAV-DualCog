@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-04-11T09:40:14.420645+00:00",
+  "available": true,
+  "message": "",
+  "rows": [
+    {
+      "scene_id": "env_10",
+      "landmarks": 48,
+      "image_samples": 384,
+      "video_samples": 192,
+      "area_m2": 310700.0
+    },
+    {
+      "scene_id": "env_11",
+      "landmarks": 56,
+      "image_samples": 448,
+      "video_samples": 224,
+      "area_m2": 118950.0
+    },
+    {
+      "scene_id": "env_13",
+      "landmarks": 8,
+      "image_samples": 64,
+      "video_samples": 32,
+      "area_m2": 460636.0
+    },
+    {
+      "scene_id": "env_16",
+      "landmarks": 126,
+      "image_samples": 1008,
+      "video_samples": 504,
+      "area_m2": 414975.0
+    },
+    {
+      "scene_id": "env_17",
+      "landmarks": 8,
+      "image_samples": 64,
+      "video_samples": 32,
+      "area_m2": 343086.0
+    },
+    {
+      "scene_id": "env_20",
+      "landmarks": 61,
+      "image_samples": 488,
+      "video_samples": 244,
+      "area_m2": 148672.0
+    },
+    {
+      "scene_id": "env_21",
+      "landmarks": 16,
+      "image_samples": 128,
+      "video_samples": 64,
+      "area_m2": 242570.0
+    },
+    {
+      "scene_id": "env_23",
+      "landmarks": 41,
+      "image_samples": 328,
+      "video_samples": 164,
+      "area_m2": 57900.0
+    },
+    {
+      "scene_id": "env_24",
+      "landmarks": 10,
+      "image_samples": 80,
+      "video_samples": 40,
+      "area_m2": 640000.0
+    },
+    {
+      "scene_id": "env_7",
+      "landmarks": 86,
+      "image_samples": 688,
+      "video_samples": 344,
+      "area_m2": 220580.0
+    },
+    {
+      "scene_id": "env_8",
+      "landmarks": 4,
+      "image_samples": 32,
+      "video_samples": 16,
+      "area_m2": 285048.0
+    },
+    {
+      "scene_id": "env_9",
+      "landmarks": 48,
+      "image_samples": 384,
+      "video_samples": 192,
+      "area_m2": 200604.0
+    }
+  ]
+}

@@ -1,0 +1,466 @@
+# -----------------------------------------------------------------------------
+# UAV-DualCog shared stage config template
+# -----------------------------------------------------------------------------
+# This file defines the Stage 3 behavior library used by trajectory generation.
+# Keep element ids stable because they are referenced by mission-set definitions.
+# -----------------------------------------------------------------------------
+
+stage3_behavior_library:
+  # Metadata only (optional).
+  updated_at: "2026-04-11T00:00:00+00:00"
+
+  shared:
+    # Global minimum safety distance used by trajectory composition.
+    safety_distance_m: 2.0
+
+  # Atomic behavior elements (low-level motion units).
+  elements:
+    gradual_approach:
+      display_name: Gradual Approach
+      family: inspection
+      description: Move toward the landmark while descending and keeping target-centered framing.
+      camera_mode_default: landmark_track
+      params:
+        travel_distance_m:
+          label: Travel Distance (m)
+          min: 30
+          max: 120
+          default: 40
+          step: 10
+          choices: []
+        descent_m:
+          label: Descent (m)
+          min: 5
+          max: 40
+          default: 15
+          step: 5
+          choices: []
+        yaw_offset_deg:
+          label: Yaw Offset (deg)
+          min: -35
+          max: 35
+          default: 0
+          step: 5
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 15
+          max: 25
+          default: 20
+          step: 1
+          choices: []
+        gaze_pitch_deg:
+          label: Gaze Pitch (deg)
+          min: -45
+          max: 0
+          default: -12
+          step: 3
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    gradual_depart:
+      display_name: Gradual Depart
+      family: inspection
+      description: Move away from the landmark while climbing and preserving landmark visibility.
+      camera_mode_default: landmark_track
+      params:
+        travel_distance_m:
+          label: Travel Distance (m)
+          min: 30
+          max: 120
+          default: 40
+          step: 10
+          choices: []
+        rise_m:
+          label: Rise (m)
+          min: 5
+          max: 40
+          default: 15
+          step: 5
+          choices: []
+        yaw_offset_deg:
+          label: Yaw Offset (deg)
+          min: -35
+          max: 35
+          default: 0
+          step: 5
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 15
+          max: 25
+          default: 20
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    circular_orbit:
+      display_name: Circular Orbit
+      family: orbit
+      description: Orbit around target center with fixed radius extension.
+      camera_mode_default: landmark_track
+      params:
+        extension_m:
+          label: Radius Extension (m)
+          min: 4
+          max: 36
+          default: 12
+          step: 2
+          choices: []
+        arc_deg:
+          label: Arc Angle (deg)
+          min: 45
+          max: 720
+          default: 180
+          step: 90
+          choices: []
+        direction:
+          label: Direction
+          min: null
+          max: null
+          default: cw
+          step: null
+          choices: [cw, ccw]
+        altitude_offset_m:
+          label: Altitude Offset (m)
+          min: -20
+          max: 40
+          default: 8
+          step: 2
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 15
+          max: 25
+          default: 20
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    spiral_orbit:
+      display_name: Spiral Orbit
+      family: orbit
+      description: Spiral around target while retreating and gaining altitude.
+      camera_mode_default: landmark_track
+      params:
+        start_extension_m:
+          label: Start Extension (m)
+          min: 4
+          max: 28
+          default: 10
+          step: 2
+          choices: []
+        end_extension_m:
+          label: End Extension (m)
+          min: 10
+          max: 52
+          default: 24
+          step: 2
+          choices: []
+        loops:
+          label: Loops
+          min: 1
+          max: 4
+          default: 2
+          step: 1
+          choices: []
+        rise_m:
+          label: Rise (m)
+          min: 4
+          max: 40
+          default: 16
+          step: 2
+          choices: []
+        direction:
+          label: Direction
+          min: null
+          max: null
+          default: cw
+          step: null
+          choices: [cw, ccw]
+        speed_mps:
+          label: Speed (m/s)
+          min: 15
+          max: 25
+          default: 20
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    square_orbit:
+      display_name: Square Orbit
+      family: orbit
+      description: Four-corner orbit around target center.
+      camera_mode_default: landmark_track
+      params:
+        edge_m:
+          label: Edge Length (m)
+          min: 20
+          max: 120
+          default: 40
+          step: 5
+          choices: []
+        altitude_offset_m:
+          label: Altitude Offset (m)
+          min: -15
+          max: 35
+          default: 8
+          step: 2
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 12
+          max: 25
+          default: 18
+          step: 1
+          choices: []
+        direction:
+          label: Direction
+          min: null
+          max: null
+          default: cw
+          step: null
+          choices: [cw, ccw]
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    triangular_orbit:
+      display_name: Triangular Orbit
+      family: orbit
+      description: Three-corner orbit with triangular shape around target center.
+      camera_mode_default: landmark_track
+      params:
+        edge_m:
+          label: Edge Length (m)
+          min: 20
+          max: 120
+          default: 40
+          step: 5
+          choices: []
+        altitude_offset_m:
+          label: Altitude Offset (m)
+          min: -15
+          max: 35
+          default: 8
+          step: 2
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 12
+          max: 25
+          default: 18
+          step: 1
+          choices: []
+        direction:
+          label: Direction
+          min: null
+          max: null
+          default: cw
+          step: null
+          choices: [cw, ccw]
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    figure8_orbit:
+      display_name: Figure-Eight Orbit
+      family: orbit
+      description: Figure-eight motion around the landmark with dual loops.
+      camera_mode_default: landmark_track
+      params:
+        loop_radius_m:
+          label: Loop Radius (m)
+          min: 10
+          max: 45
+          default: 20
+          step: 2
+          choices: []
+        loops:
+          label: Loops
+          min: 1
+          max: 3
+          default: 1
+          step: 1
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 12
+          max: 24
+          default: 18
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    sky_rise:
+      display_name: Sky Rise
+      family: inspection
+      description: Ascend above the landmark to obtain top-down observation.
+      camera_mode_default: landmark_track
+      params:
+        rise_m:
+          label: Rise (m)
+          min: 10
+          max: 80
+          default: 25
+          step: 5
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 10
+          max: 22
+          default: 16
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    comet:
+      display_name: Comet Trajectory
+      family: inspection
+      description: Elongated loop that swings around landmark and returns near the start side.
+      camera_mode_default: landmark_track
+      params:
+        loop_length_m:
+          label: Loop Length (m)
+          min: 30
+          max: 150
+          default: 70
+          step: 5
+          choices: []
+        lateral_offset_m:
+          label: Lateral Offset (m)
+          min: 8
+          max: 50
+          default: 20
+          step: 2
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 12
+          max: 24
+          default: 18
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: landmark_track
+          step: null
+          choices: [landmark_track, look_forward]
+
+    surface_mapping:
+      display_name: Surface Mapping
+      family: mapping
+      description: Bird-eye lane-by-lane scan over a rectangular area.
+      camera_mode_default: look_forward
+      params:
+        lane_count:
+          label: Lane Count
+          min: 2
+          max: 8
+          default: 4
+          step: 1
+          choices: []
+        lane_length_m:
+          label: Lane Length (m)
+          min: 20
+          max: 180
+          default: 80
+          step: 5
+          choices: []
+        lane_spacing_m:
+          label: Lane Spacing (m)
+          min: 3
+          max: 25
+          default: 8
+          step: 1
+          choices: []
+        altitude_m:
+          label: Altitude (m)
+          min: 15
+          max: 120
+          default: 45
+          step: 5
+          choices: []
+        speed_mps:
+          label: Speed (m/s)
+          min: 10
+          max: 22
+          default: 16
+          step: 1
+          choices: []
+        camera_mode:
+          label: Camera Mode
+          min: null
+          max: null
+          default: look_forward
+          step: null
+          choices: [look_forward, landmark_track]
+
+  # Composite behavior sets (high-level reusable classes).
+  sets:
+    circular_inspection:
+      display_name: Circular Inspection
+      description: Approach + circular orbits + depart.
+      members: [gradual_approach, circular_orbit, circular_orbit, gradual_depart]
+    spiral_inspection:
+      display_name: Spiral Inspection
+      description: Approach + spiral orbits + depart.
+      members: [gradual_approach, spiral_orbit, spiral_orbit, gradual_depart]
+    square_inspection:
+      display_name: Square Inspection
+      description: Approach + square orbits + depart.
+      members: [gradual_approach, square_orbit, square_orbit, gradual_depart]
+    triangular_inspection:
+      display_name: Triangular Inspection
+      description: Approach + triangular orbits + depart.
+      members: [gradual_approach, triangular_orbit, triangular_orbit, gradual_depart]
+    surface_mapping_inspection:
+      display_name: Surface-Mapping Inspection
+      description: Approach + area mapping + depart.
+      members: [gradual_approach, surface_mapping, gradual_depart]
