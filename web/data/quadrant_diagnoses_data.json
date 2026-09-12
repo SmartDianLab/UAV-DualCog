@@ -32,12 +32,12 @@
             {
               "kind": "image",
               "label": "Reference View (Right facade)",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation (Front View)",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
               "overlays": [
                 {
                   "label": "Ground Truth",
@@ -113,12 +113,12 @@
             {
               "kind": "image",
               "label": "Landmark Reference",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
             },
             {
               "kind": "video",
               "label": "First-Person Flight Video",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
             }
           ],
           "timeline": {
@@ -214,12 +214,12 @@
             {
               "kind": "image",
               "label": "Reference View",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
               "overlays": [
                 {
                   "label": "Ground Truth",
@@ -285,12 +285,12 @@
             {
               "kind": "image",
               "label": "Landmark Reference",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
             },
             {
               "kind": "video",
               "label": "First-Person Flight Video",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
             }
           ],
           "timeline": {
@@ -365,12 +365,12 @@
             {
               "kind": "image",
               "label": "Reference View (Front facade)",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
               "overlays": [
                 {
                   "label": "Ground Truth",
@@ -446,12 +446,12 @@
             {
               "kind": "image",
               "label": "Landmark Reference",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
             },
             {
               "kind": "video",
               "label": "First-Person Flight Video",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
             }
           ],
           "timeline": {
@@ -526,12 +526,12 @@
             {
               "kind": "image",
               "label": "Reference View",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_target.jpg",
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_target.jpg",
               "overlays": [
                 {
                   "label": "Ground Truth",
@@ -597,12 +597,12 @@
             {
               "kind": "image",
               "label": "Landmark Reference",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
             },
             {
               "kind": "video",
               "label": "First-Person Flight Video",
-              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
+              "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
             }
           ],
           "timeline": {
