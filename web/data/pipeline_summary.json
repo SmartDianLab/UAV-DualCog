@@ -140,19 +140,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s7-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s7-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s7-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s7-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s7-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s7-oblique.png"
         }
       ],
       "boundary": "x[-219, 191] · y[-270, 268] · z[-50, 52]",
@@ -166,19 +166,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s8-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s8-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s8-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s8-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s8-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s8-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s8-oblique.png"
         }
       ],
       "boundary": "x[-207, 221] · y[-334, 332] · z[-45, 42]",
@@ -192,19 +192,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s9-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s9-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s9-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s9-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s9-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s9-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s9-oblique.png"
         }
       ],
       "boundary": "x[-235, 223] · y[-235, 203] · z[-48, 69]",
@@ -218,19 +218,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s10-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s10-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s10-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s10-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s10-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s10-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s10-oblique.png"
         }
       ],
       "boundary": "x[-118, 121] · y[-650, 650] · z[-50, 49]",
@@ -244,19 +244,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s11-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s11-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s11-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s11-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s11-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s11-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s11-oblique.png"
         }
       ],
       "boundary": "x[-186, 119] · y[-196, 194] · z[-50, 47]",
@@ -270,19 +270,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s13-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s13-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s13-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s13-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s13-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s13-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s13-oblique.png"
         }
       ],
       "boundary": "x[-552, 550] · y[-209, 209] · z[-50, 49]",
@@ -296,19 +296,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s16-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s16-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s16-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s16-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s16-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s16-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s16-oblique.png"
         }
       ],
       "boundary": "x[-228, 275] · y[-371, 454] · z[-50, 64]",
@@ -322,19 +322,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s17-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s17-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s17-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s17-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s17-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s17-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s17-oblique.png"
         }
       ],
       "boundary": "x[-271, 271] · y[-315, 318] · z[-50, 41]",
@@ -348,19 +348,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s20-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s20-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s20-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s20-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s20-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s20-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s20-oblique.png"
         }
       ],
       "boundary": "x[-180, 188] · y[-204, 200] · z[-50, 39]",
@@ -374,19 +374,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s21-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s21-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s21-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s21-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s21-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s21-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s21-oblique.png"
         }
       ],
       "boundary": "x[-146, 236] · y[-358, 277] · z[-50, 55]",
@@ -400,19 +400,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s23-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s23-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s23-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s23-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s23-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s23-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s23-oblique.png"
         }
       ],
       "boundary": "x[-96, 97] · y[-150, 150] · z[-50, 56]",
@@ -426,19 +426,19 @@
       "images": [
         {
           "label": "RGB Top-Down Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s24-1.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-1.jpg"
         },
         {
           "label": "RGB Oblique Panorama",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/s24-2.jpg"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/s24-2.jpg"
         },
         {
           "label": "Segmented Point Cloud Top-Down",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s24-top.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s24-top.png"
         },
         {
           "label": "Segmented Point Cloud Oblique",
-          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/web/media/scenes/pcd/s24-oblique.png"
+          "url": "/UAV-Dual-Cognition-Reasoning-Benchmark/media/scenes/pcd/s24-oblique.png"
         }
       ],
       "boundary": "x[-400, 400] · y[-400, 400] · z[0, 100]",
