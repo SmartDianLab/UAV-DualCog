@@ -1,14 +1,14 @@
 # UAV-DualCog: Anonymous Review Repository
 
-This repository provides the anonymized code and supplementary website for **UAV-DualCog**. The corresponding paper is currently under peer review. Identifying project and dataset links are intentionally withheld during review.
+This repository provides the anonymized code for **UAV-DualCog**. The corresponding paper is currently under peer review. Identifying project and dataset links are intentionally withheld during review.
 
 <p align="center">
   <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
 </p>
 <p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports the benchmark construction and evaluation workflow.</em></p>
 
-- Supplementary website: https://lozumi.github.io/UAV-Dual-Cognition-Reasoning-Benchmark/
-- Anonymous code repository: https://github.com/Lozumi/UAV-Dual-Cognition-Reasoning-Benchmark
+- Supplementary website: https://anonymous.4open.science/w/UAV-DualCog
+- Anonymous code repository: https://anonymous.4open.science/r/UAV-DualCog-Code
 - Dataset access: release instructions are provided on the supplementary website and will be updated after review.
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
