@@ -21,7 +21,7 @@ import numpy as np
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_DIR = Path(__file__).resolve().parent
-COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_stage_configs.yaml"
+COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_stage_configs.yaml"
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 if str(SCRIPT_DIR) not in sys.path:
@@ -40,18 +40,22 @@ from stage3_task_suite import _resolve_stage3_layout as resolve_stage3_layout
 from stage3_task_suite import _stage3_best_run_progress as stage3_best_run_progress
 from stage3_task_suite import recompute_report_from_run_dir as recompute_stage3_report_from_run_dir
 from stage3_task_suite import run_experiment_once as run_stage3_experiment_once
+from stage3_open_qa_evaluate import _stage3_open_best_run_progress as stage3_open_best_run_progress
+from stage3_open_qa_evaluate import run_open_qa_experiment as run_stage3_open_qa_experiment
 from stage4_qa_generate_and_eval import generate_manifest as generate_stage4_manifest
 from stage4_qa_generate_and_eval import render_manifest_assets as render_stage4_manifest_assets
 from stage4_qa_generate_and_eval import _resolve_stage4_root as resolve_stage4_root
 from stage4_qa_generate_and_eval import _stage4_best_run_progress as stage4_best_run_progress
 from stage4_qa_generate_and_eval import recompute_report_from_run_dir as recompute_stage4_report_from_run_dir
 from stage4_qa_generate_and_eval import run_experiment as run_stage4_experiment
+from stage4_qa_generate_and_eval import _count_completed_prediction_rows
+from stage4_qa_generate_and_eval import _path_for_json
 from stage4_qa_generate_and_eval import _safe_name
+from stage4_open_qa_evaluate import run_open_qa_experiment
 from trajectory.behaviors import ELEMENT_LIBRARY, SET_LIBRARY
 from progress_utils import ProgressBar, StageLogger
 from pipeline_common import (
     cleanup_airsim_processes,
-    resolve_scene_artifact_path,
     resolve_task_pipeline_base_dir,
     resolve_task_pipeline_scene_root,
     resolve_task_pipeline_task_root,
@@ -128,6 +132,7 @@ def _remaining_experiment_samples_for_scene_model(scene_cfg_path: Path, spec: di
     scene_cfg = load_yaml(scene_cfg_path)
     merged_cfg = _task_pipeline_scene_task_cfg(scene_cfg, spec)
     stage_mode = str(spec.get("stage", "both") or "both").strip().lower()
+    open_qa_mode = _task_pipeline_uses_open_qa(spec)
     engine, scene_id = _scene_identity(merged_cfg)
     remaining_total = 0
     if stage_mode in {"stage3", "both"}:
@@ -139,15 +144,46 @@ def _remaining_experiment_samples_for_scene_model(scene_cfg_path: Path, spec: di
             completed = min(total, int(progress.get("completed", 0) or 0))
             remaining_total += max(0, total - completed)
     if stage_mode in {"stage4", "both"}:
-        manifest_path = _resolve_latest_stage4_manifest_path(merged_cfg)
+        manifest_path = _resolve_latest_stage4_open_manifest_path(merged_cfg) if open_qa_mode else _resolve_latest_stage4_manifest_path(merged_cfg)
         if manifest_path.exists():
             total = _load_manifest_sample_count(manifest_path)
             scene_root = _resolve_artifact_scene_root(merged_cfg)
             stage4_root = resolve_stage4_root(merged_cfg, scene_root=scene_root)
-            progress = stage4_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
+            if open_qa_mode:
+                progress = _stage4_open_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
+            else:
+                progress = stage4_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
             completed = min(total, int(progress.get("completed", 0) or 0))
             remaining_total += max(0, total - completed)
     return int(remaining_total)
+
+
+def _stage4_open_best_run_progress(stage4_roots: list[Path], scene_id: str, model: str, manifest_path: str) -> dict[str, Any]:
+    model_tag = _safe_name(str(model or ""))
+    manifest_tag = _safe_name(Path(str(manifest_path or "")).stem)[:48] if str(manifest_path or "").strip() else ""
+    prefix = f"{scene_id}_{model_tag}_{manifest_tag}" if manifest_tag else f"{scene_id}_{model_tag}_"
+    best_completed = 0
+    best_run_dir = ""
+    best_mtime = -1.0
+    for root in stage4_roots:
+        experiments_root = root / "experiments_open"
+        if not experiments_root.exists():
+            continue
+        for run_dir in experiments_root.iterdir():
+            if not run_dir.is_dir():
+                continue
+            if not str(run_dir.name).startswith(prefix):
+                continue
+            completed = _count_completed_prediction_rows(run_dir / "parsed_predictions.jsonl")
+            try:
+                mtime = float(run_dir.stat().st_mtime)
+            except Exception:
+                mtime = 0.0
+            if completed > best_completed or (completed == best_completed and mtime > best_mtime):
+                best_completed = completed
+                best_run_dir = _path_for_json(run_dir)
+                best_mtime = mtime
+    return {"completed": int(best_completed), "run_dir": best_run_dir}
 
 
 def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
@@ -168,7 +204,7 @@ def _expand_scene_config_paths(values: Any) -> list[Path]:
         if not text:
             continue
         if text.lower() == "all":
-            matches = sorted((WORKSPACE_ROOT / "configs" / "uav_dualcog").glob("task_airsim_env_*.yaml"))
+            matches = sorted((WORKSPACE_ROOT / "configs" / "flightmvstg").glob("task_airsim_env_*.yaml"))
         elif "*" in text or "?" in text or "[" in text:
             pattern = Path(text)
             matches = sorted((WORKSPACE_ROOT / pattern).parent.glob(pattern.name)) if not pattern.is_absolute() else sorted(pattern.parent.glob(pattern.name))
@@ -185,7 +221,7 @@ def _expand_scene_config_paths(values: Any) -> list[Path]:
 
 
 def _config_path_for_scene_id(scene_id: str, *, engine: str = "airsim") -> Path:
-    return (WORKSPACE_ROOT / "configs" / "uav_dualcog" / f"task_{engine}_{scene_id}.yaml").resolve()
+    return (WORKSPACE_ROOT / "configs" / "flightmvstg" / f"task_{engine}_{scene_id}.yaml").resolve()
 
 
 def _resolve_scene_root(cfg: dict[str, Any]) -> Path:
@@ -258,12 +294,33 @@ def _count_or_all(value: Any, *, fallback: int, total_available: int | None = No
         return int(fallback)
 
 
+def _parse_scene_landmark_counts(raw: Any) -> dict[str, Any]:
+    if raw is None:
+        return {}
+    if isinstance(raw, dict):
+        return {str(k): v for k, v in raw.items()}
+    # Compatibility path: allow list-based scene ids and treat each as "all".
+    if isinstance(raw, (list, tuple)):
+        out: dict[str, Any] = {}
+        for item in raw:
+            if isinstance(item, dict):
+                out.update({str(k): v for k, v in item.items()})
+                continue
+            key = str(item).strip()
+            if key:
+                out[key] = "all"
+        return out
+    raise ValueError(
+        "landmark_list.scene_landmark_counts must be a mapping like "
+        "{env_1: all, env_3: 50} (list syntax is deprecated)."
+    )
+
+
 def _load_valid_instances(scene_cfg: dict[str, Any]) -> list[dict[str, Any]]:
     scene_root = _resolve_scene_root(scene_cfg)
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     review_dir = scene_root / str((scene_cfg.get("output_layout", {}) or {}).get("stage2_review_dir", "landmarks_review"))
-    valid_instances_path = resolve_scene_artifact_path(review_dir, scene_id, ".valid_instances.json")
-    payload = json.loads(valid_instances_path.read_text(encoding="utf-8"))
+    payload = json.loads((review_dir / f"{scene_id}.valid_instances.json").read_text(encoding="utf-8"))
     rows = [it for it in list(payload.get("valid_instances", []) or []) if isinstance(it, dict)]
     kept = [it for it in rows if str(it.get("review_action", "") or "").strip().lower() in {"keep", ""}]
     kept = [it for it in kept if str(it.get("annotation_status", "") or "").strip().lower() == "labeled"]
@@ -399,7 +456,7 @@ def _resolve_artifact_scene_root(scene_cfg: dict[str, Any]) -> Path:
 def _resolve_stage3_missions_root(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
     return stage3_root / str(output_layout.get("stage3_mission_dir", "missions"))
 
 
@@ -528,12 +585,12 @@ def _clear_stage_outputs(scene_cfg: dict[str, Any], *, clear_stage3: bool, clear
     removed = []
     output_layout = scene_cfg.get("output_layout", {}) or {}
     if clear_stage3:
-        root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
+        root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
         if root.exists():
             shutil.rmtree(root)
             removed.append(str(root))
     if clear_stage4:
-        root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
+        root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
         if root.exists():
             shutil.rmtree(root)
             removed.append(str(root))
@@ -543,7 +600,7 @@ def _clear_stage_outputs(scene_cfg: dict[str, Any], *, clear_stage3: bool, clear
 def _resolve_latest_stage3_manifest_path(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
     dataset_dir = stage3_root / str(output_layout.get("stage3_dataset_dir", "datasets"))
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     return dataset_dir / f"{scene_id}.latest_manifest.json"
@@ -552,14 +609,70 @@ def _resolve_latest_stage3_manifest_path(scene_cfg: dict[str, Any]) -> Path:
 def _resolve_latest_stage4_manifest_path(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
+    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
     manifest_dir = qa_root / "manifests"
     scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
     return manifest_dir / f"{scene_id}.latest_manifest.json"
 
 
-def _stage4_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_count: int) -> bool:
-    manifest_path = _resolve_latest_stage4_manifest_path(scene_cfg)
+def _resolve_latest_stage4_open_manifest_path(scene_cfg: dict[str, Any]) -> Path:
+    scene_root = _resolve_artifact_scene_root(scene_cfg)
+    output_layout = scene_cfg.get("output_layout", {}) or {}
+    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
+    manifest_dir = qa_root / "manifests"
+    scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
+    open_manifest = manifest_dir / f"{scene_id}.latest_manifest.open.json"
+    if open_manifest.exists():
+        return open_manifest
+    return manifest_dir / f"{scene_id}.latest_manifest.json"
+
+
+def _resolve_latest_stage3_open_manifest_path(scene_cfg: dict[str, Any]) -> Path:
+    scene_root = _resolve_artifact_scene_root(scene_cfg)
+    output_layout = scene_cfg.get("output_layout", {}) or {}
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
+    dataset_dir = stage3_root / str(output_layout.get("stage3_dataset_dir", "datasets"))
+    scene_id = str((scene_cfg.get("task", {}) or {}).get("scene_id", "") or "").strip()
+    open_manifest = dataset_dir / f"{scene_id}.latest_manifest.open.json"
+    if open_manifest.exists():
+        return open_manifest
+    return dataset_dir / f"{scene_id}.latest_manifest.json"
+
+
+def _task_pipeline_uses_open_qa(spec: dict[str, Any]) -> bool:
+    stage4_spec = dict(spec.get("stage4", {}) or {})
+
+    def _as_flag(value: Any) -> bool | None:
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            return bool(value)
+        text = str(value).strip().lower()
+        if text in {"1", "true", "yes", "y", "on"}:
+            return True
+        if text in {"0", "false", "no", "n", "off"}:
+            return False
+        return None
+
+    for candidate in (
+        spec.get("open_qa"),
+        spec.get("qa_mode"),
+        spec.get("stage4_qa_mode"),
+        stage4_spec.get("open_qa"),
+        stage4_spec.get("qa_mode"),
+        stage4_spec.get("stage4_qa_mode"),
+    ):
+        flag = _as_flag(candidate)
+        if flag is not None:
+            return flag
+        if isinstance(candidate, str) and candidate.strip().lower() in {"open", "open_qa", "open-fill-blank", "fill_blank", "fill-blank"}:
+            return True
+    return False
+
+
+def _stage4_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_count: int, manifest_path: Path | None = None) -> bool:
+    if manifest_path is None:
+        manifest_path = _resolve_latest_stage4_manifest_path(scene_cfg)
     if not manifest_path.exists():
         return False
     try:
@@ -604,7 +717,7 @@ def _stage4_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_c
 def _resolve_stage3_selection_dir(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "video_tasks"))
+    stage3_root = scene_root / str(output_layout.get("stage3_task_root_dir", "stage3_tasks"))
     return stage3_root / "selections"
 
 
@@ -636,7 +749,7 @@ def _stage3_manifest_is_complete(scene_cfg: dict[str, Any], *, expected_sample_c
 def _resolve_stage4_selection_dir(scene_cfg: dict[str, Any]) -> Path:
     scene_root = _resolve_artifact_scene_root(scene_cfg)
     output_layout = scene_cfg.get("output_layout", {}) or {}
-    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "image_tasks"))
+    qa_root = scene_root / str(output_layout.get("stage4_qa_dir", "qa"))
     return qa_root / "selections"
 
 
@@ -797,6 +910,7 @@ def _experiment_scene_readiness(scene_cfg_path: Path, spec: dict[str, Any]) -> d
     scene_cfg = load_yaml(scene_cfg_path)
     merged_cfg = _task_pipeline_scene_task_cfg(scene_cfg, spec)
     stage_mode = str(spec.get('stage', 'both') or 'both').strip().lower()
+    open_qa_mode = _task_pipeline_uses_open_qa(spec)
     engine, scene_id = _scene_identity(merged_cfg)
     valid_instances = None
     try:
@@ -809,12 +923,14 @@ def _experiment_scene_readiness(scene_cfg_path: Path, spec: dict[str, Any]) -> d
         return {'scene_id': scene_id, 'engine': engine, 'ready': bool(ready), 'expected_sample_count': int(expected), 'stage': 'stage3'}
     if stage_mode == 'stage4':
         expected = _stage4_expected_sample_count(merged_cfg, spec, valid_instances=valid_instances)
-        ready = _stage4_manifest_is_complete(merged_cfg, expected_sample_count=expected)
+        manifest_path = _resolve_latest_stage4_open_manifest_path(merged_cfg) if open_qa_mode else _resolve_latest_stage4_manifest_path(merged_cfg)
+        ready = _stage4_manifest_is_complete(merged_cfg, expected_sample_count=expected, manifest_path=manifest_path)
         return {'scene_id': scene_id, 'engine': engine, 'ready': bool(ready), 'expected_sample_count': int(expected), 'stage': 'stage4'}
     stage3_expected = _stage3_expected_sample_count(merged_cfg, spec, valid_instances=valid_instances)
     stage4_expected = _stage4_expected_sample_count(merged_cfg, spec, valid_instances=valid_instances)
     stage3_ready = _stage3_manifest_is_complete(merged_cfg, expected_sample_count=stage3_expected)
-    stage4_ready = _stage4_manifest_is_complete(merged_cfg, expected_sample_count=stage4_expected)
+    manifest_path = _resolve_latest_stage4_open_manifest_path(merged_cfg) if open_qa_mode else _resolve_latest_stage4_manifest_path(merged_cfg)
+    stage4_ready = _stage4_manifest_is_complete(merged_cfg, expected_sample_count=stage4_expected, manifest_path=manifest_path)
     return {'scene_id': scene_id, 'engine': engine, 'ready': bool(stage3_ready and stage4_ready), 'stage3_ready': bool(stage3_ready), 'stage4_ready': bool(stage4_ready), 'stage3_expected_sample_count': int(stage3_expected), 'stage4_expected_sample_count': int(stage4_expected), 'stage': 'both'}
 
 
@@ -1113,12 +1229,12 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
             scene_ids = global_list_spec.get("scene_ids", [])
             engine_name = str(global_list_spec.get("engine", "airsim") or "airsim").strip().lower()
             if isinstance(scene_ids, str) and str(scene_ids).strip().lower() == "all":
-                scene_configs = sorted((WORKSPACE_ROOT / "configs" / "uav_dualcog").glob(f"task_{engine_name}_*.yaml"))
+                scene_configs = sorted((WORKSPACE_ROOT / "configs" / "flightmvstg").glob(f"task_{engine_name}_*.yaml"))
             else:
                 scene_configs = [_config_path_for_scene_id(str(scene_id).strip(), engine=engine_name) for scene_id in list(scene_ids or []) if str(scene_id).strip()]
         if not scene_configs:
             scene_configs = [config_path.resolve()]
-        per_scene_counts = {str(k): v for k, v in dict(global_list_spec.get("scene_landmark_counts", {}) or {}).items()}
+        per_scene_counts = _parse_scene_landmark_counts(global_list_spec.get("scene_landmark_counts", {}))
         default_count = global_list_spec.get("landmark_count", spec.get("landmark_count", 50))
         global_count = global_list_spec.get("global_landmark_count", None)
         seed = int(global_list_spec.get("seed", spec.get("seed", 7)) or spec.get("seed", 7))
@@ -1184,6 +1300,7 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
     run_render = phase_mode_raw in {"both", "render", "data_render"}
     run_experiment = phase_mode_raw in {"both", "experiment"}
     run_analyze = phase_mode_raw in {"analyze"}
+    open_qa_mode = _task_pipeline_uses_open_qa(spec)
 
     landmark_list_path = Path(str(spec.get("landmark_list_path", "") or "")).resolve() if str(spec.get("landmark_list_path", "") or "").strip() else None
     reused_landmark_entries: list[dict[str, Any]] = []
@@ -1203,6 +1320,7 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
     stage4_selection_out: dict[str, Any] | None = None
     stage3_pair_selection_out: dict[str, Any] | None = None
     stage3_triple_selection_out: dict[str, Any] | None = None
+    stage4_manifest: dict[str, Any] | None = None
     if run_stage3 and run_selection:
         stage3_spec = dict(spec.get("stage3", {}) or {})
         stage3_single = dict(stage3_spec.get("single_landmark", {}) or {})
@@ -1250,6 +1368,14 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
                 entries=[{"instance_id": "+".join(str(item.get("instance_id", "") or "") for item in group), "group_size": 3, "members": _selection_entries(group)} for group in triple_groups],
             )
 
+    if open_qa_mode and run_stage4 and stage4_manifest is None:
+        latest_stage4_open_manifest_path = _resolve_latest_stage4_open_manifest_path(scene_cfg)
+        if latest_stage4_open_manifest_path.exists():
+            stage4_manifest = {
+                "manifest_path": latest_stage4_open_manifest_path,
+                "manifest": json.loads(latest_stage4_open_manifest_path.read_text(encoding="utf-8")),
+            }
+
     stage3_spec = dict(spec.get("stage3", {}) or {})
     stage3_single = dict(stage3_spec.get("single_landmark", {}) or {})
     single_atomic_classes_per_landmark = _count_or_all(
@@ -1285,7 +1411,6 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
     stage3_experiment: dict[str, Any] | None = None
     stage3_experiments: list[dict[str, Any]] = []
     record_out: dict[str, Any] | None = None
-    stage4_manifest: dict[str, Any] | None = None
     stage4_render: dict[str, Any] | None = None
     stage4_experiment: dict[str, Any] | None = None
     stage4_experiments: list[dict[str, Any]] = []
@@ -1322,329 +1447,303 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
     for _key in ["timeout_s", "rpm_limit", "tpm_limit", "request_retry_attempts", "request_retry_backoff_sec", "request_retry_forever"]:
         if spec.get(_key) is not None:
             experiment_overrides[_key] = spec.get(_key)
+    stage3_open_spec = dict(spec.get("stage3_open", {}) or {})
+    stage3_open_judge_model = str(
+        stage3_open_spec.get("judge_model", spec.get("stage3_open_judge_model", "Qwen/Qwen3.5-4B")) or "Qwen/Qwen3.5-4B"
+    ).strip()
+    stage3_open_enable_judge = not bool(stage3_open_spec.get("disable_judge", spec.get("stage3_open_disable_judge", False)))
+    stage3_open_experiment_limit_raw = stage3_open_spec.get("experiment_limit", spec.get("stage3_open_experiment_limit", None))
+    try:
+        stage3_open_experiment_limit = int(stage3_open_experiment_limit_raw) if stage3_open_experiment_limit_raw is not None else None
+    except Exception:
+        stage3_open_experiment_limit = None
+    if stage3_open_experiment_limit is not None and stage3_open_experiment_limit <= 0:
+        stage3_open_experiment_limit = None
     if run_stage3 and run_data:
-        pipeline_logger.info("stage3 data: preparing single-scene mission generation")
-        if stage3_selection_out is not None:
-            sampled_landmarks = list(stage3_selection_out["payload"].get("selected_landmarks", []) or [])
-        elif not sampled_landmarks:
-            latest_stage3_selection = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_landmarks.latest.json"
-            if latest_stage3_selection.exists():
-                sampled_landmarks = list((json.loads(latest_stage3_selection.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-            else:
-                stage3_landmark_count = int(stage3_spec.get("landmark_count", sample_count) or sample_count)
-                sampled_landmarks = _uniform_sample_by_subcategory(valid_instances, stage3_landmark_count, seed=int(spec.get("seed", 7) or 7))
-        sampled_landmarks = _resolve_ref_rows(valid_instances, sampled_landmarks)
-        pipeline_logger.info(f"stage3 data: selected_landmarks={len(sampled_landmarks)} atomic_per_landmark={single_atomic_classes_per_landmark} composite_per_landmark={single_composite_classes_per_landmark}")
-        selected_landmark_ids = [str(row.get("instance_id", "") or "") for row in sampled_landmarks if str(row.get("instance_id", "") or "").strip()]
-        stage3_target_atomic = len(selected_landmark_ids) * max(0, single_atomic_classes_per_landmark) * max(1, single_instances_per_class)
-        stage3_target_composite = len(selected_landmark_ids) * max(0, single_composite_classes_per_landmark) * max(1, single_instances_per_class)
-        existing_single = _discover_stage3_single_missions(scene_cfg)
-        existing_by_landmark_family = dict(existing_single.get("by_landmark_family", {}) or {})
-        planned_reuse_render_traj_ids = sorted(
-            {
-                str(row.get("traj_id", "") or "")
-                for family in ("atomic", "composite")
-                for row in list(existing_single.get("by_family", {}).get(family, []) or [])
-                if bool(row.get("needs_render", False))
+        if open_qa_mode:
+            pipeline_logger.info("stage3 data: open QA mode; using pre-generated open manifest and skipping mission generation")
+            latest_stage3_open_manifest = _resolve_latest_stage3_open_manifest_path(scene_cfg)
+            if not latest_stage3_open_manifest.exists():
+                raise FileNotFoundError(f"stage3_open_manifest_not_found_for_data: {latest_stage3_open_manifest}")
+            stage3_manifest = {
+                "manifest_path": latest_stage3_open_manifest,
+                "manifest": json.loads(latest_stage3_open_manifest.read_text(encoding="utf-8")),
             }
-        )
-        historical_failed = _load_stage3_failed_landmark_families(failed_records_path, scene_id=scene_id)
-        planned_family_counts: dict[tuple[str, str], int] = {}
-        planned_family_keys: dict[tuple[str, str], set[str]] = {}
-        existing_family_totals = {
-            "atomic": len(list(existing_single.get("by_family", {}).get("atomic", []) or [])),
-            "composite": len(list(existing_single.get("by_family", {}).get("composite", []) or [])),
-        }
-        for family in ("atomic", "composite"):
-            for landmark_id in selected_landmark_ids:
-                rows = list(existing_by_landmark_family.get((landmark_id, family), []) or [])
-                planned_family_counts[(landmark_id, family)] = len(rows)
-                planned_family_keys[(landmark_id, family)] = {str(row.get("set_id", "") or "") for row in rows if str(row.get("set_id", "") or "").strip()}
-        pipeline_logger.info(
-            f"stage3 data: existing_single atomic={existing_family_totals['atomic']} composite={existing_family_totals['composite']} "
-            f"target_atomic={stage3_target_atomic} target_composite={stage3_target_composite}"
-        )
-        if planned_reuse_render_traj_ids:
-            pipeline_logger.info(f"stage3 data: reusable unrendered missions={len(planned_reuse_render_traj_ids)}")
-        component_set_keys = _single_landmark_component_set_keys()
-        pair_groups = []
-        triple_groups = []
-        if stage3_pair_selection_out is not None:
-            pair_groups = list(stage3_pair_selection_out["payload"].get("selected_landmarks", []) or [])
+            pipeline_logger.info(f"stage3 data: open manifest path={stage3_manifest['manifest_path']}")
         else:
-            latest_pairs = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_pairs.latest.json"
-            if latest_pairs.exists():
-                pair_groups = list((json.loads(latest_pairs.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-        if stage3_triple_selection_out is not None:
-            triple_groups = list(stage3_triple_selection_out["payload"].get("selected_landmarks", []) or [])
-        else:
-            latest_triples = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_triples.latest.json"
-            if latest_triples.exists():
-                triple_groups = list((json.loads(latest_triples.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-        stage3_generate_t0 = time.time()
-        generation_retry_limit = max(1, int(stage3_spec.get("generation_retry_limit", 8) or 8))
-        max_repair_lift_m = float(stage3_spec.get("generation_max_repair_lift_m", 6.0) or 6.0)
-        max_repair_fraction = float(stage3_spec.get("generation_max_repair_fraction", 0.2) or 0.2)
-        total_stage3_jobs = 0
-        generation_jobs: list[dict[str, Any]] = []
-        supplemental_jobs_by_family = {"atomic": 0, "composite": 0}
-        for idx, landmark in enumerate(sampled_landmarks):
-            instance_id = str(landmark.get("instance_id", "") or "")
-            if not instance_id:
-                continue
-            atomic_key = (instance_id, "atomic")
-            composite_key = (instance_id, "composite")
-            atomic_missing = max(0, max(0, single_atomic_classes_per_landmark) * max(1, single_instances_per_class) - int(planned_family_counts.get(atomic_key, 0)))
-            composite_missing = max(0, max(0, single_composite_classes_per_landmark) * max(1, single_instances_per_class) - int(planned_family_counts.get(composite_key, 0)))
-            if atomic_missing > 0 and instance_id not in historical_failed["atomic"]:
-                chosen_elements = _pick_stage3_family_keys(
-                    [f"atomic_{element_key}" for element_key in element_keys],
-                    requested_per_landmark=atomic_missing,
-                    offset=idx,
-                    existing_keys=set(planned_family_keys.get(atomic_key, set())),
-                )
-                for local_idx, mission_type in enumerate(chosen_elements):
-                    traj_id = f"batch_{scene_id}_{instance_id}_atomic_{idx+1:04d}_fill_{local_idx+1:02d}"
-                    generation_jobs.append(
-                        {
-                            "traj_id": traj_id,
-                            "run_args": _build_stage3_args(
-                                config_path=config_path,
-                                scene_cfg=scene_cfg,
-                                landmark_id=instance_id,
-                                mission_type=mission_type,
-                                behavior_sequence=None,
-                                traj_id=traj_id,
-                                seed=int(spec.get('seed', 7) or 7) + idx * 101 + local_idx,
-                            ),
-                            "log": f"stage3 mission queue: traj_id={traj_id} landmark_id={instance_id} mission_type={mission_type}",
-                        }
-                    )
-                    planned_family_counts[atomic_key] = int(planned_family_counts.get(atomic_key, 0)) + 1
-                    planned_family_keys.setdefault(atomic_key, set()).add(str(mission_type))
-            if composite_missing > 0 and instance_id not in historical_failed["composite"]:
-                chosen_sets = _pick_stage3_family_keys(
-                    set_keys,
-                    requested_per_landmark=composite_missing,
-                    offset=idx,
-                    existing_keys=set(planned_family_keys.get(composite_key, set())),
-                )
-                for local_idx, mission_type in enumerate(chosen_sets):
-                    traj_id = f"batch_{scene_id}_{instance_id}_composite_{idx+1:04d}_fill_{local_idx+1:02d}"
-                    generation_jobs.append(
-                        {
-                            "traj_id": traj_id,
-                            "run_args": _build_stage3_args(
-                                config_path=config_path,
-                                scene_cfg=scene_cfg,
-                                landmark_id=instance_id,
-                                mission_type=mission_type,
-                                behavior_sequence=None,
-                                traj_id=traj_id,
-                                seed=int(spec.get('seed', 7) or 7) + idx * 101 + 1000 + local_idx,
-                            ),
-                            "log": f"stage3 mission queue: traj_id={traj_id} landmark_id={instance_id} mission_type={mission_type}",
-                        }
-                    )
-                    planned_family_counts[composite_key] = int(planned_family_counts.get(composite_key, 0)) + 1
-                    planned_family_keys.setdefault(composite_key, set()).add(str(mission_type))
-
-        family_targets = {"atomic": stage3_target_atomic, "composite": stage3_target_composite}
-        family_key_sources = {"atomic": [f"atomic_{element_key}" for element_key in element_keys], "composite": list(set_keys)}
-        valid_landmark_ids = [str(row.get("instance_id", "") or "") for row in valid_instances if str(row.get("instance_id", "") or "").strip()]
-        for family in ("atomic", "composite"):
-            current_total = sum(int(planned_family_counts.get((landmark_id, family), 0)) for landmark_id in valid_landmark_ids)
-            deficit = max(0, int(family_targets[family]) - current_total)
-            if deficit <= 0:
-                continue
-            eligible_ids = [landmark_id for landmark_id in valid_landmark_ids if landmark_id not in historical_failed[family]]
-            if not eligible_ids:
-                pipeline_logger.warn(f"stage3 data: no eligible landmarks available for supplemental {family} generation")
-                continue
-            for extra_idx in range(deficit):
-                chosen_landmark_id = min(
-                    eligible_ids,
-                    key=lambda landmark_id: (
-                        int(planned_family_counts.get((landmark_id, family), 0)),
-                        0 if landmark_id in selected_landmark_ids else 1,
-                        landmark_id,
-                    ),
-                )
-                existing_keys = set(planned_family_keys.get((chosen_landmark_id, family), set()))
-                mission_type = _pick_stage3_family_keys(
-                    family_key_sources[family],
-                    requested_per_landmark=1,
-                    offset=extra_idx,
-                    existing_keys=existing_keys,
-                )[0]
-                traj_id = f"batch_{scene_id}_{chosen_landmark_id}_{family}_topup_{extra_idx+1:04d}"
-                generation_jobs.append(
-                    {
-                        "traj_id": traj_id,
-                        "run_args": _build_stage3_args(
-                            config_path=config_path,
-                            scene_cfg=scene_cfg,
-                            landmark_id=chosen_landmark_id,
-                            mission_type=mission_type,
-                            behavior_sequence=None,
-                            traj_id=traj_id,
-                            seed=int(spec.get('seed', 7) or 7) + 200000 + extra_idx + (0 if family == 'atomic' else 50000),
-                        ),
-                        "log": f"stage3 supplemental queue: traj_id={traj_id} landmark_id={chosen_landmark_id} mission_type={mission_type}",
-                    }
-                )
-                planned_family_counts[(chosen_landmark_id, family)] = int(planned_family_counts.get((chosen_landmark_id, family), 0)) + 1
-                planned_family_keys.setdefault((chosen_landmark_id, family), set()).add(str(mission_type))
-                supplemental_jobs_by_family[family] += 1
-
-        total_stage3_jobs = len(generation_jobs) + max(0, len(pair_groups)) * pair_instances_per_group + max(0, len(triple_groups)) * triple_instances_per_group
-        generate_parallel_workers = _auto_parallel_workers(
-            global_stage3_defaults.get("data_generate_parallel_workers", 0),
-            job_count=total_stage3_jobs,
-            cpu_fraction=0.5,
-            load_factor=0.6,
-        )
-        stage3_gen_bar = ProgressBar(total=max(1, total_stage3_jobs), label="task_pipeline.stage3.data.generate", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
-        stage3_gen_bar.update(0, detail="building missions")
-        generation_running = {"count": 0}
-        generation_lock = threading.Lock()
-        if supplemental_jobs_by_family["atomic"] or supplemental_jobs_by_family["composite"]:
-            pipeline_logger.info(
-                f"stage3 data: supplemental jobs atomic={supplemental_jobs_by_family['atomic']} composite={supplemental_jobs_by_family['composite']}"
-            )
-        pair_set_type = str(stage3_spec.get("pair_set_type", "") or "").strip()
-        triple_set_type = str(stage3_spec.get("triple_set_type", "") or "").strip()
-        all_groups = [("pair", row) for row in pair_groups] + [("triple", row) for row in triple_groups]
-        for group_idx, (group_kind, group_row) in enumerate(all_groups):
-            members = list(group_row.get("members", []) or []) if isinstance(group_row, dict) else []
-            member_ids = [str(item.get("instance_id", "") or "") for item in members if str(item.get("instance_id", "") or "").strip()]
-            if len(member_ids) < 2:
-                continue
-            instances_per_group = pair_instances_per_group if group_kind == "pair" else triple_instances_per_group
-            for inst_idx in range(instances_per_group):
-                landmark_set_map = {}
-                for local_idx, landmark_id in enumerate(member_ids):
-                    if component_set_keys:
-                        landmark_set_map[landmark_id] = component_set_keys[(group_idx + inst_idx + local_idx) % len(component_set_keys)]
-                traj_id = f"batch_{scene_id}_{member_ids[0]}_multi_{group_idx+1:04d}_{inst_idx+1:02d}"
-                multi_mission_type = pair_set_type if group_kind == "pair" and pair_set_type else (triple_set_type if group_kind == "triple" and triple_set_type else "multi_landmark_composite_inspection")
-                run_args = argparse.Namespace(
-                    mode="generate_mission",
-                    config=str(config_path),
-                    scene_id=scene_id,
-                    landmark_id=member_ids[0],
-                    selected_instance_ids=list(member_ids),
-                    mission_type=multi_mission_type,
-                    behavior_sequence=None,
-                    generation_kind="composite-driven",
-                    mission_mode="multi-landmark",
-                    traj_id=traj_id,
-                    trajectory_root="scene_data",
-                    instances_json=None,
-                    seed=int(spec.get("seed", 7) or 7) + 500 + group_idx * 17 + inst_idx,
-                    points_per_behavior=None,
-                    samples_per_segment=None,
-                    smooth_window=None,
-                    sample_count=32,
-                    forms="",
-                    task_group="all",
-                    approved_only=False,
-                    manifest_path=None,
-                    limit=0,
-                    model=None,
-                    provide_flight_description=False,
-                    include_keyframes=False,
-                    host="0.0.0.0",
-                    port=20262,
-                    element_param_overrides=None,
-                    element_auto_rules=None,
-                    set_profiles=None,
-                    adaptive_sequential_params=True,
-                    allow_interleave_repeat=False,
-                    max_total_elements=0,
-                    landmark_set_map=landmark_set_map,
-                )
-                generation_jobs.append(
-                    {
-                        "traj_id": traj_id,
-                        "run_args": run_args,
-                        "log": f"stage3 mission generate: traj_id={traj_id} landmark_id={member_ids[0]} mission_type={multi_mission_type}",
-                        "group_kind": group_kind,
-                        "group_max_range_m": float(stage3_spec.get("pair_max_range_m", 50.0) if group_kind == "pair" else stage3_spec.get("triple_max_range_m", 100.0)),
-                    }
-                )
-
-        pipeline_logger.info(
-            f"stage3 data.generate queue: total_jobs={len(generation_jobs)} workers={generate_parallel_workers}"
-        )
-
-        if generate_parallel_workers <= 1:
-            for job in generation_jobs:
-                try:
-                    worker_out = _stage3_generate_job_worker(
-                        {
-                            "job": job,
-                            "scene_cfg": scene_cfg,
-                            "scene_root": str(scene_root),
-                            "scene_id": scene_id,
-                            "valid_instances": valid_instances,
-                            "component_set_keys": component_set_keys,
-                            "generation_retry_limit": generation_retry_limit,
-                            "max_repair_lift_m": max_repair_lift_m,
-                            "max_repair_fraction": max_repair_fraction,
-                        }
-                    )
-                    traj_id = str(worker_out.get("traj_id", job["traj_id"]) or job["traj_id"])
-                    generated_traj_ids.append(traj_id)
-                    stage3_gen_bar.advance(1, detail=f"generated {traj_id}")
-                except Exception as exc:
-                    run_args = job.get("run_args")
-                    mission_mode = str(getattr(run_args, "mission_mode", "") or "")
-                    landmark_id = str(getattr(run_args, "landmark_id", "") or "")
-                    if mission_mode == "single-landmark" and landmark_id:
-                        record = {
-                            "run_id": run_id,
-                            "task_name": _task_pipeline_name(spec),
-                            "scene_id": scene_id,
-                            "stage": "stage3",
-                            "phase": "data.generate",
-                            "landmark_id": landmark_id,
-                            "traj_id": str(job.get("traj_id", "") or ""),
-                            "reason": str(exc),
-                            "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime()),
-                        }
-                        _append_jsonl(failed_records_path, record)
-                        _append_jsonl(run_failed_records_path, record)
-                        pipeline_logger.warn(f"stage3 mission generation skipped: landmark_id={landmark_id} traj_id={job.get('traj_id','')} error={exc}")
-                        stage3_gen_bar.advance(1, detail=f"skipped {job.get('traj_id','')}")
-                        continue
-                    pipeline_logger.error(f"stage3 mission generation failed: traj_id={job.get('traj_id','')} error={exc}")
-                    raise
-        else:
-            with concurrent.futures.ProcessPoolExecutor(max_workers=generate_parallel_workers) as executor:
-                futures = {
-                    executor.submit(
-                        _stage3_generate_job_worker,
-                        {
-                            "job": job,
-                            "scene_cfg": scene_cfg,
-                            "scene_root": str(scene_root),
-                            "scene_id": scene_id,
-                            "valid_instances": valid_instances,
-                            "component_set_keys": component_set_keys,
-                            "generation_retry_limit": generation_retry_limit,
-                            "max_repair_lift_m": max_repair_lift_m,
-                            "max_repair_fraction": max_repair_fraction,
-                        },
-                    ): job
-                    for job in generation_jobs
+            pipeline_logger.info("stage3 data: preparing single-scene mission generation")
+            if stage3_selection_out is not None:
+                sampled_landmarks = list(stage3_selection_out["payload"].get("selected_landmarks", []) or [])
+            elif not sampled_landmarks:
+                latest_stage3_selection = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_landmarks.latest.json"
+                if latest_stage3_selection.exists():
+                    sampled_landmarks = list((json.loads(latest_stage3_selection.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+                else:
+                    stage3_landmark_count = int(stage3_spec.get("landmark_count", sample_count) or sample_count)
+                    sampled_landmarks = _uniform_sample_by_subcategory(valid_instances, stage3_landmark_count, seed=int(spec.get("seed", 7) or 7))
+            sampled_landmarks = _resolve_ref_rows(valid_instances, sampled_landmarks)
+            pipeline_logger.info(f"stage3 data: selected_landmarks={len(sampled_landmarks)} atomic_per_landmark={single_atomic_classes_per_landmark} composite_per_landmark={single_composite_classes_per_landmark}")
+            selected_landmark_ids = [str(row.get("instance_id", "") or "") for row in sampled_landmarks if str(row.get("instance_id", "") or "").strip()]
+            stage3_target_atomic = len(selected_landmark_ids) * max(0, single_atomic_classes_per_landmark) * max(1, single_instances_per_class)
+            stage3_target_composite = len(selected_landmark_ids) * max(0, single_composite_classes_per_landmark) * max(1, single_instances_per_class)
+            existing_single = _discover_stage3_single_missions(scene_cfg)
+            existing_by_landmark_family = dict(existing_single.get("by_landmark_family", {}) or {})
+            planned_reuse_render_traj_ids = sorted(
+                {
+                    str(row.get("traj_id", "") or "")
+                    for family in ("atomic", "composite")
+                    for row in list(existing_single.get("by_family", {}).get(family, []) or [])
+                    if bool(row.get("needs_render", False))
                 }
-                for fut in concurrent.futures.as_completed(futures):
-                    job = futures[fut]
-                    traj_id = str(job["traj_id"])
+            )
+            historical_failed = _load_stage3_failed_landmark_families(failed_records_path, scene_id=scene_id)
+            planned_family_counts: dict[tuple[str, str], int] = {}
+            planned_family_keys: dict[tuple[str, str], set[str]] = {}
+            existing_family_totals = {
+                "atomic": len(list(existing_single.get("by_family", {}).get("atomic", []) or [])),
+                "composite": len(list(existing_single.get("by_family", {}).get("composite", []) or [])),
+            }
+            for family in ("atomic", "composite"):
+                for landmark_id in selected_landmark_ids:
+                    rows = list(existing_by_landmark_family.get((landmark_id, family), []) or [])
+                    planned_family_counts[(landmark_id, family)] = len(rows)
+                    planned_family_keys[(landmark_id, family)] = {str(row.get("set_id", "") or "") for row in rows if str(row.get("set_id", "") or "").strip()}
+            pipeline_logger.info(
+                f"stage3 data: existing_single atomic={existing_family_totals['atomic']} composite={existing_family_totals['composite']} "
+                f"target_atomic={stage3_target_atomic} target_composite={stage3_target_composite}"
+            )
+            if planned_reuse_render_traj_ids:
+                pipeline_logger.info(f"stage3 data: reusable unrendered missions={len(planned_reuse_render_traj_ids)}")
+            component_set_keys = _single_landmark_component_set_keys()
+            pair_groups = []
+            triple_groups = []
+            if stage3_pair_selection_out is not None:
+                pair_groups = list(stage3_pair_selection_out["payload"].get("selected_landmarks", []) or [])
+            else:
+                latest_pairs = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_pairs.latest.json"
+                if latest_pairs.exists():
+                    pair_groups = list((json.loads(latest_pairs.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+            if stage3_triple_selection_out is not None:
+                triple_groups = list(stage3_triple_selection_out["payload"].get("selected_landmarks", []) or [])
+            else:
+                latest_triples = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_triples.latest.json"
+                if latest_triples.exists():
+                    triple_groups = list((json.loads(latest_triples.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+            stage3_generate_t0 = time.time()
+            generation_retry_limit = max(1, int(stage3_spec.get("generation_retry_limit", 8) or 8))
+            max_repair_lift_m = float(stage3_spec.get("generation_max_repair_lift_m", 6.0) or 6.0)
+            max_repair_fraction = float(stage3_spec.get("generation_max_repair_fraction", 0.2) or 0.2)
+            total_stage3_jobs = 0
+            generation_jobs: list[dict[str, Any]] = []
+            supplemental_jobs_by_family = {"atomic": 0, "composite": 0}
+            for idx, landmark in enumerate(sampled_landmarks):
+                instance_id = str(landmark.get("instance_id", "") or "")
+                if not instance_id:
+                    continue
+                atomic_key = (instance_id, "atomic")
+                composite_key = (instance_id, "composite")
+                atomic_missing = max(0, max(0, single_atomic_classes_per_landmark) * max(1, single_instances_per_class) - int(planned_family_counts.get(atomic_key, 0)))
+                composite_missing = max(0, max(0, single_composite_classes_per_landmark) * max(1, single_instances_per_class) - int(planned_family_counts.get(composite_key, 0)))
+                if atomic_missing > 0 and instance_id not in historical_failed["atomic"]:
+                    chosen_elements = _pick_stage3_family_keys(
+                        [f"atomic_{element_key}" for element_key in element_keys],
+                        requested_per_landmark=atomic_missing,
+                        offset=idx,
+                        existing_keys=set(planned_family_keys.get(atomic_key, set())),
+                    )
+                    for local_idx, mission_type in enumerate(chosen_elements):
+                        traj_id = f"batch_{scene_id}_{instance_id}_atomic_{idx+1:04d}_fill_{local_idx+1:02d}"
+                        generation_jobs.append(
+                            {
+                                "traj_id": traj_id,
+                                "run_args": _build_stage3_args(
+                                    config_path=config_path,
+                                    scene_cfg=scene_cfg,
+                                    landmark_id=instance_id,
+                                    mission_type=mission_type,
+                                    behavior_sequence=None,
+                                    traj_id=traj_id,
+                                    seed=int(spec.get('seed', 7) or 7) + idx * 101 + local_idx,
+                                ),
+                                "log": f"stage3 mission queue: traj_id={traj_id} landmark_id={instance_id} mission_type={mission_type}",
+                            }
+                        )
+                        planned_family_counts[atomic_key] = int(planned_family_counts.get(atomic_key, 0)) + 1
+                        planned_family_keys.setdefault(atomic_key, set()).add(str(mission_type))
+                if composite_missing > 0 and instance_id not in historical_failed["composite"]:
+                    chosen_sets = _pick_stage3_family_keys(
+                        set_keys,
+                        requested_per_landmark=composite_missing,
+                        offset=idx,
+                        existing_keys=set(planned_family_keys.get(composite_key, set())),
+                    )
+                    for local_idx, mission_type in enumerate(chosen_sets):
+                        traj_id = f"batch_{scene_id}_{instance_id}_composite_{idx+1:04d}_fill_{local_idx+1:02d}"
+                        generation_jobs.append(
+                            {
+                                "traj_id": traj_id,
+                                "run_args": _build_stage3_args(
+                                    config_path=config_path,
+                                    scene_cfg=scene_cfg,
+                                    landmark_id=instance_id,
+                                    mission_type=mission_type,
+                                    behavior_sequence=None,
+                                    traj_id=traj_id,
+                                    seed=int(spec.get('seed', 7) or 7) + idx * 101 + 1000 + local_idx,
+                                ),
+                                "log": f"stage3 mission queue: traj_id={traj_id} landmark_id={instance_id} mission_type={mission_type}",
+                            }
+                        )
+                        planned_family_counts[composite_key] = int(planned_family_counts.get(composite_key, 0)) + 1
+                        planned_family_keys.setdefault(composite_key, set()).add(str(mission_type))
+
+            family_targets = {"atomic": stage3_target_atomic, "composite": stage3_target_composite}
+            family_key_sources = {"atomic": [f"atomic_{element_key}" for element_key in element_keys], "composite": list(set_keys)}
+            valid_landmark_ids = [str(row.get("instance_id", "") or "") for row in valid_instances if str(row.get("instance_id", "") or "").strip()]
+            for family in ("atomic", "composite"):
+                current_total = sum(int(planned_family_counts.get((landmark_id, family), 0)) for landmark_id in valid_landmark_ids)
+                deficit = max(0, int(family_targets[family]) - current_total)
+                if deficit <= 0:
+                    continue
+                eligible_ids = [landmark_id for landmark_id in valid_landmark_ids if landmark_id not in historical_failed[family]]
+                if not eligible_ids:
+                    pipeline_logger.warn(f"stage3 data: no eligible landmarks available for supplemental {family} generation")
+                    continue
+                for extra_idx in range(deficit):
+                    chosen_landmark_id = min(
+                        eligible_ids,
+                        key=lambda landmark_id: (
+                            int(planned_family_counts.get((landmark_id, family), 0)),
+                            0 if landmark_id in selected_landmark_ids else 1,
+                            landmark_id,
+                        ),
+                    )
+                    existing_keys = set(planned_family_keys.get((chosen_landmark_id, family), set()))
+                    mission_type = _pick_stage3_family_keys(
+                        family_key_sources[family],
+                        requested_per_landmark=1,
+                        offset=extra_idx,
+                        existing_keys=existing_keys,
+                    )[0]
+                    traj_id = f"batch_{scene_id}_{chosen_landmark_id}_{family}_topup_{extra_idx+1:04d}"
+                    generation_jobs.append(
+                        {
+                            "traj_id": traj_id,
+                            "run_args": _build_stage3_args(
+                                config_path=config_path,
+                                scene_cfg=scene_cfg,
+                                landmark_id=chosen_landmark_id,
+                                mission_type=mission_type,
+                                behavior_sequence=None,
+                                traj_id=traj_id,
+                                seed=int(spec.get('seed', 7) or 7) + 200000 + extra_idx + (0 if family == 'atomic' else 50000),
+                            ),
+                            "log": f"stage3 supplemental queue: traj_id={traj_id} landmark_id={chosen_landmark_id} mission_type={mission_type}",
+                        }
+                    )
+                    planned_family_counts[(chosen_landmark_id, family)] = int(planned_family_counts.get((chosen_landmark_id, family), 0)) + 1
+                    planned_family_keys.setdefault((chosen_landmark_id, family), set()).add(str(mission_type))
+                    supplemental_jobs_by_family[family] += 1
+
+            total_stage3_jobs = len(generation_jobs) + max(0, len(pair_groups)) * pair_instances_per_group + max(0, len(triple_groups)) * triple_instances_per_group
+            generate_parallel_workers = _auto_parallel_workers(
+                global_stage3_defaults.get("data_generate_parallel_workers", 0),
+                job_count=total_stage3_jobs,
+                cpu_fraction=0.5,
+                load_factor=0.6,
+            )
+            stage3_gen_bar = ProgressBar(total=max(1, total_stage3_jobs), label="task_pipeline.stage3.data.generate", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
+            stage3_gen_bar.update(0, detail="building missions")
+            generation_running = {"count": 0}
+            generation_lock = threading.Lock()
+            if supplemental_jobs_by_family["atomic"] or supplemental_jobs_by_family["composite"]:
+                pipeline_logger.info(
+                    f"stage3 data: supplemental jobs atomic={supplemental_jobs_by_family['atomic']} composite={supplemental_jobs_by_family['composite']}"
+                )
+            pair_set_type = str(stage3_spec.get("pair_set_type", "") or "").strip()
+            triple_set_type = str(stage3_spec.get("triple_set_type", "") or "").strip()
+            all_groups = [("pair", row) for row in pair_groups] + [("triple", row) for row in triple_groups]
+            for group_idx, (group_kind, group_row) in enumerate(all_groups):
+                members = list(group_row.get("members", []) or []) if isinstance(group_row, dict) else []
+                member_ids = [str(item.get("instance_id", "") or "") for item in members if str(item.get("instance_id", "") or "").strip()]
+                if len(member_ids) < 2:
+                    continue
+                instances_per_group = pair_instances_per_group if group_kind == "pair" else triple_instances_per_group
+                for inst_idx in range(instances_per_group):
+                    landmark_set_map = {}
+                    for local_idx, landmark_id in enumerate(member_ids):
+                        if component_set_keys:
+                            landmark_set_map[landmark_id] = component_set_keys[(group_idx + inst_idx + local_idx) % len(component_set_keys)]
+                    traj_id = f"batch_{scene_id}_{member_ids[0]}_multi_{group_idx+1:04d}_{inst_idx+1:02d}"
+                    multi_mission_type = pair_set_type if group_kind == "pair" and pair_set_type else (triple_set_type if group_kind == "triple" and triple_set_type else "multi_landmark_composite_inspection")
+                    run_args = argparse.Namespace(
+                        mode="generate_mission",
+                        config=str(config_path),
+                        scene_id=scene_id,
+                        landmark_id=member_ids[0],
+                        selected_instance_ids=list(member_ids),
+                        mission_type=multi_mission_type,
+                        behavior_sequence=None,
+                        generation_kind="composite-driven",
+                        mission_mode="multi-landmark",
+                        traj_id=traj_id,
+                        trajectory_root="scene_data",
+                        instances_json=None,
+                        seed=int(spec.get("seed", 7) or 7) + 500 + group_idx * 17 + inst_idx,
+                        points_per_behavior=None,
+                        samples_per_segment=None,
+                        smooth_window=None,
+                        sample_count=32,
+                        forms="",
+                        task_group="all",
+                        approved_only=False,
+                        manifest_path=None,
+                        limit=0,
+                        model=None,
+                        provide_flight_description=False,
+                        include_keyframes=False,
+                        host="0.0.0.0",
+                        port=20262,
+                        element_param_overrides=None,
+                        element_auto_rules=None,
+                        set_profiles=None,
+                        adaptive_sequential_params=True,
+                        allow_interleave_repeat=False,
+                        max_total_elements=0,
+                        landmark_set_map=landmark_set_map,
+                    )
+                    generation_jobs.append(
+                        {
+                            "traj_id": traj_id,
+                            "run_args": run_args,
+                            "log": f"stage3 mission generate: traj_id={traj_id} landmark_id={member_ids[0]} mission_type={multi_mission_type}",
+                            "group_kind": group_kind,
+                            "group_max_range_m": float(stage3_spec.get("pair_max_range_m", 50.0) if group_kind == "pair" else stage3_spec.get("triple_max_range_m", 100.0)),
+                        }
+                    )
+
+            pipeline_logger.info(
+                f"stage3 data.generate queue: total_jobs={len(generation_jobs)} workers={generate_parallel_workers}"
+            )
+
+            if generate_parallel_workers <= 1:
+                for job in generation_jobs:
                     try:
-                        worker_out = dict(fut.result() or {})
-                        generated_traj_ids.append(str(worker_out.get("traj_id", traj_id) or traj_id))
+                        worker_out = _stage3_generate_job_worker(
+                            {
+                                "job": job,
+                                "scene_cfg": scene_cfg,
+                                "scene_root": str(scene_root),
+                                "scene_id": scene_id,
+                                "valid_instances": valid_instances,
+                                "component_set_keys": component_set_keys,
+                                "generation_retry_limit": generation_retry_limit,
+                                "max_repair_lift_m": max_repair_lift_m,
+                                "max_repair_fraction": max_repair_fraction,
+                            }
+                        )
+                        traj_id = str(worker_out.get("traj_id", job["traj_id"]) or job["traj_id"])
+                        generated_traj_ids.append(traj_id)
                         stage3_gen_bar.advance(1, detail=f"generated {traj_id}")
                     except Exception as exc:
                         run_args = job.get("run_args")
@@ -1658,66 +1757,90 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
                                 "stage": "stage3",
                                 "phase": "data.generate",
                                 "landmark_id": landmark_id,
-                                "traj_id": traj_id,
+                                "traj_id": str(job.get("traj_id", "") or ""),
                                 "reason": str(exc),
                                 "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime()),
                             }
                             _append_jsonl(failed_records_path, record)
                             _append_jsonl(run_failed_records_path, record)
-                            pipeline_logger.warn(f"stage3 mission generation skipped: landmark_id={landmark_id} traj_id={traj_id} error={exc}")
-                            stage3_gen_bar.advance(1, detail=f"skipped {traj_id}")
+                            pipeline_logger.warn(f"stage3 mission generation skipped: landmark_id={landmark_id} traj_id={job.get('traj_id','')} error={exc}")
+                            stage3_gen_bar.advance(1, detail=f"skipped {job.get('traj_id','')}")
                             continue
-                        pipeline_logger.error(f"stage3 mission generation failed: traj_id={traj_id} error={exc}")
+                        pipeline_logger.error(f"stage3 mission generation failed: traj_id={job.get('traj_id','')} error={exc}")
                         raise
-        stage3_gen_bar.finish(detail=f"generated {len(generated_traj_ids)} missions")
-        stage3_generate_elapsed = float(time.time() - stage3_generate_t0)
-        pipeline_logger.info(f"stage3 mission generation completed: traj_count={len(generated_traj_ids)} elapsed_sec={stage3_generate_elapsed:.2f}")
-        analysis_t0 = time.time()
-        analyze_parallel_workers = _auto_parallel_workers(
-            global_stage3_defaults.get("data_analyze_parallel_workers", 0),
-            job_count=len(generated_traj_ids),
-            cpu_fraction=0.5,
-            load_factor=0.8,
-        )
-        if generated_traj_ids:
-            stage3_analysis_bar = ProgressBar(total=max(1, len(generated_traj_ids)), label="task_pipeline.stage3.data.analyze", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
-            stage3_analysis_bar.update(0, detail="computing visibility metadata")
-            if analyze_parallel_workers <= 1:
-                for traj_id in generated_traj_ids:
-                    try:
-                        status = _stage3_analysis_job_worker(
-                            {
-                                "scene_cfg": scene_cfg,
-                                "scene_root": str(scene_root),
-                                "scene_id": scene_id,
-                                "mission_dir": str(_resolve_stage3_missions_root(scene_cfg) / str(traj_id)),
-                            }
-                        )
-                        if status.startswith("missing::"):
-                            stage3_analysis_bar.advance(1, detail=f"missing mission dir for {traj_id}")
-                        else:
-                            stage3_analysis_bar.advance(1, detail=f"analyzed {traj_id}")
-                    except Exception as exc:
-                        pipeline_logger.warn(f"stage3 analysis skipped for {traj_id}: {exc}")
-                        stage3_analysis_bar.advance(1, detail=f"skipped {traj_id}")
             else:
-                with concurrent.futures.ProcessPoolExecutor(max_workers=analyze_parallel_workers) as executor:
+                with concurrent.futures.ProcessPoolExecutor(max_workers=generate_parallel_workers) as executor:
                     futures = {
                         executor.submit(
-                            _stage3_analysis_job_worker,
+                            _stage3_generate_job_worker,
                             {
+                                "job": job,
                                 "scene_cfg": scene_cfg,
                                 "scene_root": str(scene_root),
                                 "scene_id": scene_id,
-                                "mission_dir": str(_resolve_stage3_missions_root(scene_cfg) / str(traj_id)),
+                                "valid_instances": valid_instances,
+                                "component_set_keys": component_set_keys,
+                                "generation_retry_limit": generation_retry_limit,
+                                "max_repair_lift_m": max_repair_lift_m,
+                                "max_repair_fraction": max_repair_fraction,
                             },
-                        ): traj_id
-                        for traj_id in generated_traj_ids
+                        ): job
+                        for job in generation_jobs
                     }
                     for fut in concurrent.futures.as_completed(futures):
-                        traj_id = str(futures[fut])
+                        job = futures[fut]
+                        traj_id = str(job["traj_id"])
                         try:
-                            status = str(fut.result() or "")
+                            worker_out = dict(fut.result() or {})
+                            generated_traj_ids.append(str(worker_out.get("traj_id", traj_id) or traj_id))
+                            stage3_gen_bar.advance(1, detail=f"generated {traj_id}")
+                        except Exception as exc:
+                            run_args = job.get("run_args")
+                            mission_mode = str(getattr(run_args, "mission_mode", "") or "")
+                            landmark_id = str(getattr(run_args, "landmark_id", "") or "")
+                            if mission_mode == "single-landmark" and landmark_id:
+                                record = {
+                                    "run_id": run_id,
+                                    "task_name": _task_pipeline_name(spec),
+                                    "scene_id": scene_id,
+                                    "stage": "stage3",
+                                    "phase": "data.generate",
+                                    "landmark_id": landmark_id,
+                                    "traj_id": traj_id,
+                                    "reason": str(exc),
+                                    "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime()),
+                                }
+                                _append_jsonl(failed_records_path, record)
+                                _append_jsonl(run_failed_records_path, record)
+                                pipeline_logger.warn(f"stage3 mission generation skipped: landmark_id={landmark_id} traj_id={traj_id} error={exc}")
+                                stage3_gen_bar.advance(1, detail=f"skipped {traj_id}")
+                                continue
+                            pipeline_logger.error(f"stage3 mission generation failed: traj_id={traj_id} error={exc}")
+                            raise
+            stage3_gen_bar.finish(detail=f"generated {len(generated_traj_ids)} missions")
+            stage3_generate_elapsed = float(time.time() - stage3_generate_t0)
+            pipeline_logger.info(f"stage3 mission generation completed: traj_count={len(generated_traj_ids)} elapsed_sec={stage3_generate_elapsed:.2f}")
+            analysis_t0 = time.time()
+            analyze_parallel_workers = _auto_parallel_workers(
+                global_stage3_defaults.get("data_analyze_parallel_workers", 0),
+                job_count=len(generated_traj_ids),
+                cpu_fraction=0.5,
+                load_factor=0.8,
+            )
+            if generated_traj_ids:
+                stage3_analysis_bar = ProgressBar(total=max(1, len(generated_traj_ids)), label="task_pipeline.stage3.data.analyze", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
+                stage3_analysis_bar.update(0, detail="computing visibility metadata")
+                if analyze_parallel_workers <= 1:
+                    for traj_id in generated_traj_ids:
+                        try:
+                            status = _stage3_analysis_job_worker(
+                                {
+                                    "scene_cfg": scene_cfg,
+                                    "scene_root": str(scene_root),
+                                    "scene_id": scene_id,
+                                    "mission_dir": str(_resolve_stage3_missions_root(scene_cfg) / str(traj_id)),
+                                }
+                            )
                             if status.startswith("missing::"):
                                 stage3_analysis_bar.advance(1, detail=f"missing mission dir for {traj_id}")
                             else:
@@ -1725,130 +1848,166 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
                         except Exception as exc:
                             pipeline_logger.warn(f"stage3 analysis skipped for {traj_id}: {exc}")
                             stage3_analysis_bar.advance(1, detail=f"skipped {traj_id}")
-            stage3_analysis_bar.finish(detail=f"processed {len(generated_traj_ids)} missions")
-            pipeline_logger.info(f"stage3 analysis completed: elapsed_sec={time.time() - analysis_t0:.2f}")
-            stage3_manifest_t0 = time.time()
-            pipeline_logger.info("stage3 manifest: building placeholder manifest before render")
-            stage3_manifest = generate_stage3_manifest(
-                config=scene_cfg,
-                scene_id=scene_id,
-                engine=engine,
-                sample_count=max(1, int(stage3_spec.get("sample_count", len(generated_traj_ids) * len(stage3_forms) * qa_samples_per_task) or 1)),
-                seed=int(spec.get("seed", 7) or 7),
-                forms=stage3_forms,
-                approved_only=False,
-                mode=str(stage3_spec.get("manifest_mode", "all") or "all"),
-                include_temporal_localization=include_temporal_localization,
-                require_final_task=False,
-                update_latest=False,
-            )
-            stage3_manifest_elapsed = float(time.time() - stage3_manifest_t0)
-            pipeline_logger.info(f"stage3 placeholder manifest completed: manifest_path={stage3_manifest['manifest_path']}")
-        else:
-            pipeline_logger.info("stage3 data: no new missions generated; skip placeholder manifest rebuild")
+                else:
+                    with concurrent.futures.ProcessPoolExecutor(max_workers=analyze_parallel_workers) as executor:
+                        futures = {
+                            executor.submit(
+                                _stage3_analysis_job_worker,
+                                {
+                                    "scene_cfg": scene_cfg,
+                                    "scene_root": str(scene_root),
+                                    "scene_id": scene_id,
+                                    "mission_dir": str(_resolve_stage3_missions_root(scene_cfg) / str(traj_id)),
+                                },
+                            ): traj_id
+                            for traj_id in generated_traj_ids
+                        }
+                        for fut in concurrent.futures.as_completed(futures):
+                            traj_id = str(futures[fut])
+                            try:
+                                status = str(fut.result() or "")
+                                if status.startswith("missing::"):
+                                    stage3_analysis_bar.advance(1, detail=f"missing mission dir for {traj_id}")
+                                else:
+                                    stage3_analysis_bar.advance(1, detail=f"analyzed {traj_id}")
+                            except Exception as exc:
+                                pipeline_logger.warn(f"stage3 analysis skipped for {traj_id}: {exc}")
+                                stage3_analysis_bar.advance(1, detail=f"skipped {traj_id}")
+                stage3_analysis_bar.finish(detail=f"processed {len(generated_traj_ids)} missions")
+                pipeline_logger.info(f"stage3 analysis completed: elapsed_sec={time.time() - analysis_t0:.2f}")
+                stage3_manifest_t0 = time.time()
+                pipeline_logger.info("stage3 manifest: building placeholder manifest before render")
+                stage3_manifest = generate_stage3_manifest(
+                    config=scene_cfg,
+                    scene_id=scene_id,
+                    engine=engine,
+                    sample_count=max(1, int(stage3_spec.get("sample_count", len(generated_traj_ids) * len(stage3_forms) * qa_samples_per_task) or 1)),
+                    seed=int(spec.get("seed", 7) or 7),
+                    forms=stage3_forms,
+                    approved_only=False,
+                    mode=str(stage3_spec.get("manifest_mode", "all") or "all"),
+                    include_temporal_localization=include_temporal_localization,
+                    require_final_task=False,
+                    update_latest=False,
+                )
+                stage3_manifest_elapsed = float(time.time() - stage3_manifest_t0)
+                pipeline_logger.info(f"stage3 placeholder manifest completed: manifest_path={stage3_manifest['manifest_path']}")
+            else:
+                pipeline_logger.info("stage3 data: no new missions generated; skip placeholder manifest rebuild")
 
     if run_stage3 and run_render:
-        render_seed_ids = list(dict.fromkeys([*generated_traj_ids, *planned_reuse_render_traj_ids]))
-        render_traj_ids = render_seed_ids or _discover_stage3_traj_ids(scene_cfg)
-        render_traj_ids = [traj_id for traj_id in render_traj_ids if _needs_stage3_render(scene_cfg, traj_id, rerender_existing=stage3_rerender_existing)]
-        if render_traj_ids:
-            stage3_render_bar = ProgressBar(total=max(1, len(render_traj_ids)), label="task_pipeline.stage3.render", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
-            stage3_render_bar.update(0, detail="starting task-video rendering")
-            stage3_record_t0 = time.time()
-            pre_cleanup = cleanup_airsim_processes("task_pipeline_stage3_render_before")
-            pipeline_logger.info(
-                f"stage3 render: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
-                f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
-            )
-            try:
-                pipeline_logger.info(f"stage3 render: starting multi-task scene recording traj_count={len(render_traj_ids)} workers={stage3_task_parallel} reuse_connections={stage3_reuse_worker_connections}")
-                record_args = argparse.Namespace(
-                    mode="record_scene_videos",
-                    config=str(config_path),
-                    scene_id=scene_id,
-                    traj_ids=",".join(render_traj_ids),
-                    record_parallel_workers=stage3_task_parallel,
-                    record_reuse_worker_connections=stage3_reuse_worker_connections,
-                    rerender_existing=stage3_rerender_existing,
-                )
-                def _render_progress(done: int, total: int, detail: str) -> None:
-                    stage3_render_bar.update(
-                        done,
-                        detail=_format_stage3_render_terminal_detail(
-                            scene_id=scene_id,
-                            done=done,
-                            total=total,
-                            detail=detail,
-                        ),
-                    )
-                record_out = record_scene_videos_cli(
-                    record_args,
-                    scene_cfg,
-                    progress_cb=_render_progress,
-                    detail_log_cb=pipeline_logger.mirror_progress,
-                )
-                stage3_record_elapsed = float(time.time() - stage3_record_t0)
-                stage3_render_bar.finish(detail=f"rendered {len(render_traj_ids)} missions")
-                pipeline_logger.info(f"stage3 render completed: elapsed_sec={stage3_record_elapsed:.2f}")
-            finally:
-                post_cleanup = cleanup_airsim_processes("task_pipeline_stage3_render_after")
+        if open_qa_mode:
+            stage3_render = {
+                "open_qa_mode": True,
+                "skipped": True,
+                "manifest_path": str(_resolve_latest_stage3_open_manifest_path(scene_cfg)),
+            }
+            pipeline_logger.info(f"stage3 render: open QA mode; skipped render step for manifest={stage3_render['manifest_path']}")
+        else:
+            render_seed_ids = list(dict.fromkeys([*generated_traj_ids, *planned_reuse_render_traj_ids]))
+            render_traj_ids = render_seed_ids or _discover_stage3_traj_ids(scene_cfg)
+            render_traj_ids = [traj_id for traj_id in render_traj_ids if _needs_stage3_render(scene_cfg, traj_id, rerender_existing=stage3_rerender_existing)]
+            if render_traj_ids:
+                stage3_render_bar = ProgressBar(total=max(1, len(render_traj_ids)), label="task_pipeline.stage3.render", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
+                stage3_render_bar.update(0, detail="starting task-video rendering")
+                stage3_record_t0 = time.time()
+                pre_cleanup = cleanup_airsim_processes("task_pipeline_stage3_render_before") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
                 pipeline_logger.info(
-                    f"stage3 render: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
-                    f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
+                    f"stage3 render: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
+                    f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
                 )
-        else:
-            pipeline_logger.info("stage3 render: no missions require rendering")
+                try:
+                    pipeline_logger.info(f"stage3 render: starting multi-task scene recording traj_count={len(render_traj_ids)} workers={stage3_task_parallel} reuse_connections={stage3_reuse_worker_connections}")
+                    record_args = argparse.Namespace(
+                        mode="record_scene_videos",
+                        config=str(config_path),
+                        scene_id=scene_id,
+                        traj_ids=",".join(render_traj_ids),
+                        record_parallel_workers=stage3_task_parallel,
+                        record_reuse_worker_connections=stage3_reuse_worker_connections,
+                        rerender_existing=stage3_rerender_existing,
+                    )
+                    def _render_progress(done: int, total: int, detail: str) -> None:
+                        stage3_render_bar.update(
+                            done,
+                            detail=_format_stage3_render_terminal_detail(
+                                scene_id=scene_id,
+                                done=done,
+                                total=total,
+                                detail=detail,
+                            ),
+                        )
+                    record_out = record_scene_videos_cli(
+                        record_args,
+                        scene_cfg,
+                        progress_cb=_render_progress,
+                        detail_log_cb=pipeline_logger.mirror_progress,
+                    )
+                    stage3_record_elapsed = float(time.time() - stage3_record_t0)
+                    stage3_render_bar.finish(detail=f"rendered {len(render_traj_ids)} missions")
+                    pipeline_logger.info(f"stage3 render completed: elapsed_sec={stage3_record_elapsed:.2f}")
+                finally:
+                    post_cleanup = cleanup_airsim_processes("task_pipeline_stage3_render_after") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
+                    pipeline_logger.info(
+                        f"stage3 render: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
+                        f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
+                    )
+            else:
+                pipeline_logger.info("stage3 render: no missions require rendering")
 
-        stage3_manifest_t0 = time.time()
-        pipeline_logger.info("stage3 manifest: building dataset manifest after render")
-        manifest_landmarks = list(sampled_landmarks)
-        if not manifest_landmarks:
-            latest_stage3_selection = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_landmarks.latest.json"
-            if latest_stage3_selection.exists():
-                manifest_landmarks = list((json.loads(latest_stage3_selection.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-                manifest_landmarks = _resolve_ref_rows(valid_instances or _load_valid_instances(scene_cfg), manifest_landmarks)
-        manifest_pair_groups = list(pair_groups)
-        if not manifest_pair_groups:
-            latest_pairs = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_pairs.latest.json"
-            if latest_pairs.exists():
-                manifest_pair_groups = list((json.loads(latest_pairs.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-        manifest_triple_groups = list(triple_groups)
-        if not manifest_triple_groups:
-            latest_triples = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_triples.latest.json"
-            if latest_triples.exists():
-                manifest_triple_groups = list((json.loads(latest_triples.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
-        manifest_basis_count = (
-            len(manifest_landmarks) * (max(0, single_atomic_classes_per_landmark) + max(0, single_composite_classes_per_landmark)) * max(1, single_instances_per_class)
-            + max(0, len(manifest_pair_groups)) * pair_instances_per_group
-            + max(0, len(manifest_triple_groups)) * triple_instances_per_group
-        )
-        manifest_basis_count = max(1, int(manifest_basis_count or 1))
-        if not render_traj_ids and _stage3_manifest_is_complete(scene_cfg, expected_sample_count=max(1, int(stage3_spec.get("sample_count", manifest_basis_count * len(stage3_forms) * qa_samples_per_task) or 1))):
-            pipeline_logger.info("stage3 render: all scene videos and final manifest already complete; skip manifest rebuild")
-            stage3_manifest = {"manifest_path": _resolve_latest_stage3_manifest_path(scene_cfg)}
-        else:
-            stage3_manifest = generate_stage3_manifest(
-                config=scene_cfg,
-                scene_id=scene_id,
-                engine=engine,
-                sample_count=max(1, int(stage3_spec.get("sample_count", manifest_basis_count * len(stage3_forms) * qa_samples_per_task) or 1)),
-                seed=int(spec.get("seed", 7) or 7),
-                forms=stage3_forms,
-                approved_only=False,
-                mode=str(stage3_spec.get("manifest_mode", "all") or "all"),
-                include_temporal_localization=include_temporal_localization,
-                require_final_task=True,
+            stage3_manifest_t0 = time.time()
+            pipeline_logger.info("stage3 manifest: building dataset manifest after render")
+            manifest_landmarks = list(sampled_landmarks)
+            if not manifest_landmarks:
+                latest_stage3_selection = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_landmarks.latest.json"
+                if latest_stage3_selection.exists():
+                    manifest_landmarks = list((json.loads(latest_stage3_selection.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+                    manifest_landmarks = _resolve_ref_rows(valid_instances or _load_valid_instances(scene_cfg), manifest_landmarks)
+            manifest_pair_groups = list(pair_groups)
+            if not manifest_pair_groups:
+                latest_pairs = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_pairs.latest.json"
+                if latest_pairs.exists():
+                    manifest_pair_groups = list((json.loads(latest_pairs.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+            manifest_triple_groups = list(triple_groups)
+            if not manifest_triple_groups:
+                latest_triples = _resolve_stage3_selection_dir(scene_cfg) / f"{scene_id}.stage3_triples.latest.json"
+                if latest_triples.exists():
+                    manifest_triple_groups = list((json.loads(latest_triples.read_text(encoding="utf-8")) or {}).get("selected_landmarks", []) or [])
+            manifest_basis_count = (
+                len(manifest_landmarks) * (max(0, single_atomic_classes_per_landmark) + max(0, single_composite_classes_per_landmark)) * max(1, single_instances_per_class)
+                + max(0, len(manifest_pair_groups)) * pair_instances_per_group
+                + max(0, len(manifest_triple_groups)) * triple_instances_per_group
             )
-            stage3_manifest_elapsed = float(time.time() - stage3_manifest_t0)
-            pipeline_logger.info(f"stage3 manifest completed: manifest_path={stage3_manifest['manifest_path']}")
+            manifest_basis_count = max(1, int(manifest_basis_count or 1))
+            if not render_traj_ids and _stage3_manifest_is_complete(scene_cfg, expected_sample_count=max(1, int(stage3_spec.get("sample_count", manifest_basis_count * len(stage3_forms) * qa_samples_per_task) or 1))):
+                pipeline_logger.info("stage3 render: all scene videos and final manifest already complete; skip manifest rebuild")
+                stage3_manifest = {"manifest_path": _resolve_latest_stage3_manifest_path(scene_cfg)}
+            else:
+                stage3_manifest = generate_stage3_manifest(
+                    config=scene_cfg,
+                    scene_id=scene_id,
+                    engine=engine,
+                    sample_count=max(1, int(stage3_spec.get("sample_count", manifest_basis_count * len(stage3_forms) * qa_samples_per_task) or 1)),
+                    seed=int(spec.get("seed", 7) or 7),
+                    forms=stage3_forms,
+                    approved_only=False,
+                    mode=str(stage3_spec.get("manifest_mode", "all") or "all"),
+                    include_temporal_localization=include_temporal_localization,
+                    require_final_task=True,
+                )
+                stage3_manifest_elapsed = float(time.time() - stage3_manifest_t0)
+                pipeline_logger.info(f"stage3 manifest completed: manifest_path={stage3_manifest['manifest_path']}")
 
     if run_stage3 and run_experiment:
         manifest_path = None
-        if stage3_manifest is not None:
+        if open_qa_mode:
+            manifest_path = _resolve_latest_stage3_open_manifest_path(scene_cfg)
+        elif stage3_manifest is not None:
             manifest_path = stage3_manifest["manifest_path"]
         else:
             manifest_path = str(_resolve_latest_stage3_manifest_path(scene_cfg))
-        if not Path(str(manifest_path)).exists():
+        manifest_path = Path(str(manifest_path)).resolve()
+        if not manifest_path.exists():
             raise FileNotFoundError(f"stage3_manifest_not_found_for_experiment: {manifest_path}")
         pipeline_logger.info(
             f"stage3 experiment: manifest={manifest_path} models={experiment_models} "
@@ -1858,8 +2017,11 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
         stage3_manifest_total = max(1, _load_manifest_sample_count(manifest_path))
         stage3_remaining_by_model: dict[str, int] = {}
         for model_name in experiment_models:
-            layouts = [resolve_stage3_layout(scene_cfg, scene_id=scene_id, engine=engine)]
-            progress = stage3_best_run_progress(layouts, scene_id, model_name, str(manifest_path))
+            stage3_layout = resolve_stage3_layout(scene_cfg, scene_id=scene_id, engine=engine)
+            if open_qa_mode:
+                progress = stage3_open_best_run_progress(stage3_layout["stage3_root"], scene_id, model_name, str(manifest_path))
+            else:
+                progress = stage3_best_run_progress([stage3_layout], scene_id, model_name, str(manifest_path))
             completed = min(stage3_manifest_total, int(progress.get("completed", 0) or 0))
             stage3_remaining_by_model[str(model_name)] = max(0, stage3_manifest_total - completed)
         stage3_progress_total = max(1, sum(stage3_remaining_by_model.values()))
@@ -1928,16 +2090,31 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
         with concurrent.futures.ThreadPoolExecutor(max_workers=experiment_model_workers) as executor:
             futures = [
                 executor.submit(
-                    run_stage3_experiment_once,
-                    config=scene_cfg,
-                    scene_id=scene_id,
-                    engine=engine,
-                    manifest_path=Path(str(manifest_path)),
-                    model=model_name,
-                    limit=None,
-                    api_overrides=experiment_overrides,
-                    cancel_event=None,
-                    progress_callback=_stage3_progress,
+                    run_stage3_open_qa_experiment if open_qa_mode else run_stage3_experiment_once,
+                    **(
+                        {
+                            "config": scene_cfg,
+                            "manifest_path": manifest_path,
+                            "override_model": model_name,
+                            "judge_model": stage3_open_judge_model,
+                            "enable_judge": stage3_open_enable_judge,
+                            "limit": stage3_open_experiment_limit,
+                            "api_overrides": experiment_overrides,
+                            "progress_callback": _stage3_progress,
+                        }
+                        if open_qa_mode
+                        else {
+                            "config": scene_cfg,
+                            "scene_id": scene_id,
+                            "engine": engine,
+                            "manifest_path": manifest_path,
+                            "model": model_name,
+                            "limit": None,
+                            "api_overrides": experiment_overrides,
+                            "cancel_event": None,
+                            "progress_callback": _stage3_progress,
+                        }
+                    ),
                 )
                 for model_name in experiment_models
             ]
@@ -1993,64 +2170,78 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
         stage4_sel_bar.finish(detail=f"selected {len(stage4_landmarks)} landmarks")
         pipeline_logger.info(f"stage4 selection completed: selected_landmarks={len(stage4_landmarks)}")
     if run_stage4 and run_data:
-        pipeline_logger.info("stage4 data: building manifest from selected landmarks")
-        if stage4_selection_out is not None:
-            stage4_landmarks = list(stage4_selection_out["payload"].get("selected_landmarks", []) or [])
-        else:
-            latest_stage4_selection = _resolve_stage4_selection_dir(scene_cfg) / f"{scene_id}.stage4_landmarks.latest.json"
-            if latest_stage4_selection.exists():
-                stage4_landmarks = list((json.loads(latest_stage4_selection.read_text(encoding='utf-8')) or {}).get("selected_landmarks", []) or [])
-            else:
-                stage4_landmark_count = int(stage4_spec.get("landmark_count", sample_count) or sample_count)
-                stage4_landmarks = _uniform_sample_by_subcategory(valid_instances, stage4_landmark_count, seed=int(spec.get("seed", 7) or 7) + 101)
-        stage4_landmarks = _resolve_ref_rows(valid_instances, stage4_landmarks)
-        stage4_landmark_ids = [str(row.get("instance_id", "") or "") for row in stage4_landmarks if str(row.get("instance_id", "") or "").strip()]
-        per_landmark_tasks = max(1, int(len(stage4_task_types)))
-        per_landmark_difficulty_samples = 2 * stage4_qa_samples_per_difficulty
-        stage4_sample_count = max(1, int(stage4_spec.get("sample_count", max(1, len(stage4_landmark_ids) * per_landmark_tasks * per_landmark_difficulty_samples)) or max(1, len(stage4_landmark_ids) * per_landmark_tasks * per_landmark_difficulty_samples)))
-        if _stage4_manifest_is_complete(scene_cfg, expected_sample_count=stage4_sample_count):
-            latest_stage4_manifest_path = _resolve_latest_stage4_manifest_path(scene_cfg)
+        if open_qa_mode:
+            pipeline_logger.info("stage4 data: open QA mode; using pre-generated open manifest")
+            latest_stage4_manifest_path = _resolve_latest_stage4_open_manifest_path(scene_cfg)
+            if not latest_stage4_manifest_path.exists():
+                raise FileNotFoundError(f"stage4_open_manifest_not_found_for_data: {latest_stage4_manifest_path}")
             stage4_manifest = {
                 "manifest_path": latest_stage4_manifest_path,
                 "manifest": json.loads(latest_stage4_manifest_path.read_text(encoding="utf-8")),
             }
-            pipeline_logger.info("stage4 data: latest manifest and assets already complete; skip regeneration")
+            pipeline_logger.info(f"stage4 data: open manifest path={stage4_manifest['manifest_path']}")
         else:
-            stage4_data_bar = ProgressBar(total=max(1, len(stage4_landmark_ids)), label="task_pipeline.stage4.data", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
-            stage4_data_bar.update(0, detail=f"preparing manifest for {len(stage4_landmark_ids)} landmarks")
-            stage4_manifest_t0 = time.time()
-            pre_cleanup = cleanup_airsim_processes("task_pipeline_stage4_data_before")
-            pipeline_logger.info(
-                f"stage4 data: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
-                f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
-            )
-            try:
-                stage4_manifest = generate_stage4_manifest(
-                    config=scene_cfg,
-                    scene_id=scene_id,
-                    engine=engine,
-                    sample_count=stage4_sample_count,
-                    seed=int(spec.get("seed", 7) or 7),
-                    reference_main_only=True,
-                    difficulties=list(stage4_spec.get("difficulties", ["4way", "8way"]) or ["4way", "8way"]),
-                    task_types=stage4_task_types,
-                    landmark_categories=[],
-                    selected_landmark_ids=stage4_landmark_ids,
-                    progress_callback=lambda done, total, detail: stage4_data_bar.update(done, detail=detail),
-                )
-                stage4_manifest_elapsed = float(time.time() - stage4_manifest_t0)
-                stage4_data_bar.finish(detail=f"generated manifest with sample_count={stage4_manifest['manifest'].get('sample_count', 0)}")
-                pipeline_logger.info(f"stage4 manifest completed: manifest_path={stage4_manifest['manifest_path']}")
-            finally:
-                post_cleanup = cleanup_airsim_processes("task_pipeline_stage4_data_after")
+            pipeline_logger.info("stage4 data: building manifest from selected landmarks")
+            if stage4_selection_out is not None:
+                stage4_landmarks = list(stage4_selection_out["payload"].get("selected_landmarks", []) or [])
+            else:
+                latest_stage4_selection = _resolve_stage4_selection_dir(scene_cfg) / f"{scene_id}.stage4_landmarks.latest.json"
+                if latest_stage4_selection.exists():
+                    stage4_landmarks = list((json.loads(latest_stage4_selection.read_text(encoding='utf-8')) or {}).get("selected_landmarks", []) or [])
+                else:
+                    stage4_landmark_count = int(stage4_spec.get("landmark_count", sample_count) or sample_count)
+                    stage4_landmarks = _uniform_sample_by_subcategory(valid_instances, stage4_landmark_count, seed=int(spec.get("seed", 7) or 7) + 101)
+            stage4_landmarks = _resolve_ref_rows(valid_instances, stage4_landmarks)
+            stage4_landmark_ids = [str(row.get("instance_id", "") or "") for row in stage4_landmarks if str(row.get("instance_id", "") or "").strip()]
+            per_landmark_tasks = max(1, int(len(stage4_task_types)))
+            per_landmark_difficulty_samples = 2 * stage4_qa_samples_per_difficulty
+            stage4_sample_count = max(1, int(stage4_spec.get("sample_count", max(1, len(stage4_landmark_ids) * per_landmark_tasks * per_landmark_difficulty_samples)) or max(1, len(stage4_landmark_ids) * per_landmark_tasks * per_landmark_difficulty_samples)))
+            if _stage4_manifest_is_complete(scene_cfg, expected_sample_count=stage4_sample_count):
+                latest_stage4_manifest_path = _resolve_latest_stage4_manifest_path(scene_cfg)
+                stage4_manifest = {
+                    "manifest_path": latest_stage4_manifest_path,
+                    "manifest": json.loads(latest_stage4_manifest_path.read_text(encoding="utf-8")),
+                }
+                pipeline_logger.info("stage4 data: latest manifest and assets already complete; skip regeneration")
+            else:
+                stage4_data_bar = ProgressBar(total=max(1, len(stage4_landmark_ids)), label="task_pipeline.stage4.data", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
+                stage4_data_bar.update(0, detail=f"preparing manifest for {len(stage4_landmark_ids)} landmarks")
+                stage4_manifest_t0 = time.time()
+                pre_cleanup = cleanup_airsim_processes("task_pipeline_stage4_data_before") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
                 pipeline_logger.info(
-                    f"stage4 data: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
-                    f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
+                    f"stage4 data: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
+                    f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
                 )
+                try:
+                    stage4_manifest = generate_stage4_manifest(
+                        config=scene_cfg,
+                        scene_id=scene_id,
+                        engine=engine,
+                        sample_count=stage4_sample_count,
+                        seed=int(spec.get("seed", 7) or 7),
+                        reference_main_only=True,
+                        difficulties=list(stage4_spec.get("difficulties", ["4way", "8way"]) or ["4way", "8way"]),
+                        task_types=stage4_task_types,
+                        qa_samples_per_difficulty=stage4_qa_samples_per_difficulty,
+                        landmark_categories=[],
+                        selected_landmark_ids=stage4_landmark_ids,
+                        progress_callback=lambda done, total, detail: stage4_data_bar.update(done, detail=detail),
+                    )
+                    stage4_manifest_elapsed = float(time.time() - stage4_manifest_t0)
+                    stage4_data_bar.finish(detail=f"generated manifest with sample_count={stage4_manifest['manifest'].get('sample_count', 0)}")
+                    pipeline_logger.info(f"stage4 manifest completed: manifest_path={stage4_manifest['manifest_path']}")
+                finally:
+                    post_cleanup = cleanup_airsim_processes("task_pipeline_stage4_data_after") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
+                    pipeline_logger.info(
+                        f"stage4 data: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
+                        f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
+                    )
 
     if run_stage4 and run_render:
         manifest_path = None
-        if stage4_manifest is not None:
+        if open_qa_mode:
+            manifest_path = _resolve_latest_stage4_open_manifest_path(scene_cfg)
+        elif stage4_manifest is not None:
             manifest_path = stage4_manifest["manifest_path"]
         else:
             manifest_path = _resolve_latest_stage4_manifest_path(scene_cfg)
@@ -2062,69 +2253,79 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
                 "manifest_path": manifest_path,
                 "manifest": json.loads(manifest_path.read_text(encoding="utf-8")),
             }
-        pipeline_logger.info(f"stage4 render: rerendering assets from manifest={manifest_path}")
-        stage4_render_t0 = time.time()
-        stage4_render_bar = ProgressBar(total=1, label="task_pipeline.stage4.render", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
-        stage4_render_bar.update(0, detail=f"scene={scene_id} preparing render jobs")
-        pre_cleanup = cleanup_airsim_processes("task_pipeline_stage4_render_before")
-        pipeline_logger.info(
-            f"stage4 render: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
-            f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
-        )
-        try:
-            stage4_render = render_stage4_manifest_assets(
-                config=scene_cfg,
-                scene_id=scene_id,
-                engine=engine,
-                manifest_path=manifest_path,
-                rerender_existing=stage4_rerender_existing,
-                progress_callback=lambda done, total, detail: stage4_render_bar.update(done, detail=f"scene={scene_id} {detail}"),
-            )
-            stage4_render_elapsed = float(time.time() - stage4_render_t0)
-            stage4_render_bar.finish(
-                detail=(
-                    f"scene={scene_id} overlays={int((stage4_render or {}).get('overlay_count', 0) or 0)} "
-                    f"env_caps={int((stage4_render or {}).get('env_capture_count', 0) or 0)}"
-                )
-            )
-            pipeline_logger.info(
-                f"stage4 render completed: overlays={int((stage4_render or {}).get('overlay_count', 0) or 0)} "
-                f"env_captures={int((stage4_render or {}).get('env_capture_count', 0) or 0)} "
-                f"elapsed_sec={stage4_render_elapsed:.2f}"
-            )
-        finally:
-            post_cleanup = cleanup_airsim_processes("task_pipeline_stage4_render_after")
-            pipeline_logger.info(
-                f"stage4 render: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
-                f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
-            )
-        if not stage4_landmarks:
-            latest_stage4_selection = _resolve_stage4_selection_dir(scene_cfg) / f"{scene_id}.stage4_landmarks.latest.json"
-            if latest_stage4_selection.exists():
-                stage4_landmarks = list((json.loads(latest_stage4_selection.read_text(encoding='utf-8')) or {}).get("selected_landmarks", []) or [])
-                stage4_landmarks = _resolve_ref_rows(valid_instances, stage4_landmarks)
-        selected_stage4_ids = {str(row.get("instance_id", "") or "").strip() for row in list(stage4_landmarks or []) if str(row.get("instance_id", "") or "").strip()}
-        used_stage4_ids = {
-            str(row.get("landmark_id", "") or "").strip()
-            for row in list((stage4_manifest.get("manifest", {}) or {}).get("samples", []) or [])
-            if str(row.get("landmark_id", "") or "").strip()
-        }
-        for landmark_id in sorted(selected_stage4_ids - used_stage4_ids):
-            record = {
-                "run_id": run_id,
-                "task_name": _task_pipeline_name(spec),
-                "scene_id": scene_id,
-                "stage": "stage4",
-                "phase": "data",
-                "landmark_id": landmark_id,
-                "reason": "no_eligible_stage4_samples",
-                "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime()),
+        if open_qa_mode:
+            stage4_render = {
+                "open_qa_mode": True,
+                "skipped": True,
+                "manifest_path": str(manifest_path),
             }
-            _append_jsonl(failed_records_path, record)
-            _append_jsonl(run_failed_records_path, record)
+            pipeline_logger.info(f"stage4 render: open QA mode; skipped render step for manifest={manifest_path}")
+        else:
+            pipeline_logger.info(f"stage4 render: rerendering assets from manifest={manifest_path}")
+            stage4_render_t0 = time.time()
+            stage4_render_bar = ProgressBar(total=1, label="task_pipeline.stage4.render", min_interval_sec=0.2, emit_fn=pipeline_logger.mirror_progress)
+            stage4_render_bar.update(0, detail=f"scene={scene_id} preparing render jobs")
+            pre_cleanup = cleanup_airsim_processes("task_pipeline_stage4_render_before") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
+            pipeline_logger.info(
+                f"stage4 render: pre-cleanup found={pre_cleanup['found_count']} terminated={pre_cleanup['terminated_count']} "
+                f"killed={pre_cleanup['killed_count']} remaining={pre_cleanup['remaining_count']}"
+            )
+            try:
+                stage4_render = render_stage4_manifest_assets(
+                    config=scene_cfg,
+                    scene_id=scene_id,
+                    engine=engine,
+                    manifest_path=manifest_path,
+                    rerender_existing=stage4_rerender_existing,
+                    progress_callback=lambda done, total, detail: stage4_render_bar.update(done, detail=f"scene={scene_id} {detail}"),
+                )
+                stage4_render_elapsed = float(time.time() - stage4_render_t0)
+                stage4_render_bar.finish(
+                    detail=(
+                        f"scene={scene_id} overlays={int((stage4_render or {}).get('overlay_count', 0) or 0)} "
+                        f"env_caps={int((stage4_render or {}).get('env_capture_count', 0) or 0)}"
+                    )
+                )
+                pipeline_logger.info(
+                    f"stage4 render completed: overlays={int((stage4_render or {}).get('overlay_count', 0) or 0)} "
+                    f"env_captures={int((stage4_render or {}).get('env_capture_count', 0) or 0)} "
+                    f"elapsed_sec={stage4_render_elapsed:.2f}"
+                )
+            finally:
+                post_cleanup = cleanup_airsim_processes("task_pipeline_stage4_render_after") if engine == "airsim" else {"found_count": 0, "terminated_count": 0, "killed_count": 0, "remaining_count": 0}
+                pipeline_logger.info(
+                    f"stage4 render: post-cleanup found={post_cleanup['found_count']} terminated={post_cleanup['terminated_count']} "
+                    f"killed={post_cleanup['killed_count']} remaining={post_cleanup['remaining_count']}"
+                )
+            if not stage4_landmarks:
+                latest_stage4_selection = _resolve_stage4_selection_dir(scene_cfg) / f"{scene_id}.stage4_landmarks.latest.json"
+                if latest_stage4_selection.exists():
+                    stage4_landmarks = list((json.loads(latest_stage4_selection.read_text(encoding='utf-8')) or {}).get("selected_landmarks", []) or [])
+                    stage4_landmarks = _resolve_ref_rows(valid_instances, stage4_landmarks)
+            selected_stage4_ids = {str(row.get("instance_id", "") or "").strip() for row in list(stage4_landmarks or []) if str(row.get("instance_id", "") or "").strip()}
+            used_stage4_ids = {
+                str(row.get("landmark_id", "") or "").strip()
+                for row in list((stage4_manifest.get("manifest", {}) or {}).get("samples", []) or [])
+                if str(row.get("landmark_id", "") or "").strip()
+            }
+            for landmark_id in sorted(selected_stage4_ids - used_stage4_ids):
+                record = {
+                    "run_id": run_id,
+                    "task_name": _task_pipeline_name(spec),
+                    "scene_id": scene_id,
+                    "stage": "stage4",
+                    "phase": "data",
+                    "landmark_id": landmark_id,
+                    "reason": "no_eligible_stage4_samples",
+                    "recorded_at": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime()),
+                }
+                _append_jsonl(failed_records_path, record)
+                _append_jsonl(run_failed_records_path, record)
     if run_stage4 and run_experiment:
         manifest_path = None
-        if stage4_manifest is not None:
+        if open_qa_mode:
+            manifest_path = str(_resolve_latest_stage4_open_manifest_path(scene_cfg))
+        elif stage4_manifest is not None:
             manifest_path = stage4_manifest["manifest_path"]
         else:
             manifest_path = str(_resolve_latest_stage4_manifest_path(scene_cfg))
@@ -2140,7 +2341,10 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
         for model_name in experiment_models:
             scene_root = _resolve_artifact_scene_root(scene_cfg)
             stage4_root = resolve_stage4_root(scene_cfg, scene_root=scene_root)
-            progress = stage4_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
+            if open_qa_mode:
+                progress = _stage4_open_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
+            else:
+                progress = stage4_best_run_progress([stage4_root], scene_id, model_name, str(manifest_path))
             completed = min(stage4_manifest_total, int(progress.get("completed", 0) or 0))
             stage4_remaining_by_model[str(model_name)] = max(0, stage4_manifest_total - completed)
         stage4_progress_total = max(1, sum(stage4_remaining_by_model.values()))
@@ -2206,21 +2410,31 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
                 except Exception:
                     pass
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=experiment_model_workers) as executor:
-            futures = [
-                executor.submit(
-                    run_stage4_experiment,
+        def _run_stage4_model_job(model_name: str) -> dict[str, Any]:
+            if open_qa_mode:
+                return run_open_qa_experiment(
                     config=scene_cfg,
-                    scene_id=scene_id,
-                    engine=engine,
                     manifest_path=Path(str(manifest_path)),
                     override_model=model_name,
+                    judge_model=str(spec.get("judge_model", "") or ""),
+                    enable_judge=not bool(spec.get("disable_judge", False)),
                     limit=None,
                     api_overrides=experiment_overrides,
                     progress_callback=_stage4_progress,
                 )
-                for model_name in experiment_models
-            ]
+            return run_stage4_experiment(
+                config=scene_cfg,
+                scene_id=scene_id,
+                engine=engine,
+                manifest_path=Path(str(manifest_path)),
+                override_model=model_name,
+                limit=None,
+                api_overrides=experiment_overrides,
+                progress_callback=_stage4_progress,
+            )
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=experiment_model_workers) as executor:
+            futures = [executor.submit(_run_stage4_model_job, model_name) for model_name in experiment_models]
             for fut in concurrent.futures.as_completed(futures):
                 result = fut.result()
                 stage4_experiments.append(result)
@@ -2244,34 +2458,56 @@ def run_batch(config_path: Path, spec: dict[str, Any]) -> dict[str, Any]:
     if run_stage3 and run_analyze:
         stage3_analyze_t0 = time.time()
         layout = resolve_stage3_layout(scene_cfg, scene_id=scene_id, engine=engine)
-        report_paths = sorted(layout["experiments_root"].glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True)
-        pipeline_logger.info(f"stage3 analyze: recomputing reports count={len(report_paths)}")
-        for report_path in report_paths:
-            stage3_recomputed_reports.append(
-                recompute_stage3_report_from_run_dir(
-                    config=scene_cfg,
-                    scene_id=scene_id,
-                    engine=engine,
-                    run_dir=report_path.parent,
+        if open_qa_mode:
+            report_root = layout["stage3_root"] / "experiments_open"
+            report_paths = sorted(report_root.glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True) if report_root.exists() else []
+            pipeline_logger.info(f"stage3 analyze: open QA mode; collecting reports count={len(report_paths)}")
+            for report_path in report_paths:
+                try:
+                    payload = json.loads(report_path.read_text(encoding="utf-8"))
+                except Exception:
+                    payload = {}
+                stage3_recomputed_reports.append({"report_path": report_path, "report": payload})
+        else:
+            report_paths = sorted(layout["experiments_root"].glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+            pipeline_logger.info(f"stage3 analyze: recomputing reports count={len(report_paths)}")
+            for report_path in report_paths:
+                stage3_recomputed_reports.append(
+                    recompute_stage3_report_from_run_dir(
+                        config=scene_cfg,
+                        scene_id=scene_id,
+                        engine=engine,
+                        run_dir=report_path.parent,
+                    )
                 )
-            )
         stage3_analyze_elapsed = float(time.time() - stage3_analyze_t0)
         pipeline_logger.info(f"stage3 analyze completed: report_count={len(stage3_recomputed_reports)} elapsed_sec={stage3_analyze_elapsed:.2f}")
 
     if run_stage4 and run_analyze:
         stage4_analyze_t0 = time.time()
         stage4_root = resolve_stage4_root(scene_cfg, scene_root=scene_root)
-        report_paths = sorted((stage4_root / "experiments").glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True)
-        pipeline_logger.info(f"stage4 analyze: recomputing reports count={len(report_paths)}")
-        for report_path in report_paths:
-            stage4_recomputed_reports.append(
-                recompute_stage4_report_from_run_dir(
-                    config=scene_cfg,
-                    scene_id=scene_id,
-                    engine=engine,
-                    run_dir=report_path.parent,
+        if open_qa_mode:
+            report_root = stage4_root / "experiments_open"
+            report_paths = sorted(report_root.glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True) if report_root.exists() else []
+            pipeline_logger.info(f"stage4 analyze: open QA mode; collecting reports count={len(report_paths)}")
+            for report_path in report_paths:
+                try:
+                    payload = json.loads(report_path.read_text(encoding="utf-8"))
+                except Exception:
+                    payload = {}
+                stage4_recomputed_reports.append({"report_path": report_path, "report": payload})
+        else:
+            report_paths = sorted((stage4_root / "experiments").glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+            pipeline_logger.info(f"stage4 analyze: recomputing reports count={len(report_paths)}")
+            for report_path in report_paths:
+                stage4_recomputed_reports.append(
+                    recompute_stage4_report_from_run_dir(
+                        config=scene_cfg,
+                        scene_id=scene_id,
+                        engine=engine,
+                        run_dir=report_path.parent,
+                    )
                 )
-            )
         stage4_analyze_elapsed = float(time.time() - stage4_analyze_t0)
         pipeline_logger.info(f"stage4 analyze completed: report_count={len(stage4_recomputed_reports)} elapsed_sec={stage4_analyze_elapsed:.2f}")
     total_elapsed = float(time.time() - batch_t0)
@@ -2368,6 +2604,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--clear-stage4", action="store_true")
     parser.add_argument("--landmark-count", type=int, default=50)
     parser.add_argument("--task-name", required=False)
+    parser.add_argument("--experiment-concurrency", type=int, required=False, help="Override experiment request concurrency for this run only")
     parser.add_argument("--experiment-models", nargs="+", required=False, help="Override experiment models; supports repeated values or comma-separated items")
     return parser.parse_args()
 
@@ -2380,6 +2617,7 @@ def main() -> None:
         "stage": "--stage" in argv,
         "phase": "--phase" in argv,
         "landmark_count": "--landmark-count" in argv,
+        "experiment_concurrency": "--experiment-concurrency" in argv,
         "clear_stage3": "--clear-stage3" in argv,
         "clear_stage4": "--clear-stage4" in argv,
     }
@@ -2423,6 +2661,8 @@ def main() -> None:
         spec["config_path"] = str(args.config)
     if cli_overrides["landmark_count"]:
         spec["landmark_count"] = int(args.landmark_count)
+    if cli_overrides["experiment_concurrency"]:
+        spec["experiment_concurrency"] = max(1, int(args.experiment_concurrency or 1))
     if str(args.task_name or "").strip():
         spec["task_name"] = str(args.task_name).strip()
     cli_experiment_models: list[str] = []
@@ -2444,7 +2684,7 @@ def main() -> None:
         scene_ids = spec.get("scene_ids", [])
         engine_name = str(spec.get("engine", "airsim") or "airsim").strip().lower()
         if isinstance(scene_ids, str) and str(scene_ids).strip().lower() == "all":
-            scene_config_targets = sorted((WORKSPACE_ROOT / "configs" / "uav_dualcog").glob(f"task_{engine_name}_*.yaml"))
+            scene_config_targets = sorted((WORKSPACE_ROOT / "configs" / "flightmvstg").glob(f"task_{engine_name}_*.yaml"))
         else:
             scene_config_targets = [_config_path_for_scene_id(str(scene_id).strip(), engine=engine_name) for scene_id in list(scene_ids or []) if str(scene_id).strip()]
     config_path_raw = str(args.config or spec.get("config_path", "") or "").strip()

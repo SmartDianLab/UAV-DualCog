@@ -48,7 +48,6 @@ from pipeline_common import (
     format_unified_startup_ports_message,
     prepare_airsim_runtime_unified,
     resolve_output_dir_name,
-    resolve_scene_artifact_path,
     resolve_scene_root,
 )
 from api_common import (
@@ -57,6 +56,7 @@ from api_common import (
     resolve_model_api_endpoint,
 )
 from media_path_utils import resolve_existing_file_with_suffix_fallback
+from landmark_taxonomy import format_category_candidates, format_subcategory_examples
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -388,7 +388,7 @@ def _assign_view_directions(
     if view_count <= 0:
         return []
     base_idx = VIEW_DIRECTION_RING.index(base_direction)
-    # 4 views -> step 2 (auto-fill the remaining 3 directions), 8 views -> step 1
+    # 4视图 -> 步长2（自动补齐其余3个方向），8视图 -> 步长1
     step = max(1, int(round(8.0 / float(view_count))))
     out: list[str] = []
     for i in range(view_count):
@@ -423,7 +423,7 @@ def _assign_view_directions_by_yaw(
     out: list[str] = []
     for yaw in yaws:
         delta = _normalize_deg(float(yaw) - float(yaw_selected))
-        # Yaw is positive counter-clockwise in ENU; the direction ring increases clockwise, so negate to align.
+        # yaw在ENU中逆时针为正；当前方向环按顺时针递增，故取负号对齐
         step_45 = int(round((-delta) / 45.0))
         out.append(VIEW_DIRECTION_RING[(base_idx + step_45) % 8])
     return out
@@ -440,7 +440,7 @@ def _resolve_image_path(path_str: str) -> Path | None:
     if resolved is not None:
         return resolved
 
-    # Common relative path: rgb_views/<instance_id>/view_xx.png; actual root is scene_data/<scene>/landmarks_raw/
+    # 常见相对路径: rgb_views/<instance_id>/view_xx.png，实际位于 scene_data/<scene>/landmarks_raw/
     scene_data_roots = [Path.cwd() / "scene_data", WORKSPACE_ROOT / "scene_data"]
     for scene_data_root in scene_data_roots:
         if not scene_data_root.exists():
@@ -472,7 +472,7 @@ def _pick_vlm_views(item: dict[str, Any], max_views: int) -> list[dict[str, Any]
         selected.append(query_view)
         used_ids.add(id(query_view))
 
-    # Priority order: front/back/left/right > front-left/front-right/back-left/back-right > others
+    # 优先顺序：前后左右 > 左前右前左后右后 > 其余
     primary = ["front", "back", "left", "right"]
     secondary = ["front_left", "front_right", "back_left", "back_right"]
     for target in primary:
@@ -839,7 +839,7 @@ def _prepare_auto_label_upload_image(
         "no",
         "off",
     }
-    # Upload compression for red-box images, default 480P (configurable)
+    # 红框图片上传压缩参数，默认480P，可通过配置调整
     max_width = max(1, _safe_int_cfg(stage2_cfg, 640, "auto_label_bbox_upload_max_width", "auto_label_upload_max_width"))
     max_height = max(1, _safe_int_cfg(stage2_cfg, 480, "auto_label_bbox_upload_max_height", "auto_label_upload_max_height"))
     jpeg_quality = int(np.clip(_safe_int_cfg(stage2_cfg, 85, "auto_label_upload_jpeg_quality"), 50, 100))
@@ -853,18 +853,18 @@ def _prepare_auto_label_upload_image(
             raise RuntimeError("invalid_image_shape")
 
         out = image_bgr
-        # New: decide whether to draw the red box and direction label
+        # 新增：判断是否需要加红框和方向文字
         add_bbox = str(stage2_cfg.get("auto_label_image_bbox", True)).strip().lower() not in {"0", "false", "no", "off"}
         debug_save_bbox_img = str(stage2_cfg.get("auto_label_debug_save_bbox_img", False)).strip().lower() in {"1", "true", "yes", "on"}
         debug_bbox_dir = _resolve_auto_label_debug_bbox_dir(stage2_cfg, image_path=image_path)
         if add_bbox and stage2_cfg.get("_auto_label_bbox_info") is not None:
             bbox_info = stage2_cfg["_auto_label_bbox_info"]
             out = draw_bbox_and_direction(out, bbox_info)
-            # Debug: save boxed image
+            # debug保存加框图片
             if debug_save_bbox_img and debug_bbox_dir:
                 import os
                 os.makedirs(debug_bbox_dir, exist_ok=True)
-                # Filename includes original name and direction
+                # 文件名包含原图名和方向
                 fname = os.path.basename(str(image_path))
                 direction = bbox_info.get("direction", "")
                 debug_path = os.path.join(debug_bbox_dir, f"debug_{direction}_{fname}")
@@ -918,7 +918,7 @@ def _resolve_auto_label_debug_bbox_dir(stage2_cfg: dict[str, Any], image_path: P
             debug_root = debug_root / parent_name
     return str(debug_root)
 
-# New: helper to draw red box and direction label on images
+# 新增：图片加红框和方向文字辅助函数
 def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
     img = copy.deepcopy(image)
     # bbox_info: {"bbox": [x0, y0, x1, y1], "direction": "front"}
@@ -934,7 +934,7 @@ def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
     margin = max(10, int(round(12.0 * scale)))
     text_pad_x = max(10, int(round(12.0 * scale)))
     text_pad_y = max(8, int(round(10.0 * scale)))
-    # 1) Red box
+    # 1. 红框
     if bbox and len(bbox) == 4:
         x0, y0, x1, y1 = map(int, bbox)
         x0 = int(np.clip(x0, 0, max(0, img_w - 1)))
@@ -942,14 +942,14 @@ def draw_bbox_and_direction(image: np.ndarray, bbox_info: dict) -> np.ndarray:
         x1 = int(np.clip(x1, 0, max(0, img_w - 1)))
         y1 = int(np.clip(y1, 0, max(0, img_h - 1)))
         cv2.rectangle(img, (x0, y0), (x1, y1), (40, 40, 255), box_thickness, cv2.LINE_AA)
-    # 2) Direction label at top-left (configurable)
+    # 2. 左上角标注地标朝向（可配置）
     show_face_label = bbox_info.get("show_face_label")
     if show_face_label is None:
         show_face_label = True
     if show_face_label:
         face_label = bbox_info.get("face_label")
         if not face_label:
-            # Default format
+            # 默认格式
             face_label = f"Visible Side: {direction} (Landmark-centric)"
         face_label = " ".join(str(face_label).split())
         max_label_width = max(120, int(round(float(img_w) * 0.5)))
@@ -1058,17 +1058,17 @@ def _call_vlm_with_class_and_views(
 
     client = OpenAI(api_key=api_key, base_url=api_base)
     image_blocks: list[dict[str, Any]] = []
-    # New: set bbox and direction info for each image
+    # 新增：为每张图片设置bbox和方向信息
     for idx, p in enumerate(image_paths):
         bbox_info = None
         if view_infos and idx < len(view_infos):
             info = view_infos[idx]
-            # Expect bbox (xyxy) and direction fields in view_infos
+            # 期望view_infos中有bbox字段（xyxy）和direction
             bbox = info.get("bbox")
             direction = info.get("view_direction", "")
             if bbox:
                 bbox_info = {"bbox": bbox, "direction": direction}
-        # Temporarily write into stage2_cfg for image processing
+        # 临时写入stage2_cfg，供图片处理函数读取
         if bbox_info:
             stage2_cfg["_auto_label_bbox_info"] = bbox_info
         else:
@@ -1076,7 +1076,7 @@ def _call_vlm_with_class_and_views(
         image_bytes, mime_type = _prepare_auto_label_upload_image(p, stage2_cfg)
         b64 = base64.b64encode(image_bytes).decode("utf-8")
         image_blocks.append({"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{b64}"}})
-    # Clear temporary fields
+    # 清理临时字段
     stage2_cfg.pop("_auto_label_bbox_info", None)
 
     view_infos = list(view_infos or [])
@@ -1104,19 +1104,12 @@ def _call_vlm_with_class_and_views(
         f"- images: up to 4 views (front/back/left/right preferred, some directions may be missing)\n"
         "- Each uploaded image has a red bounding box marking the landmark, and the side label (e.g., 'Visible Side: Front (Landmark-centric)') at the top-left corner shows the visible side of the landmark in the object-centric (landmark-centric) frame.\n"
         "category candidates (must choose from list):\n"
-        "[building, vehicle, public_facility, urban_landscape,transport_infrastructure, industrial_infrastructure, vegetation, other]\n\n"
+        f"{format_category_candidates()}\n\n"
         "subcategory requirements:\n"
             "- flexible generic subtype, not a proper noun or brand name\n"
             "- must stay category-consistent\n"
             "- examples below are illustrative only; use other common descriptive terms or phrases if they better match the landmark\n"
-            "  • building: low-rise building, mid-rise building, high-rise building, warehouse, pagoda, chapel, factory shed, rural farmhouse, glass skyscraper, brick schoolhouse\n"
-            "  • vehicle: sedan car, delivery van, city bus, cargo truck, motorcycle, construction excavator\n"
-            "  • public_facility: street lamp post, bus shelter, public bench, trash bin, fire hydrant, antenna\n"
-            "  • urban_landscape: sculpture, plaza, fountain, city square, urban garden, landscape installation, signboard, billboard, advertising board, wayfinding sign, landmark signage\n"
-            "  • transport_infrastructure: arch bridge, overpass, railway track, tunnel entrance, roundabout, pedestrian crosswalk, subway station entrance, traffic island, railway platform\n"
-            "  • industrial_infrastructure: shipping container stack, oil storage tank, grain silo, crane tower, pipeline\n"
-            "  • vegetation: deciduous tree, coniferous tree, palm tree, shrub cluster, hedge row, grassy lawn\n"
-            "  • other: temporary tent, rubble pile, playground slide, inflatable archway, construction barrier\n\n"
+            f"{format_subcategory_examples()}\n\n"
         "description constraints (`description`):\n"
         "- one noun phrase, <= 20 words\n"
         "- must include: subcategory, color, shape/texture\n"
@@ -1134,7 +1127,7 @@ def _call_vlm_with_class_and_views(
         "  \"confidence\": 0.0\n"
         "}"
     )
-    # Data prep: write instance_id/class_id/class_name/center_3d/bbox_3d into stage2_cfg temporary fields
+    # 数据准备：将item中的instance_id/class_id/class_name/center_3d/bbox_3d写入stage2_cfg临时字段
     if 'instance_id' in stage2_cfg:
         pass
     else:
@@ -1146,12 +1139,12 @@ def _call_vlm_with_class_and_views(
             stage2_cfg['center_3d'] = item['center_3d']
         if 'bbox_3d' not in stage2_cfg and 'bbox_3d' in item:
             stage2_cfg['bbox_3d'] = item['bbox_3d']
-    # Build messages
+    # 组装messages
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    # Backward-compatible API call structure
+    # 兼容原有API调用结构
     text_block = {"type": "text", "text": user_prompt}
 
     def _extract_text_and_meta(resp_obj: Any) -> tuple[str, str, int | None]:
@@ -1288,7 +1281,7 @@ def _build_auto_label_fields(item: dict[str, Any], scope: str, stage2_cfg: dict[
         path_obj = _resolve_image_path(str(view.get("path", "") or ""))
         if path_obj is not None:
             image_paths.append(path_obj)
-            # Try to read bbox (xyxy)
+            # 尝试获取bbox（xyxy）
             bbox = None
             if "bbox_2d_xyxy" in view and view.get("bbox_2d_valid", False):
                 bbox = view["bbox_2d_xyxy"]
@@ -1854,17 +1847,17 @@ def _camera_pose_topdown(
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Topdown camera pose with consistent object orientation alignment.
-    
-    Design principle: 
+
+    Design principle:
     - Camera is positioned directly above target looking straight down
     - The camera's coordinate system is aligned such that:
       * forward points downward (-Z in world)
       * cam_up (V-axis in image) points toward the object's heading (yaw_deg)
       * right (U-axis in image) rotates accordingly
-    
+
     This ensures that when yaw_deg=0, the object's front direction points upward in the image,
     providing visual consistency with orbit views captured at the same yaw.
-    
+
     Transformation:
     - World coordinates: X(East), Y(North), Z(Up) in ENU
     - Object heading: yaw_deg measured from East (X-axis) counterclockwise
@@ -1883,12 +1876,12 @@ def _camera_pose_topdown(
     yaw = math.radians(float(yaw_deg))
     cam_up = np.array([math.cos(yaw), math.sin(yaw), 0.0], dtype=np.float32)
     cam_up /= float(np.linalg.norm(cam_up) + 1e-6)
-    
+
     # Compute right = forward × cam_up (left-handed: forward to up)
     # Since forward = [0,0,-1], right = [sin(yaw), -cos(yaw), 0]
     right = np.cross(forward, cam_up)
     right /= float(np.linalg.norm(right) + 1e-6)
-    
+
     return center, eye, forward, right, cam_up
 
 
@@ -1999,27 +1992,27 @@ def _bbox_2d_from_pixels(px: np.ndarray, py: np.ndarray, width: int, height: int
 def _forward_to_yaw_pitch_deg(forward: np.ndarray) -> tuple[float, float]:
     """
     Convert a forward vector (in ENU coordinates) to yaw/pitch angles for AirSim (in NED coordinates).
-    
+
     The forward vector is computed in ENU: f = look_target - eye (both in ENU).
     To match AirSim's NED convention for yaw, we transform the horizontal components,
     but pitch (elevation angle) works the same way in both coordinate systems.
-    
+
     In ENU: yaw is measured from East (X) axis
     In NED: yaw should be measured from North (X) axis
     Transform: yaw_ned = atan2(-fy_enu, fx_enu)
     """
     f = np.asarray(forward, dtype=np.float32).reshape(3)
-    
+
     # For yaw: transform from ENU to NED convention
     # In ENU: yaw = atan2(fy, fx)
     # In NED: yaw = atan2(-fy_enu, fx_enu) because Y_ned = -Y_enu
     yaw_deg = float(math.degrees(math.atan2(-float(f[1]), float(f[0]))))
-    
+
     # For pitch: elevation angle works the same way
     # pitch = atan2(fz, sqrt(fx^2 + fy^2))
     horiz = float(np.linalg.norm(f[:2]))
     pitch_deg = float(math.degrees(math.atan2(float(f[2]), max(1e-6, horiz))))
-    
+
     return yaw_deg, pitch_deg
 
 
@@ -2131,9 +2124,9 @@ def _compute_target_visible_stats(
     occlusion_neighbor_px: int,
     occlusion_depth_margin_m: float,
 ) -> tuple[int, int, float]:
-    """Compute visible-point statistics for the target instance under a given view.
+    """计算目标实例在给定视角的可见点统计。
 
-    This function only estimates the visible-point ratio; instance-level occlusion is handled by neighbor BBox ray checks.
+    该函数仅统计可见点比例；实例级遮挡由邻居BBox射线检测负责。
     """
     tx, ty, tz, _ = _project_points_pinhole_with_depth(
         points_xyz=points_xyz,
@@ -3421,8 +3414,8 @@ def collect_instances(scene_id: str, args: argparse.Namespace, config: dict[str,
         kept_ids = {it["instance_id"] for it in instances}
         image_index = [it for it in image_index if str(it.get("instance_id", "")) in kept_ids]
 
-    instances_json_path = resolve_scene_artifact_path(landmarks_raw_root, scene_id, ".instances.json")
-    bundle_json_path = resolve_scene_artifact_path(landmarks_raw_root, scene_id, ".landmarks_bundle.json")
+    instances_json_path = landmarks_raw_root / f"{scene_id}.instances.json"
+    bundle_json_path = landmarks_raw_root / f"{scene_id}.landmarks_bundle.json"
 
     instances_payload = {
         "scene_id": scene_id,
@@ -3615,9 +3608,9 @@ def review_instances(scene_id: str, args: argparse.Namespace, config: dict[str, 
     review_root = scene_root / _resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
     ensure_dir(review_root)
 
-    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
-    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
-    review_log_path = resolve_scene_artifact_path(review_root, scene_id, ".review_log.jsonl")
+    instances_json_path = raw_root / f"{scene_id}.instances.json"
+    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
+    review_log_path = review_root / f"{scene_id}.review_log.jsonl"
 
     raw_payload = read_json_if_exists(instances_json_path, default={})
     if not isinstance(raw_payload, dict):
@@ -3730,11 +3723,11 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
     stage2_cfg["_scene_root"] = str(scene_root)
     stage2_cfg["_review_root"] = str(review_root)
 
-    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
+    instances_json_path = raw_root / f"{scene_id}.instances.json"
     images_root = raw_root / "images"
-    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
-    review_log_path = resolve_scene_artifact_path(review_root, scene_id, ".review_log.jsonl")
-    web_state_path = resolve_scene_artifact_path(review_root, scene_id, ".web_review_state.json")
+    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
+    review_log_path = review_root / f"{scene_id}.review_log.jsonl"
+    web_state_path = review_root / f"{scene_id}.web_review_state.json"
 
     raw_payload = read_json_if_exists(instances_json_path, default={})
     if not isinstance(raw_payload, dict):
@@ -3950,7 +3943,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
         yaw = float(view.get("yaw_deg", 0.0) or 0.0)
         pitch = float(view.get("pitch_deg", 0.0) or 0.0)
         yaw_txt = f"{yaw:+.0f}°"
-        pitch_txt = f", top-down {max(0.0, -pitch):.0f}°"
+        pitch_txt = f", top view {max(0.0, -pitch):.0f}°"
         if label == "topdown":
             return f"Top-down ({yaw_txt})"
         return f"Side View {index + 1} ({yaw_txt}{pitch_txt})"
@@ -4294,7 +4287,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                     _write_snapshot(trigger=f"auto_label_{scope}_cancelled")
                     _finalize_auto_label_job(
                         job_id,
-                        message=f"Auto-labeling canceled: {scope} processed={idx - 1}/{total} updated={updated} skipped={skipped} failed={failed}",
+                        message=f"Auto-labeling cancelled: {scope} processed={idx - 1}/{total} updated={updated} skipped={skipped} failed={failed}",
                     )
                     return
 
@@ -4396,7 +4389,7 @@ def review_instances_web(scene_id: str, args: argparse.Namespace, config: dict[s
                 },
             )
             _write_snapshot(trigger=f"auto_label_{scope}_error")
-            _finalize_auto_label_job(job_id, message=f"Auto-labeling aborted: {scope}", last_error=str(exc))
+            _finalize_auto_label_job(job_id, message=f"Auto-labeling aborted unexpectedly: {scope}", last_error=str(exc))
 
     def _start_auto_label_job(scope: str, target_instance_ids: list[str], *, class_id_raw: Any = None, class_name_raw: str = "") -> tuple[bool, dict[str, Any] | None, str | None]:
         with state_lock:
@@ -4960,7 +4953,7 @@ async function refreshList(){
     const filtered = statusFilter === 'all' ? listRows : listRows.filter((row)=>String(row.action||'undecided')===statusFilter);
     const box = document.getElementById('landmarkList');
     box.innerHTML = '';
-    // Render grouped by class_name + class_id; index within each group
+    // Render grouped by class_name + class_id; index within each group.
     let lastClass = null;
     let lastClassId = null;
     let classCounter = 1;
@@ -4990,7 +4983,7 @@ async function refreshList(){
         div.className = 'list-item' + (state && state.current.index===row.index ? ' active' : '');
         div.innerHTML = `[${classCounter}] ${row.instance_id} <span class="status-chip ${statusClass(action)}">${action}</span><span class="status-chip ${annotationClass(ann)}">${ann}</span>${autoLabelText ? `<span class="status-chip" title="auto_label">${autoLabelText}</span>` : ''}`;
         div.onclick = async ()=>{
-            setStatus(`Switching to landmark ${row.instance_id} ...`, 'info');
+            setStatus(`Switching landmark ${row.instance_id} ...`, 'info');
             await fetch('/api/select',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({index:row.index})});
             await refreshState();
             setStatus(`Switched to ${row.instance_id}`, 'success');
@@ -5037,7 +5030,7 @@ function renderViewGrid(gridId, urls, captions, reasonId, reasonText){
         cell.className = 'grid-cell';
         const cap = document.createElement('div');
         cap.className = 'cell-caption';
-        cap.textContent = 'No available view';
+        cap.textContent = 'No Available View';
         cell.appendChild(cap);
         grid.appendChild(cell);
     }else{
@@ -5078,7 +5071,7 @@ function createSimpleCell(slot){
     }
     const cap = document.createElement('div');
     cap.className = 'cell-caption';
-    cap.textContent = (slot && slot.caption) ? slot.caption : 'No available view';
+    cap.textContent = (slot && slot.caption) ? slot.caption : 'No Available View';
     cell.appendChild(cap);
     return cell;
 }
@@ -5091,16 +5084,16 @@ function bindPcd(urls, captions, reason, rgbSlots){
     let pcdMain = null;
     let pcdTop = null;
     for(let i=0;i<arr.length;i++){
-        const slot = {url: arr[i], caption: capArr[i] || `Point-cloud View ${i+1}`};
+        const slot = {url: arr[i], caption: capArr[i] || `Point-Cloud View ${i+1}`};
         const c = String(slot.caption || '');
         if(!pcdMain && c.indexOf('Top-down') < 0) pcdMain = slot;
         if(!pcdTop && c.indexOf('Top-down') >= 0) pcdTop = slot;
     }
     if(!pcdMain && arr.length > 0){
-        pcdMain = {url: arr[0], caption: capArr[0] || 'Point-cloud Main View'};
+        pcdMain = {url: arr[0], caption: capArr[0] || 'Point-Cloud Main View'};
     }
     if(!pcdTop && arr.length > 1){
-        pcdTop = {url: arr[1], caption: capArr[1] || 'Point-cloud Top-down'};
+        pcdTop = {url: arr[1], caption: capArr[1] || 'Point-Cloud Top-down'};
     }
 
     const rgbTopdown = slots.find((s)=>s && String(s.mode || '') === 'topdown') || null;
@@ -5111,8 +5104,8 @@ function bindPcd(urls, captions, reason, rgbSlots){
 
     const topGrid = document.getElementById('topGrid');
     topGrid.innerHTML = '';
-    topGrid.appendChild(createSimpleCell(pcdMain ? {url: pcdMain.url, caption: `Point-cloud Main View | ${pcdMain.caption}`} : null));
-    topGrid.appendChild(createSimpleCell(pcdTop ? {url: pcdTop.url, caption: `Point-cloud Top-down | ${pcdTop.caption}`} : null));
+    topGrid.appendChild(createSimpleCell(pcdMain ? {url: pcdMain.url, caption: `Point-Cloud Main View | ${pcdMain.caption}`} : null));
+    topGrid.appendChild(createSimpleCell(pcdTop ? {url: pcdTop.url, caption: `Point-Cloud Top-down | ${pcdTop.caption}`} : null));
     topGrid.appendChild(createSimpleCell(rgbTop ? {url: rgbTop.url, caption: rgbTop.caption} : {url:'', caption:'RGB Top-down (occluded)'}));
 
     const reasonEl = document.getElementById('topReason');
@@ -5823,7 +5816,7 @@ refreshState();
         if instance_id not in instance_overrides:
             instance_overrides[instance_id] = {}
 
-        # Preserve the views structure in overrides
+        # Preserve the views structure inside the override payload.
         if views_key not in instance_overrides[instance_id]:
             instance_overrides[instance_id][views_key] = [dict(v) if isinstance(v, dict) else v for v in views]
 
@@ -5852,7 +5845,7 @@ refreshState();
             override_views[i]["view_direction_auto"] = True
             if mark_main:
                 override_views[i]["is_query_view"] = bool(i == view_index)
-        
+
         append_jsonl(
             review_log_path,
             {
@@ -6026,7 +6019,7 @@ refreshState();
             if not bool(auto_label_job.get("running", False)):
                 return jsonify({"ok": False, "error": "no_running_auto_label_job", "task": _export_auto_label_task()}), 400
             auto_label_job["cancel_requested"] = True
-            auto_label_job["message"] = "Auto-label cancel request sent"
+            auto_label_job["message"] = "Auto-label cancellation request has been sent."
         return jsonify({"ok": True, "task": _export_auto_label_task()})
 
     @app.post("/api/clear_auto_label_single")
@@ -6187,10 +6180,10 @@ def auto_label(scene_id: str, args: argparse.Namespace, config: dict[str, Any]) 
     stage2_cfg["_scene_root"] = str(scene_root)
     stage2_cfg["_review_root"] = str(review_root)
 
-    instances_json_path = resolve_scene_artifact_path(raw_root, scene_id, ".instances.json")
-    valid_instances_path = resolve_scene_artifact_path(review_root, scene_id, ".valid_instances.json")
-    auto_label_dump_path = resolve_scene_artifact_path(auto_root, scene_id, ".auto_label.json")
-    landmarks_json_path = resolve_scene_artifact_path(landmarks_root, scene_id, ".json")
+    instances_json_path = raw_root / f"{scene_id}.instances.json"
+    valid_instances_path = review_root / f"{scene_id}.valid_instances.json"
+    auto_label_dump_path = auto_root / f"{scene_id}.auto_label.json"
+    landmarks_json_path = landmarks_root / f"{scene_id}.json"
 
     source_payload = read_json_if_exists(valid_instances_path, default={})
     source_name = "valid_instances"
@@ -6246,7 +6239,7 @@ def auto_label(scene_id: str, args: argparse.Namespace, config: dict[str, Any]) 
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="UAV-DualCog Stage2 landmark labeling")
+    parser = argparse.ArgumentParser(description="FlightMVSTG Stage2 landmark labeling")
     parser.add_argument("--config", type=str, required=True)
     parser.add_argument("--scene-id", type=str, default=None)
     parser.add_argument(

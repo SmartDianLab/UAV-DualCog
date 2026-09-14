@@ -11,8 +11,8 @@ import shutil
 import subprocess
 import threading
 import time
-from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections import defaultdict, deque
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, as_completed, wait
 from pathlib import Path
 from typing import Any, Callable
 
@@ -72,9 +72,12 @@ from api_common import (
     compute_rate_limited_concurrency,
     max_data_uri_video_bytes_for_model,
     merge_common_stage_block,
+    model_disallows_temperature,
     required_video_placeholder_for_model,
+    run_responses_reasoning_stream_request,
     resolve_default_model,
     should_inline_system_prompt_for_multimodal,
+    should_use_responses_reasoning_stream,
 )
 from image_compression_utils import compression_cfg as build_image_compression_cfg
 from image_compression_utils import preferred_output_path, save_pil_image
@@ -83,7 +86,7 @@ from trajectory.behaviors import ELEMENT_LIBRARY, SET_LIBRARY
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_stage_configs.yaml"
+COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_stage_configs.yaml"
 GLOBAL_SCENE_ID = "__all__"
 GLOBAL_SCENE_LABEL = "ALL scenes"
 TASK_SPECS: dict[str, dict[str, Any]] = {
@@ -419,6 +422,10 @@ def _stage3_temporal_cfg(config: dict[str, Any]) -> dict[str, Any]:
     return merge_common_stage_block(config, "stage3_temporal")
 
 
+def _experiment_runtime_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    return merge_common_stage_block(config, "experiment_runtime")
+
+
 def _resolve_stage3_layout(config: dict[str, Any], scene_id: str, engine: str) -> dict[str, Path]:
     scene_root = resolve_scene_root(config, scene_id=scene_id, engine=engine, workspace_root=WORKSPACE_ROOT)
     artifact_scene_root = resolve_task_pipeline_scene_root(
@@ -427,7 +434,7 @@ def _resolve_stage3_layout(config: dict[str, Any], scene_id: str, engine: str) -
         engine=engine,
         workspace_root=WORKSPACE_ROOT,
     ) or scene_root
-    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="video_tasks")
+    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="stage3_tasks")
     root = artifact_scene_root / task_root_name
     return {
         "scene_root": scene_root,
@@ -555,21 +562,23 @@ def _interval_iou(pred: list[float], gold: list[float]) -> float:
 
 
 def _match_interval_metrics(gold: list[list[float]], pred: list[list[float]], threshold: float) -> tuple[int, int, int]:
+    candidates = sorted(
+        (
+            (_interval_iou(pred_interval, gold_interval), gold_index, pred_index)
+            for gold_index, gold_interval in enumerate(gold)
+            for pred_index, pred_interval in enumerate(pred)
+        ),
+        reverse=True,
+    )
+    used_gold: set[int] = set()
     used_pred: set[int] = set()
-    tp = 0
-    for g in gold:
-        best_idx = None
-        best_iou = 0.0
-        for idx, p in enumerate(pred):
-            if idx in used_pred:
-                continue
-            tiou = _interval_iou(p, g)
-            if tiou > best_iou:
-                best_iou = tiou
-                best_idx = idx
-        if best_idx is not None and best_iou >= threshold:
-            used_pred.add(best_idx)
-            tp += 1
+    for score, gold_index, pred_index in candidates:
+        if score < threshold:
+            break
+        if gold_index not in used_gold and pred_index not in used_pred:
+            used_gold.add(gold_index)
+            used_pred.add(pred_index)
+    tp = len(used_gold)
     fp = max(0, len(pred) - tp)
     fn = max(0, len(gold) - tp)
     return tp, fp, fn
@@ -1608,7 +1617,14 @@ def generate_manifest(
                 rng=rng,
                 max_count=8,
             )
-            options = [{"option_id": chr(ord("A") + idx), "label": label} for idx, label in enumerate(chosen)]
+            options = [
+                {
+                    "option_id": chr(ord("A") + idx),
+                    "label": label,
+                    "behavior_level": "composite" if _looks_like_composite_answer_label(label) else "atomic",
+                }
+                for idx, label in enumerate(chosen)
+            ]
             sample["choice_options"] = options
             sample["multi_select"] = True
             behavior_rows = list(sample.get("behavior_intervals_sec", []) or [])
@@ -1879,18 +1895,40 @@ def _extract_json_object(raw_text: str) -> dict[str, Any]:
     text = str(raw_text or "").strip()
     if not text:
         return {}
-    fenced = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, flags=re.DOTALL)
-    if fenced:
-        text = fenced.group(1)
-    start = text.find("{")
-    end = text.rfind("}")
-    if start >= 0 and end > start:
-        text = text[start : end + 1]
-    try:
-        payload = json.loads(text)
-        return payload if isinstance(payload, dict) else {}
-    except Exception:
-        return {}
+    # Prefer the last fenced JSON block when present.
+    fenced_matches = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", text, flags=re.DOTALL)
+    candidate_texts: list[str] = []
+    if fenced_matches:
+        candidate_texts.extend([str(x).strip() for x in fenced_matches if str(x).strip()])
+    candidate_texts.append(text)
+
+    decoder = json.JSONDecoder()
+    best_payload: dict[str, Any] = {}
+    best_end = -1
+    for candidate in candidate_texts:
+        # Fast path: direct parse.
+        try:
+            payload = json.loads(candidate)
+            if isinstance(payload, dict):
+                best_payload = payload
+                best_end = max(best_end, len(candidate))
+                continue
+        except Exception:
+            pass
+        # Robust path: scan for all decodable JSON objects and keep the last one.
+        for i, ch in enumerate(candidate):
+            if ch != "{":
+                continue
+            try:
+                obj, end = decoder.raw_decode(candidate[i:])
+            except Exception:
+                continue
+            if isinstance(obj, dict):
+                absolute_end = i + int(end)
+                if absolute_end >= best_end:
+                    best_end = absolute_end
+                    best_payload = obj
+    return best_payload
 
 
 def _normalize_interval_rows(rows: Any) -> list[list[float]]:
@@ -1977,47 +2015,103 @@ def _looks_like_composite_answer_label(label: str) -> bool:
     return any(token in text for token in keywords)
 
 
+def _joint_option_level_map(sample: dict[str, Any]) -> dict[str, str]:
+    """Classify every offered option without consulting the sample answer."""
+    levels: dict[str, str] = {}
+    for row in list(sample.get("choice_options", []) or []):
+        if not isinstance(row, dict):
+            continue
+        option_id = str(row.get("option_id", "") or "").strip()
+        if not option_id:
+            continue
+        explicit = str(row.get("behavior_level", row.get("level", "")) or "").strip().lower()
+        if explicit not in {"composite", "atomic"}:
+            explicit = "composite" if _looks_like_composite_answer_label(str(row.get("label", "") or "")) else "atomic"
+        levels[option_id] = explicit
+    return levels
+
+
+def _partition_joint_answer_items(sample: dict[str, Any], rows: Any) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    levels = _joint_option_level_map(sample)
+    composite: list[dict[str, Any]] = []
+    atomic: list[dict[str, Any]] = []
+    for row in _normalize_answer_items(rows):
+        level = levels.get(str(row.get("option_id", "") or ""))
+        if level not in {"composite", "atomic"}:
+            level = "composite" if _looks_like_composite_answer_label(str(row.get("label", "") or "")) else "atomic"
+        (composite if level == "composite" else atomic).append(row)
+    return composite, atomic
+
+
+def _answer_set_metrics(gold_rows: Any, pred_rows: Any) -> dict[str, float | None]:
+    gold = {str(row.get("option_id", "") or "") for row in _normalize_answer_items(gold_rows) if str(row.get("option_id", "") or "").strip()}
+    pred = {str(row.get("option_id", "") or "") for row in _normalize_answer_items(pred_rows) if str(row.get("option_id", "") or "").strip()}
+    if not gold and not pred:
+        return {"exact": None, "precision": None, "recall": None, "f1": None}
+    tp = len(gold & pred)
+    precision = float(tp) / float(len(pred)) if pred else 0.0
+    recall = float(tp) / float(len(gold)) if gold else 0.0
+    f1 = 2.0 * precision * recall / (precision + recall) if precision + recall > 0 else 0.0
+    return {"exact": float(gold == pred), "precision": precision, "recall": recall, "f1": f1}
+
+
+def _class_aware_temporal_metrics(
+    gold_rows: Any,
+    pred_rows: Any,
+    *,
+    threshold: float = 0.5,
+) -> dict[str, float | None]:
+    """Match intervals one-to-one within the same behavior option."""
+    def _by_option(rows: Any) -> dict[str, list[list[float]]]:
+        grouped: dict[str, list[list[float]]] = defaultdict(list)
+        for row in _normalize_answer_items(rows):
+            option_id = str(row.get("option_id", "") or "").strip()
+            if option_id:
+                grouped[option_id].extend(_normalize_interval_rows(row.get("intervals_sec", [])))
+        return grouped
+
+    gold = _by_option(gold_rows)
+    pred = _by_option(pred_rows)
+    if not gold and not pred:
+        return {"precision": None, "recall": None, "f1": None, "mean_tiou": None}
+    tp = fp = fn = 0
+    for option_id in sorted(set(gold) | set(pred)):
+        cls_tp, cls_fp, cls_fn = _match_interval_metrics(gold.get(option_id, []), pred.get(option_id, []), threshold)
+        tp += cls_tp
+        fp += cls_fp
+        fn += cls_fn
+    precision = float(tp) / float(tp + fp) if tp + fp else 0.0
+    recall = float(tp) / float(tp + fn) if tp + fn else 0.0
+    f1 = 2.0 * precision * recall / (precision + recall) if precision + recall > 0 else 0.0
+    best_tious = [
+        max((_interval_iou(pred_pair, gold_pair) for pred_pair in pred.get(option_id, [])), default=0.0)
+        for option_id, gold_pairs in gold.items()
+        for gold_pair in gold_pairs
+    ]
+    return {
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+        "mean_tiou": sum(best_tious) / float(len(best_tious)) if best_tious else None,
+    }
+
+
 def _derive_joint_level_payloads(
     *,
     sample: dict[str, Any],
     gold_answer_items: list[dict[str, Any]],
     pred_answer_items: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    composite_labels, atomic_labels = _partition_joint_labels(sample)
-    gold_composite_answer_items = _filter_answer_items_by_labels(gold_answer_items, composite_labels)
-    gold_atomic_answer_items = _filter_answer_items_by_labels(gold_answer_items, atomic_labels)
-    pred_composite_answer_items = _filter_answer_items_by_labels(pred_answer_items, composite_labels)
-    pred_atomic_answer_items = _filter_answer_items_by_labels(pred_answer_items, atomic_labels)
-
-    if not gold_composite_answer_items:
-        gold_composite_answer_items = [
-            row for row in _normalize_answer_items(gold_answer_items) if _looks_like_composite_answer_label(str(row.get("label", "") or ""))
-        ]
-    if not gold_atomic_answer_items:
-        gold_atomic_answer_items = [
-            row for row in _normalize_answer_items(gold_answer_items) if not _looks_like_composite_answer_label(str(row.get("label", "") or ""))
-        ]
-    if not pred_composite_answer_items:
-        pred_composite_answer_items = [
-            row for row in _normalize_answer_items(pred_answer_items) if _looks_like_composite_answer_label(str(row.get("label", "") or ""))
-        ]
-    if not pred_atomic_answer_items:
-        pred_atomic_answer_items = [
-            row for row in _normalize_answer_items(pred_answer_items) if not _looks_like_composite_answer_label(str(row.get("label", "") or ""))
-        ]
+    gold_composite_answer_items, gold_atomic_answer_items = _partition_joint_answer_items(sample, gold_answer_items)
+    pred_composite_answer_items, pred_atomic_answer_items = _partition_joint_answer_items(sample, pred_answer_items)
 
     def _option_ids(rows: list[dict[str, Any]]) -> list[str]:
         return [str(row.get("option_id", "") or "") for row in rows if str(row.get("option_id", "") or "").strip()]
 
-    def _mean_tiou(gold_rows: list[dict[str, Any]], pred_rows: list[dict[str, Any]]) -> float | None:
-        gold_pairs = _flatten_answer_item_intervals(gold_rows)
-        pred_pairs = _flatten_answer_item_intervals(pred_rows)
-        if not gold_pairs:
-            return None
-        return sum(
-            max((_interval_iou(pred_pair, gold_pair) for pred_pair in pred_pairs), default=0.0)
-            for gold_pair in gold_pairs
-        ) / float(len(gold_pairs))
+    composite_set = _answer_set_metrics(gold_composite_answer_items, pred_composite_answer_items)
+    atomic_set = _answer_set_metrics(gold_atomic_answer_items, pred_atomic_answer_items)
+    composite_temporal = _class_aware_temporal_metrics(gold_composite_answer_items, pred_composite_answer_items)
+    atomic_temporal = _class_aware_temporal_metrics(gold_atomic_answer_items, pred_atomic_answer_items)
 
     return {
         "joint_composite_answer_items": gold_composite_answer_items,
@@ -2028,8 +2122,18 @@ def _derive_joint_level_payloads(
         "joint_atomic_option_ids": _option_ids(gold_atomic_answer_items),
         "pred_joint_composite_option_ids": _option_ids(pred_composite_answer_items),
         "pred_joint_atomic_option_ids": _option_ids(pred_atomic_answer_items),
-        "joint_composite_temporal_mean_tiou": _mean_tiou(gold_composite_answer_items, pred_composite_answer_items),
-        "joint_atomic_temporal_mean_tiou": _mean_tiou(gold_atomic_answer_items, pred_atomic_answer_items),
+        "joint_composite_set_acc": composite_set["exact"],
+        "joint_atomic_instance_precision": atomic_set["precision"],
+        "joint_atomic_instance_recall": atomic_set["recall"],
+        "joint_atomic_instance_f1": atomic_set["f1"],
+        "joint_composite_temporal_precision@0.5": composite_temporal["precision"],
+        "joint_composite_temporal_recall@0.5": composite_temporal["recall"],
+        "joint_composite_temporal_f1@0.5": composite_temporal["f1"],
+        "joint_composite_temporal_mean_tiou": composite_temporal["mean_tiou"],
+        "joint_atomic_temporal_precision@0.5": atomic_temporal["precision"],
+        "joint_atomic_temporal_recall@0.5": atomic_temporal["recall"],
+        "joint_atomic_temporal_f1@0.5": atomic_temporal["f1"],
+        "joint_atomic_temporal_mean_tiou": atomic_temporal["mean_tiou"],
     }
 
 
@@ -2052,7 +2156,12 @@ def _joint_rows_to_level_rows(rows: list[dict[str, Any]], *, level: str) -> list
             clone["pred_answer_items"] = _normalize_answer_items(row.get("pred_joint_composite_answer_items", []))
             clone["gold_choice_intervals_sec"] = _flatten_answer_item_intervals(clone["gold_answer_items"])
             clone["pred_choice_intervals_sec"] = _flatten_answer_item_intervals(clone["pred_answer_items"])
+            clone["set_instance_acc"] = row.get("joint_composite_set_acc")
+            clone["self_temporal_loc_precision@0.5"] = row.get("joint_composite_temporal_precision@0.5")
+            clone["self_temporal_loc_recall@0.5"] = row.get("joint_composite_temporal_recall@0.5")
+            clone["self_temporal_loc_f1@0.5"] = row.get("joint_composite_temporal_f1@0.5")
             clone["self_temporal_mean_tiou"] = row.get("joint_composite_temporal_mean_tiou")
+            clone["self_temporal_loc_mean_tIoU"] = row.get("joint_composite_temporal_mean_tiou")
         else:
             clone["task_name"] = "self_atomic_instance_recognition"
             clone["form"] = "self_atomic_instance_recognition"
@@ -2065,8 +2174,25 @@ def _joint_rows_to_level_rows(rows: list[dict[str, Any]], *, level: str) -> list
             clone["pred_answer_items"] = _normalize_answer_items(row.get("pred_joint_atomic_answer_items", []))
             clone["gold_choice_intervals_sec"] = _flatten_answer_item_intervals(clone["gold_answer_items"])
             clone["pred_choice_intervals_sec"] = _flatten_answer_item_intervals(clone["pred_answer_items"])
+            clone["element_instance_precision"] = row.get("joint_atomic_instance_precision")
+            clone["element_instance_recall"] = row.get("joint_atomic_instance_recall")
+            clone["element_instance_f1"] = row.get("joint_atomic_instance_f1")
+            clone["self_temporal_loc_precision@0.5"] = row.get("joint_atomic_temporal_precision@0.5")
+            clone["self_temporal_loc_recall@0.5"] = row.get("joint_atomic_temporal_recall@0.5")
+            clone["self_temporal_loc_f1@0.5"] = row.get("joint_atomic_temporal_f1@0.5")
             clone["self_temporal_mean_tiou"] = row.get("joint_atomic_temporal_mean_tiou")
-        if clone["gold_option_ids"] or clone["pred_option_ids"]:
+            clone["self_temporal_loc_mean_tIoU"] = row.get("joint_atomic_temporal_mean_tiou")
+        has_level_payload = bool(
+            clone.get("gold_option_ids")
+            or clone.get("pred_option_ids")
+            or clone.get("gold_answer_items")
+            or clone.get("pred_answer_items")
+            or clone.get("set_instance_acc") is not None
+            or clone.get("element_instance_f1") is not None
+            or clone.get("self_temporal_loc_f1@0.5") is not None
+            or clone.get("self_temporal_loc_mean_tIoU") is not None
+        )
+        if has_level_payload:
             out.append(clone)
     return out
 
@@ -2128,6 +2254,7 @@ def _build_openai_messages(sample: dict[str, Any], api_cfg: dict[str, Any]) -> t
             image_paths.append(path)
     user_prompt_text = str(sample["prompt_text"])
     route_model_name = str(api_cfg.get("base_model", "") or api_cfg.get("model", "") or "")
+    api_source_text = str(api_cfg.get("api_source", "") or "").strip().lower()
     video_placeholder = str(required_video_placeholder_for_model(route_model_name) or "").strip()
     if video_placeholder:
         stripped_prompt = user_prompt_text.lstrip()
@@ -2137,7 +2264,20 @@ def _build_openai_messages(sample: dict[str, Any], api_cfg: dict[str, Any]) -> t
     video_bytes, upload_video_path = _prepare_upload_video(video_path, sample, api_cfg)
     uploads: list[str] = [_path_for_json(upload_video_path)]
     video_b64 = base64.b64encode(video_bytes).decode("utf-8")
-    blocks.append({"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{video_b64}"}})
+    if api_source_text == "chatchat.api" and str(route_model_name).lower().startswith(("gemini", "google/")):
+        # Gemini/OpenAI-compatible video inputs are not consistently accepted
+        # via a dedicated `video_url` block on this gateway. Use the
+        # compatibility-style `image_url` wrapper with an explicit MIME type
+        # for video payloads so the provider can infer the media type.
+        blocks.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:video/mp4;base64,{video_b64}"},
+                "mime_type": "video/mp4",
+            }
+        )
+    else:
+        blocks.append({"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{video_b64}"}})
     for path in image_paths:
         image_bytes, mime_type = _prepare_upload_image(path, api_cfg)
         blocks.append({"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{base64.b64encode(image_bytes).decode('utf-8')}"}})
@@ -2182,7 +2322,11 @@ def _messages_preview(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if block_type == "text":
                 blocks.append({"type": "text", "text": str(block.get("text", "") or "")})
             elif block_type == "image_url":
-                blocks.append({"type": "image_url", "image_url": {"url": "<base64-image>"}})
+                preview_block = {"type": "image_url", "image_url": {"url": "<base64-image>"}}
+                mime_type = str(block.get("mime_type", "") or "").strip()
+                if mime_type:
+                    preview_block["mime_type"] = mime_type
+                blocks.append(preview_block)
             elif block_type == "video_url":
                 blocks.append({"type": "video_url", "video_url": {"url": "<base64-video>"}})
             else:
@@ -2234,12 +2378,22 @@ def _resolve_api_cfg(config: dict[str, Any], *, override_model: str | None, over
         if value is not None:
             merged[key] = value
     resolved = _resolve_api_settings(config, override_model=override_model, overrides=merged)
-    model_controls = build_model_request_controls(str(resolved.get("model", "") or override_model or ""))
+    model_controls = build_model_request_controls(
+        str(resolved.get("model", "") or override_model or ""),
+        api_source=str(resolved.get("api_source", "") or ""),
+    )
     resolved["model"] = str(model_controls["display_model"])
     resolved["base_model"] = str(model_controls["base_model"])
     resolved["model_family"] = str(model_controls["family"])
     resolved["reasoning_mode"] = str(model_controls["mode"])
     resolved["assistant_prefill"] = str(model_controls.get("assistant_prefill", "") or "")
+    resolved["system_prompt_prefix"] = str(model_controls.get("system_prompt_prefix", "") or "")
+    resolved["system_prompt_as_blocks"] = bool(model_controls.get("system_prompt_as_blocks", False))
+    for key, value in dict(model_controls.get("request_overrides", {}) or {}).items():
+        if key == "max_tokens":
+            resolved[key] = max(int(resolved.get(key, 0) or 0), int(value or 0))
+        elif value is not None:
+            resolved[key] = value
     requested_concurrency = max(1, int(merged.get("concurrency", 1) or 1))
     configured_rpm_limit = int(
         override_payload.get(
@@ -2276,6 +2430,17 @@ def _resolve_api_cfg(config: dict[str, Any], *, override_model: str | None, over
     resolved["rate_limit_reserve_ratio"] = float(rate_limit_cfg["reserve_ratio"])
     resolved["rate_limit_concurrency_applied"] = bool(rate_limit_cfg["rate_limit_concurrency_applied"])
     request_extra_body = dict(model_controls.get("extra_body", {}) or {})
+    reasoning_effort_override = str(override_payload.get("reasoning_effort", "") or "").strip().lower()
+    if reasoning_effort_override and str(model_controls.get("family", "") or "").strip().lower() == "openai":
+        reasoning_payload = dict(request_extra_body.get("reasoning", {}) or {})
+        reasoning_payload["effort"] = reasoning_effort_override
+        request_extra_body["reasoning"] = reasoning_payload
+    elif reasoning_effort_override and str(model_controls.get("family", "") or "").strip().lower() == "claude":
+        budget_by_effort = {"low": 1024, "medium": 2048, "high": 4096}
+        budget_tokens = int(budget_by_effort.get(reasoning_effort_override, 1024))
+        request_extra_body.pop("reasoning", None)
+        request_extra_body["thinking"] = {"type": "enabled", "budget_tokens": budget_tokens}
+        resolved["max_tokens"] = max(int(resolved.get("max_tokens", 0) or 0), budget_tokens * 2)
     if request_extra_body:
         existing_extra = dict(resolved.get("request_extra_body", {}) or {})
         existing_extra.update(request_extra_body)
@@ -2293,6 +2458,10 @@ def _is_retryable_request_failure(error_text: str) -> bool:
         "timeout",
         "timed out",
         "empty_model_response",
+        "too many requests",
+        "rate limit",
+        "limitation",
+        "429",
         "connection reset",
         "connection aborted",
         "connection refused",
@@ -2322,6 +2491,13 @@ def _is_retryable_request_failure(error_text: str) -> bool:
     return any(marker in text for marker in retry_markers)
 
 
+def _is_rate_limited_request_failure(error_text: str) -> bool:
+    text = str(error_text or "").strip().lower()
+    if not text:
+        return False
+    return any(marker in text for marker in ["429", "too many requests", "rate limit", "limitation"])
+
+
 def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any], limiter: ApiRateLimiter, cancel_event: threading.Event | None) -> tuple[dict[str, Any], dict[str, Any]]:
     if cancel_event is not None and cancel_event.is_set():
         raise CancelledExperimentError("experiment_cancelled")
@@ -2345,18 +2521,23 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         attempt_started = time.perf_counter()
         should_retry = False
         try:
-            kwargs: dict[str, Any] = {
-                "model": api_cfg["request_model"],
-                "messages": messages,
-                "temperature": float(api_cfg["temperature"]),
-                "timeout": float(api_cfg["timeout_s"]),
-            }
-            extra_body: dict[str, Any] = dict(api_cfg.get("request_extra_body", {}) or {})
-            if extra_body:
-                kwargs["extra_body"] = extra_body
-            resp = client.chat.completions.create(**kwargs)
-            latency_ms += (time.perf_counter() - attempt_started) * 1000.0
-            raw_text, raw_meta = _extract_response_text(resp)
+            if should_use_responses_reasoning_stream(api_cfg.get("api_source", ""), api_cfg.get("model_family", ""), api_cfg.get("reasoning_mode", "")):
+                raw_text, raw_meta, latency_chunk_ms = run_responses_reasoning_stream_request(api_cfg, messages)
+                latency_ms += latency_chunk_ms
+            else:
+                kwargs: dict[str, Any] = {
+                    "model": api_cfg["request_model"],
+                    "messages": messages,
+                    "timeout": float(api_cfg["timeout_s"]),
+                }
+                if not model_disallows_temperature(str(api_cfg.get("request_model", "") or "")):
+                    kwargs["temperature"] = float(api_cfg["temperature"])
+                extra_body: dict[str, Any] = dict(api_cfg.get("request_extra_body", {}) or {})
+                if extra_body:
+                    kwargs["extra_body"] = extra_body
+                resp = client.chat.completions.create(**kwargs)
+                latency_ms += (time.perf_counter() - attempt_started) * 1000.0
+                raw_text, raw_meta = _extract_response_text(resp)
             if str(raw_text or "").strip():
                 break
             request_status = "error"
@@ -2377,7 +2558,14 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         if not should_retry:
             raise RuntimeError(str((raw_meta or {}).get("error", raw_text) or "non_retryable_request_error"))
         if retry_forever or attempt_idx < retry_attempts:
-            time.sleep(retry_backoff_sec)
+            error_for_backoff = str((raw_meta or {}).get("error", raw_text) or "")
+            is_rate_limited = _is_rate_limited_request_failure(error_for_backoff)
+            base_backoff = max(0.25, retry_backoff_sec if retry_backoff_sec > 0 else 0.5)
+            if is_rate_limited:
+                base_backoff = max(base_backoff, 1.0)
+            sleep_sec = min(60.0, base_backoff * (2 ** max(0, attempt_idx - 1)))
+            sleep_sec = sleep_sec * (1.0 + random.uniform(0.0, 0.2))
+            time.sleep(sleep_sec)
             continue
         break
     raw_meta = dict(raw_meta or {})
@@ -2444,12 +2632,16 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         "request_model": api_cfg["request_model"],
         "api_source": api_cfg.get("api_source"),
         "api_base": api_cfg.get("api_base"),
+        "request_transport": "responses_stream"
+        if should_use_responses_reasoning_stream(api_cfg.get("api_source", ""), api_cfg.get("model_family", ""), api_cfg.get("reasoning_mode", ""))
+        else "chat_completions",
         "reasoning_mode": api_cfg.get("reasoning_mode"),
         "form": sample["form"],
         "assistant_prefill": api_cfg.get("assistant_prefill", ""),
         "system_prompt_prefix": api_cfg.get("system_prompt_prefix", ""),
         "system_prompt_as_blocks": bool(api_cfg.get("system_prompt_as_blocks", False)),
         "request_extra_body": dict(api_cfg.get("request_extra_body", {}) or {}),
+        "temperature_omitted": model_disallows_temperature(str(api_cfg.get("request_model", "") or "")),
         "messages_preview": _messages_preview(messages),
         "inputs": uploads,
     }
@@ -2559,6 +2751,7 @@ def _summarize_predictions(rows: list[dict[str, Any]], *, include_grouped: bool 
         return {"count": 0}
     env_rows = [row for row in rows if str(row.get("task_group", "")) == "environmental"]
     self_rows = [row for row in rows if str(row.get("task_group", "")) == "self-state"]
+
     def _valid_pred_visible_count(row: dict[str, Any]) -> int | None:
         if not bool(row.get("parse_ok", False)):
             return None
@@ -2593,7 +2786,9 @@ def _summarize_predictions(rows: list[dict[str, Any]], *, include_grouped: bool 
     for row in env_rows:
         gold = list(row.get("gold_visible_intervals_sec", []) or [])
         pred = list(row.get("pred_visible_intervals_sec", []) or [])
-        gold_pairs = [[float(x.get("start_sec", 0.0) or 0.0), float(x.get("end_sec", 0.0) or 0.0)] for x in gold if isinstance(x, dict)]
+        # Open-QA exports already persist interval pairs as [[start, end], ...],
+        # while some older paths use [{"start_sec": ..., "end_sec": ...}, ...].
+        gold_pairs = _normalize_interval_rows(gold)
         pred_pairs = _normalize_interval_rows(pred)
         tp30, fp30, fn30 = _match_interval_metrics(gold_pairs, pred_pairs, 0.3)
         tp50, fp50, fn50 = _match_interval_metrics(gold_pairs, pred_pairs, 0.5)
@@ -2621,57 +2816,86 @@ def _summarize_predictions(rows: list[dict[str, Any]], *, include_grouped: bool 
     if self_joint_rows:
         self_set_rows = _joint_rows_to_level_rows(self_joint_rows, level="composite")
         self_element_choice_rows = _joint_rows_to_level_rows(self_joint_rows, level="atomic")
-    self_set_acc = (
-        sum(1 for row in self_set_rows if str(row.get("pred_option_id", "")) == str(row.get("gold_option_id", ""))) / float(len(self_set_rows))
-        if self_set_rows
-        else None
-    )
+    if self_set_rows:
+        if any(row.get("set_instance_acc") is not None for row in self_set_rows):
+            set_vals = [float(row.get("set_instance_acc", 0.0) or 0.0) for row in self_set_rows if row.get("set_instance_acc") is not None]
+            self_set_acc = _avg(set_vals)
+        else:
+            self_set_acc = (
+                sum(1 for row in self_set_rows if str(row.get("pred_option_id", "")) == str(row.get("gold_option_id", ""))) / float(len(self_set_rows))
+            )
+    else:
+        self_set_acc = None
+
     if self_joint_rows or self_element_choice_rows:
-        precs = []
-        recs = []
-        for row in [*self_joint_rows, *self_element_choice_rows]:
-            gold = set(str(x) for x in list(row.get("gold_option_ids", []) or []) if str(x).strip())
-            pred = set(str(x) for x in list(row.get("pred_option_ids", []) or []) if str(x).strip())
-            if not gold and not pred:
-                precs.append(1.0)
-                recs.append(1.0)
-                continue
-            tp = len(gold & pred)
-            precs.append(float(tp) / float(max(1, len(pred))))
-            recs.append(float(tp) / float(max(1, len(gold))))
-        self_element_precision = _avg(precs)
-        self_element_recall = _avg(recs)
-        self_element_f1 = (
-            2.0 * float(self_element_precision or 0.0) * float(self_element_recall or 0.0) / max(1e-6, float(self_element_precision or 0.0) + float(self_element_recall or 0.0))
-            if self_element_precision is not None and self_element_recall is not None
-            else None
-        )
+        open_element_rows = [row for row in [*self_joint_rows, *self_element_choice_rows] if row.get("element_instance_f1") is not None]
+        if open_element_rows:
+            precision_vals = [float(row.get("element_instance_precision", 0.0) or 0.0) for row in open_element_rows if row.get("element_instance_precision") is not None]
+            recall_vals = [float(row.get("element_instance_recall", 0.0) or 0.0) for row in open_element_rows if row.get("element_instance_recall") is not None]
+            f1_vals = [float(row.get("element_instance_f1", 0.0) or 0.0) for row in open_element_rows if row.get("element_instance_f1") is not None]
+            self_element_precision = _avg(precision_vals)
+            self_element_recall = _avg(recall_vals)
+            self_element_f1 = _avg(f1_vals)
+        else:
+            precs = []
+            recs = []
+            for row in [*self_joint_rows, *self_element_choice_rows]:
+                gold = set(str(x) for x in list(row.get("gold_option_ids", []) or []) if str(x).strip())
+                pred = set(str(x) for x in list(row.get("pred_option_ids", []) or []) if str(x).strip())
+                if not gold and not pred:
+                    precs.append(1.0)
+                    recs.append(1.0)
+                    continue
+                tp = len(gold & pred)
+                precs.append(float(tp) / float(max(1, len(pred))))
+                recs.append(float(tp) / float(max(1, len(gold))))
+            self_element_precision = _avg(precs)
+            self_element_recall = _avg(recs)
+            self_element_f1 = (
+                2.0 * float(self_element_precision or 0.0) * float(self_element_recall or 0.0) / max(1e-6, float(self_element_precision or 0.0) + float(self_element_recall or 0.0))
+                if self_element_precision is not None and self_element_recall is not None
+                else None
+            )
     else:
         self_element_precision = self_element_recall = self_element_f1 = None
-    self_loc_rows = [row for row in self_rows if bool(row.get("include_temporal_localization", False))]
+
+    self_loc_rows = [
+        row
+        for row in self_rows
+        if bool(row.get("include_temporal_localization", False))
+        or row.get("self_temporal_loc_f1@0.5") is not None
+        or row.get("self_temporal_loc_mean_tIoU") is not None
+    ]
     if self_loc_rows:
-        loc_ps = []
-        loc_rs = []
-        loc_tious = []
-        for row in self_loc_rows:
-            gold = _normalize_interval_rows(row.get("gold_choice_intervals_sec", []))
-            pred = _normalize_interval_rows(row.get("pred_choice_intervals_sec", []))
-            tp, fp, fn = _match_interval_metrics(gold, pred, 0.5)
-            loc_ps.append(float(tp) / float(max(1, tp + fp)))
-            loc_rs.append(float(tp) / float(max(1, tp + fn)))
-            if gold:
-                loc_tious.append(
-                    sum(max((_interval_iou(pred_pair, gold_pair) for pred_pair in pred), default=0.0) for gold_pair in gold)
-                    / float(len(gold))
-                )
-        self_loc_precision = _avg(loc_ps)
-        self_loc_recall = _avg(loc_rs)
-        self_loc_f1 = (
-            2.0 * float(self_loc_precision or 0.0) * float(self_loc_recall or 0.0) / max(1e-6, float(self_loc_precision or 0.0) + float(self_loc_recall or 0.0))
-            if self_loc_precision is not None and self_loc_recall is not None
-            else None
-        )
-        self_loc_tiou = _avg(loc_tious)
+        open_loc_rows = [row for row in self_loc_rows if row.get("self_temporal_loc_f1@0.5") is not None or row.get("self_temporal_loc_mean_tIoU") is not None]
+        if open_loc_rows:
+            self_loc_precision = _avg([float(row.get("self_temporal_loc_precision@0.5", 0.0) or 0.0) for row in open_loc_rows if row.get("self_temporal_loc_precision@0.5") is not None])
+            self_loc_recall = _avg([float(row.get("self_temporal_loc_recall@0.5", 0.0) or 0.0) for row in open_loc_rows if row.get("self_temporal_loc_recall@0.5") is not None])
+            self_loc_f1 = _avg([float(row.get("self_temporal_loc_f1@0.5", 0.0) or 0.0) for row in open_loc_rows if row.get("self_temporal_loc_f1@0.5") is not None])
+            self_loc_tiou = _avg([float(row.get("self_temporal_loc_mean_tIoU", 0.0) or 0.0) for row in open_loc_rows if row.get("self_temporal_loc_mean_tIoU") is not None])
+        else:
+            loc_ps = []
+            loc_rs = []
+            loc_tious = []
+            for row in self_loc_rows:
+                gold = _normalize_interval_rows(row.get("gold_choice_intervals_sec", []))
+                pred = _normalize_interval_rows(row.get("pred_choice_intervals_sec", []))
+                tp, fp, fn = _match_interval_metrics(gold, pred, 0.5)
+                loc_ps.append(float(tp) / float(max(1, tp + fp)))
+                loc_rs.append(float(tp) / float(max(1, tp + fn)))
+                if gold:
+                    loc_tious.append(
+                        sum(max((_interval_iou(pred_pair, gold_pair) for pred_pair in pred), default=0.0) for gold_pair in gold)
+                        / float(len(gold))
+                    )
+            self_loc_precision = _avg(loc_ps)
+            self_loc_recall = _avg(loc_rs)
+            self_loc_f1 = (
+                2.0 * float(self_loc_precision or 0.0) * float(self_loc_recall or 0.0) / max(1e-6, float(self_loc_precision or 0.0) + float(self_loc_recall or 0.0))
+                if self_loc_precision is not None and self_loc_recall is not None
+                else None
+            )
+            self_loc_tiou = _avg(loc_tious)
     else:
         self_loc_precision = self_loc_recall = self_loc_f1 = self_loc_tiou = None
     out = {
@@ -2829,6 +3053,54 @@ def run_experiment_once(
         for sample_id, status in latest_status_by_sample.items():
             if status == "ok":
                 completed_sample_ids.add(sample_id)
+
+    def _collect_recent_ok_latencies_sec(path: Path, *, out: deque[float], max_items: int) -> None:
+        if max_items <= 0 or not path.exists():
+            return
+        try:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                row = json.loads(line)
+                if not isinstance(row, dict):
+                    continue
+                if str(row.get("request_status", "") or "").strip().lower() != "ok":
+                    continue
+                latency_ms = row.get("latency_ms", None)
+                try:
+                    latency_val = float(latency_ms)
+                except Exception:
+                    continue
+                if latency_val <= 0:
+                    continue
+                out.append(latency_val / 1000.0)
+        except Exception:
+            return
+
+    def _estimate_recent_latency_sec(*, window: int) -> float:
+        max_items = max(1, int(window))
+        latencies: deque[float] = deque(maxlen=max_items)
+        _collect_recent_ok_latencies_sec(responses_path, out=latencies, max_items=max_items)
+        if not latencies:
+            return 0.0
+        values = sorted(float(x) for x in latencies if float(x) > 0.0)
+        if not values:
+            return 0.0
+        return float(values[len(values) // 2])
+
+    override_latency_sec = float((api_overrides or {}).get("observed_latency_sec", 0.0) or 0.0)
+    runtime_cfg = _experiment_runtime_cfg(config)
+    latency_window_size_default = max(1, int(runtime_cfg.get("latency_window_size", 64) or 64))
+    adjust_interval_default = max(1, int(runtime_cfg.get("dynamic_concurrency_adjust_interval", 8) or 8))
+    dynamic_ceiling_default = max(1, int(runtime_cfg.get("dynamic_concurrency_ceiling", 100) or 100))
+    if override_latency_sec <= 0.0:
+        override_latency_sec = _estimate_recent_latency_sec(
+            window=int((api_overrides or {}).get("latency_window_size", latency_window_size_default) or latency_window_size_default)
+        )
+    if override_latency_sec > 0.0:
+        api_cfg = dict(api_cfg)
+        api_cfg["avg_request_latency_sec"] = float(override_latency_sec)
     keyframe_cache_root = _ensure_dir(layout["cache_root"] / "keyframe_eval_view" / run_id)
     include_keyframes_for_prompt = bool((api_overrides or {}).get("include_keyframes", (_stage3_cfg(config).get("experiment_defaults", {}) or {}).get("include_keyframes", False)))
     samples_runtime: list[dict[str, Any]] = []
@@ -2866,6 +3138,7 @@ def run_experiment_once(
         tpm_limit=int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0),
         estimated_tokens_per_request=int(dynamic_estimated_tokens),
         reserve_ratio=float(api_cfg.get("rate_limit_reserve_ratio", 0.1) or 0.1),
+        avg_request_latency_sec=float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0),
     )
     api_cfg = dict(api_cfg)
     api_cfg["configured_rpm_limit"] = int(rate_limit_cfg["configured_rpm_limit"])
@@ -2875,6 +3148,7 @@ def run_experiment_once(
     api_cfg["requested_concurrency"] = int(rate_limit_cfg["requested_concurrency"])
     api_cfg["concurrency"] = int(rate_limit_cfg["effective_concurrency"])
     api_cfg["estimated_tokens_per_request"] = int(rate_limit_cfg["estimated_tokens_per_request"])
+    api_cfg["avg_request_latency_sec"] = float(rate_limit_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
     api_cfg["rate_limit_reserve_ratio"] = float(rate_limit_cfg["reserve_ratio"])
     api_cfg["rate_limit_concurrency_applied"] = bool(rate_limit_cfg["rate_limit_concurrency_applied"])
     limiter = ApiRateLimiter(rpm_limit=api_cfg.get("rpm_limit", 0), tpm_limit=api_cfg.get("tpm_limit", 0))
@@ -2886,15 +3160,73 @@ def run_experiment_once(
         failed_request_rows: list[dict[str, Any]] = []
         if unique_experiment and not samples_runtime:
             pass
-        with ThreadPoolExecutor(max_workers=max(1, int(api_cfg.get("concurrency", 1)))) as executor:
-            future_to_sample = {
-                executor.submit(_run_single_sample_request, sample, api_cfg=api_cfg, limiter=limiter, cancel_event=cancel_event): sample
-                for sample in samples_runtime
-            }
+        requested_concurrency = max(1, int(api_cfg.get("requested_concurrency", api_cfg.get("concurrency", 1)) or 1))
+        dynamic_adjust_interval = max(
+            1,
+            int((api_overrides or {}).get("dynamic_concurrency_adjust_interval", adjust_interval_default) or adjust_interval_default),
+        )
+        has_rate_limits = bool(
+            int(api_cfg.get("configured_rpm_limit", api_cfg.get("rpm_limit", 0)) or 0) > 0
+            or int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0) > 0
+        )
+        dynamic_concurrency_ceiling = max(
+            requested_concurrency,
+            int((api_overrides or {}).get("dynamic_concurrency_ceiling", dynamic_ceiling_default) or dynamic_ceiling_default),
+        )
+        max_worker_concurrency = dynamic_concurrency_ceiling if has_rate_limits else requested_concurrency
+        latency_samples_sec: deque[float] = deque(
+            maxlen=max(8, int((api_overrides or {}).get("latency_window_size", latency_window_size_default) or latency_window_size_default))
+        )
+        seed_latency = float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+        if seed_latency > 0.0:
+            latency_samples_sec.append(seed_latency)
+
+        def _current_latency_sec() -> float:
+            if not latency_samples_sec:
+                return float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+            values = sorted(float(x) for x in latency_samples_sec if float(x) > 0.0)
+            if not values:
+                return 0.0
+            return float(values[len(values) // 2])
+
+        def _recompute_target_concurrency() -> int:
+            cfg = compute_rate_limited_concurrency(
+                dynamic_concurrency_ceiling if has_rate_limits else requested_concurrency,
+                rpm_limit=int(api_cfg.get("configured_rpm_limit", api_cfg.get("rpm_limit", 0)) or 0),
+                tpm_limit=int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0),
+                estimated_tokens_per_request=int(dynamic_estimated_tokens),
+                reserve_ratio=float(api_cfg.get("rate_limit_reserve_ratio", 0.1) or 0.1),
+                avg_request_latency_sec=float(_current_latency_sec()),
+            )
+            api_cfg["concurrency"] = int(cfg["effective_concurrency"])
+            api_cfg["avg_request_latency_sec"] = float(cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+            api_cfg["rate_limit_concurrency_applied"] = bool(cfg.get("rate_limit_concurrency_applied", False))
+            return max(1, int(api_cfg.get("concurrency", 1) or 1))
+
+        with ThreadPoolExecutor(max_workers=max_worker_concurrency) as executor:
+            pending_idx = 0
+            futures: dict[Any, dict[str, Any]] = {}
+            completed_since_adjust = 0
+            # Start exactly from the configured experiment concurrency, then adjust dynamically.
+            target_concurrency = requested_concurrency
             try:
-                for future in as_completed(future_to_sample):
-                    sample = future_to_sample[future]
-                    worker_id = int((done % max(1, int(api_cfg.get("concurrency", 1)))) + 1)
+                while pending_idx < len(samples_runtime) or futures:
+                    while pending_idx < len(samples_runtime) and len(futures) < target_concurrency:
+                        sample = samples_runtime[pending_idx]
+                        pending_idx += 1
+                        future = executor.submit(_run_single_sample_request, sample, api_cfg=api_cfg, limiter=limiter, cancel_event=cancel_event)
+                        futures[future] = sample
+                    if not futures:
+                        break
+                    done_set, _ = wait(set(futures.keys()), return_when=FIRST_COMPLETED)
+                    future = next(iter(done_set))
+                    sample = futures.pop(future)
+                    worker_id = int((done % max(1, int(target_concurrency))) + 1)
+                    completed_since_adjust += 1
+                    if completed_since_adjust >= dynamic_adjust_interval:
+                        target_concurrency = _recompute_target_concurrency()
+                        target_concurrency = max(1, min(target_concurrency, max_worker_concurrency))
+                        completed_since_adjust = 0
                     if cancel_event is not None and cancel_event.is_set():
                         raise CancelledExperimentError("experiment_cancelled")
                     try:
@@ -2947,6 +3279,19 @@ def run_experiment_once(
                         }
                     done += 1
                     response_row = {"run_id": run_id, **payload["response"]}
+                    if str(response_row.get("request_status", "") or "").strip().lower() == "error":
+                        error_text = str(((response_row.get("raw_response", {}) or {}).get("error", response_row.get("raw_text", "")) or ""))
+                        if _is_rate_limited_request_failure(error_text):
+                            target_concurrency = max(1, int(target_concurrency) // 2)
+                            completed_since_adjust = 0
+                    latency_ms_val = response_row.get("latency_ms", None)
+                    if str(response_row.get("request_status", "") or "").strip().lower() == "ok":
+                        try:
+                            latency_ms_float = float(latency_ms_val)
+                        except Exception:
+                            latency_ms_float = 0.0
+                        if latency_ms_float > 0.0:
+                            latency_samples_sec.append(latency_ms_float / 1000.0)
                     parsed_row = {"run_id": run_id, **payload["parsed"]}
                     with write_lock:
                         req_fp.write(json.dumps({"run_id": run_id, **request_row}, ensure_ascii=False) + "\n")
@@ -2965,11 +3310,16 @@ def run_experiment_once(
                             f"messages_preview={json.dumps(request_row.get('messages_preview', []), ensure_ascii=False)}\n"
                             f"inputs={json.dumps(request_row.get('inputs', []), ensure_ascii=False)}\n\n"
                         )
+                        raw_response_obj = dict(response_row.get("raw_response", {}) or {})
+                        thinking_text = str(raw_response_obj.get("thinking_text", "") or "")
+                        reasoning_text = str(raw_response_obj.get("reasoning_text", "") or "")
                         resp_txt_fp.write(
                             f"[{_iso_now()}] sample_id={sample['sample_id']} status={response_row['request_status']} latency_ms={response_row['latency_ms']} "
                             f"prompt_tokens={parsed_row.get('prompt_tokens')} completion_tokens={parsed_row.get('completion_tokens')} total_tokens={parsed_row.get('total_tokens')}\n"
                             f"raw_text:\n{response_row['raw_text']}\n"
-                            f"raw_response={json.dumps(response_row.get('raw_response', {}), ensure_ascii=False)}\n\n"
+                            f"thinking_text:\n{thinking_text}\n"
+                            f"reasoning_text:\n{reasoning_text}\n"
+                            f"raw_response={json.dumps(raw_response_obj, ensure_ascii=False)}\n\n"
                         )
                         req_txt_fp.flush()
                         resp_txt_fp.flush()
@@ -3092,30 +3442,36 @@ def _list_manifests(layout: dict[str, Path], scene_id: str) -> list[dict[str, An
 
 def _list_reports(layout: dict[str, Path], scene_id: str) -> list[dict[str, Any]]:
     rows = []
-    for path in sorted(layout["experiments_root"].glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True):
-        payload = _read_json(path, default={})
-        if not isinstance(payload, dict):
-            continue
-        if str(payload.get("scene_id", "")) != str(scene_id):
-            continue
-        manifest_path = str(payload.get("manifest_path", "") or "")
-        summary = dict(payload.get("summary", {}) or {})
-        if "grouped" not in summary:
-            if isinstance(summary, dict) and summary.get("count") is not None:
-                pass
-            else:
-                report_rows = _load_report_rows(path)
-                if report_rows:
-                    summary = _summarize_predictions(report_rows)
-        rows.append({
-            "path": _path_for_json(path),
-            "generated_at": payload.get("generated_at"),
-            "model": payload.get("model"),
-            "run_id": payload.get("run_id", path.parent.name),
-            "manifest_path": manifest_path,
-            "manifest_name": Path(manifest_path).name if manifest_path else "-",
-            "summary": summary,
-        })
+    seen: set[str] = set()
+    for experiments_root in [layout["experiments_root"], layout["stage3_root"] / "experiments_open"]:
+        for path in sorted(experiments_root.glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+            key = str(path.resolve())
+            if key in seen:
+                continue
+            seen.add(key)
+            payload = _read_json(path, default={})
+            if not isinstance(payload, dict):
+                continue
+            if str(payload.get("scene_id", "")) != str(scene_id):
+                continue
+            manifest_path = str(payload.get("manifest_path", "") or "")
+            summary = dict(payload.get("summary", {}) or {})
+            if "grouped" not in summary:
+                if isinstance(summary, dict) and summary.get("count") is not None:
+                    pass
+                else:
+                    report_rows = _load_report_rows(path)
+                    if report_rows:
+                        summary = _summarize_predictions(report_rows)
+            rows.append({
+                "path": _path_for_json(path),
+                "generated_at": payload.get("generated_at"),
+                "model": payload.get("model"),
+                "run_id": payload.get("run_id", path.parent.name),
+                "manifest_path": manifest_path,
+                "manifest_name": Path(manifest_path).name if manifest_path else "-",
+                "summary": summary,
+            })
     return rows
 
 
@@ -4188,9 +4544,106 @@ const state = {
 };
 const DEFAULT_ENGINE = __DEFAULT_ENGINE_JSON__;
 const DEFAULT_SCENE = __DEFAULT_SCENE_JSON__;
-const TASK_KEY = 'uav_dualcog_stage3_task_pipeline';
-const THEME_KEY = 'uav_dualcog_stage3_theme';
+const TASK_KEY = 'flightmvstg_stage3_task_pipeline';
+const THEME_KEY = 'flightmvstg_stage3_theme';
 function esc(v) { return String(v ?? '').replace(/[&<>\"']/g, (c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); }
+function normalizeStage3Text(v) {
+  let s = String(v ?? '');
+  if(!s) return '';
+  const replacements = [
+    ['联合行为识别', 'Joint Behavior Recognition'],
+    ['环境感知', 'Environmental Awareness'],
+    ['自我状态', 'Self-State'],
+    ['多地标巡检组合', 'Multi-Landmark Inspection Sequence'],
+    ['按所选地标逐个拼接单地标巡检 set。', 'Concatenates single-landmark inspection sets across the selected landmarks.'],
+    ['圆周环绕巡检（多视线）', 'Circular Inspection (Multi-View)'],
+    ['圆周环绕巡检（跟踪地标）', 'Circular Inspection (Landmark-Track)'],
+    ['圆周环绕巡检（跟随地标）', 'Circular Inspection (Landmark-Track)'],
+    ['圆周环绕巡检（速度对齐）', 'Circular Inspection (Speed-Aligned)'],
+    ['螺旋巡检（跟踪地标）', 'Spiral Inspection (Landmark-Track)'],
+    ['螺旋巡检（跟随地标）', 'Spiral Inspection (Landmark-Track)'],
+    ['螺旋巡检（速度对齐）', 'Spiral Inspection (Speed-Aligned)'],
+    ['正方形巡检（跟踪地标）', 'Square Inspection (Landmark-Track)'],
+    ['正方形巡检（跟随地标）', 'Square Inspection (Landmark-Track)'],
+    ['正方形巡检（速度对齐）', 'Square Inspection (Speed-Aligned)'],
+    ['三角形巡检（跟踪地标）', 'Triangular Inspection (Landmark-Track)'],
+    ['三角形巡检（跟随地标）', 'Triangular Inspection (Landmark-Track)'],
+    ['三角形巡检（速度对齐）', 'Triangular Inspection (Speed-Aligned)'],
+    ['渐进（跟踪地标）', 'Gradual Approach (Landmark-Track)'],
+    ['渐进（跟随地标）', 'Gradual Approach (Landmark-Track)'],
+    ['渐进（向前看）', 'Gradual Approach (Look-Forward)'],
+    ['渐进（速度对齐）', 'Gradual Approach (Speed-Aligned)'],
+    ['渐远（跟踪地标）', 'Gradual Depart (Landmark-Track)'],
+    ['渐远（跟随地标）', 'Gradual Depart (Landmark-Track)'],
+    ['渐远（向前看）', 'Gradual Depart (Look-Forward)'],
+    ['渐远（速度对齐）', 'Gradual Depart (Speed-Aligned)'],
+    ['圆周环绕（跟踪地标）', 'Circular Orbit (Landmark-Track)'],
+    ['圆周环绕（跟随地标）', 'Circular Orbit (Landmark-Track)'],
+    ['圆周环绕（向前看）', 'Circular Orbit (Look-Forward)'],
+    ['圆周环绕（速度对齐）', 'Circular Orbit (Speed-Aligned)'],
+    ['螺旋环绕（跟踪地标）', 'Spiral Orbit (Landmark-Track)'],
+    ['螺旋环绕（跟随地标）', 'Spiral Orbit (Landmark-Track)'],
+    ['螺旋环绕（向前看）', 'Spiral Orbit (Look-Forward)'],
+    ['螺旋环绕（速度对齐）', 'Spiral Orbit (Speed-Aligned)'],
+    ['正方形环绕（跟踪地标）', 'Square Orbit (Landmark-Track)'],
+    ['正方形环绕（跟随地标）', 'Square Orbit (Landmark-Track)'],
+    ['正方形环绕（向前看）', 'Square Orbit (Look-Forward)'],
+    ['正方形环绕（速度对齐）', 'Square Orbit (Speed-Aligned)'],
+    ['三角形环绕（跟踪地标）', 'Triangular Orbit (Landmark-Track)'],
+    ['三角形环绕（跟随地标）', 'Triangular Orbit (Landmark-Track)'],
+    ['三角形环绕（向前看）', 'Triangular Orbit (Look-Forward)'],
+    ['三角形环绕（速度对齐）', 'Triangular Orbit (Speed-Aligned)'],
+    ['8字环绕（跟踪地标）', 'Figure-Eight Orbit (Landmark-Track)'],
+    ['8字环绕（跟随地标）', 'Figure-Eight Orbit (Landmark-Track)'],
+    ['8字环绕（向前看）', 'Figure-Eight Orbit (Look-Forward)'],
+    ['8字环绕（速度对齐）', 'Figure-Eight Orbit (Speed-Aligned)'],
+    ['冲天（跟踪地标）', 'Sky Rise (Landmark-Track)'],
+    ['冲天（跟随地标）', 'Sky Rise (Landmark-Track)'],
+    ['冲天（向前看）', 'Sky Rise (Look-Forward)'],
+    ['冲天（速度对齐）', 'Sky Rise (Speed-Aligned)'],
+    ['彗星（跟踪地标）', 'Comet Trajectory (Landmark-Track)'],
+    ['彗星（跟随地标）', 'Comet Trajectory (Landmark-Track)'],
+    ['彗星（向前看）', 'Comet Trajectory (Look-Forward)'],
+    ['彗星（速度对齐）', 'Comet Trajectory (Speed-Aligned)'],
+    ['面状扫描（跟踪地标）', 'Surface Mapping (Landmark-Track)'],
+    ['面状扫描（跟随地标）', 'Surface Mapping (Landmark-Track)'],
+    ['面状扫描（向前看）', 'Surface Mapping (Look-Forward)'],
+    ['面状扫描（速度对齐）', 'Surface Mapping (Speed-Aligned)'],
+    ['渐进', 'Gradual Approach'],
+    ['渐远', 'Gradual Depart'],
+    ['圆周环绕', 'Circular Orbit'],
+    ['螺旋环绕', 'Spiral Orbit'],
+    ['正方形环绕', 'Square Orbit'],
+    ['三角形环绕', 'Triangular Orbit'],
+    ['8字环绕', 'Figure-Eight Orbit'],
+    ['冲天', 'Sky Rise'],
+    ['彗星', 'Comet Trajectory'],
+    ['面状扫描', 'Surface Mapping'],
+    ['镜头跟随目标，边前进边下降，向斜前方飞行。', 'The camera tracks the target while moving forward and descending along a diagonal approach.'],
+    ['镜头跟随目标，边后退边上升，向斜后方飞行。', 'The camera tracks the target while departing backward and climbing along a diagonal retreat.'],
+    ['本次 flight mission 使用 composite instance “', 'This flight mission uses the composite instance "'],
+    ['本次 flight mission 使用 set instance “', 'This flight mission uses the composite instance "'],
+    ['”，主目标为“', '", with primary target "'],
+    ['”（', '" ('],
+    ['），atomic instances 序列为 ', ') and atomic sequence '],
+    ['），element instances 序列为 ', ') and atomic sequence '],
+    ['；次目标包括 ', '; secondary targets include '],
+    ['跟踪地标', 'Landmark-Track'],
+    ['跟随地标', 'Landmark-Track'],
+    ['向前看', 'Look-Forward'],
+    ['速度对齐', 'Speed-Aligned'],
+    ['，', ', '],
+    ['；', '; '],
+    ['。', '.'],
+    ['（', '('],
+    ['）', ')'],
+    ['“', '"'],
+    ['”', '"'],
+  ];
+  for (const [from, to] of replacements) s = s.split(from).join(to);
+  s = s.replace(/\s+,/g, ',').replace(/\s+\./g, '.').replace(/\s+;/g, ';').replace(/\s{2,}/g, ' ').trim();
+  return s;
+}
 async function api(url, options) { const resp = await fetch(url, options); const data = await resp.json(); if(!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`); return data; }
 function fmtPct(v) { return (v===null || v===undefined || Number.isNaN(Number(v))) ? '-' : `${(Number(v)*100).toFixed(1)}%`; }
 function fmtFloat(v,n=3) { return (v===null || v===undefined || Number.isNaN(Number(v))) ? '-' : Number(v).toFixed(n); }
@@ -4242,7 +4695,7 @@ function missionImagePreviewUrl(rawPath) {
   const q = Number(document.getElementById('mission_media_q')?.value || 80) || 80;
   return `/artifact?path=${encodeURIComponent(path)}&resize=1&w=${encodeURIComponent(w)}&h=${encodeURIComponent(h)}&q=${encodeURIComponent(q)}`;
 }
-function renderMissionEmpty(message='Content appears here after you create a new mission or select an existing one from the left panel.') {
+function renderMissionEmpty(message='Select an existing mission or click “New Mission” on the left to show content here.') {
   const box = document.getElementById('mission_detail');
   if(box) box.innerHTML = `<div class="empty">${esc(message)}</div>`;
 }
@@ -4327,7 +4780,7 @@ function updateScopeParamDependencyStates(scopeClass) {
       if(manualInput) manualInput.disabled = lock || forceAuto || !!autoBox?.checked;
       auxInputs.forEach((el)=>{ el.disabled = lock || forceAuto; });
       const tip = card.querySelector('.mission-param-tip');
-      if(tip) tip.textContent = lock ? 'Automatically follows under landmark_track' : (forceAuto ? 'Automatically generated from the global defaults' : '');
+      if(tip) tip.textContent = lock ? 'Automatically follows under landmark_track' : (forceAuto ? 'Currently generated from the global defaults' : '');
     }
   }
 }
@@ -4377,12 +4830,12 @@ function renderMissionCategoryFilterTable() {
     <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(true);">Select All</button>
     <button type="button" class="secondary" onclick="setAllMissionCategoryFilters(false);">Clear</button>
   </div>
-  <table class="compact-table"><thead><tr><th>Select</th><th>Categories</th><th>Landmarks</th></tr></thead><tbody>${
+  <table class="compact-table"><thead><tr><th>Select</th><th>Category</th><th>Landmarks</th></tr></thead><tbody>${
     categories.map((name)=>{
       const count = (state.missionRows || []).filter((row)=>String(row.class_name || '').trim() === name).length;
       const checked = selected.has(name) ? 'checked' : '';
       return `<tr><td><input type="checkbox" class="mission-category-filter" value="${esc(name)}" ${checked}></td><td>${esc(name)}</td><td>${count}</td></tr>`;
-    }).join('') || '<tr><td colspan="3" class="empty">NoneCategories</td></tr>'
+    }).join('') || '<tr><td colspan="3" class="empty">No categories available.</td></tr>'
   }</tbody></table>`;
   holder.querySelectorAll('.mission-category-filter').forEach((el)=>el.addEventListener('change', ()=>{ if(state.currentPage === 'missions') refreshMissionSelectionUi(); }));
 }
@@ -4436,7 +4889,7 @@ function autoSelectMissionLandmarks() {
   state.currentMissionHistory = null;
   state.missionDetailMode = 'blank';
   state.missionBehaviorOverrideTouched = false;
-  renderMissionEmpty('Landmarks were auto-selected. Click “New Mission” on the left to start configuration, or choose an existing mission to inspect it.');
+  renderMissionEmpty('Landmarks have been auto-selected. Click “New Mission” on the left to start configuration, or choose an existing mission to inspect it.');
   refreshMissionSelectionUi();
 }
 function saveGlobalSetProfile(setKey) {
@@ -4475,19 +4928,19 @@ function renderFooter() {
       `<strong>Atomic Classes</strong>: ${esc((state.missionCatalog.behaviors || []).length)}`,
     ];
     rightItems = [
-      `Inspect the composite structure first, then compare it against the atomic parameter ranges.`,
-      `When switching to Mission Generation, reuse the structure inspected here as the reference.`,
+      `Review the composite structure first, then compare it with the atomic parameter ranges.`,
+      `When you move to Mission Generation, you can reuse the selected structure as your reference.`,
     ];
   } else if(state.currentPage === 'missions') {
     leftItems = [
       `<strong>Current Page</strong>: Mission Generation`,
       `<strong>Current Instance</strong>: ${esc(current.instance_id || '-')}`,
       `<strong>Current Composite</strong>: ${esc(result.summary?.set_id || current.latest_summary?.set_id || '-')}`,
-      `<strong>Background Status</strong>: ${esc(current.traj_status || current.status || 'pending')}`,
+      `<strong>Backend Status</strong>: ${esc(current.traj_status || current.status || 'pending')}`,
     ];
     rightItems = [
-      `Generate the Preview first, then confirm it before generating the Task Video.`,
-      `If you specify a composite template, also verify that the atomic sequence matches expectations.`,
+      `Generate the preview first, then confirm it before generating the task video.`,
+      `If you specify a composite template, verify that the atomic sequence also matches expectations.`,
     ];
   } else if(state.currentPage === 'review') {
     leftItems = [
@@ -4496,18 +4949,18 @@ function renderFooter() {
       `<strong>Review Status</strong>: ${esc(current.review_status || '-')}`,
     ];
     rightItems = [
-      `Verify carefully that the reference image, task video, and keyframe details remain consistent.`,
-      `Only generate the manifest after approval, so poor candidates do not enter experiments.`,
+      `Check carefully whether the reference image, task video, and keyframe details are consistent.`,
+      `Approve candidates before generating manifests so that poor samples do not enter experiments.`,
     ];
   } else if(state.currentPage === 'generate') {
     leftItems = [
       `<strong>Current Page</strong>: Manifest Generation`,
-      `<strong>Candidate Count</strong>: the Generation Reference panel shows the currently available candidate statistics.`,
-      `<strong>Task Groups</strong>: supports both Self-State and Environmental tasks.`,
+      `<strong>Candidate Count</strong>: The reference panel shows the currently available candidate statistics.`,
+      `<strong>Task Groups</strong>: Supports both Self-State and Environmental tasks.`,
     ];
     rightItems = [
-      `Start with a small sample batch to verify the schema before scaling the sample count.`,
-      `It is recommended to generate separate manifests for self-state and environmental tasks.`,
+      `Generate a small sample first to validate the schema, then scale up.`,
+      `It is recommended to build separate manifests for self-state and environmental tasks.`,
     ];
   } else if(state.currentPage === 'dataset') {
     leftItems = [
@@ -4515,8 +4968,8 @@ function renderFooter() {
       `<strong>Current Manifest</strong>: ${esc(document.getElementById('manifest_select')?.value || '-')}`,
     ];
     rightItems = [
-      `Prioritize checking whether sample fields, landmark descriptions, intervals, and options match each other.`,
-      `If the sample structure is unsatisfactory, return to the generation page and adjust the task-type combination.`,
+      `Prioritize checking whether sample fields, landmark descriptions, intervals, and options are consistent.`,
+      `If the sample structure is unsatisfactory, return to Manifest Generation and adjust the task combination.`,
     ];
   } else if(state.currentPage === 'experiments') {
     const jobRows = document.querySelectorAll('#job_table tbody tr').length;
@@ -4526,8 +4979,8 @@ function renderFooter() {
       `<strong>Job Count</strong>: ${esc(jobRows)}`,
     ];
     rightItems = [
-      `This page supports background-job polling and cancellation.`,
-      `Keep the manifest conditions fixed when comparing different models.`,
+      `This page supports background job polling and cancellation.`,
+      `For model comparison, keep the manifest conditions identical whenever possible.`,
     ];
   } else if(state.currentPage === 'results') {
     leftItems = [
@@ -4536,7 +4989,7 @@ function renderFooter() {
     ];
     rightItems = [
       `Read the summary first, then drill down to per-sample results.`,
-      `For self-state tasks, focus first on composite / atomic recognition and localization; for environmental tasks, focus first on count / interval quality.`,
+      `For self-state tasks, prioritize Composite/Atomic recognition and localization; for environmental tasks, prioritize count and interval quality.`,
     ];
   } else if(state.currentPage === 'metrics') {
     leftItems = [
@@ -4545,7 +4998,7 @@ function renderFooter() {
     ];
     rightItems = [
       `Read the summary cards first, then inspect the matrix.`,
-      `If one task family is substantially weaker, return to Results to locate the corresponding samples.`,
+      `If one task family is clearly weaker, return to Results and locate the corresponding samples.`,
     ];
   }
   left.innerHTML = footerHtml(leftItems);
@@ -4623,8 +5076,8 @@ function showBehaviorDetail(setKey) {
     const params = Object.entries(spec.params || {}).map(([key, meta])=>`${key}: ${meta.min ?? '-'} ~ ${meta.max ?? '-'} / step ${meta.step ?? '-'} / manual default ${meta.default ?? '-'}`).join('<br>');
     return `<div class="card" style="margin-bottom:12px;"><div class="kv">
       <div class="k">step</div><div>${step.step_index + 1}</div>
-      <div class="k">element</div><div>${esc(spec.display_name || bid)} / ${esc(bid)}</div>
-      <div class="k">Description</div><div>${esc(spec.description || '-')}</div>
+      <div class="k">element</div><div>${esc(normalizeStage3Text(spec.display_name || bid))} / ${esc(bid)}</div>
+      <div class="k">Description</div><div>${esc(normalizeStage3Text(spec.description || '-'))}</div>
       <div class="k">Step Camera Mode</div><div>${esc(stepCameraMode)}</div>
       <div class="k">Step Parameter Overrides</div><div>${stepParamText}</div>
       <div class="k">Atomic Default Camera Mode</div><div>${esc(spec.camera_mode_default || '-')}</div>
@@ -4635,7 +5088,7 @@ function showBehaviorDetail(setKey) {
     const spec = byId[String(bid)] || {};
     const params = spec.params || {};
     return `<div class="card library-scope" style="margin-bottom:12px;padding:10px;">
-      <div class="summary-item"><strong>Step ${idx + 1}</strong>: ${esc(spec.display_name || bid)} / ${esc(bid)}</div>
+      <div class="summary-item"><strong>Step ${idx + 1}</strong>: ${esc(normalizeStage3Text(spec.display_name || bid))} / ${esc(bid)}</div>
       ${Object.entries(params).map(([paramKey, meta])=>{
         const manualValue = globalProfile?.element_param_overrides?.[String(idx)]?.[paramKey];
         const autoRule = globalProfile?.element_auto_rules?.[String(idx)]?.[paramKey];
@@ -4673,7 +5126,7 @@ function showBehaviorDetail(setKey) {
   }).join('');
   detail.innerHTML = `
     <div class="kv">
-      <div class="k">set</div><div>${esc(row.mission_type || '-')} / ${esc(row.mission_subtype || '-')}</div>
+      <div class="k">set</div><div>${esc(normalizeStage3Text(row.mission_type || '-'))} / ${esc(row.mission_subtype || '-')}</div>
       <div class="k">scope</div><div>${esc(row.service_scenario || '-')}</div>
       <div class="k">Description</div><div>${esc(row.description || '-')}</div>
       <div class="k">Generation Notes</div><div>${esc(row.generation_notes || '-')}</div>
@@ -4761,7 +5214,7 @@ function refreshMissionTemplateSelect() {
       if(chosen) {
         const lowLevel = (chosen.sequence || []).map((bid)=> {
           const spec = behaviorMap[bid] || {};
-          return `<div><b>${esc(bid)}</b> ${esc(spec.display_name || '')} <span class="muted">(${esc(spec.description || '-')})</span></div>`;
+          return `<div><b>${esc(bid)}</b> ${esc(normalizeStage3Text(spec.display_name || ''))} <span class="muted">(${esc(normalizeStage3Text(spec.description || '-'))})</span></div>`;
         }).join('');
         info.innerHTML = `<b>${esc(chosen.mission_type)}</b> / ${esc(chosen.mission_subtype)}<br>${esc(chosen.description || '-')}<br><span class="muted">${esc(chosen.generation_notes || '')}</span><div style="margin-top:8px;">${lowLevel}</div>`;
       } else {
@@ -4915,12 +5368,12 @@ async function clearMissionHistory() {
     state.lastAppliedSetKey = '';
     await refreshMissionSchema();
     state.missionDetailMode = 'blank';
-    renderMissionEmpty('The mission list was cleared. Click “New Mission” on the left to start a new configuration.');
+    renderMissionEmpty('The mission list has been cleared. Click “New Mission” on the left to start a new configuration.');
   }
 }
 function openNewMission() {
   if(!state.currentMissionInstance) {
-    renderMissionEmpty('Please select a landmark before clicking “New Mission”.');
+    renderMissionEmpty('Please select a landmark first, then click “New Mission”.');
     return;
   }
   state.currentMissionHistory = null;
@@ -4955,7 +5408,7 @@ async function refreshMissionSchema() {
   };
   const box = document.getElementById('mission_step_editor');
   if(!payload.instance_ids.length || !box) {
-    if(box) box.innerHTML = 'Per-step parameter settings for the current mission will appear here.';
+    if(box) box.innerHTML = 'Per-step parameter configuration for the current mission will appear here.';
     return;
   }
   try {
@@ -4988,7 +5441,7 @@ async function refreshMissionSchema() {
     const forceAuto = !!payload.set_params_auto;
     const header = `<div class="summary-list" style="margin-bottom:10px;">
       <div class="summary-item"><strong>Current Generation Mode</strong>: ${esc(schema.mission_mode || '-')} / ${esc(schema.generation_kind || '-')}</div>
-      <div class="summary-item"><strong>Current Composite</strong>: ${esc(schema.set_spec?.set_key || schema.set_instance?.set_id || '-')} / ${esc(schema.set_spec?.display_name || schema.set_instance?.set_name || '-')}</div>
+      <div class="summary-item"><strong>Current Composite</strong>: ${esc(schema.set_spec?.set_key || schema.set_instance?.set_id || '-')} / ${esc(normalizeStage3Text(schema.set_spec?.display_name || schema.set_instance?.set_name || '-'))}</div>
       <div class="summary-item"><strong>Auto Composite Rule</strong>: ${esc(schema.auto_set_rule || '-')}; available composites: ${esc((schema.auto_set_candidates || []).join(', ') || '-')}</div>
     </div>`;
     box.innerHTML = steps.map((step)=>{
@@ -5004,10 +5457,10 @@ async function refreshMissionSchema() {
             : (manualValue !== undefined ? 'global-manual-default' : (Array.isArray(spec.choices) && spec.choices.length ? 'choice-default' : 'global-default'));
           const rangeText = (spec.min !== undefined && spec.min !== null && spec.max !== undefined && spec.max !== null) ? `[${spec.min}, ${spec.max}]` : '-';
           const stepText = spec.step !== undefined && spec.step !== null ? `${spec.step}` : '-';
-          return `<div class="summary-item"><strong>${esc(paramKey)}</strong>: value=${esc(String(currentValue))}; range=${esc(rangeText)}; step=${esc(stepText)}; mode=${esc(modeText)}</div>`;
+          return `<div class="summary-item"><strong>${esc(paramKey)}</strong>：value=${esc(String(currentValue))}；range=${esc(rangeText)}；step=${esc(stepText)}；mode=${esc(modeText)}</div>`;
         }).join('');
         return `<div class="card" style="margin-bottom:10px;padding:10px;">
-          <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
+        <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(normalizeStage3Text(step.element_display_name || step.element_class || '-'))} -> ${esc(step.target_instance_id || '-')}</div>
           <div class="muted" style="margin-top:6px;">Automatically generated from the global defaults</div>
           <div class="summary-list" style="margin-top:8px; font-size:12px; line-height:1.8;">${summaryRows || '<div class="summary-item">-</div>'}</div>
         </div>`;
@@ -5050,7 +5503,7 @@ async function refreshMissionSchema() {
         </div>`;
       }).join('');
       return `<div class="card" style="margin-bottom:12px;">
-        <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(step.element_display_name || step.element_class || '-')} -> ${esc(step.target_instance_id || '-')}</div>
+        <div class="summary-item"><strong>Step ${Number(step.step_index) + 1}</strong>: ${esc(normalizeStage3Text(step.element_display_name || step.element_class || '-'))} -> ${esc(step.target_instance_id || '-')}</div>
         ${rows || '<div class="muted">This element has no configurable parameters.</div>'}
       </div>`;
     }).join('') || '<div class="empty">The current mission has no per-step parameters.</div>';
@@ -5100,7 +5553,7 @@ function renderMissionDetail(row, historyRow=null) {
   const currentSetName = String(currentSchema.set_spec?.display_name || currentSchema.set_instance?.set_name || '');
   const currentSetKey = String(currentSchema.set_spec?.set_key || currentSchema.set_instance?.set_id || '');
   const landmarkSetMapText = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`${k} -> ${v}`).join(' | ');
-  const multiSetRows = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`<div class="summary-item"><strong>${esc(k)}</strong>: ${esc(v)}</div>`).join('');
+  const multiSetRows = Object.entries(currentSchema.landmark_set_map || {}).map(([k,v])=>`<div class="summary-item"><strong>${esc(k)}</strong>：${esc(v)}</div>`).join('');
   const showMultiSetList = missionMode === 'multi-landmark' && !document.getElementById('mission_allow_interleave_repeat')?.checked;
   const previewVideoUrl = preferredMissionVideo(urls.video_web || files.video_web || '', urls.video || files.video || '');
   const instanceMarkedUrl = preferredMissionVideo(urls.final_video_marked_web || files.final_video_marked_web || '', urls.final_video_marked || files.final_video_marked || '');
@@ -5115,9 +5568,9 @@ function renderMissionDetail(row, historyRow=null) {
   document.getElementById('mission_detail').innerHTML = `
     <div class="section-title">Current Configuration Preview</div>
     <div class="kv">
-      <div class="k">Current Composite</div><div>${esc(currentSetName || '-')} / ${esc(currentSetKey || '-')}</div>
+      <div class="k">Current Composite</div><div>${esc(normalizeStage3Text(currentSetName || '-'))} / ${esc(currentSetKey || '-')}</div>
       <div class="k">Current Mode</div><div>${esc(missionMode)}</div>
-      <div class="k">Current Atomic Sequence</div><div>${esc(currentSteps.map((it)=>it.element_display_name || it.element_class || '-').join(', ') || '-')}</div>
+      <div class="k">Current Atomic Sequence</div><div>${esc(normalizeStage3Text(currentSteps.map((it)=>it.element_display_name || it.element_class || '-').join(', ') || '-'))}</div>
       <div class="k">Landmark Mapping</div><div>${esc(landmarkSetMapText || JSON.stringify(currentSchema.landmark_set_map || {}))}</div>
     </div>
     ${showMultiSetList ? `<div class="section-title">Multi-Landmark Composite List</div><div class="summary-list">${multiSetRows || '<div class="summary-item">-</div>'}</div>` : ''}
@@ -5127,9 +5580,9 @@ function renderMissionDetail(row, historyRow=null) {
       <div class="k">Categories</div><div>${esc(row.class_name || row.landmark_category || '-')}</div>
       <div class="k">Current Status</div><div>${esc(row.traj_status || row.status || 'pending')}</div>
       <div class="k">Point Count</div><div>${esc(row.point_count || '-')}</div>
-      <div class="k">Current Composite</div><div>${esc(summary.set_name || summary.mission_type || '-')} / ${esc(summary.set_id || summary.mission_subtype || '-')}</div>
+      <div class="k">Current Composite</div><div>${esc(normalizeStage3Text(summary.set_name || summary.mission_type || '-'))} / ${esc(summary.set_id || summary.mission_subtype || '-')}</div>
       <div class="k">Task Family</div><div>${esc(summary.task_family || '-')}</div>
-      <div class="k">Atomic Sequence</div><div>${esc((summary.element_sequence || summary.behavior_sequence || []).join(', ') || '-')}</div>
+      <div class="k">Atomic Sequence</div><div>${esc(normalizeStage3Text((summary.element_sequence || summary.behavior_sequence || []).join(', ') || '-'))}</div>
       <div class="k">bbox_3d</div><div>${esc(JSON.stringify(geometry || []))}</div>
       <div class="k">Mission Mode</div><div>${esc(missionMode)}</div>
       <div class="k">Current traj_id</div><div>${esc(activeMission.traj_id || row.latest_traj_id || '-')}</div>
@@ -5137,7 +5590,7 @@ function renderMissionDetail(row, historyRow=null) {
     </div>
     <div class="section-title">Saved Mission Element Instances</div>
     <div class="pill-row">
-      ${((summary.element_instances || []).map((it)=>`<span class="pill">${esc(it.element_display_name || it.element_class || '-')} / ${esc(it.target_instance_id || '-')}</span>`).join('')) || '<span class="muted">No instances available.</span>'}
+      ${((summary.element_instances || []).map((it)=>`<span class="pill">${esc(normalizeStage3Text(it.element_display_name || it.element_class || '-'))} / ${esc(it.target_instance_id || '-')}</span>`).join('')) || '<span class="muted">No instances available.</span>'}
     </div>
     <div class="section-title">Preview and Video</div>
     <div class="preview-grid" style="margin-top:12px;">
@@ -5167,7 +5620,7 @@ async function loadMissionFinalMeta() {
   box.innerHTML = `<div class="kv">
     <div class="k">Visible Intervals</div><div>${esc(JSON.stringify(presence.intervals_sec || []))}</div>
     <div class="k">Interval Count</div><div>${esc((presence.intervals_sec || []).length)}</div>
-    <div class="k">Composite Instance</div><div>${esc(selfState.set_instance?.set_name || '-')}</div>
+    <div class="k">Composite Instance</div><div>${esc(normalizeStage3Text(selfState.set_instance?.set_name || '-'))}</div>
   </div>`;
 }
 async function generateMission() {
@@ -5286,7 +5739,7 @@ async function refreshState() {
     <div class="k">Candidate Count</div><div>${stats.candidate_count ?? 0}</div>
     <div class="k">Eligible for Single-Landmark</div><div>${stats.single_landmark_count ?? 0}</div>
     <div class="k">Eligible for Multi-Landmark</div><div>${stats.multi_landmark_count ?? 0}</div>
-    <div class="k">Composite Categories</div><div>${esc((stats.mission_families || []).join(', ') || '-')}</div>
+    <div class="k">Composite Families</div><div>${esc(normalizeStage3Text((stats.mission_families || []).join(', ') || '-'))}</div>
     <div class="k">Latest Manifest</div><div>${esc(data.latest_manifest_path || '-')}</div>
   </div>`;
 }
@@ -5297,7 +5750,7 @@ async function loadCandidates() {
   const rows = data.rows || [];
   document.getElementById('candidate_table').innerHTML = `<table><thead><tr><th>traj_id</th><th>mode</th><th>set</th><th>landmark</th><th>visible count</th><th>difficulty</th><th>status</th></tr></thead><tbody>${
     rows.map((row)=>`<tr onclick="loadCandidateDetail('${esc(row.traj_id)}')" style="cursor:pointer;">
-      <td>${esc(row.traj_id)}</td><td>${esc(row.mode)}</td><td>${esc(row.set_id || row.mission_subtype || row.mission_type || '-')}</td><td>${esc(row.landmark_category)} / ${esc(row.landmark_id)}</td><td>${esc(row.visible_count)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.review_status)}</td>
+      <td>${esc(row.traj_id)}</td><td>${esc(row.mode)}</td><td>${esc(row.set_id || row.mission_subtype || normalizeStage3Text(row.mission_type || '-'))}</td><td>${esc(row.landmark_category)} / ${esc(row.landmark_id)}</td><td>${esc(row.visible_count)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.review_status)}</td>
     </tr>`).join('') || '<tr><td colspan="7" class="empty">No candidate tasks available.</td></tr>'
   }</tbody></table>`;
 }
@@ -5324,15 +5777,15 @@ async function loadCandidateDetail(trajId) {
   }
   document.getElementById('candidate_detail').innerHTML = `
     <div class="toolbar">
-      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','approved')">Approved</button>
+      <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','approved')">Approve</button>
       <button class="warn" onclick="reviewCandidate('${esc(trajId)}','rejected')">Reject</button>
       <button class="secondary" onclick="reviewCandidate('${esc(trajId)}','pending')">Reset</button>
     </div>
     <div class="kv">
-      <div class="k">Composite</div><div>${esc(row.set_name || row.mission_type || '-')} / ${esc(row.set_id || row.mission_subtype || '-')}</div>
-      <div class="k">Atomic Sequence</div><div>${esc((row.element_sequence || row.low_level_sequence || []).join(', ') || '-')}</div>
+      <div class="k">Composite</div><div>${esc(normalizeStage3Text(row.set_name || row.mission_type || '-'))} / ${esc(row.set_id || row.mission_subtype || '-')}</div>
+      <div class="k">Atomic Sequence</div><div>${esc(normalizeStage3Text((row.element_sequence || row.low_level_sequence || []).join(', ') || '-'))}</div>
       <div class="k">Landmark Description</div><div>${esc(row.landmark_description || '-')}</div>
-      <div class="k">Flight Description</div><div>${esc(row.flight_description || '-')}</div>
+      <div class="k">Flight Description</div><div>${esc(normalizeStage3Text(row.flight_description || '-'))}</div>
     </div>
     <div class="section-title">Task Summary</div>
     <div class="mini-kv">
@@ -5396,15 +5849,15 @@ async function loadManifestDetail() {
   document.getElementById('manifest_summary').innerHTML = `<div class="kv">
     <div class="k">Sample Count</div><div>${s.sample_count ?? 0}</div>
     <div class="k">Mission Count</div><div>${s.mission_count ?? 0}</div>
-    <div class="k">Landmarks</div><div>${s.landmark_count ?? 0}</div>
+    <div class="k">Landmark Count</div><div>${s.landmark_count ?? 0}</div>
     <div class="k">Categories</div><div>${esc((s.categories || []).join(', ') || '-')}</div>
     <div class="k">Task Groups</div><div>${esc((s.task_groups || []).join(', ') || '-')}</div>
-    <div class="k">Task Types</div><div>${esc((s.task_names || []).join(', ') || '-')}</div>
+    <div class="k">Task Types</div><div>${esc(normalizeStage3Text((s.task_names || []).join(', ') || '-'))}</div>
     <div class="k">Difficulty</div><div>${esc((s.difficulty_bands || []).join(', ') || '-')}</div>
   </div>`;
   const rows = (data.samples || []);
   document.getElementById('manifest_sample_list').innerHTML = `<table><thead><tr><th>sample_id</th><th>task</th><th>difficulty</th><th>landmark</th></tr></thead><tbody>${
-    rows.map((row)=>`<tr onclick="selectManifestSample('${esc(row.sample_id)}')" style="cursor:pointer;${String(state.activeManifestSampleId)===String(row.sample_id)?'background:var(--panel-soft);':''}"><td>${esc(row.sample_id)}</td><td>${esc(row.task_display_name || row.form)}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.landmark_id)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">No samples available.</td></tr>'
+    rows.map((row)=>`<tr onclick="selectManifestSample('${esc(row.sample_id)}')" style="cursor:pointer;${String(state.activeManifestSampleId)===String(row.sample_id)?'background:var(--panel-soft);':''}"><td>${esc(row.sample_id)}</td><td>${esc(normalizeStage3Text(row.task_display_name || row.form))}</td><td>${esc(row.difficulty_band)}</td><td>${esc(row.landmark_id)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">No samples available.</td></tr>'
   }</tbody></table>`;
   renderManifestSample(rows.find((row)=>String(row.sample_id)===String(state.activeManifestSampleId)) || rows[0] || null);
   renderFooter();
@@ -5424,13 +5877,13 @@ function renderManifestSample(row) {
     : (row.gold_environment_answer ? `<pre style="white-space:pre-wrap;">${esc(JSON.stringify(row.gold_environment_answer, null, 2))}</pre>` : '-');
   const optionText = choiceOptions.length
     ? `<div class="option-grid">${choiceOptions.map((it)=>`<div class="option-card"><div><strong>${esc(it.option_id || '-')}</strong></div><div>${esc(it.label || '-')}</div></div>`).join('')}</div>`
-    : '<div class="muted">This task does not use discrete answer options.</div>';
+    : '<div class="muted">This task has no discrete options.</div>';
   const behaviorText = (row.behavior_intervals_sec || []).map((it)=>`<div style="margin-bottom:8px;"><strong>${esc(it.event_label || it.behavior_id || '-')}</strong><div class="muted">Intervals: ${renderIntervals(it.intervals_sec || [])}</div></div>`).join('') || '-';
   const envAnswerText = row.task_group === 'environmental'
     ? `<div class="summary-item"><strong>Visible Count</strong>: ${esc(row.visible_count ?? 0)}</div>
        <div class="summary-item"><strong>Visible Intervals</strong>: ${renderIntervals(row.visible_intervals_sec || [])}</div>`
     : '';
-  const referenceImg = row.reference_image_with_bbox ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Query Landmark Reference Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox)}"></div>` : '';
+  const referenceImg = row.reference_image_with_bbox ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Reference Landmark Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.reference_image_with_bbox)}"></div>` : '';
   const overviewImg = row.overview_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Overview Image</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.overview_image)}"></div>` : '';
   const keyframeImg = row.keyframe_board_image ? `<div class="thumb-box"><div class="muted" style="margin-bottom:4px;">Keyframe Board</div><img class="preview" src="/artifact?path=${encodeURIComponent(row.keyframe_board_image)}"></div>` : '';
   const videoPlayer = renderVideoPlayer(row.video_path || row.video_web_path, row.video_web_path || row.video_path);
@@ -5439,12 +5892,12 @@ function renderManifestSample(row) {
       <h3 style="margin-top:0;">Sample Overview</h3>
       <div class="kv">
         <div class="k">sample_id</div><div>${esc(row.sample_id)}</div>
-        <div class="k">Task Types</div><div>${esc(row.task_group)} / ${esc(row.task_display_name || row.form)} / ${esc(row.difficulty_band)}</div>
+        <div class="k">Task Type</div><div>${esc(row.task_group)} / ${esc(normalizeStage3Text(row.task_display_name || row.form))} / ${esc(row.difficulty_band)}</div>
         <div class="k">mission_id</div><div>${esc(row.mission_id || '-')}</div>
-        <div class="k">Composite / Task</div><div>${esc(row.set_id || '-')} / ${esc(row.task_type_label || '-')}</div>
-        <div class="k">Query Landmark</div><div>${esc(row.landmark_id)} / ${esc(row.landmark_category || '-')} / ${esc(row.landmark_subcategory || '-')}</div>
+        <div class="k">Composite / Task</div><div>${esc(row.set_id || '-')} / ${esc(normalizeStage3Text(row.task_type_label || '-'))}</div>
+        <div class="k">Queried Landmark</div><div>${esc(row.landmark_id)} / ${esc(row.landmark_category || '-')} / ${esc(row.landmark_subcategory || '-')}</div>
         <div class="k">Landmark Description</div><div>${esc(row.landmark_description || '-')}</div>
-        <div class="k">Flight Description</div><div>${esc(row.flight_description || '-')}</div>
+        <div class="k">Flight Description</div><div>${esc(normalizeStage3Text(row.flight_description || '-'))}</div>
         <div class="k">Video Path</div><div style="word-break:break-all;">${esc(row.video_path || row.video_web_path || '-')}</div>
         <div class="k">Candidate Source</div><div style="word-break:break-all;">${esc(row.candidate_path || '-')}</div>
         <div class="k">Video Specs</div><div>${esc(row.video_width || '-')} x ${esc(row.video_height || '-')} / ${esc(row.fps || '-')} FPS / ${esc(row.frame_count || '-')} frames</div>
@@ -5480,7 +5933,7 @@ async function loadExperimentManifestSummary() {
   if(!path) return;
   const data = await api(`/api/stage3_manifest?path=${encodeURIComponent(path)}`);
   const s = data.summary || {};
-  document.getElementById('experiment_manifest_summary').innerText = `Sample Count=${s.sample_count ?? 0}; Mission Count=${s.mission_count ?? 0}; Landmarks=${s.landmark_count ?? 0}; Task Groups=${(s.task_groups || []).join(', ') || '-'}; Task Types=${(s.task_names || []).join(', ') || '-'}; Difficulty=${(s.difficulty_bands || []).join(', ') || '-'}`;
+  document.getElementById('experiment_manifest_summary').innerText = `Samples=${s.sample_count ?? 0}; Missions=${s.mission_count ?? 0}; Landmarks=${s.landmark_count ?? 0}; Task Groups=${normalizeStage3Text((s.task_groups || []).join(', ') || '-')}; Task Types=${normalizeStage3Text((s.task_names || []).join(', ') || '-')}; Difficulty=${(s.difficulty_bands || []).join(', ') || '-'}`;
 }
 async function startExperiment() {
   const body = {
@@ -5531,8 +5984,8 @@ async function loadReportDetail() {
     <div class="k">Atomic Instance F1</div><div>${fmtPct(s.element_instance_f1)}</div>
     <div class="k">Self Temporal Localization F1@0.5</div><div>${fmtPct(s['self_temporal_loc_f1@0.5'])}</div>
     <div class="k">Self Temporal Localization mean tIoU</div><div>${fmtPct(s['self_temporal_loc_mean_tIoU'])}</div>
-    <div class="k">Count ±1 Accuracy</div><div>${fmtPct(s.count_within1_acc)}</div>
-    <div class="k">Interval F1@0.5</div><div>${fmtPct(s['segment_f1@0.5'])}</div>
+    <div class="k">Count Accuracy within ±1</div><div>${fmtPct(s.count_within1_acc)}</div>
+    <div class="k">Segment F1@0.5</div><div>${fmtPct(s['segment_f1@0.5'])}</div>
     <div class="k">Environmental mean tIoU</div><div>${fmtPct(s['mean_best_tIoU'])}</div>
   </div>`;
   const rows = data.rows || [];
@@ -5542,10 +5995,10 @@ async function loadReportDetail() {
     const rows = Array.isArray(items) ? items : [];
     if(!rows.length) return '<div class="muted">-</div>';
     return rows.map((item)=>`
-      <div class="mini-card" style="margin-bottom:8px;">
-        <div><strong>${esc(item.option_id || '-')}</strong> / ${esc(item.label || '-')}</div>
-        <div class="muted">Intervals: ${renderIntervals(item.intervals_sec || [])}</div>
-      </div>`).join('');
+        <div class="mini-card" style="margin-bottom:8px;">
+          <div><strong>${esc(item.option_id || '-')}</strong> / ${esc(item.label || '-')}</div>
+          <div class="muted">Intervals: ${renderIntervals(item.intervals_sec || [])}</div>
+        </div>`).join('');
   }
   document.getElementById('report_rows').innerHTML = Object.entries(byTask).map(([task, taskRows])=>{
     const isEnv = task === 'env_visibility_reasoning';
@@ -5649,9 +6102,9 @@ async function loadMetricsMatrix() {
   }
   if(groupHolder) {
     groupHolder.innerHTML = [
-      barSection('Primary Metrics by Task Type', grouped.form),
-      barSection('Primary Metrics by Mode', grouped.mode),
-      barSection('Primary Metrics by Difficulty', grouped.difficulty_band),
+      barSection('Main Metric by Task Type', grouped.form),
+      barSection('Main Metric by Mode', grouped.mode),
+      barSection('Main Metric by Difficulty', grouped.difficulty_band),
     ].join('');
   }
   const groups = [];
@@ -5677,7 +6130,7 @@ async function loadMetricsMatrix() {
     const progressRows = progressData.rows || [];
     const head = progressScenes.map((scene)=>`<th>${esc(scene.scene_id)}</th>`).join('');
     const totalCols = 2 + progressScenes.length + 1;
-    progressHolder.innerHTML = `<table><thead><tr><th>Model</th>${head}<th>Overall</th></tr></thead><tbody>${
+    progressHolder.innerHTML = `<table><thead><tr><th>Model</th>${head}<th>Summary</th></tr></thead><tbody>${
       progressRows.map((row)=>`<tr><td>${esc(row.model)}</td>${progressScenes.map((scene)=>{ const cell = row.scenes?.[scene.scene_id] || {}; return `<td>${esc(cell.completed ?? 0)} / ${esc(cell.total ?? 0)} (${fmtPct(cell.ratio)})</td>`; }).join('')}<td>${esc(row.total_completed ?? 0)} / ${esc(row.total_samples ?? 0)} (${fmtPct(row.total_ratio)})</td></tr>`).join('') || `<tr><td colspan="${totalCols}" class="empty">No experiment progress available.</td></tr>`
     }</tbody></table>`;
   }

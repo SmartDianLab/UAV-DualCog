@@ -14,7 +14,7 @@ import sys
 import threading
 import time
 from collections import defaultdict, deque
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, ThreadPoolExecutor, as_completed, wait
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -52,8 +52,8 @@ except Exception:  # pragma: no cover
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_DIR = Path(__file__).resolve().parent
-COMMON_RUNTIME_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_api_runtime.yaml"
-COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_stage_configs.yaml"
+COMMON_RUNTIME_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_api_runtime.yaml"
+COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_stage_configs.yaml"
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 if str(SCRIPT_DIR) not in sys.path:
@@ -66,14 +66,16 @@ from api_common import (
     detect_model_family,
     load_api_registry,
     pick_first_text,
+    run_responses_reasoning_stream_request,
     resolve_default_model,
     resolve_model_api_endpoint,
+    model_disallows_temperature,
     should_inline_system_prompt_for_multimodal,
+    should_use_responses_reasoning_stream,
 )
 from pipeline_common import list_task_pipeline_tasks, resolve_task_pipeline_scene_root
 from pipeline_common import append_unified_scene_log, build_unified_bridge_config, build_unified_stage_event
 from pipeline_common import ensure_single_airsim_process, format_unified_startup_ports_message, prepare_airsim_runtime_unified
-from pipeline_common import resolve_scene_artifact_path
 from image_compression_utils import compression_cfg as build_image_compression_cfg
 from image_compression_utils import preferred_output_path, save_bgr_image, save_pil_image
 from sim_bridge.factory import create_bridge
@@ -299,7 +301,7 @@ def _object_to_observer_label(obj_label: str) -> str:
 
 
 def _resolve_stage4_root(config: dict[str, Any], *, scene_root: Path) -> Path:
-    dir_name = resolve_output_dir_name(config, key="stage4_qa_dir", default="image_tasks")
+    dir_name = resolve_output_dir_name(config, key="stage4_qa_dir", default="qa")
     task_cfg = config.get("task", {}) or {}
     scene_id = str(task_cfg.get("scene_id", "") or "").strip()
     engine = str(task_cfg.get("engine", "airsim") or "airsim").strip().lower()
@@ -315,7 +317,7 @@ def _resolve_stage4_root(config: dict[str, Any], *, scene_root: Path) -> Path:
 def _resolve_stage2_review_paths(config: dict[str, Any], *, scene_root: Path, scene_id: str) -> tuple[Path, Path]:
     review_dir = scene_root / resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
     raw_dir = scene_root / resolve_output_dir_name(config, key="stage2_raw_dir", default="landmarks_raw")
-    valid_instances_path = resolve_scene_artifact_path(review_dir, scene_id, ".valid_instances.json")
+    valid_instances_path = review_dir / f"{scene_id}.valid_instances.json"
     return raw_dir, valid_instances_path
 
 
@@ -396,6 +398,12 @@ def _stage4_cfg(config: dict[str, Any]) -> dict[str, Any]:
     return merged
 
 
+def _experiment_runtime_cfg(config: dict[str, Any]) -> dict[str, Any]:
+    merged = dict((_load_common_runtime_cfg().get("experiment_runtime", {}) or {}))
+    merged.update(dict(config.get("experiment_runtime", {}) or {}))
+    return merged
+
+
 def _stage4_render_requests_root(stage4_root: Path) -> Path:
     return _ensure_dir(stage4_root / "render_requests")
 
@@ -406,7 +414,7 @@ def _stage4_render_requests_paths(stage4_root: Path, generation_id: str, scene_i
 
 
 def _discover_scene_catalog(config_path: Path | None = None) -> list[dict[str, Any]]:
-    cfg_dir = (config_path.parent if config_path is not None else (WORKSPACE_ROOT / "configs" / "uav_dualcog")).resolve()
+    cfg_dir = (config_path.parent if config_path is not None else (WORKSPACE_ROOT / "configs" / "flightmvstg")).resolve()
     items: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
     for path in sorted(cfg_dir.glob("task_*.yaml")):
@@ -576,7 +584,24 @@ def _label_space_for_difficulty(difficulty: str) -> list[str]:
 def _eligible_views_for_definition(views: list[dict[str, Any]], definition: str, difficulty: str) -> list[dict[str, Any]]:
     label_space = set(_label_space_for_difficulty(difficulty))
     label_key = "object_label" if definition == "Object-Centric View" else "observer_label"
-    return [view for view in views if str(view.get(label_key, "")) in label_space and str(view.get("mode", "orbit")) == "orbit"]
+    if str(difficulty) != "4way":
+        return [view for view in views if str(view.get(label_key, "")) in label_space and str(view.get("mode", "orbit")) == "orbit"]
+    coarse = {
+        "Front-Left": "Front",
+        "Front-Right": "Front",
+        "Back-Left": "Back",
+        "Back-Right": "Back",
+    }
+    eligible: list[dict[str, Any]] = []
+    for source in views:
+        if str(source.get("mode", "orbit")) != "orbit":
+            continue
+        view = dict(source)
+        view["object_label"] = coarse.get(str(view.get("object_label", "")), str(view.get("object_label", "")))
+        view["observer_label"] = coarse.get(str(view.get("observer_label", "")), str(view.get("observer_label", "")))
+        if str(view.get(label_key, "")) in label_space:
+            eligible.append(view)
+    return eligible
 
 
 def _task_kind(task_type: str) -> str:
@@ -1392,6 +1417,10 @@ def _build_stage4_bridge_config(config: dict[str, Any], *, vehicle_name: str) ->
         default_height=int(stage4_cfg.get("env_capture_height", stage4_cfg.get("api_upload_max_height", 480)) or 480),
         default_fov=72.0,
     )
+    # Enforce capture from the configured camera only (no camera-name fallback).
+    bridge_cfg["camera_name"] = str(bridge_cfg.get("camera_name", "front_0") or "front_0")
+    bridge_cfg["fallback_camera_names"] = []
+    bridge_cfg["strict_vehicle_name"] = True
     bridge_cfg["camera_capture_image_types"] = [0]
     return engine, bridge_cfg
 
@@ -1406,25 +1435,46 @@ def _capture_env_requests(
 ) -> dict[str, dict[str, Any]]:
     if not requests:
         return {}
+    results: dict[str, dict[str, Any]] = {}
+    capture_requests: list[dict[str, Any]] = []
+    for item in requests:
+        existing_image = str(item.get("existing_image", "") or "").strip()
+        existing_bbox = list(item.get("bbox_xyxy_norm", []) or [])
+        if existing_image and len(existing_bbox) == 4:
+            results[str(item["request_id"])] = {
+                "request_id": str(item["request_id"]),
+                "image": _path_for_json(Path(existing_image)),
+                "bbox_xyxy_norm": existing_bbox,
+                "direction_label": str(item.get("direction_label", "Front")),
+            }
+            if callable(progress_cb):
+                progress_cb(len(results), len(requests), f"reused registered view {item['request_id']}")
+        else:
+            capture_requests.append(dict(item))
+    if not capture_requests:
+        return results
     if cv2 is None:
         raise RuntimeError("opencv(cv2) required for stage4 env capture")
     engine, base_bridge_cfg = _build_stage4_bridge_config(config, vehicle_name="drone_1")
-    if engine != "airsim":
-        raise RuntimeError("stage4 env capture currently supports airsim only")
     scene_root = resolve_scene_root(config, scene_id=scene_id, engine=engine)
     stage4_cfg = _stage4_cfg(config)
-    ensure_single_airsim_process("stage4_env_capture")
-    worker_count = min(len(requests), _stage4_env_capture_workers(config))
+    worker_count = min(len(capture_requests), _stage4_env_capture_workers(config))
+    if engine == "airsim":
+        ensure_single_airsim_process("stage4_env_capture")
+    else:
+        # HTTP-backed renderers share one loaded scene and are serialized through
+        # the same BaseSimBridge contract used by Stage 3.
+        worker_count = 1
     vehicles = [f"drone_{idx+1}" for idx in range(worker_count)]
     capture_width = int(stage4_cfg.get("env_capture_width", stage4_cfg.get("api_upload_max_width", 640)) or 640)
     capture_height = int(stage4_cfg.get("env_capture_height", stage4_cfg.get("api_upload_max_height", 480)) or 480)
     prepare_msg = (
-        f"[stage4][airsim] preparing runtime: requests={len(requests)} "
+        f"[stage4][{engine}] preparing runtime: requests={len(capture_requests)} "
         f"workers={worker_count} image_size={capture_width}x{capture_height}"
     )
     print(prepare_msg)
     if callable(progress_cb):
-        progress_cb(0, max(1, len(request_list) if 'request_list' in locals() else len(requests)), prepare_msg)
+        progress_cb(len(results), max(1, len(requests)), prepare_msg)
     append_unified_scene_log(
         config=config,
         scene_root=scene_root,
@@ -1438,20 +1488,25 @@ def _capture_env_requests(
             engine=engine,
             status="starting",
             extra={
-                "request_count": int(len(requests)),
+                "request_count": int(len(capture_requests)),
                 "worker_count": int(worker_count),
                 "image_width": int(capture_width),
                 "image_height": int(capture_height),
             },
         ),
     )
-    runtime_port, bootstrap_bridge, launched_by_bridge, configured_port = prepare_airsim_runtime_unified(
-        config=config,
-        scene_id=scene_id,
-        base_bridge_cfg=base_bridge_cfg,
-        vehicle_name=str(vehicles[0]),
-        vehicle_names=[str(v) for v in vehicles],
-    )
+    configured_port = int(base_bridge_cfg.get("sim_port", 0) or 0)
+    runtime_port = int(configured_port)
+    bootstrap_bridge: Any | None = None
+    launched_by_bridge = False
+    if engine == "airsim":
+        runtime_port, bootstrap_bridge, launched_by_bridge, configured_port = prepare_airsim_runtime_unified(
+            config=config,
+            scene_id=scene_id,
+            base_bridge_cfg=base_bridge_cfg,
+            vehicle_name=str(vehicles[0]),
+            vehicle_names=[str(v) for v in vehicles],
+        )
     startup_port_msg = format_unified_startup_ports_message(
         stage="stage4",
         engine=engine,
@@ -1461,7 +1516,7 @@ def _capture_env_requests(
     )
     print(startup_port_msg)
     if callable(progress_cb):
-        progress_cb(0, max(1, len(request_list) if 'request_list' in locals() else len(requests)), startup_port_msg)
+        progress_cb(len(results), max(1, len(requests)), startup_port_msg)
     append_unified_scene_log(
         config=config,
         scene_root=scene_root,
@@ -1478,21 +1533,20 @@ def _capture_env_requests(
                 "configured_sim_port": int(configured_port),
                 "runtime_sim_port": int(runtime_port),
                 "launched_by_bridge": bool(launched_by_bridge),
-                "request_count": int(len(requests)),
+                "request_count": int(len(capture_requests)),
                 "worker_count": int(worker_count),
                 "image_width": int(capture_width),
                 "image_height": int(capture_height),
             },
         ),
     )
-    results: dict[str, dict[str, Any]] = {}
-    done_counter = {"done": 0}
+    done_counter = {"done": len(results)}
     done_lock = threading.Lock()
-    request_list = [dict(row) for row in list(requests or [])]
+    request_list = [dict(row) for row in capture_requests]
     worker_segments = _split_contiguous_segments(total_count=len(request_list), worker_count=worker_count)
     try:
         worker_ready_msg = (
-            f"[stage4][airsim] scheduling worker bridges: workers={worker_count} "
+            f"[stage4][{engine}] scheduling worker bridges: workers={worker_count} "
             f"vehicles={','.join(vehicles)}"
         )
         print(worker_ready_msg)
@@ -1517,7 +1571,7 @@ def _capture_env_requests(
             ),
         )
         capture_start_msg = (
-            f"[stage4][airsim] starting env capture: requests={len(requests)} "
+            f"[stage4][{engine}] starting env capture: requests={len(capture_requests)} "
             f"workers={worker_count}"
         )
         print(capture_start_msg)
@@ -1536,7 +1590,7 @@ def _capture_env_requests(
                 engine=engine,
                 status="running",
                 extra={
-                    "request_count": int(len(requests)),
+                    "request_count": int(len(capture_requests)),
                     "worker_count": int(worker_count),
                 },
             ),
@@ -1552,7 +1606,7 @@ def _capture_env_requests(
             local_cfg["auto_select_port_on_conflict"] = False
             bridge = create_bridge(engine=engine, scene_id=scene_id, config=local_cfg)
             worker_connect_msg = (
-                f"[stage4][airsim] worker connected: worker={worker_id} "
+                f"[stage4][{engine}] worker connected: worker={worker_id} "
                 f"vehicle={vehicles[worker_id]} runtime_sim_port={runtime_port}"
             )
             print(worker_connect_msg)
@@ -1579,6 +1633,14 @@ def _capture_env_requests(
             )
             out_rows: list[dict[str, Any]] = []
             try:
+                if hasattr(bridge, "set_camera_fov"):
+                    try:
+                        bridge.set_camera_fov(
+                            fov_deg=float((config.get("camera", {}) or {}).get("fov", 72.0) or 72.0),
+                            vehicle_or_actor=str(vehicles[worker_id]),
+                        )
+                    except Exception:
+                        pass
                 for item in request_list[st:ed]:
                     eye = np.asarray(item["eye"], dtype=np.float32)
                     forward = np.asarray(item["forward"], dtype=np.float32)
@@ -1651,10 +1713,11 @@ def _capture_env_requests(
                 for row in fut.result():
                     results[str(row["request_id"])] = dict(row)
     finally:
-        try:
-            bootstrap_bridge.shutdown()
-        except Exception:
-            pass
+        if bootstrap_bridge is not None:
+            try:
+                bootstrap_bridge.shutdown()
+            except Exception:
+                pass
     return results
 
 
@@ -1680,6 +1743,41 @@ def _build_env_request(
         return None
     observed_pool = list(observed_pool)
     rng.shuffle(observed_pool)
+    stage4_cfg = _stage4_cfg(config)
+    engine = str((config.get("task", {}) or {}).get("engine", "airsim") or "airsim").strip().lower()
+    if engine == "gsplat" and bool(stage4_cfg.get("reuse_registered_env_views", True)):
+        allowed_labels = set(_env_position_label_space_for_difficulty(difficulty))
+        observed_view = next(
+            (
+                view
+                for view in observed_pool
+                if str(view.get("observer_label", "") or "") in allowed_labels
+                and len(list(view.get("bbox_xyxy_norm", []) or [])) == 4
+                and Path(str(view.get("path", "") or "")).exists()
+            ),
+            None,
+        )
+        if observed_view is None:
+            return None
+        stage4_img_cfg = build_image_compression_cfg(stage4_cfg)
+        sample_prefix = f"{scene_id}_{entry['instance_id']}_env_shared_{difficulty}_{sample_idx:06d}"
+        overlay_dir = _ensure_dir(stage4_root / "assets" / "reference_bbox" / entry["instance_id"])
+        ref_overlay_path = _draw_reference_bbox(
+            source_image=Path(source_view["path"]),
+            bbox_xyxy=list(source_view["bbox_xyxy_px"]),
+            output_path=overlay_dir / f"{sample_prefix}_ref.jpg",
+            cfg=stage4_img_cfg,
+        )
+        return {
+            "request_id": sample_prefix,
+            "existing_image": str(Path(str(observed_view["path"])).resolve()),
+            "direction_label": str(observed_view["observer_label"]),
+            "reference_view": source_view,
+            "observed_view": observed_view,
+            "bbox_xyxy_norm": list(observed_view["bbox_xyxy_norm"]),
+            "reference_overlay": str(ref_overlay_path.resolve()),
+            "sample_prefix": sample_prefix,
+        }
     center_3d = list(entry.get("center_3d", []) or [])
     bbox_list = _bbox_dict_to_list(entry.get("bbox_3d", {}))
     if len(center_3d) < 3 or len(bbox_list) < 7:
@@ -1772,50 +1870,66 @@ def _stage4_prepare_entry_worker(payload: dict[str, Any]) -> dict[str, Any]:
     engine = str(payload.get("engine", "") or "")
     config = dict(payload.get("config", {}) or {})
     seed = int(payload.get("seed", 7) or 7)
+    qa_samples_per_difficulty = max(1, int(payload.get("qa_samples_per_difficulty", 1) or 1))
+    generation_retry_limit = max(1, int(_stage4_cfg(config).get("generation_retry_limit", 12) or 12))
     local_rng = random.Random(int(seed) + entry_idx * 1009 + 17)
     bundle_rows: list[dict[str, Any]] = []
     env_req_rows: list[dict[str, Any]] = []
     pending_rows: list[dict[str, Any]] = []
-    local_sample_idx = 1 + entry_idx * 4
-    for difficulty_idx, difficulty in enumerate(difficulty_plan):
-        sample_idx = local_sample_idx + difficulty_idx * 2
-        if "self_where" in selected_task_types or "self_what" in selected_task_types:
-            self_where, self_what = _sample_self_where_pair(
-                entry=entry,
-                difficulty=str(difficulty),
-                rng=local_rng,
-                reference_main_only=reference_main_only,
-                stage4_root=stage4_root,
-                scene_id=scene_id,
-                engine=engine,
-                sample_idx=sample_idx,
-                config=config,
-            )
-            if self_where is not None and "self_where" in selected_task_types:
-                bundle_rows.append(self_where)
-            if self_what is not None and "self_what" in selected_task_types:
-                bundle_rows.append(self_what)
-        if "env_where" in selected_task_types or "env_how" in selected_task_types:
-            env_request = _build_env_request(
-                entry=entry,
-                difficulty=str(difficulty),
-                rng=local_rng,
-                stage4_root=stage4_root,
-                scene_id=scene_id,
-                sample_idx=sample_idx + 1,
-                config=config,
-            )
-            if env_request is not None:
-                env_req_rows.append(env_request)
-                pending_rows.append(
-                    {
-                        "entry": entry,
-                        "difficulty": str(difficulty),
-                        "sample_idx": sample_idx + 1,
-                        "request_id": str(env_request["request_id"]),
-                        "selected_task_types": list(selected_task_types),
-                    }
-                )
+    sample_idx_cursor = 1 + entry_idx * 10000
+    for difficulty in difficulty_plan:
+        for _ in range(qa_samples_per_difficulty):
+            sample_idx = sample_idx_cursor
+            sample_idx_cursor += 2
+            if "self_where" in selected_task_types or "self_what" in selected_task_types:
+                self_where = None
+                self_what = None
+                for _attempt in range(generation_retry_limit):
+                    candidate_where, candidate_what = _sample_self_where_pair(
+                        entry=entry,
+                        difficulty=str(difficulty),
+                        rng=local_rng,
+                        reference_main_only=reference_main_only,
+                        stage4_root=stage4_root,
+                        scene_id=scene_id,
+                        engine=engine,
+                        sample_idx=sample_idx,
+                        config=config,
+                    )
+                    where_ready = "self_where" not in selected_task_types or candidate_where is not None
+                    what_ready = "self_what" not in selected_task_types or candidate_what is not None
+                    if where_ready and what_ready:
+                        self_where, self_what = candidate_where, candidate_what
+                        break
+                if self_where is not None and "self_where" in selected_task_types:
+                    bundle_rows.append(self_where)
+                if self_what is not None and "self_what" in selected_task_types:
+                    bundle_rows.append(self_what)
+            if "env_where" in selected_task_types or "env_how" in selected_task_types:
+                env_request = None
+                for _attempt in range(generation_retry_limit):
+                    env_request = _build_env_request(
+                        entry=entry,
+                        difficulty=str(difficulty),
+                        rng=local_rng,
+                        stage4_root=stage4_root,
+                        scene_id=scene_id,
+                        sample_idx=sample_idx + 1,
+                        config=config,
+                    )
+                    if env_request is not None:
+                        break
+                if env_request is not None:
+                    env_req_rows.append(env_request)
+                    pending_rows.append(
+                        {
+                            "entry": entry,
+                            "difficulty": str(difficulty),
+                            "sample_idx": sample_idx + 1,
+                            "request_id": str(env_request["request_id"]),
+                            "selected_task_types": list(selected_task_types),
+                        }
+                    )
     return {
         "entry_idx": int(entry_idx),
         "samples": bundle_rows,
@@ -1837,6 +1951,7 @@ def generate_manifest(
     task_types: list[str] | None = None,
     landmark_categories: list[str] | None = None,
     selected_landmark_ids: list[str] | None = None,
+    qa_samples_per_difficulty: int = 1,
     progress_callback: Any | None = None,
 ) -> dict[str, Any]:
     scene_root = resolve_scene_root(config, scene_id=scene_id, engine=engine, workspace_root=WORKSPACE_ROOT)
@@ -1879,6 +1994,7 @@ def generate_manifest(
                         "entry": entry,
                         "difficulty_plan": ["4way", "8way"] if _entry_has_diagonal_view(entry) else ["4way", "4way"],
                         "selected_task_types": selected_task_types,
+                        "qa_samples_per_difficulty": int(qa_samples_per_difficulty),
                         "reference_main_only": bool(reference_main_only),
                         "stage4_root": str(stage4_root),
                         "scene_id": scene_id,
@@ -1898,6 +2014,7 @@ def generate_manifest(
                         "entry": entry,
                         "difficulty_plan": ["4way", "8way"] if _entry_has_diagonal_view(entry) else ["4way", "4way"],
                         "selected_task_types": selected_task_types,
+                        "qa_samples_per_difficulty": int(qa_samples_per_difficulty),
                         "reference_main_only": bool(reference_main_only),
                         "stage4_root": str(stage4_root),
                         "scene_id": scene_id,
@@ -2508,7 +2625,13 @@ def _resolve_api_settings(
     ).strip()
     if not model:
         raise RuntimeError("missing api_key/model for stage4 experiment")
-    model_controls = build_model_request_controls(model)
+    model_controls = build_model_request_controls(
+        model,
+        api_source=pick_first_text(
+            overrides.get("api_source"),
+            _pick_cfg("api_source"),
+        ),
+    )
     route_model = str(model_controls["base_model"] or model).strip()
 
     endpoint = resolve_model_api_endpoint(
@@ -2529,6 +2652,7 @@ def _resolve_api_settings(
             _pick_cfg("api_key"),
         ),
     )
+    model_controls = build_model_request_controls(model, api_source=str(endpoint.get("api_source", "") or ""))
     api_key = str(endpoint.get("api_key", "") or "").strip()
     api_base = pick_first_text(endpoint.get("api_base"), "https://api.siliconflow.cn/v1")
     if not api_key:
@@ -2589,6 +2713,20 @@ def _resolve_api_settings(
     request_model_override = pick_first_text(overrides.get("request_model"))
     if request_model_override:
         request_model = request_model_override
+    reasoning_effort_override = str(overrides.get("reasoning_effort", "") or "").strip().lower()
+    if reasoning_effort_override and model_controls.get("family") == "openai":
+        request_extra_body = dict(model_controls.get("extra_body", {}) or {})
+        reasoning_payload = dict(request_extra_body.get("reasoning", {}) or {})
+        reasoning_payload["effort"] = reasoning_effort_override
+        request_extra_body["reasoning"] = reasoning_payload
+        model_controls["extra_body"] = request_extra_body
+    elif reasoning_effort_override and model_controls.get("family") == "claude":
+        budget_by_effort = {"low": 1024, "medium": 2048, "high": 4096}
+        budget_tokens = int(budget_by_effort.get(reasoning_effort_override, 1024))
+        request_extra_body = dict(model_controls.get("extra_body", {}) or {})
+        request_extra_body.pop("reasoning", None)
+        request_extra_body["thinking"] = {"type": "enabled", "budget_tokens": budget_tokens}
+        model_controls["extra_body"] = request_extra_body
     upload_resize_enabled = bool(
         overrides.get(
             "upload_resize_enabled",
@@ -2619,6 +2757,14 @@ def _resolve_api_settings(
     timeout_s = float(overrides.get("timeout_s", stage4_cfg.get("timeout_s", 30.0)) or 30.0)
     temperature = float(overrides.get("temperature", stage4_cfg.get("temperature", 0.2)) or 0.2)
     max_tokens = int(overrides.get("max_tokens", stage4_cfg.get("max_tokens", 500)) or 500)
+    for key, value in dict(model_controls.get("request_overrides", {}) or {}).items():
+        if key == "max_tokens":
+            max_tokens = max(int(max_tokens or 0), int(value or 0))
+    if reasoning_effort_override and model_controls.get("family") == "claude":
+        thinking_cfg = dict((model_controls.get("extra_body", {}) or {}).get("thinking", {}) or {})
+        budget_tokens = int(thinking_cfg.get("budget_tokens", 0) or 0)
+        if budget_tokens > 0:
+            max_tokens = max(max_tokens, budget_tokens * 2)
     request_retry_attempts = int(overrides.get("request_retry_attempts", stage4_cfg.get("request_retry_attempts", 3)) or 3)
     request_retry_backoff_sec = float(overrides.get("request_retry_backoff_sec", stage4_cfg.get("request_retry_backoff_sec", 2.0)) or 2.0)
     request_retry_forever = bool(overrides.get("request_retry_forever", stage4_cfg.get("request_retry_forever", False)))
@@ -2774,6 +2920,10 @@ def _is_retryable_request_failure(error_text: str) -> bool:
         "timeout",
         "timed out",
         "empty_model_response",
+        "too many requests",
+        "rate limit",
+        "limitation",
+        "429",
         "connection error",
         "connection reset",
         "connection aborted",
@@ -2802,6 +2952,13 @@ def _is_retryable_request_failure(error_text: str) -> bool:
     if any(marker in text for marker in fatal_markers):
         return False
     return any(marker in text for marker in retry_markers)
+
+
+def _is_rate_limited_request_failure(error_text: str) -> bool:
+    text = str(error_text or "").strip().lower()
+    if not text:
+        return False
+    return any(marker in text for marker in ["429", "too many requests", "rate limit", "limitation"])
 
 
 def _messages_preview(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -2843,6 +3000,12 @@ def _extract_response_text(resp: Any) -> tuple[str, dict[str, Any]]:
                     chunks.append(item)
                     continue
                 if isinstance(item, dict):
+                    item_type = str(item.get("type", "") or "").strip().lower()
+                    if item_type in {"summary_text", "reasoning_text"}:
+                        item_text = item.get("text", None)
+                        if isinstance(item_text, str):
+                            chunks.append(item_text)
+                            continue
                     text = item.get("text", None)
                     if isinstance(text, str):
                         chunks.append(text)
@@ -2859,6 +3022,9 @@ def _extract_response_text(resp: Any) -> tuple[str, dict[str, Any]]:
                         chunks.append(content)
                     elif isinstance(content, list):
                         chunks.append(_collect_text(content))
+                    summary = item.get("summary", None)
+                    if summary is not None:
+                        chunks.append(_collect_text(summary))
                     continue
                 text_attr = getattr(item, "text", None)
                 if isinstance(text_attr, str):
@@ -2869,7 +3035,7 @@ def _extract_response_text(resp: Any) -> tuple[str, dict[str, Any]]:
                     chunks.append(_collect_text(content_attr))
             return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
         if isinstance(value, dict):
-            for key in ("text", "output_text", "content"):
+            for key in ("text", "output_text", "content", "summary"):
                 if key in value:
                     nested = _collect_text(value.get(key))
                     if nested:
@@ -2879,6 +3045,62 @@ def _extract_response_text(resp: Any) -> tuple[str, dict[str, Any]]:
             nested = getattr(value, attr, None)
             if nested is not None:
                 text = _collect_text(nested)
+                if text:
+                    chunks.append(text)
+        return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
+
+    def _collect_thinking(value: Any) -> str:
+        if value is None:
+            return ""
+        if isinstance(value, str):
+            return value.strip()
+        chunks: list[str] = []
+        if isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    item_type = str(item.get("type", "") or "").strip().lower()
+                    if item_type == "thinking":
+                        thinking_text = item.get("thinking", None)
+                        if isinstance(thinking_text, str) and thinking_text.strip():
+                            chunks.append(thinking_text.strip())
+                    if item_type in {"summary_text", "reasoning_text"}:
+                        summary_text = item.get("text", None)
+                        if isinstance(summary_text, str) and summary_text.strip():
+                            chunks.append(summary_text.strip())
+                    direct_reasoning = item.get("reasoning", None)
+                    if isinstance(direct_reasoning, str) and direct_reasoning.strip():
+                        chunks.append(direct_reasoning.strip())
+                    nested_reasoning = item.get("reasoning_content", None)
+                    if nested_reasoning is not None:
+                        nested = _collect_thinking(nested_reasoning)
+                        if nested:
+                            chunks.append(nested)
+                    nested_content = item.get("content", None)
+                    if nested_content is not None:
+                        nested = _collect_thinking(nested_content)
+                        if nested:
+                            chunks.append(nested)
+                    nested_summary = item.get("summary", None)
+                    if nested_summary is not None:
+                        nested = _collect_thinking(nested_summary)
+                        if nested:
+                            chunks.append(nested)
+                    continue
+                nested = _collect_thinking(item)
+                if nested:
+                    chunks.append(nested)
+            return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
+        if isinstance(value, dict):
+            for key in ("thinking", "reasoning_content", "reasoning", "summary", "content"):
+                if key in value:
+                    nested = _collect_thinking(value.get(key))
+                    if nested:
+                        chunks.append(nested)
+            return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
+        for attr in ("thinking", "reasoning_content", "reasoning", "content"):
+            nested = getattr(value, attr, None)
+            if nested is not None:
+                text = _collect_thinking(nested)
                 if text:
                     chunks.append(text)
         return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
@@ -2908,29 +3130,76 @@ def _extract_response_text(resp: Any) -> tuple[str, dict[str, Any]]:
                     getattr(msg, "reasoning_content", None)
                     or getattr(msg, "reasoning", None)
                 )
-                raw_text = content_text or reasoning_text
+                thinking_text = _collect_thinking(
+                    getattr(msg, "reasoning_content", None)
+                    or getattr(msg, "reasoning", None)
+                    or getattr(msg, "content", None)
+                )
+                if reasoning_text and "reasoning_text" not in meta:
+                    meta["reasoning_text"] = reasoning_text
+                if thinking_text and "thinking_text" not in meta:
+                    meta["thinking_text"] = thinking_text
+                raw_text = content_text or reasoning_text or thinking_text
             if not raw_text:
                 raw_text = _collect_text(getattr(choice0, "text", None))
             meta["finish_reason"] = getattr(choice0, "finish_reason", None)
+
+        # Some providers (e.g., Mimo) may return top-level content blocks with type=text/thinking.
+        top_level_content = getattr(resp, "content", None)
+        if top_level_content is not None:
+            top_text = _collect_text(top_level_content)
+            top_thinking = _collect_thinking(top_level_content)
+            if top_thinking and "thinking_text" not in meta:
+                meta["thinking_text"] = top_thinking
+            if top_text and not raw_text:
+                raw_text = top_text
 
         meta["id"] = getattr(resp, "id", None)
         meta["model"] = getattr(resp, "model", None)
         usage = getattr(resp, "usage", None)
         if usage is not None:
             if isinstance(usage, dict):
+                prompt_tokens = usage.get("prompt_tokens")
+                completion_tokens = usage.get("completion_tokens")
+                if prompt_tokens is None:
+                    prompt_tokens = usage.get("input_tokens")
+                if completion_tokens is None:
+                    completion_tokens = usage.get("output_tokens")
+                total_tokens = usage.get("total_tokens")
+                if total_tokens is None and prompt_tokens is not None and completion_tokens is not None:
+                    try:
+                        total_tokens = int(prompt_tokens) + int(completion_tokens)
+                    except Exception:
+                        total_tokens = None
                 meta["usage"] = {
-                    "prompt_tokens": usage.get("prompt_tokens"),
-                    "completion_tokens": usage.get("completion_tokens"),
-                    "total_tokens": usage.get("total_tokens"),
+                    "prompt_tokens": prompt_tokens,
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": total_tokens,
                 }
             else:
+                prompt_tokens = getattr(usage, "prompt_tokens", None)
+                completion_tokens = getattr(usage, "completion_tokens", None)
+                if prompt_tokens is None:
+                    prompt_tokens = getattr(usage, "input_tokens", None)
+                if completion_tokens is None:
+                    completion_tokens = getattr(usage, "output_tokens", None)
+                total_tokens = getattr(usage, "total_tokens", None)
+                if total_tokens is None and prompt_tokens is not None and completion_tokens is not None:
+                    try:
+                        total_tokens = int(prompt_tokens) + int(completion_tokens)
+                    except Exception:
+                        total_tokens = None
                 meta["usage"] = {
-                    "prompt_tokens": getattr(usage, "prompt_tokens", None),
-                    "completion_tokens": getattr(usage, "completion_tokens", None),
-                    "total_tokens": getattr(usage, "total_tokens", None),
+                    "prompt_tokens": prompt_tokens,
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": total_tokens,
                 }
     except Exception:
         pass
+    thinking_text = str(meta.get("thinking_text", "") or "").strip()
+    reasoning_text = str(meta.get("reasoning_text", "") or "").strip()
+    if thinking_text and reasoning_text and thinking_text == reasoning_text:
+        meta.pop("reasoning_text", None)
     return str(raw_text or "").strip(), meta
 
 
@@ -3021,10 +3290,29 @@ def _bbox_iou(box_a: list[float] | None, box_b: list[float] | None) -> float:
     return inter_area / denom if denom > 0.0 else 0.0
 
 
+def _bbox_reference_for_prediction(sample: dict[str, Any], pred_option_id: str | None) -> tuple[list[float] | None, str]:
+    """Return a GT box in the same image coordinate system as the prediction."""
+    if str(sample.get("task_type", "") or "") != "self_what":
+        bbox = sample.get("answer_bbox_xyxy_norm")
+        return (list(bbox) if isinstance(bbox, (list, tuple)) and len(bbox) == 4 else None, "task_target_view")
+    selected = str(pred_option_id or "").strip().upper()
+    for candidate in list(sample.get("candidates", []) or []):
+        if str(candidate.get("option_id", "") or "").strip().upper() != selected:
+            continue
+        bbox = candidate.get("bbox_xyxy_norm")
+        if isinstance(bbox, (list, tuple)) and len(bbox) == 4:
+            return list(bbox), "selected_candidate_view"
+    return None, "selected_candidate_view"
+
+
 def _summarize_predictions(rows: list[dict[str, Any]]) -> dict[str, Any]:
     total = len(rows)
     parse_ok = sum(1 for row in rows if bool(row.get("parse_ok", False)))
-    option_correct = sum(1 for row in rows if bool(row.get("option_correct", False)))
+    option_correct = sum(
+        1
+        for row in rows
+        if bool(row.get("option_correct", row.get("answer_correct", False)))
+    )
     bbox_rows = [row for row in rows if row.get("gold_bbox_xyxy_norm") is not None]
     bbox_acc = sum(1 for row in bbox_rows if bool(row.get("bbox_acc@50iou", False)))
     bbox_ious = [float(row.get("bbox_iou", 0.0) or 0.0) for row in bbox_rows]
@@ -3041,7 +3329,10 @@ def _summarize_predictions(rows: list[dict[str, Any]]) -> dict[str, Any]:
         grouped[key] = {
             name: {
                 "count": len(items),
-                "option_accuracy": _rate(sum(1 for item in items if item.get("option_correct")), len(items)),
+                "option_accuracy": _rate(
+                    sum(1 for item in items if bool(item.get("option_correct", item.get("answer_correct", False)))),
+                    len(items),
+                ),
                 "bbox_acc@50iou": _rate(sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None and item.get("bbox_acc@50iou")), sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None)),
                 "bbox_mean_iou": (
                     sum(float(item.get("bbox_iou", 0.0) or 0.0) for item in items if item.get("gold_bbox_xyxy_norm") is not None)
@@ -3061,7 +3352,10 @@ def _summarize_predictions(rows: list[dict[str, Any]]) -> dict[str, Any]:
     grouped["combo"] = {
         name: {
             "count": len(items),
-            "option_accuracy": _rate(sum(1 for item in items if item.get("option_correct")), len(items)),
+            "option_accuracy": _rate(
+                sum(1 for item in items if bool(item.get("option_correct", item.get("answer_correct", False)))),
+                len(items),
+            ),
             "bbox_acc@50iou": _rate(sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None and item.get("bbox_acc@50iou")), sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None)),
             "bbox_mean_iou": (
                 sum(float(item.get("bbox_iou", 0.0) or 0.0) for item in items if item.get("gold_bbox_xyxy_norm") is not None)
@@ -3073,7 +3367,10 @@ def _summarize_predictions(rows: list[dict[str, Any]]) -> dict[str, Any]:
     grouped["combo_by_difficulty"] = {
         name: {
             "count": len(items),
-            "option_accuracy": _rate(sum(1 for item in items if item.get("option_correct")), len(items)),
+            "option_accuracy": _rate(
+                sum(1 for item in items if bool(item.get("option_correct", item.get("answer_correct", False)))),
+                len(items),
+            ),
             "bbox_acc@50iou": _rate(sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None and item.get("bbox_acc@50iou")), sum(1 for item in items if item.get("gold_bbox_xyxy_norm") is not None)),
             "bbox_mean_iou": (
                 sum(float(item.get("bbox_iou", 0.0) or 0.0) for item in items if item.get("gold_bbox_xyxy_norm") is not None)
@@ -3152,6 +3449,9 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         "request_model": api_cfg["request_model"],
         "api_source": api_cfg.get("api_source"),
         "api_base": api_cfg.get("api_base"),
+        "request_transport": "responses_stream"
+        if should_use_responses_reasoning_stream(api_cfg.get("api_source", ""), api_cfg.get("model_family", ""), api_cfg.get("reasoning_mode", ""))
+        else "chat_completions",
         "reasoning_mode": api_cfg.get("reasoning_mode"),
         "task_type": sample["task_type"],
         "view_definition": sample["view_definition"],
@@ -3159,6 +3459,7 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         "system_prompt_prefix": api_cfg.get("system_prompt_prefix", ""),
         "system_prompt_as_blocks": bool(api_cfg.get("system_prompt_as_blocks", False)),
         "request_extra_body": dict(api_cfg.get("request_extra_body", {}) or {}),
+        "temperature_omitted": model_disallows_temperature(str(api_cfg.get("request_model", "") or "")),
         "messages_preview": _messages_preview(messages),
         "images": upload_images,
         "expected_option_id": sample["answer_option_id"],
@@ -3179,20 +3480,25 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         started = time.perf_counter()
         should_retry = False
         try:
-            kwargs: dict[str, Any] = {
-                "model": api_cfg["request_model"],
-                "messages": messages,
-                "temperature": float(api_cfg["temperature"]),
-                "timeout": float(api_cfg["timeout_s"]),
-            }
-            extra_body: dict[str, Any] = dict(api_cfg.get("request_extra_body", {}) or {})
-            if api_cfg.get("prefix"):
-                extra_body["prefix"] = api_cfg["prefix"]
-            if extra_body:
-                kwargs["extra_body"] = extra_body
-            resp = client.chat.completions.create(**kwargs)
-            latency_ms += (time.perf_counter() - started) * 1000.0
-            raw_text, raw_meta = _extract_response_text(resp)
+            if should_use_responses_reasoning_stream(api_cfg.get("api_source", ""), api_cfg.get("model_family", ""), api_cfg.get("reasoning_mode", "")):
+                raw_text, raw_meta, latency_chunk_ms = run_responses_reasoning_stream_request(api_cfg, messages)
+                latency_ms += latency_chunk_ms
+            else:
+                kwargs: dict[str, Any] = {
+                    "model": api_cfg["request_model"],
+                    "messages": messages,
+                    "timeout": float(api_cfg["timeout_s"]),
+                }
+                if not model_disallows_temperature(str(api_cfg.get("request_model", "") or "")):
+                    kwargs["temperature"] = float(api_cfg["temperature"])
+                extra_body: dict[str, Any] = dict(api_cfg.get("request_extra_body", {}) or {})
+                if api_cfg.get("prefix"):
+                    extra_body["prefix"] = api_cfg["prefix"]
+                if extra_body:
+                    kwargs["extra_body"] = extra_body
+                resp = client.chat.completions.create(**kwargs)
+                latency_ms += (time.perf_counter() - started) * 1000.0
+                raw_text, raw_meta = _extract_response_text(resp)
             if str(raw_text or "").strip():
                 break
             request_status = "error"
@@ -3213,7 +3519,14 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         if not should_retry:
             raise RuntimeError(str((raw_meta or {}).get("error", raw_text) or "non_retryable_request_error"))
         if retry_forever or attempt_idx < retry_attempts:
-            time.sleep(retry_backoff_sec)
+            error_for_backoff = str((raw_meta or {}).get("error", raw_text) or "")
+            is_rate_limited = _is_rate_limited_request_failure(error_for_backoff)
+            base_backoff = max(0.25, retry_backoff_sec if retry_backoff_sec > 0 else 0.5)
+            if is_rate_limited:
+                base_backoff = max(base_backoff, 1.0)
+            sleep_sec = min(60.0, base_backoff * (2 ** max(0, attempt_idx - 1)))
+            sleep_sec = sleep_sec * (1.0 + random.uniform(0.0, 0.2))
+            time.sleep(sleep_sec)
             continue
         break
     raw_meta = dict(raw_meta or {})
@@ -3230,9 +3543,10 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
     pred_option_ids, option_parse_ok = _parse_option_ids(raw_text)
     pred_option_id = pred_option_ids[0] if pred_option_ids else None
     expects_bbox = sample.get("answer_bbox_xyxy_norm") is not None
+    bbox_reference, bbox_scoring_scope = _bbox_reference_for_prediction(sample, pred_option_id)
     if expects_bbox:
         pred_bbox, bbox_parse_ok = _parse_bbox(raw_text)
-        bbox_iou = _bbox_iou(pred_bbox, list(sample["answer_bbox_xyxy_norm"]))
+        bbox_iou = _bbox_iou(pred_bbox, bbox_reference)
     else:
         pred_bbox, bbox_parse_ok = None, True
         bbox_iou = 0.0
@@ -3249,7 +3563,10 @@ def _run_single_sample_request(sample: dict[str, Any], *, api_cfg: dict[str, Any
         "difficulty": sample["difficulty"],
         "gold_option_ids": gold_option_ids,
         "gold_option_id": sample["answer_option_id"],
-        "gold_bbox_xyxy_norm": sample["answer_bbox_xyxy_norm"],
+        "gold_bbox_xyxy_norm": bbox_reference if bbox_reference is not None else sample["answer_bbox_xyxy_norm"],
+        "bbox_reference_option_id": pred_option_id if sample.get("task_type") == "self_what" else sample.get("answer_option_id"),
+        "bbox_reference_valid": bool(bbox_reference is not None),
+        "bbox_scoring_scope": bbox_scoring_scope,
         "pred_option_ids": pred_option_ids,
         "pred_option_id": pred_option_id,
         "pred_bbox_xyxy_norm": pred_bbox,
@@ -3312,6 +3629,61 @@ def run_experiment_once(
         for sample_id, status in latest_status_by_sample.items():
             if status == "ok":
                 completed_sample_ids.add(sample_id)
+    if unique_experiment:
+        completed_sample_ids.update(
+            _bootstrap_batch_results_into_run_dir(
+            run_dir=run_dir,
+            selected_samples=selected_samples,
+            )
+        )
+
+    def _collect_recent_ok_latencies_sec(path: Path, *, out: deque[float], max_items: int) -> None:
+        if max_items <= 0 or not path.exists():
+            return
+        try:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                row = json.loads(line)
+                if not isinstance(row, dict):
+                    continue
+                if str(row.get("request_status", "") or "").strip().lower() != "ok":
+                    continue
+                latency_ms = row.get("latency_ms", None)
+                try:
+                    latency_val = float(latency_ms)
+                except Exception:
+                    continue
+                if latency_val <= 0:
+                    continue
+                out.append(latency_val / 1000.0)
+        except Exception:
+            return
+
+    def _estimate_recent_latency_sec(*, window: int) -> float:
+        max_items = max(1, int(window))
+        latencies: deque[float] = deque(maxlen=max_items)
+        _collect_recent_ok_latencies_sec(responses_path, out=latencies, max_items=max_items)
+        if not latencies:
+            return 0.0
+        values = sorted(float(x) for x in latencies if float(x) > 0.0)
+        if not values:
+            return 0.0
+        return float(values[len(values) // 2])
+
+    override_latency_sec = float((api_overrides or {}).get("observed_latency_sec", 0.0) or 0.0)
+    runtime_cfg = _experiment_runtime_cfg(config)
+    latency_window_size_default = max(1, int(runtime_cfg.get("latency_window_size", 64) or 64))
+    adjust_interval_default = max(1, int(runtime_cfg.get("dynamic_concurrency_adjust_interval", 8) or 8))
+    dynamic_ceiling_default = max(1, int(runtime_cfg.get("dynamic_concurrency_ceiling", 100) or 100))
+    if override_latency_sec <= 0.0:
+        override_latency_sec = _estimate_recent_latency_sec(
+            window=int((api_overrides or {}).get("latency_window_size", latency_window_size_default) or latency_window_size_default)
+        )
+    if override_latency_sec > 0.0:
+        api_cfg = dict(api_cfg)
+        api_cfg["avg_request_latency_sec"] = float(override_latency_sec)
     selected_samples = [dict(sample, _sample_index=int(idx), _sample_ordinal=int(idx) + 1) for idx, sample in enumerate(selected_samples)]
     if unique_experiment:
         selected_samples = [sample for sample in selected_samples if str(sample.get("sample_id", "") or "").strip() not in completed_sample_ids]
@@ -3324,6 +3696,7 @@ def run_experiment_once(
         tpm_limit=int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0),
         estimated_tokens_per_request=int(dynamic_estimated_tokens),
         reserve_ratio=float(api_cfg.get("rate_limit_reserve_ratio", 0.1) or 0.1),
+        avg_request_latency_sec=float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0),
     )
     api_cfg = dict(api_cfg)
     api_cfg["configured_rpm_limit"] = int(rate_limit_cfg["configured_rpm_limit"])
@@ -3333,6 +3706,7 @@ def run_experiment_once(
     api_cfg["requested_concurrency"] = int(rate_limit_cfg["requested_concurrency"])
     api_cfg["concurrency"] = int(rate_limit_cfg["effective_concurrency"])
     api_cfg["estimated_tokens_per_request"] = int(rate_limit_cfg["estimated_tokens_per_request"])
+    api_cfg["avg_request_latency_sec"] = float(rate_limit_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
     api_cfg["rate_limit_reserve_ratio"] = float(rate_limit_cfg["reserve_ratio"])
     api_cfg["rate_limit_concurrency_applied"] = bool(rate_limit_cfg["rate_limit_concurrency_applied"])
     limiter = ApiRateLimiter(rpm_limit=api_cfg.get("rpm_limit", 0), tpm_limit=api_cfg.get("tpm_limit", 0))
@@ -3344,15 +3718,73 @@ def run_experiment_once(
         write_lock = threading.Lock()
         failed_request_rows: list[dict[str, Any]] = []
 
-        def _submit(sample: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-            return _run_single_sample_request(sample, api_cfg=api_cfg, cancel_event=cancel_event, limiter=limiter)
+        requested_concurrency = max(1, int(api_cfg.get("requested_concurrency", api_cfg.get("concurrency", 1)) or 1))
+        dynamic_adjust_interval = max(
+            1,
+            int((api_overrides or {}).get("dynamic_concurrency_adjust_interval", adjust_interval_default) or adjust_interval_default),
+        )
+        has_rate_limits = bool(
+            int(api_cfg.get("configured_rpm_limit", api_cfg.get("rpm_limit", 0)) or 0) > 0
+            or int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0) > 0
+        )
+        dynamic_concurrency_ceiling = max(
+            requested_concurrency,
+            int((api_overrides or {}).get("dynamic_concurrency_ceiling", dynamic_ceiling_default) or dynamic_ceiling_default),
+        )
+        max_worker_concurrency = dynamic_concurrency_ceiling if has_rate_limits else requested_concurrency
+        latency_samples_sec: deque[float] = deque(
+            maxlen=max(8, int((api_overrides or {}).get("latency_window_size", latency_window_size_default) or latency_window_size_default))
+        )
+        seed_latency = float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+        if seed_latency > 0.0:
+            latency_samples_sec.append(seed_latency)
 
-        with ThreadPoolExecutor(max_workers=max(1, int(api_cfg.get("concurrency", 1)))) as executor:
-            future_to_sample = {executor.submit(_submit, sample): sample for sample in selected_samples}
+        def _current_latency_sec() -> float:
+            if not latency_samples_sec:
+                return float(api_cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+            values = sorted(float(x) for x in latency_samples_sec if float(x) > 0.0)
+            if not values:
+                return 0.0
+            return float(values[len(values) // 2])
+
+        def _recompute_target_concurrency() -> int:
+            cfg = compute_rate_limited_concurrency(
+                dynamic_concurrency_ceiling if has_rate_limits else requested_concurrency,
+                rpm_limit=int(api_cfg.get("configured_rpm_limit", api_cfg.get("rpm_limit", 0)) or 0),
+                tpm_limit=int(api_cfg.get("configured_tpm_limit", api_cfg.get("tpm_limit", 0)) or 0),
+                estimated_tokens_per_request=int(dynamic_estimated_tokens),
+                reserve_ratio=float(api_cfg.get("rate_limit_reserve_ratio", 0.1) or 0.1),
+                avg_request_latency_sec=float(_current_latency_sec()),
+            )
+            api_cfg["concurrency"] = int(cfg["effective_concurrency"])
+            api_cfg["avg_request_latency_sec"] = float(cfg.get("avg_request_latency_sec", 0.0) or 0.0)
+            api_cfg["rate_limit_concurrency_applied"] = bool(cfg.get("rate_limit_concurrency_applied", False))
+            return max(1, int(api_cfg.get("concurrency", 1) or 1))
+
+        with ThreadPoolExecutor(max_workers=max_worker_concurrency) as executor:
+            pending_idx = 0
+            futures: dict[Any, dict[str, Any]] = {}
+            completed_since_adjust = 0
+            # Start exactly from the configured experiment concurrency, then adjust dynamically.
+            target_concurrency = requested_concurrency
             try:
-                for future in as_completed(future_to_sample):
-                    sample = future_to_sample[future]
-                    worker_id = int((done % max(1, int(api_cfg.get("concurrency", 1)))) + 1)
+                while pending_idx < len(selected_samples) or futures:
+                    while pending_idx < len(selected_samples) and len(futures) < target_concurrency:
+                        sample = selected_samples[pending_idx]
+                        pending_idx += 1
+                        future = executor.submit(_run_single_sample_request, sample, api_cfg=api_cfg, cancel_event=cancel_event, limiter=limiter)
+                        futures[future] = sample
+                    if not futures:
+                        break
+                    done_set, _ = wait(set(futures.keys()), return_when=FIRST_COMPLETED)
+                    future = next(iter(done_set))
+                    sample = futures.pop(future)
+                    worker_id = int((done % max(1, int(target_concurrency))) + 1)
+                    completed_since_adjust += 1
+                    if completed_since_adjust >= dynamic_adjust_interval:
+                        target_concurrency = _recompute_target_concurrency()
+                        target_concurrency = max(1, min(target_concurrency, max_worker_concurrency))
+                        completed_since_adjust = 0
                     if cancel_event is not None and cancel_event.is_set():
                         raise CancelledExperimentError("experiment_cancelled")
                     request_row: dict[str, Any]
@@ -3421,6 +3853,19 @@ def run_experiment_once(
                         "run_id": run_id,
                         **payload["response"],
                     }
+                    if str(response_row.get("request_status", "") or "").strip().lower() == "error":
+                        error_text = str(((response_row.get("raw_response", {}) or {}).get("error", response_row.get("raw_text", "")) or ""))
+                        if _is_rate_limited_request_failure(error_text):
+                            target_concurrency = max(1, int(target_concurrency) // 2)
+                            completed_since_adjust = 0
+                    latency_ms_val = response_row.get("latency_ms", None)
+                    if str(response_row.get("request_status", "") or "").strip().lower() == "ok":
+                        try:
+                            latency_ms_float = float(latency_ms_val)
+                        except Exception:
+                            latency_ms_float = 0.0
+                        if latency_ms_float > 0.0:
+                            latency_samples_sec.append(latency_ms_float / 1000.0)
                     parsed_row = {
                         "run_id": run_id,
                         **payload["parsed"],
@@ -3451,6 +3896,8 @@ def run_experiment_once(
                             f"[{_iso_now()}] sample_id={sample['sample_id']} status={response_row['request_status']} latency_ms={response_row['latency_ms']} "
                             f"prompt_tokens={usage.get('prompt_tokens')} completion_tokens={usage.get('completion_tokens')} total_tokens={usage.get('total_tokens')}\n"
                             f"raw_text:\n{response_row['raw_text']}\n"
+                            f"thinking_text:\n{str((response_row.get('raw_response', {}) or {}).get('thinking_text', '') or '')}\n"
+                            f"reasoning_text:\n{str((response_row.get('raw_response', {}) or {}).get('reasoning_text', '') or '')}\n"
                             f"raw_response={json.dumps(response_row.get('raw_response', {}), ensure_ascii=False)}\n\n"
                         )
                         req_txt_fp.flush()
@@ -3650,39 +4097,44 @@ def _list_manifests(stage4_root: Path, scene_id: str) -> list[dict[str, Any]]:
 
 
 def _list_reports(stage4_root: Path, scene_id: str) -> list[dict[str, Any]]:
-    experiments_root = stage4_root / "experiments"
     rows: list[dict[str, Any]] = []
-    for path in sorted(experiments_root.glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True):
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            continue
-        if str(payload.get("scene_id", "")) != str(scene_id):
-            continue
-        summary = dict(payload.get("summary", {}) or {})
-        grouped = summary.get("grouped")
-        if isinstance(grouped, dict) and grouped.get("combo"):
-            pass
-        else:
-            report_rows = _load_report_rows_from_report_path(path)
-            if report_rows:
-                summary = _summarize_predictions(report_rows)
-        rows.append(
-            {
-                "path": _path_for_json(path),
-                "run_id": payload.get("run_id", path.parent.name),
-                "generated_at": payload.get("generated_at"),
-                "model": payload.get("model"),
-                "manifest_path": payload.get("manifest_path"),
-                "manifest_name": Path(str(payload.get("manifest_path", "") or "")).name or "-",
-                "count": summary.get("count", 0),
-                "parse_success_rate": summary.get("parse_success_rate"),
-                "option_accuracy": summary.get("option_accuracy"),
-                "bbox_acc@50iou": summary.get("bbox_acc@50iou"),
-                "avg_latency_ms": summary.get("avg_latency_ms"),
-                "summary": summary,
-            }
-        )
+    seen: set[str] = set()
+    for experiments_root in [stage4_root / "experiments", stage4_root / "experiments_open"]:
+        for path in sorted(experiments_root.glob("*/report.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+            key = str(path.resolve())
+            if key in seen:
+                continue
+            seen.add(key)
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if str(payload.get("scene_id", "")) != str(scene_id):
+                continue
+            summary = dict(payload.get("summary", {}) or {})
+            grouped = summary.get("grouped")
+            if isinstance(grouped, dict) and grouped.get("combo"):
+                pass
+            else:
+                report_rows = _load_report_rows_from_report_path(path)
+                if report_rows:
+                    summary = _summarize_predictions(report_rows)
+            rows.append(
+                {
+                    "path": _path_for_json(path),
+                    "run_id": payload.get("run_id", path.parent.name),
+                    "generated_at": payload.get("generated_at"),
+                    "model": payload.get("model"),
+                    "manifest_path": payload.get("manifest_path"),
+                    "manifest_name": Path(str(payload.get("manifest_path", "") or "")).name or "-",
+                    "count": summary.get("count", 0),
+                    "parse_success_rate": summary.get("parse_success_rate"),
+                    "option_accuracy": summary.get("option_accuracy"),
+                    "bbox_acc@50iou": summary.get("bbox_acc@50iou"),
+                    "avg_latency_ms": summary.get("avg_latency_ms"),
+                    "summary": summary,
+                }
+            )
     return rows
 
 
@@ -3776,6 +4228,31 @@ def _count_completed_prediction_rows(parsed_path: Path) -> int:
             if sample_id:
                 latest_status_by_sample[sample_id] = str(row.get("request_status", "") or "").strip().lower()
         return sum(1 for status in latest_status_by_sample.values() if status == "ok")
+    batch_output_path = parsed_path.parent / "batch_output.jsonl"
+    if batch_output_path.exists():
+        sample_ids: set[str] = set()
+        for line in batch_output_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+            if not isinstance(row, dict):
+                continue
+            custom_id = str(row.get("custom_id", "") or "").strip()
+            response = row.get("response")
+            if not custom_id or not isinstance(response, dict):
+                continue
+            try:
+                status_code = int(response.get("status_code", 0) or 0)
+            except Exception:
+                status_code = 0
+            if 200 <= status_code < 300:
+                sample_ids.add(custom_id)
+        if sample_ids:
+            return len(sample_ids)
     if not parsed_path.exists():
         return 0
     sample_ids: set[str] = set()
@@ -3793,6 +4270,194 @@ def _count_completed_prediction_rows(parsed_path: Path) -> int:
         if sample_id:
             sample_ids.add(sample_id)
     return len(sample_ids)
+
+
+def _collect_text(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value
+    chunks: list[str] = []
+    if isinstance(value, list):
+        for item in value:
+            chunks.append(_collect_text(item))
+        return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
+    if isinstance(value, dict):
+        for key in ("text", "content", "output_text", "reasoning_content"):
+            if key in value:
+                chunks.append(_collect_text(value.get(key)))
+        return "\n".join([str(x).strip() for x in chunks if str(x).strip()])
+    return str(value).strip()
+
+
+def _extract_response_text_from_batch_body(body: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    raw_text = ""
+    meta: dict[str, Any] = {}
+    if not isinstance(body, dict):
+        return "", {}
+    choices = list(body.get("choices", []) or [])
+    if choices:
+        choice0 = dict(choices[0] or {})
+        message = dict(choice0.get("message", {}) or {})
+        raw_text = _collect_text(message.get("content"))
+        if not raw_text:
+            raw_text = _collect_text(choice0.get("text"))
+        reasoning_text = _collect_text(message.get("reasoning_content"))
+        if reasoning_text:
+            meta["reasoning_text"] = reasoning_text
+            meta["thinking_text"] = reasoning_text
+        meta["finish_reason"] = choice0.get("finish_reason")
+    if not raw_text:
+        raw_text = _collect_text(body.get("output_text"))
+    meta["id"] = body.get("id")
+    meta["model"] = body.get("model")
+    usage = dict(body.get("usage", {}) or {}) if isinstance(body.get("usage", {}), dict) else {}
+    if usage:
+        meta["usage"] = usage
+    return str(raw_text or "").strip(), meta
+
+
+def _iter_batch_result_rows(run_dir: Path) -> list[tuple[str, str, float | None, str, dict[str, Any]]]:
+    rows: list[tuple[str, str, float | None, str, dict[str, Any]]] = []
+    seen_paths: set[str] = set()
+    candidate_paths = [run_dir / "batch_output.jsonl", run_dir / "batch_error.jsonl"]
+    batch_parts_dir = run_dir / "batch_parts"
+    if batch_parts_dir.exists():
+        candidate_paths.extend(sorted(batch_parts_dir.glob("part_*.output.jsonl")))
+        candidate_paths.extend(sorted(batch_parts_dir.glob("part_*.error.jsonl")))
+    for path in candidate_paths:
+        key = str(path)
+        if key in seen_paths or not path.exists():
+            continue
+        seen_paths.add(key)
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+            if not isinstance(row, dict):
+                continue
+            custom_id = str(row.get("custom_id", "") or "").strip()
+            response = row.get("response")
+            if isinstance(response, dict):
+                try:
+                    status_code = int(response.get("status_code", 0) or 0)
+                except Exception:
+                    status_code = 0
+                body = dict(response.get("body", {}) or {}) if isinstance(response.get("body", {}), dict) else {}
+                if 200 <= status_code < 300 and body:
+                    raw_text, meta = _extract_response_text_from_batch_body(body)
+                    meta["status_code"] = status_code
+                    meta["request_id"] = response.get("request_id")
+                    rows.append((custom_id, "ok", None, raw_text, meta))
+                    continue
+                error_text = json.dumps(body, ensure_ascii=False) if body else json.dumps(response, ensure_ascii=False)
+                rows.append((custom_id, "error", None, error_text, {"error": error_text, "status_code": status_code}))
+                continue
+            error = row.get("error")
+            error_text = json.dumps(error, ensure_ascii=False) if error is not None else json.dumps(row, ensure_ascii=False)
+            rows.append((custom_id, "error", None, error_text, {"error": error_text}))
+    return rows
+
+
+def _bootstrap_batch_results_into_run_dir(
+    *,
+    run_dir: Path,
+    selected_samples: list[dict[str, Any]],
+) -> set[str]:
+    responses_path = run_dir / "responses.jsonl"
+    parsed_path = run_dir / "parsed_predictions.jsonl"
+    responses_txt_path = run_dir / "responses.txt"
+    if not ((run_dir / "batch_output.jsonl").exists() or (run_dir / "batch_error.jsonl").exists() or (run_dir / "batch_parts").exists()):
+        return set()
+    latest_status_by_sample: dict[str, str] = {}
+    if responses_path.exists():
+        for line in responses_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+            if not isinstance(row, dict):
+                continue
+            sample_id = str(row.get("sample_id", "") or "").strip()
+            if sample_id:
+                latest_status_by_sample[sample_id] = str(row.get("request_status", "") or "").strip().lower()
+    sample_lookup = {
+        str(sample.get("sample_id", "") or "").strip(): dict(sample)
+        for sample in list(selected_samples or [])
+        if str(sample.get("sample_id", "") or "").strip()
+    }
+    result_rows = _iter_batch_result_rows(run_dir)
+    if not result_rows:
+        return {sample_id for sample_id, status in latest_status_by_sample.items() if status == "ok"}
+    file_mode = "a" if responses_path.exists() else "w"
+    with responses_path.open(file_mode, encoding="utf-8") as resp_fp, parsed_path.open(file_mode, encoding="utf-8") as pred_fp, responses_txt_path.open(file_mode, encoding="utf-8") as resp_txt_fp:
+        for sample_id, request_status, latency_ms, raw_text, raw_meta in result_rows:
+            if not sample_id or sample_id in latest_status_by_sample:
+                continue
+            sample = sample_lookup.get(sample_id)
+            if not sample:
+                continue
+            response_row = {
+                "sample_id": sample["sample_id"],
+                "request_status": request_status,
+                "latency_ms": latency_ms,
+                "raw_text": raw_text,
+                "raw_response": dict(raw_meta or {}),
+            }
+            pred_option_ids, option_parse_ok = _parse_option_ids(raw_text)
+            pred_option_id = pred_option_ids[0] if pred_option_ids else None
+            expects_bbox = sample.get("answer_bbox_xyxy_norm") is not None
+            bbox_reference, bbox_scoring_scope = _bbox_reference_for_prediction(sample, pred_option_id)
+            if expects_bbox:
+                pred_bbox, bbox_parse_ok = _parse_bbox(raw_text)
+                bbox_iou = _bbox_iou(pred_bbox, bbox_reference)
+            else:
+                pred_bbox, bbox_parse_ok = None, True
+                bbox_iou = 0.0
+            gold_option_ids = [str(x).strip() for x in list(sample.get("answer_option_ids", []) or []) if str(x).strip()]
+            if not gold_option_ids:
+                gold_option_ids = [str(sample["answer_option_id"])]
+            option_exact = set(pred_option_ids) == set(gold_option_ids)
+            parsed_row = {
+                "sample_id": sample["sample_id"],
+                "scene_id": sample["scene_id"],
+                "engine": sample["engine"],
+                "view_definition": sample["view_definition"],
+                "task_type": sample["task_type"],
+                "difficulty": sample["difficulty"],
+                "gold_option_ids": gold_option_ids,
+                "gold_option_id": sample["answer_option_id"],
+                "gold_bbox_xyxy_norm": bbox_reference if bbox_reference is not None else sample["answer_bbox_xyxy_norm"],
+                "bbox_reference_option_id": pred_option_id if sample.get("task_type") == "self_what" else sample.get("answer_option_id"),
+                "bbox_reference_valid": bool(bbox_reference is not None),
+                "bbox_scoring_scope": bbox_scoring_scope,
+                "pred_option_ids": pred_option_ids,
+                "pred_option_id": pred_option_id,
+                "pred_bbox_xyxy_norm": pred_bbox,
+                "parse_ok": bool(option_parse_ok and bbox_parse_ok),
+                "option_correct": bool(option_exact),
+                "bbox_iou": bbox_iou,
+                "bbox_acc@50iou": bool(expects_bbox and bbox_iou >= 0.5),
+                "latency_ms": latency_ms,
+            }
+            resp_fp.write(json.dumps(response_row, ensure_ascii=False) + "\n")
+            pred_fp.write(json.dumps(parsed_row, ensure_ascii=False) + "\n")
+            usage = dict((response_row.get("raw_response", {}) or {}).get("usage", {}) or {}) if isinstance((response_row.get("raw_response", {}) or {}).get("usage", {}), dict) else {}
+            resp_txt_fp.write(
+                f"[{time.strftime('%Y-%m-%dT%H:%M:%S%z', time.localtime())}] sample_id={sample_id} status={request_status} latency_ms={latency_ms} "
+                f"prompt_tokens={usage.get('prompt_tokens')} completion_tokens={usage.get('completion_tokens')} total_tokens={usage.get('total_tokens')}\n"
+                f"raw_text:\n{raw_text}\n"
+                f"raw_response={json.dumps(raw_meta, ensure_ascii=False)}\n\n"
+            )
+            latest_status_by_sample[sample_id] = str(request_status or "").strip().lower()
+    return {sample_id for sample_id, status in latest_status_by_sample.items() if status == "ok"}
 
 
 def _stage4_best_run_progress(stage4_roots: list[Path], scene_id: str, model: str, manifest_path: str) -> dict[str, Any]:
@@ -4490,8 +5155,8 @@ def _make_web_app(default_config: dict[str, Any], *, scene_id: str, engine: str,
 const ACTIVE_PAGE = {json.dumps(active_page)};
 const DEFAULT_ENGINE = {json.dumps(default_engine)};
 const DEFAULT_SCENE = {json.dumps(default_scene_id)};
-const THEME_KEY = 'uav_dualcog_stage4_theme';
-const TASK_KEY = 'uav_dualcog_stage4_task_pipeline';
+const THEME_KEY = 'flightmvstg_stage4_theme';
+const TASK_KEY = 'flightmvstg_stage4_task_pipeline';
 const state = {{
   catalog: [],
   taskPipelines: [],
@@ -4848,72 +5513,72 @@ function renderFooter() {{
   let rightItems = [];
   if(ACTIVE_PAGE === 'generate') {{
     leftItems = [
-      `<strong>Task Generation</strong>: Generate a Stage 4-1 QA manifest for the current scene.`,
+      `<strong>Task Generation</strong>: Generate Stage 4-1 QA manifests for the current scene.`,
       `<strong>Current Scene</strong>: ${{esc(current.engine || '')}} / ${{esc(current.scene_id || '')}}.`,
-      `<strong>Available Artifacts</strong>: manifest ${{esc(state.manifests.length)}} item(s), report ${{esc(state.reports.length)}} item(s).`,
-      `<strong>Default Sampling</strong>: Sampling can be jointly controlled by the four released task types, difficulty, and the main-view strategy.`,
+      `<strong>Available Data</strong>: ${{esc(state.manifests.length)}} manifest(s), ${{esc(state.reports.length)}} report(s).`,
+      `<strong>Default Sampling</strong>: Jointly control sampling by task family, difficulty, and main-view strategy.`,
     ];
     rightItems = [
-      `<strong>Current Operation</strong>: Set the generation strategy, sample count, task types, and difficulty.`,
-      `Confirm that Stage 2 has finalized landmark directions and main views before generation.`,
-      `Start with 5 to 20 samples for a quick check before scaling up.`,
-      `After generation, switch to Dataset Browser to verify Self/Env paired images, reference-image BBoxes, and answer options.`,
+      `<strong>Current Action</strong>: Configure the generation mode, sample count, task types, and difficulty.`,
+      `Before generation, confirm that Stage 2 has finished direction correction and main-view curation.`,
+      `For quick checks, start with 5 to 20 samples before scaling up.`,
+      `After generation, switch to Dataset Browser to verify Self/Env pairings, reference-image BBoxes, and option quality.`,
     ];
   }} else if(ACTIVE_PAGE === 'dataset') {{
     leftItems = [
-      `<strong>Dataset Browser</strong>: Browse manifest lists and sample previews.`,
+      `<strong>Dataset Browser</strong>: Browse manifests and inspect sample previews.`,
       `<strong>Current Manifest</strong>: ${{esc(state.activeManifest || current.latest_manifest_path || 'Not selected')}}.`,
-      `<strong>Preview Content</strong>: Display the reference image, task definition, answer options, and sample metadata.`,
-      `<strong>Goal</strong>: Check whether the four task types and 4-way / 8-way sampling match expectations.`,
+      `<strong>Preview Contents</strong>: Reference image, task definition, candidate options, and sample metadata.`,
+      `<strong>Goal</strong>: Confirm that the four task families and 4-way/8-way sampling match expectations.`,
     ];
     rightItems = [
-      `<strong>Current Operation</strong>: Switch manifests and inspect representative samples.`,
-      `Check first whether the target-landmark BBox is accurate on the reference image.`,
-      `Pay special attention to whether Self-1/2 and Env-1/2 share the intended query or observation image.`,
-      `If sampling is skewed, return to the generation page to adjust main-view strategy or sample count.`,
+      `<strong>Current Action</strong>: Switch manifests and spot-check samples.`,
+      `Prioritize checking whether the target-landmark BBox on the reference image is accurate.`,
+      `Pay special attention to whether Self-1/2 and Env-1/2 share the same query or observation image when expected.`,
+      `If sampling looks biased, return to Task Generation and adjust the main-view strategy or sample count.`,
     ];
   }} else if(ACTIVE_PAGE === 'experiments') {{
     const runningJobs = (state.jobs || []).filter((job)=>['queued','running','cancel_requested'].includes(job.status || '')).length;
     const latestJob = (state.jobs || [])[0] || null;
     leftItems = [
-      `<strong>Experiments</strong>: Select the manifest, model, resolution, compression, concurrency, and rate limits.`,
+      `<strong>Experiments</strong>: Choose the manifest, model, upload resolution, compression, concurrency, and rate limits.`,
       `<strong>Default Upload Preprocessing</strong>: ${{esc(current.stage4_defaults?.api_upload_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.api_upload_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.api_upload_jpeg_quality ?? 80)}}.`,
-      `<strong>Default Web Image Preview</strong>: ${{esc(current.stage4_defaults?.web_image_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.web_image_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.web_image_jpeg_quality ?? 80)}}.`,
-      `<strong>Background Jobs</strong>: There are currently ${{esc((state.jobs || []).length)}} jobs. You can start, refresh, or cancel them.`,
-      `<strong>Running</strong>: ${{esc(runningJobs)}} active; latest job: ${{esc(latestJob?.job_id || '-')}} / ${{esc(latestJob?.status || '-')}}.`,
-      `<strong>Experiment Goal</strong>: Produce option predictions and normalized BBox predictions.`,
+      `<strong>Default Web Preview</strong>: ${{esc(current.stage4_defaults?.web_image_max_width ?? 640)}} x ${{esc(current.stage4_defaults?.web_image_max_height ?? 480)}}, JPEG ${{esc(current.stage4_defaults?.web_image_jpeg_quality ?? 80)}}.`,
+      `<strong>Background Jobs</strong>: ${{esc((state.jobs || []).length)}} job(s) currently available; you can start, refresh, or cancel them.`,
+      `<strong>Running</strong>: ${{esc(runningJobs)}}; latest job: ${{esc(latestJob?.job_id || '-')}} / ${{esc(latestJob?.status || '-')}}.`,
+      `<strong>Experiment Goal</strong>: Produce option predictions together with normalized BBox predictions.`,
     ];
     rightItems = [
-      `<strong>Current Operation</strong>: Start jobs, cancel jobs, and inspect per-sample progress.`,
-      `To reduce 524 risk, start with 480P uploads and lower concurrency.`,
-      `When comparing multiple models, keep the manifest and task filters fixed.`,
-      `If a job runs for a long time, use progress refresh or job inspection to locate the bottleneck.`,
+      `<strong>Current Action</strong>: Start jobs, cancel jobs, and monitor per-sample progress.`,
+      `To reduce 524 timeout risk, start with 480P-level uploads and lower concurrency.`,
+      `For multi-model comparisons, keep the same manifest and task filters whenever possible.`,
+      `If a run takes unusually long, refresh progress or inspect the job details to locate bottlenecks.`,
     ];
   }} else if(ACTIVE_PAGE === 'results') {{
     leftItems = [
-      `<strong>Results</strong>: Browse run-level summaries and per-sample outputs.`,
+      `<strong>Results</strong>: Browse overall run summaries and per-sample outputs.`,
       `<strong>Current Report</strong>: ${{esc(state.activeReport || current.latest_report_path || 'Not selected')}}.`,
-      `<strong>Per-Sample Fields</strong>: predicted option, gold option, BBox@50, and IoU.`,
-      `<strong>Use Case</strong>: Identify individual failure cases and parsing errors.`,
+      `<strong>Per-Sample Fields</strong>: Predicted/gold option, BBox@50, and IoU.`,
+      `<strong>Use</strong>: Diagnose individual failure cases and parsing errors.`,
     ];
     rightItems = [
-      `<strong>Current Operation</strong>: Switch reports and inspect per-sample results.`,
-      `Check option correctness first, then whether the BBox reaches Acc@50IoU.`,
-      `If parse success is low, inspect prompts, output formatting, and model stability first.`,
-      `For side-by-side comparison, switch to Metrics and inspect the matrix and grouped charts.`,
+      `<strong>Current Action</strong>: Switch reports and inspect per-sample outputs.`,
+      `Check option correctness first, then verify whether the BBox reaches Acc@50IoU.`,
+      `If parse success is low, inspect prompts, output formatting, or model stability first.`,
+      `For cross-run comparison, switch to Metrics for grouped views and the experiment matrix.`,
     ];
   }} else {{
     leftItems = [
-      `<strong>Metrics</strong>: Inspect the overall summary, grouped bar charts, and the experiment matrix.`,
-      `<strong>Core Metrics</strong>: Option Accuracy, BBox Acc@50IoU, BBox Mean IoU, and Average Latency.`,
+      `<strong>Metrics</strong>: Inspect overall summaries, grouped bar charts, and the experiment matrix.`,
+      `<strong>Core Metrics</strong>: Option Accuracy, BBox Acc@50IoU, BBox Mean IoU, and Avg Latency.`,
       `<strong>Current Summary</strong>: Automatically loaded from the latest report.`,
       `<strong>Grouped Analysis</strong>: Compare performance by view definition, task type, and difficulty.`,
     ];
     rightItems = [
-      `<strong>Current Operation</strong>: Toggle latest-only aggregation and refresh the matrix.`,
-      `Read overall metrics first, then grouped differences, and finally return to Results for sample-level inspection.`,
-      `If one task type is substantially weaker, review its prompt and data sampling first.`,
-      `This matrix can be used directly as the basis for paper tables.`,
+      `<strong>Current Action</strong>: Toggle latest-only aggregation and refresh the matrix.`,
+      `Read the overall metrics first, then examine grouped gaps, and finally return to Results for spot checks.`,
+      `If one task family is clearly weaker, review the corresponding prompt design and sampling configuration first.`,
+      `When preparing paper tables, this matrix can serve as the primary source table.`,
     ];
   }}
   left.innerHTML = footerHtml(leftItems);
@@ -4926,8 +5591,8 @@ function renderGeneratePage() {{
   const categoryOptions = (state.current?.scene_landmark_stats?.categories || []).map((name)=>({{value:name, label:name}}));
   const strategyOptions = [
     {{value:'manual', label:'Manual sample count'}},
-    {{value:'per_landmark', label:'Automatic: fixed count for each landmark that supports all four tasks'}},
-    {{value:'per_task_landmark', label:'Automatic: fixed count for each task over its eligible landmarks'}},
+    {{value:'per_landmark', label:'Auto: fixed count for each landmark that supports all four tasks'}},
+    {{value:'per_task_landmark', label:'Auto: fixed count for each eligible landmark within each task family'}},
   ];
   const taskTypeOptions = [
     {{value:'self_where', label:'self_where'}},
@@ -4950,16 +5615,16 @@ function renderGeneratePage() {{
     <div class="grid">
       <div class="card">
         <h2>Task Generation</h2>
-        <p>Generate Stage 4-1 QA manifests scene by scene, with sampling control over view definitions, task types, and difficulty.</p>
+        <p>Generate Stage 4-1 QA manifests scene by scene, with sampling controlled by task family and difficulty.</p>
         <div class="form-grid">
           <label class="compact-field">Sample Count<input id="gen_sample_count" value="5"></label>
           <label class="compact-field">Random Seed<input id="gen_seed" value="7"></label>
-          <label>Main-View Reference Only<input id="gen_main_only" type="checkbox" checked></label>
-          <label class="compact-field">Samples per Landmark<input id="gen_per_landmark" value="2" onchange="updateGenerateEstimator()"></label>
-          <label class="compact-field">Samples per Task per Landmark<input id="gen_per_task_landmark" value="1" onchange="updateGenerateEstimator()"></label>
+          <label>Main-View Reference<input id="gen_main_only" type="checkbox" checked></label>
+          <label class="compact-field">Per-Landmark Count<input id="gen_per_landmark" value="2" onchange="updateGenerateEstimator()"></label>
+          <label class="compact-field">Per-Task Per-Landmark Count<input id="gen_per_task_landmark" value="1" onchange="updateGenerateEstimator()"></label>
         </div>
         <div class="form-grid" style="margin-top:12px;">
-          <label>Generation Strategy
+          <label>Generation Mode
             ${{renderChoiceGroup('gen_strategy_group', strategyOptions, {{ multiple:false, storageName:'gen_strategy', defaultValue:'manual', cols:1, showSelected:false }})}}
           </label>
           <label>Task Types
@@ -4976,7 +5641,7 @@ function renderGeneratePage() {{
         </div>
         <div class="summary-list" style="margin-top:12px;" id="generate_estimator"></div>
         <div class="actions">
-          <button onclick="runGenerate()">Generate Task Data</button>
+          <button onclick="runGenerate()">Generate Tasks</button>
           <button class="secondary" onclick="loadManifestPreview()">Load Latest Manifest</button>
         </div>
         <pre id="generate_out"></pre>
@@ -4987,7 +5652,7 @@ function renderGeneratePage() {{
           <div class="metric"><div class="muted">Scene</div><div class="v" style="font-size:20px;">${{esc(current.scene_id || '')}}</div></div>
           <div class="metric"><div class="muted">Engine</div><div class="v" style="font-size:20px;">${{esc(current.engine || '')}}</div></div>
           <div class="metric"><div class="muted">Landmarks Eligible for All Four Tasks</div><div class="v">${{esc(stats.eligible_all_task_landmark_count || 0)}}</div></div>
-          <div class="metric"><div class="muted">Categories Eligible for All Four Tasks</div><div class="v">${{esc(stats.eligible_all_task_category_count || 0)}}</div></div>
+          <div class="metric"><div class="muted">Eligible Category Count</div><div class="v">${{esc(stats.eligible_all_task_category_count || 0)}}</div></div>
           <div class="metric"><div class="muted">Average View Count</div><div class="v">${{fmtFloat(stats.avg_view_count_per_eligible_landmark || 0, 2)}}</div></div>
           <div class="metric"><div class="muted">Manifest Count</div><div class="v">${{state.manifests.length}}</div></div>
         </div>
@@ -4998,9 +5663,9 @@ function renderGeneratePage() {{
             <div class="summary-item"><strong>Categories Eligible for All Four Tasks</strong>: ${{(stats.eligible_all_task_categories || []).slice(0, 16).map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') || 'None'}}</div>
           </div>
           <div>
-            <h3>Landmark Task Eligibility Statistics</h3>
+            <h3>Landmark Task Availability</h3>
             <table class="compact-table">
-              <thead><tr><th>Task</th><th>Landmarks</th><th>Category Count</th><th>Average Views</th></tr></thead>
+              <thead><tr><th>Task</th><th>Landmarks</th><th>Categories</th><th>Avg Views</th></tr></thead>
               <tbody>${{perTaskRows || '<tr><td colspan="4" class="muted">No statistics available.</td></tr>'}}</tbody>
             </table>
           </div>
@@ -5029,10 +5694,10 @@ function renderDatasetPage() {{
       <div class="card">
         <h2>Dataset Browser</h2>
         <table>
-          <thead><tr><th>Manifest</th><th>Sample Count</th><th>Landmarks</th><th>Category Count</th><th>Task Types</th><th>Difficulty</th><th>Timestamp</th></tr></thead>
+          <thead><tr><th>Manifest</th><th>Samples</th><th>Landmarks</th><th>Categories</th><th>Task Types</th><th>Difficulty</th><th>Timestamp</th></tr></thead>
           <tbody>${{manifestRows || '<tr><td colspan="7" class="muted">No manifests available.</td></tr>'}}</tbody>
         </table>
-        <div class="section-title">Sample List</div>
+        <div class="section-title">Candidate List</div>
         <div id="manifest_task_list" class="table-wrap"></div>
       </div>
       <div class="card">
@@ -5057,7 +5722,7 @@ function renderExperimentsPage() {{
       <td>${{esc(job.payload?.manifest_name || '-')}}</td>
       <td>${{esc(job.progress?.completed || 0)}} / ${{esc(job.progress?.total || 0)}}</td>
       <td>${{esc(job.progress?.current_sample_id || '')}}</td>
-      <td><button class="secondary" onclick="inspectJob('${{esc(job.job_id)}}')">View</button> <button class="warn" onclick="cancelJob('${{esc(job.job_id)}}')">Cancel</button></td>
+      <td><button class="secondary" onclick="inspectJob('${{esc(job.job_id)}}')">Inspect</button> <button class="warn" onclick="cancelJob('${{esc(job.job_id)}}')">Cancel</button></td>
     </tr>`).join('');
   return `
     <div class="grid">
@@ -5067,7 +5732,7 @@ function renderExperimentsPage() {{
           <label>Manifest
             <select id="exp_manifest">${{state.manifests.map((row)=>`<option value="${{esc(row.path)}}" ${{row.path===state.activeManifest?'selected':''}}>${{esc(row.generation_id)}}</option>`).join('')}}</select>
           </label>
-          <label class="compact-field">Sample Count<input id="exp_limit" value="5"></label>
+          <label class="compact-field">Sample Limit<input id="exp_limit" value="5"></label>
           <label class="compact-field">Concurrency<input id="exp_concurrency" value="1"></label>
           <label class="compact-field">RPM<input id="exp_rpm" value="0"></label>
           <label class="compact-field">TPM<input id="exp_tpm" value="0"></label>
@@ -5082,14 +5747,14 @@ function renderExperimentsPage() {{
           </label>
         </div>
         <div class="actions">
-          <button onclick="startExperimentJob()">Start Experiment</button>
+          <button onclick="startExperimentJob()">Start Experiments</button>
           <button class="secondary" onclick="refreshJobs()">Refresh Progress</button>
         </div>
         <div id="experiment_manifest_info" class="summary-list" style="margin-top:12px;"></div>
         <pre id="job_detail"></pre>
       </div>
       <div class="card">
-        <h2>Background Experiment Jobs</h2>
+        <h2>Experiment Jobs</h2>
         <table>
           <thead><tr><th>Job</th><th>Status</th><th>Scene</th><th>Model</th><th>Manifest</th><th>Progress</th><th>Current Sample</th><th>Actions</th></tr></thead>
           <tbody>${{jobRows || '<tr><td colspan="8" class="muted">No jobs available.</td></tr>'}}</tbody>
@@ -5230,7 +5895,7 @@ function updateGenerateEstimator() {{
     `<strong>Landmarks Eligible for All Four Tasks</strong>: ${{esc(stats.eligible_all_task_landmark_count || 0)}}`,
     `<strong>Category Filter</strong>: ${{getSelectedCategories().length ? getSelectedCategories().map((x)=>`<span class="pill">${{esc(x)}}</span>`).join(' ') : 'All categories'}}`,
     `<strong>Estimated Sample Count</strong>: ${{strategy === 'manual' ? 'Manual mode; the sample count will not be overwritten automatically.' : esc(estimated)}}`,
-    `<strong>Note</strong>: ${{strategy === 'per_task_landmark' ? 'Generate separately over landmarks eligible for each task type.' : strategy === 'per_landmark' ? 'Generate uniformly over landmarks that support all four tasks.' : 'Use the sample-count field above directly.'}}`,
+    `<strong>Note</strong>: ${{strategy === 'per_task_landmark' ? 'Generate separately over landmarks eligible for each task family.' : strategy === 'per_landmark' ? 'Generate uniformly over landmarks that support all four tasks.' : 'Use the sample-count field above directly.'}}`,
   ];
   holder.innerHTML = summaryItemsHtml(items);
 }}
@@ -5886,12 +6551,14 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--engine", default="airsim")
     parser.add_argument("--mode", default="all", choices=["generate", "experiment", "web", "all"])
     parser.add_argument("--sample-count", type=int, default=5)
+    parser.add_argument("--qa-samples-per-difficulty", type=int, default=1)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--reference-main-only", action="store_true", default=True)
     parser.add_argument("--allow-non-main-reference", action="store_true", default=False)
     parser.add_argument("--manifest-path", default="")
     parser.add_argument("--model", default="")
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--reasoning-effort", default="", choices=["", "low", "medium", "high"], help="override reasoning.effort for OpenAI-family Thinking models")
     parser.add_argument("--port", type=int, default=20264)
     parser.add_argument("--landmark-category", action="append", default=[], help="repeatable landmark category filter for generation")
     return parser.parse_args()
@@ -5912,6 +6579,7 @@ def main() -> None:
             scene_id=scene_id,
             engine=engine,
             sample_count=max(1, int(args.sample_count)),
+            qa_samples_per_difficulty=max(1, int(args.qa_samples_per_difficulty)),
             seed=int(args.seed),
             reference_main_only=reference_main_only,
             difficulties=["4way", "8way"],
@@ -5946,6 +6614,7 @@ def main() -> None:
             manifest_path=manifest_path,
             override_model=str(args.model or "").strip() or None,
             limit=int(args.limit) if int(args.limit) > 0 else None,
+            api_overrides={"reasoning_effort": str(args.reasoning_effort or "").strip()} if str(args.reasoning_effort or "").strip() else None,
         )
         print(
             json.dumps(
