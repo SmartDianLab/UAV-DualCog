@@ -5,7 +5,7 @@ This repository provides the anonymized code for **UAV-DualCog**. The correspond
 <p align="center">
   <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
 </p>
-<p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports the benchmark construction and evaluation workflow.</em></p>
+<p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports benchmark construction, evaluation, and a small Real-to-Sim image pilot.</em></p>
 
 - Supplementary website: https://anonymous.4open.science/w/UAV-DualCog
 - Anonymous code repository: https://anonymous.4open.science/r/UAV-DualCog-Code
@@ -19,7 +19,9 @@ For benchmark definitions, leaderboard interpretation, and detailed supplementar
 - `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities.
 - `trajectory/`: hierarchical atomic/composite behavior library and composition logic.
 - `sim_bridge/`: simulator abstraction and AirSim bridge.
-- `configs/uav_dualcog/`: 18 runnable per-scene configs + shared configs + task-pipeline spec.
+- `sim_bridge/gaussian_splat_bridge.py`: programmable 3DGS RGB/depth adapter.
+- `configs/uav_dualcog/`: 18 AirSim scene configs, three GauUscene pilot configs, shared configs, and task-pipeline specifications.
+- `configs/uav_dualcog/3dgs/`: GauUscene/CityGaussian scene manifests and rendering dependencies.
 - `configs/uav_dualcog/templates/`: fully commented templates for customization.
 - `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
 - `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
@@ -110,10 +112,10 @@ Requires:
 
 `configs/uav_dualcog/common_api_runtime.yaml` supports:
 
-1. **API routing** (`api_source: cloud/openrouter/...`)  
+1. **API routing** (`api_source: cloud/openrouter/...`)
    Call remote OpenAI-compatible endpoints.
-2. **Local deployment** (`api_source: local`)  
-   Call local OpenAI-compatible serving endpoints.  
+2. **Local deployment** (`api_source: local`)
+   Call local OpenAI-compatible serving endpoints.
    The release package assumes local models are used as deployed, with no additional quantization handling logic in this code package.
 
 ### 5.1 Instant / Thinking Suffix Rules
@@ -524,48 +526,48 @@ This web is the operational center of **Stage 2 Step 2-4**. It combines:
 - final semantic review fields.
 
 Typical usage order:
-1. **Step 2 initial screening**  
+1. **Step 2 initial screening**
    Use `Drop` immediately for unstable or clearly unusable candidates. Use `Keep` only after the
    landmark has a confirmed main view and one confirmed landmark-centric direction anchor.
-2. **Main-view confirmation**  
+2. **Main-view confirmation**
    In the eight-view RGB panel, select the most representative RGB view as the main view. The
    main view does **not** need to be `front`; it is simply the clearest and most benchmark-facing
    reference image for that landmark.
-3. **Single-direction confirmation**  
+3. **Single-direction confirmation**
    Reviewers only need to assign one correct direction anchor for the chosen main view. The
    remaining seven directions in the fixed ring order
    (`front`, `front_right`, `right`, `back_right`, `back`, `back_left`, `left`, `front_left`)
    are then derived automatically from that anchor rather than edited one by one.
-4. **Invalid-view cleanup**  
+4. **Invalid-view cleanup**
    Mark strongly occluded or unusable RGB views as invalid. These views should not survive as
    reviewed evidence just because they were captured geometrically.
-5. **Class-name synchronization**  
+5. **Class-name synchronization**
    If the weak class hint is not suitable, edit `class_name` before auto-labeling so the prompt
    receives a cleaner prior.
-6. **Auto-label execution**  
+6. **Auto-label execution**
    Run auto-label by current landmark, by class, or globally. The web exposes all three actions:
    `Single`, `By Class`, and `All`.
-7. **Auto-label review**  
+7. **Auto-label review**
    Inspect `auto_label_category`, `auto_label_subcategory`, `auto_label_description`, and
    confidence. If the proposal is good, use `Approve Auto Label`; otherwise edit the final
    semantic fields manually.
-8. **Manual correction and save**  
+8. **Manual correction and save**
    Final reviewed fields are `landmark_category`, `landmark_subcategory`, and
    `landmark_description`. Save manual fixes if the automatic suggestion is incomplete or wrong.
 
 Important page areas:
-- **Left landmark list**  
+- **Left landmark list**
   Shows class grouping, review status, and auto-label status so reviewers can move through one
   semantic group at a time.
-- **Point-cloud evidence area**  
+- **Point-cloud evidence area**
   Use this area to confirm that the candidate remains geometrically coherent and is not a
   fragmented or unstable instance.
-- **Eight-view RGB area**  
+- **Eight-view RGB area**
   Use this area to confirm the representative image, one direction anchor, and invalid-view
   removal.
-- **Auto-label controls**  
+- **Auto-label controls**
   Use these controls to start, monitor, cancel, or clear annotation jobs.
-- **Final semantic fields**  
+- **Final semantic fields**
   Use these fields to publish the reviewed landmark semantics that later prompt templates depend on.
 
 Artifacts written during this workflow:
@@ -775,7 +777,32 @@ python scripts/uav_dualcog/task_pipeline.py \
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-## 10) Smoke-Test Commands (Reviewer Quick Check)
+## 10) GauUscene Real-to-Sim Image Pilot
+
+The pilot reuses the Stage 2 review and Stage 4 image-task interfaces on three real aerial scenes reconstructed with CityGaussianV2: Upper Campus, SMBU, and LFLS. It keeps real-scene reconstruction separate from physical-flight evaluation.
+
+After placing the licensed GauUscene V2.1 and CityGaussianV2 assets under `task_pipeline_data/UAV-DualCog-3DGS-Pilot/`, start the renderer and inspect the temporary landmarks:
+
+```bash
+python scripts/uav_dualcog/gsplat_render_service.py --help
+python scripts/uav_dualcog/stage2_landmark_label.py \
+  --config configs/uav_dualcog/task_3dgs_gauu_upper.yaml \
+  --phase review_web
+```
+
+Generate the four image tasks from the reviewed 20-landmark set. Use `--clear-stage4` only for an intentional clean rebuild; subsequent experiment-only runs preserve generated assets by default.
+
+```bash
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_upper_pilot.yaml \
+  --stage stage4 --phase data_render --clear-stage4
+
+python scripts/uav_dualcog/validate_3dgs_pilot.py --help
+```
+
+Equivalent scene and pipeline configs are provided for SMBU and LFLS. Model calls use the same Stage 4 experiment interface as the AirSim benchmark and are intentionally separated from data construction.
+
+## 11) Smoke-Test Commands (Reviewer Quick Check)
 
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py --help

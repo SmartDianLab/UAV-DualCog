@@ -1,0 +1,42 @@
+config_path: configs/uav_dualcog/task_3dgs_gauu_upper.yaml
+task_name: uav_dualcog_3dgs_real_scene_pilot_final
+task_pipeline_root_dir: task_pipeline_data
+stage: stage4
+phase: data_render
+seed: 29
+clear_existing_stage3: false
+# Preserve reviewed/generated assets by default. Pass --clear-stage4 only when
+# intentionally rebuilding the pilot from the finalized landmark set.
+clear_existing_stage4: false
+landmark_count: 20
+
+# Kept consistent with the AirSim evaluation entry points. Model calls are not
+# part of the current construction test and only run under phase=experiment.
+experiment_models:
+  - Qwen/Qwen3.5-4B-Instant
+  - mimo-v2.5-Instant
+  - google/gemini-3-flash-preview-Instant
+experiment_concurrency: 4
+experiment_model_parallelism: 3
+
+landmark_list:
+  artifact_name: gauu_upper_20_landmarks
+  seed: 29
+  scene_configs:
+    - configs/uav_dualcog/task_3dgs_gauu_upper.yaml
+  scene_landmark_counts:
+    gauu_upper_campus: 20
+
+stage4:
+  landmark_count: 20
+  per_landmark:
+    view_definitions: []
+    task_types:
+      - self_where
+      - self_what
+      - env_where
+      - env_how
+    qa_samples_per_difficulty: 1
+  difficulties:
+    - 4way
+    - 8way
