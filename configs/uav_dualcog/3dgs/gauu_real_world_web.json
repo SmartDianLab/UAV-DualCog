@@ -1,0 +1,37 @@
+{
+  "scenes": [
+    {
+      "scene_id": "gauu_upper_campus",
+      "scene": "Upper Campus",
+      "checkpoint": "UPPER_CAMPUS.zip",
+      "registered_views": 358,
+      "sampled_views": 200,
+      "pilot_root": "task_pipeline_data/uav_dualcog_3dgs_real_scene_pilot_final/gsplat_gauu_upper_campus",
+      "candidate_file": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_upper/landmark_candidates_100.json",
+      "selection_file": "configs/uav_dualcog/3dgs/gauu_upper_campus_selected_5.json",
+      "valid_instances": "scene_data/gsplat_gauu_upper_campus/landmarks_review/gauu_upper_campus.valid_instances.json"
+    },
+    {
+      "scene_id": "gauu_lfls",
+      "scene": "LFLS",
+      "checkpoint": "LFLS.zip",
+      "registered_views": 553,
+      "sampled_views": 200,
+      "pilot_root": "task_pipeline_data/uav_dualcog_3dgs_real_scene_pilot_lfls/gsplat_gauu_lfls",
+      "candidate_file": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/landmark_candidates_100.json",
+      "selection_file": "configs/uav_dualcog/3dgs/gauu_lfls_selected_5.json",
+      "valid_instances": "scene_data/gsplat_gauu_lfls/landmarks_review/gauu_lfls.valid_instances.json"
+    },
+    {
+      "scene_id": "gauu_smbu",
+      "scene": "SMBU",
+      "checkpoint": "SMBU.zip",
+      "registered_views": 415,
+      "sampled_views": 200,
+      "pilot_root": "task_pipeline_data/uav_dualcog_3dgs_real_scene_pilot_smbu/gsplat_gauu_smbu",
+      "candidate_file": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/landmark_candidates_100.json",
+      "selection_file": "configs/uav_dualcog/3dgs/gauu_smbu_selected_5.json",
+      "valid_instances": "scene_data/gsplat_gauu_smbu/landmarks_review/gauu_smbu.valid_instances.json"
+    }
+  ]
+}

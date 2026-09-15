@@ -1,0 +1,41 @@
+{
+  "scene_id": "gauu_lfls",
+  "selection_status": "visual_preselection_pending_user_confirmation",
+  "selections": [
+    {
+      "instance_id": "gauu_lfls_candidate_0078",
+      "landmark_category": "public_facility",
+      "landmark_subcategory": "blue rooftop sports courts",
+      "landmark_description": "a group of bright blue sports courts on a large rectangular rooftop",
+      "review_note": "Strong color contrast and a clean rectangular footprint in the dense urban scene."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0800",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_subcategory": "green-roof industrial hall",
+      "landmark_description": "a rectangular industrial hall with a pale green central roof panel",
+      "review_note": "Large roof target with a clear footprint and minimal reconstruction artifacts."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0402",
+      "landmark_category": "building",
+      "landmark_subcategory": "stepped white apartment block",
+      "landmark_description": "a stepped white apartment block following the bend of a narrow river",
+      "review_note": "Distinctive stepped geometry and clear separation from the surrounding greenery."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0476",
+      "landmark_category": "transport_infrastructure",
+      "landmark_subcategory": "pedestrian overpass",
+      "landmark_description": "a light-colored pedestrian bridge crossing a divided urban highway",
+      "review_note": "Representative transport landmark with a clear linear shape across the roadway."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0142",
+      "landmark_category": "building",
+      "landmark_subcategory": "red-roof low-rise building",
+      "landmark_description": "a compact red-roof low-rise building beside a small green sports court",
+      "review_note": "Color-distinct target with a compact box and clean local reconstruction."
+    }
+  ]
+}

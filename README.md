@@ -781,7 +781,7 @@ If you only want to verify interface wiring (without real model calls), use `--h
 
 The pilot reuses the Stage 2 review and Stage 4 image-task interfaces on three real aerial scenes reconstructed with CityGaussianV2: Upper Campus, SMBU, and LFLS. It keeps real-scene reconstruction separate from physical-flight evaluation.
 
-After placing the licensed GauUscene V2.1 and CityGaussianV2 assets under `task_pipeline_data/UAV-DualCog-3DGS-Pilot/`, start the renderer and inspect the temporary landmarks:
+After placing the licensed GauUscene V2.1 and CityGaussianV2 assets under `task_pipeline_data/UAV-DualCog-3DGS-Pilot/`, start the renderer and inspect the candidate landmarks:
 
 ```bash
 python scripts/uav_dualcog/gsplat_render_service.py --help
@@ -790,17 +790,25 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
   --phase review_web
 ```
 
-Generate the four image tasks from the reviewed 20-landmark set. Use `--clear-stage4` only for an intentional clean rebuild; subsequent experiment-only runs preserve generated assets by default.
+The release includes five visually preselected landmarks for each scene in `configs/uav_dualcog/3dgs/gauu_*_selected_5.json`. After review, each scene produces 40 image questions: five landmarks, four task types, and two difficulty levels. Use `--clear-stage4` only for an intentional clean rebuild; subsequent experiment-only runs preserve generated assets by default.
 
 ```bash
 python scripts/uav_dualcog/task_pipeline.py \
   --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_upper_pilot.yaml \
   --stage stage4 --phase data_render --clear-stage4
 
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_smbu_pilot.yaml \
+  --stage stage4 --phase data_render --clear-stage4
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_lfls_pilot.yaml \
+  --stage stage4 --phase data_render --clear-stage4
+
 python scripts/uav_dualcog/validate_3dgs_pilot.py --help
 ```
 
-Equivalent scene and pipeline configs are provided for SMBU and LFLS. Model calls use the same Stage 4 experiment interface as the AirSim benchmark and are intentionally separated from data construction.
+Model calls use the same Stage 4 experiment interface as the AirSim benchmark and are intentionally separated from data construction.
 
 ## 11) Smoke-Test Commands (Reviewer Quick Check)
 

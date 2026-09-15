@@ -1,0 +1,41 @@
+{
+  "scene_id": "gauu_upper_campus",
+  "selection_status": "visual_preselection_pending_user_confirmation",
+  "selections": [
+    {
+      "instance_id": "gauu_upper_candidate_0063",
+      "landmark_category": "public_facility",
+      "landmark_subcategory": "outdoor basketball courts",
+      "landmark_description": "a pair of green outdoor basketball courts beside a dark rectangular paved area",
+      "review_note": "Clear sports-court geometry with strong color contrast and multiple valid aerial views."
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0390",
+      "landmark_category": "building",
+      "landmark_subcategory": "white-roof sports hall",
+      "landmark_description": "a large rectangular sports hall with a pale ribbed roof beside outdoor courts",
+      "review_note": "Large, compact building footprint with a distinctive roof and clean boundary."
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0008",
+      "landmark_category": "building",
+      "landmark_subcategory": "white high-rise tower",
+      "landmark_description": "a tall slender white residential tower standing next to a wooded hillside",
+      "review_note": "Prominent vertical landmark, spatially separated from nearby buildings."
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0143",
+      "landmark_category": "building",
+      "landmark_subcategory": "rectangular academic building",
+      "landmark_description": "a long white academic building with a regular window grid at the campus edge",
+      "review_note": "Distinct rectangular facade and reliable multiview visibility."
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0107",
+      "landmark_category": "building",
+      "landmark_subcategory": "red-roof academic complex",
+      "landmark_description": "a compact academic building complex with red roof sections and a central courtyard",
+      "review_note": "Recognizable roof color and compact footprint in a separate campus sector."
+    }
+  ]
+}

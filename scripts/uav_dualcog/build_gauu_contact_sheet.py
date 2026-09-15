@@ -42,10 +42,26 @@ def main() -> None:
         if not image_path.is_file():
             continue
         image = Image.open(image_path).convert("RGB")
+        source_width, source_height = image.size
         image.thumbnail((args.tile_width, args.tile_height - 42), Image.Resampling.LANCZOS)
         tile = Image.new("RGB", (args.tile_width, args.tile_height), "white")
-        tile.paste(image, ((args.tile_width - image.width) // 2, 0))
+        offset_x = (args.tile_width - image.width) // 2
+        tile.paste(image, (offset_x, 0))
         draw = ImageDraw.Draw(tile)
+        bbox = list(views[0].get("bbox_2d_xyxy", []) or [])
+        bbox_size = list(views[0].get("bbox_2d_image_size", []) or [])
+        if len(bbox) == 4:
+            bbox_width = float(bbox_size[0]) if len(bbox_size) == 2 else float(source_width)
+            bbox_height = float(bbox_size[1]) if len(bbox_size) == 2 else float(source_height)
+            scale_x = image.width / max(1.0, bbox_width)
+            scale_y = image.height / max(1.0, bbox_height)
+            scaled_bbox = (
+                offset_x + float(bbox[0]) * scale_x,
+                float(bbox[1]) * scale_y,
+                offset_x + float(bbox[2]) * scale_x,
+                float(bbox[3]) * scale_y,
+            )
+            draw.rectangle(scaled_bbox, outline="#e11d48", width=3)
         label = f"{row.get('instance_id', '')} | {row.get('landmark_subcategory', '')}"
         score = f"quality={float(row.get('quality_score', 0.0)):.3f} | views={len(views)}"
         draw.text((6, args.tile_height - 38), label[:58], fill="black", font=font)
