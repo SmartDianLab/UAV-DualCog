@@ -331,6 +331,38 @@ def _resolve_stage2_image_path(scene_root: Path, raw_root: Path, rel_path: str) 
     )
 
 
+def _load_query_position_annotations(config: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
+    stage4_cfg = _stage4_cfg(config)
+    raw_path = str(stage4_cfg.get("query_position_annotations", "") or "").strip()
+    if not raw_path:
+        return {}
+    path = Path(raw_path)
+    if not path.is_absolute():
+        path = (WORKSPACE_ROOT / path).resolve()
+    if not path.exists():
+        if bool(stage4_cfg.get("require_query_position_annotations", False)):
+            raise FileNotFoundError(f"missing query-position annotations: {path}")
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    rows = list(payload.get("annotations", []) or []) if isinstance(payload, dict) else list(payload or [])
+    indexed: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        instance_id = str(row.get("instance_id", "") or "").strip()
+        if not instance_id:
+            continue
+        keys = {
+            str(row.get("relative_path", "") or "").replace("\\", "/").strip(),
+            str(row.get("source_view_id", "") or "").strip(),
+            str(row.get("view_id", "") or "").strip(),
+        }
+        for key in keys:
+            if key:
+                indexed[(instance_id, key)] = dict(row)
+    return indexed
+
+
 def _bbox_to_norm(bbox_xyxy: list[Any] | tuple[Any, ...] | None, image_size: list[Any] | tuple[Any, ...] | None) -> list[float] | None:
     if not isinstance(bbox_xyxy, (list, tuple)) or len(bbox_xyxy) != 4:
         return None
@@ -515,6 +547,9 @@ def _load_valid_instances(config: dict[str, Any], *, scene_root: Path, scene_id:
     else:
         raise RuntimeError(f"invalid valid_instances payload: {valid_instances_path}")
 
+    stage4_cfg = _stage4_cfg(config)
+    require_reviewed_valid_views = bool(stage4_cfg.get("require_reviewed_valid_views", False))
+    query_annotations = _load_query_position_annotations(config)
     prepared: list[dict[str, Any]] = []
     for item in items:
         if not isinstance(item, dict):
@@ -530,6 +565,8 @@ def _load_valid_instances(config: dict[str, Any], *, scene_root: Path, scene_id:
         for view in list(item.get("rgb_views", []) or []):
             if not isinstance(view, dict):
                 continue
+            if require_reviewed_valid_views and not bool(view.get("is_valid", False)):
+                continue
             key = _normalize_view_key(view.get("view_direction", None))
             obj_label = _view_key_to_label(key)
             if obj_label is None:
@@ -542,10 +579,22 @@ def _load_valid_instances(config: dict[str, Any], *, scene_root: Path, scene_id:
             bbox_norm = _bbox_to_norm(view.get("bbox_2d_xyxy", None), view.get("bbox_2d_image_size", None))
             if bbox_norm is None:
                 continue
+            relative_path = str(view.get("path", "") or "").replace("\\", "/")
+            annotation = None
+            for annotation_key in (
+                relative_path,
+                str(view.get("source_view_id", "") or "").strip(),
+                str(view.get("view_id", "") or "").strip(),
+            ):
+                if annotation_key and (str(item.get("instance_id", "") or ""), annotation_key) in query_annotations:
+                    annotation = query_annotations[(str(item.get("instance_id", "") or ""), annotation_key)]
+                    break
             rgb_views.append(
                 {
                     "path": str(abs_path),
-                    "relative_path": str(view.get("path", "") or ""),
+                    "relative_path": relative_path,
+                    "view_id": view.get("view_id", None),
+                    "source_view_id": view.get("source_view_id", None),
                     "object_label": obj_label,
                     "observer_label": _object_to_observer_label(obj_label),
                     "bbox_xyxy_px": [float(v) for v in view.get("bbox_2d_xyxy", [])],
@@ -557,6 +606,10 @@ def _load_valid_instances(config: dict[str, Any], *, scene_root: Path, scene_id:
                     "yaw_deg": float(view.get("yaw_deg", 0.0) or 0.0),
                     "pitch_deg": float(view.get("pitch_deg", 0.0) or 0.0),
                     "pitch_offset_deg": float(view.get("pitch_offset_deg", 0.0) or 0.0),
+                    "query_position_label": str((annotation or {}).get("benchmark_label", "") or ""),
+                    "query_position_label_raw": str((annotation or {}).get("position_label", "") or ""),
+                    "query_position_confidence": (annotation or {}).get("confidence", None),
+                    "query_position_source": str((annotation or {}).get("source", "") or ""),
                 }
             )
         if not rgb_views:
@@ -1747,11 +1800,16 @@ def _build_env_request(
     engine = str((config.get("task", {}) or {}).get("engine", "airsim") or "airsim").strip().lower()
     if engine == "gsplat" and bool(stage4_cfg.get("reuse_registered_env_views", True)):
         allowed_labels = set(_env_position_label_space_for_difficulty(difficulty))
+        require_annotations = bool(stage4_cfg.get("require_query_position_annotations", False))
         observed_view = next(
             (
                 view
                 for view in observed_pool
-                if str(view.get("observer_label", "") or "") in allowed_labels
+                if str(
+                    view.get("query_position_label", "")
+                    if require_annotations
+                    else (view.get("query_position_label", "") or view.get("observer_label", ""))
+                ) in allowed_labels
                 and len(list(view.get("bbox_xyxy_norm", []) or [])) == 4
                 and Path(str(view.get("path", "") or "")).exists()
             ),
@@ -1771,7 +1829,7 @@ def _build_env_request(
         return {
             "request_id": sample_prefix,
             "existing_image": str(Path(str(observed_view["path"])).resolve()),
-            "direction_label": str(observed_view["observer_label"]),
+            "direction_label": str(observed_view.get("query_position_label", "") or observed_view["observer_label"]),
             "reference_view": source_view,
             "observed_view": observed_view,
             "bbox_xyxy_norm": list(observed_view["bbox_xyxy_norm"]),
@@ -1965,6 +2023,9 @@ def generate_manifest(
         raise RuntimeError(f"no_valid_instances_for_stage4: scene_id={scene_id} categories={selected_categories or 'ALL'}")
 
     rng = random.Random(seed)
+    normalized_difficulties = [str(value) for value in difficulties if str(value) in {"4way", "8way"}]
+    if not normalized_difficulties:
+        normalized_difficulties = ["4way", "8way"]
     allowed_task_types = {str(x) for x in list(task_types or [])}
     selected_task_types = [task_type for _, task_type in TASK_SPECS if (not allowed_task_types or task_type in allowed_task_types)]
     if not selected_task_types:
@@ -1992,7 +2053,7 @@ def generate_manifest(
                     {
                         "entry_idx": int(entry_idx),
                         "entry": entry,
-                        "difficulty_plan": ["4way", "8way"] if _entry_has_diagonal_view(entry) else ["4way", "4way"],
+                        "difficulty_plan": list(normalized_difficulties),
                         "selected_task_types": selected_task_types,
                         "qa_samples_per_difficulty": int(qa_samples_per_difficulty),
                         "reference_main_only": bool(reference_main_only),
@@ -2012,7 +2073,7 @@ def generate_manifest(
                     {
                         "entry_idx": int(entry_idx),
                         "entry": entry,
-                        "difficulty_plan": ["4way", "8way"] if _entry_has_diagonal_view(entry) else ["4way", "4way"],
+                        "difficulty_plan": list(normalized_difficulties),
                         "selected_task_types": selected_task_types,
                         "qa_samples_per_difficulty": int(qa_samples_per_difficulty),
                         "reference_main_only": bool(reference_main_only),
@@ -2051,6 +2112,7 @@ def generate_manifest(
             continue
         source_req = dict(next((req for req in env_requests if str(req["request_id"]) == str(row["request_id"])), {}) or {})
         reference_view = dict(source_req.get("reference_view", {}) or {})
+        observed_view = dict(source_req.get("observed_view", {}) or {})
         reference_image = _path_for_json(Path(str(reference_view.get("path", "") or ""))) if reference_view else ""
         reference_image_with_bbox = _path_for_json(Path(str(source_req.get("reference_overlay", "") or ""))) if source_req.get("reference_overlay") else reference_image
         reference_bbox_xyxy_norm = list(reference_view.get("bbox_xyxy_norm", []) or []) if reference_view else []
@@ -2083,6 +2145,13 @@ def generate_manifest(
                     "target_image": target_image,
                     "answer_option_id": answer_option_id,
                     "answer_bbox_xyxy_norm": bbox_xyxy_norm,
+                    "metadata": {
+                        "query_position_label": str(observed_view.get("query_position_label", "") or ""),
+                        "query_position_label_raw": str(observed_view.get("query_position_label_raw", "") or ""),
+                        "query_position_confidence": observed_view.get("query_position_confidence", None),
+                        "query_position_source": str(observed_view.get("query_position_source", "") or ""),
+                        "query_position_relative_path": str(observed_view.get("relative_path", "") or ""),
+                    },
                 }
             )
         if "env_how" in selected_task_types:
@@ -2112,6 +2181,13 @@ def generate_manifest(
                     "target_image": target_image,
                     "answer_option_id": answer_option_id,
                     "answer_bbox_xyxy_norm": bbox_xyxy_norm,
+                    "metadata": {
+                        "query_position_label": str(observed_view.get("query_position_label", "") or ""),
+                        "query_position_label_raw": str(observed_view.get("query_position_label_raw", "") or ""),
+                        "query_position_confidence": observed_view.get("query_position_confidence", None),
+                        "query_position_source": str(observed_view.get("query_position_source", "") or ""),
+                        "query_position_relative_path": str(observed_view.get("relative_path", "") or ""),
+                    },
                 }
             )
 
@@ -2370,7 +2446,8 @@ def _collect_scene_landmark_stats(entries: list[dict[str, Any]]) -> dict[str, An
                     views = _eligible_views_for_definition(rgb_views, "Object-Centric View", difficulty)
                     unique_paths = {str(view.get("path", "") or "") for view in views if str(view.get("path", "") or "").strip()}
                     distinct_labels = sorted({str(view.get("object_label", "") or "") for view in views if str(view.get("object_label", "") or "").strip()})
-                    eligible = len(unique_paths) >= 1 and len(center := list(entry.get("center_3d", []) or [])) >= 3 and bool(entry.get("bbox_3d", {}))
+                    center = list(entry.get("center_3d", []) or [])
+                    eligible = len(unique_paths) >= 1 and len(center) >= 3 and bool(entry.get("bbox_3d", {}))
                 else:
                     views = _eligible_views_for_definition(rgb_views, definition, difficulty)
                     unique_paths = {str(view.get("path", "") or "") for view in views if str(view.get("path", "") or "").strip()}

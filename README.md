@@ -12,7 +12,7 @@ This repository provides the anonymized code for **UAV-DualCog**. The correspond
 - Dataset access: release instructions are provided on the supplementary website and will be updated after review.
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
-For benchmark definitions, leaderboard interpretation, and detailed supplementary explanations, please read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Usage.
+For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Real World -> Evaluation -> Leaderboard -> Analysis -> Training -> Usage.
 
 ## 1) What Is Included
 
