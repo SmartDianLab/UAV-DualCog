@@ -1,0 +1,504 @@
+{
+  "scene_id": "env_18",
+  "sample_count": 8,
+  "samples": [
+    {
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "6_72",
+      "landmark_category": "building",
+      "landmark_description": "white mid-rise building with grid-like windows and flat roof",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_03_yaw_p092.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/6_72/env_18_6_72_self_shared_8way_420023_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.37939453125,
+        0.361328125,
+        0.591064453125,
+        0.6741536458333334
+      ],
+      "reference_view": "Right",
+      "reference_object_view": "Right",
+      "target_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_06_yaw_n043.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.39453125,
+        0.3570963541666667,
+        0.61865234375,
+        0.7119140625
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Right",
+        "query_label": "Back-Left"
+      },
+      "sample_id": "env_18_6_72_self_shared_8way_420023_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "B",
+          "label": "Front"
+        },
+        {
+          "option_id": "C",
+          "label": "Back"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Left"
+        }
+      ],
+      "answer_option_id": "D",
+      "prompt_text": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Right\nB. Front\nC. Back\nD. Back-Left",
+      "user_prompt": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Right\nB. Front\nC. Back\nD. Back-Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "6_72",
+      "landmark_category": "building",
+      "landmark_description": "white mid-rise building with grid-like windows and flat roof",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_03_yaw_p092.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/6_72/env_18_6_72_self_shared_8way_420015_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.37939453125,
+        0.361328125,
+        0.591064453125,
+        0.6741536458333334
+      ],
+      "reference_view": "Left",
+      "reference_object_view": "Right",
+      "target_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_05_yaw_p137.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.39453125,
+        0.3570963541666667,
+        0.61865234375,
+        0.7119140625
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Left",
+        "query_label": "Front-Left"
+      },
+      "sample_id": "env_18_6_72_self_shared_8way_420015_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 135-degree clockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_01_yaw_p002.jpg",
+          "view_under_definition": "Back",
+          "bbox_xyxy_norm": [
+            0.433349609375,
+            0.3629557291666667,
+            0.553955078125,
+            0.7047526041666666
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_06_yaw_n043.jpg",
+          "view_under_definition": "Back-Right",
+          "bbox_xyxy_norm": [
+            0.39453125,
+            0.3570963541666667,
+            0.61865234375,
+            0.7119140625
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_00_yaw_n178.jpg",
+          "view_under_definition": "Front",
+          "bbox_xyxy_norm": [
+            0.44140625,
+            0.359375,
+            0.5703125,
+            0.7076822916666666
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_02_yaw_n088.jpg",
+          "view_under_definition": "Right",
+          "bbox_xyxy_norm": [
+            0.399169921875,
+            0.3623046875,
+            0.616455078125,
+            0.6829427083333334
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "B"
+      ],
+      "answer_option_id": "B",
+      "prompt_text": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 135-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 135-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_18_6_72_env_shared_8way_420020_where",
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "6_72",
+      "landmark_category": "building",
+      "landmark_description": "white mid-rise building with grid-like windows and flat roof",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "B",
+          "label": "Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Front-Left"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_03_yaw_p092.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/6_72/env_18_6_72_env_shared_8way_420020_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.37939453125,
+        0.361328125,
+        0.591064453125,
+        0.6741536458333334
+      ],
+      "reference_object_view": "Right",
+      "target_image": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/env_observations/6_72/env_18_6_72_env_shared_8way_420020.jpg",
+      "answer_option_id": "A",
+      "answer_bbox_xyxy_norm": [
+        0.6292933225631714,
+        0.3351205190022786,
+        0.9676095247268677,
+        0.8095124562581381
+      ],
+      "prompt_text": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Right\nB. Right\nC. Back-Left\nD. Front-Left",
+      "user_prompt": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Right\nB. Right\nC. Back-Left\nD. Front-Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_18_6_72_env_shared_8way_420020_how",
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "6_72",
+      "landmark_category": "building",
+      "landmark_description": "white mid-rise building with grid-like windows and flat roof",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Back"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/6_72/view_03_yaw_p092.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/6_72/env_18_6_72_env_shared_8way_420020_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.37939453125,
+        0.361328125,
+        0.591064453125,
+        0.6741536458333334
+      ],
+      "reference_object_view": "Right",
+      "target_image": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/env_observations/6_72/env_18_6_72_env_shared_8way_420020.jpg",
+      "answer_option_id": "B",
+      "answer_bbox_xyxy_norm": [
+        0.6292933225631714,
+        0.3351205190022786,
+        0.9676095247268677,
+        0.8095124562581381
+      ],
+      "prompt_text": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Left\nB. Front-Right\nC. Left\nD. Back",
+      "user_prompt": "Image 1 shows the Right facade of white mid-rise building with grid-like windows and flat roof in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Left\nB. Front-Right\nC. Left\nD. Back",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "15_160",
+      "landmark_category": "vegetation",
+      "landmark_description": "green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_03_yaw_p085.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/15_160/env_18_15_160_self_shared_8way_260023_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.4052734375,
+        0.361328125,
+        0.588134765625,
+        0.6608072916666666
+      ],
+      "reference_view": "Right",
+      "reference_object_view": "Right",
+      "target_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_02_yaw_n095.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.399169921875,
+        0.3606770833333333,
+        0.595947265625,
+        0.6513671875
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Right",
+        "query_label": "Left"
+      },
+      "sample_id": "env_18_15_160_self_shared_8way_260023_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "C",
+          "label": "Front"
+        },
+        {
+          "option_id": "D",
+          "label": "Right"
+        }
+      ],
+      "answer_option_id": "A",
+      "prompt_text": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Left\nB. Back-Left\nC. Front\nD. Right",
+      "user_prompt": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Left\nB. Back-Left\nC. Front\nD. Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "15_160",
+      "landmark_category": "vegetation",
+      "landmark_description": "green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_03_yaw_p085.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/15_160/env_18_15_160_self_shared_8way_260017_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.4052734375,
+        0.361328125,
+        0.588134765625,
+        0.6608072916666666
+      ],
+      "reference_view": "Left",
+      "reference_object_view": "Right",
+      "target_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_04_yaw_n140.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.431396484375,
+        0.3610026041666667,
+        0.603759765625,
+        0.6627604166666666
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Left",
+        "query_label": "Front-Right"
+      },
+      "sample_id": "env_18_15_160_self_shared_8way_260017_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 45-degree counterclockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_00_yaw_p175.jpg",
+          "view_under_definition": "Front",
+          "bbox_xyxy_norm": [
+            0.44970703125,
+            0.3603515625,
+            0.552978515625,
+            0.662109375
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_02_yaw_n095.jpg",
+          "view_under_definition": "Right",
+          "bbox_xyxy_norm": [
+            0.399169921875,
+            0.3606770833333333,
+            0.595947265625,
+            0.6513671875
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_05_yaw_p130.jpg",
+          "view_under_definition": "Front-Left",
+          "bbox_xyxy_norm": [
+            0.431396484375,
+            0.3610026041666667,
+            0.603759765625,
+            0.6627604166666666
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_01_yaw_n005.jpg",
+          "view_under_definition": "Back",
+          "bbox_xyxy_norm": [
+            0.45654296875,
+            0.3616536458333333,
+            0.55615234375,
+            0.6494140625
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "C"
+      ],
+      "answer_option_id": "C",
+      "prompt_text": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_18_15_160_env_shared_8way_260014_where",
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "15_160",
+      "landmark_category": "vegetation",
+      "landmark_description": "green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Back"
+        },
+        {
+          "option_id": "C",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "D",
+          "label": "Right"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_03_yaw_p085.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/15_160/env_18_15_160_env_shared_8way_260014_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.4052734375,
+        0.361328125,
+        0.588134765625,
+        0.6608072916666666
+      ],
+      "reference_object_view": "Right",
+      "target_image": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/env_observations/15_160/env_18_15_160_env_shared_8way_260014.jpg",
+      "answer_option_id": "C",
+      "answer_bbox_xyxy_norm": [
+        0.6406859159469604,
+        0.32780388991038006,
+        0.939352810382843,
+        0.8055424690246582
+      ],
+      "prompt_text": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Left\nB. Back\nC. Front-Right\nD. Right",
+      "user_prompt": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Left\nB. Back\nC. Front-Right\nD. Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_18_15_160_env_shared_8way_260014_how",
+      "scene_id": "env_18",
+      "engine": "airsim",
+      "landmark_id": "15_160",
+      "landmark_category": "vegetation",
+      "landmark_description": "green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front"
+        },
+        {
+          "option_id": "B",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Right"
+        },
+        {
+          "option_id": "D",
+          "label": "Front-Left"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_18/landmarks_raw/rgb_views/15_160/view_03_yaw_p085.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/reference_bbox/15_160/env_18_15_160_env_shared_8way_260014_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.4052734375,
+        0.361328125,
+        0.588134765625,
+        0.6608072916666666
+      ],
+      "reference_object_view": "Right",
+      "target_image": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/assets/env_observations/15_160/env_18_15_160_env_shared_8way_260014.jpg",
+      "answer_option_id": "B",
+      "answer_bbox_xyxy_norm": [
+        0.6406859159469604,
+        0.32780388991038006,
+        0.939352810382843,
+        0.8055424690246582
+      ],
+      "prompt_text": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Front-Right\nC. Right\nD. Front-Left",
+      "user_prompt": "Image 1 shows the Right facade of green deciduous tree with a spreading canopy and visible trunk situated in a grassy urban area in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Front-Right\nC. Right\nD. Front-Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    }
+  ]
+}

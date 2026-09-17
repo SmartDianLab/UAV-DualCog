@@ -9,7 +9,7 @@ This repository provides the anonymized code for **UAV-DualCog**. The correspond
 
 - Supplementary website: https://anonymous.4open.science/w/UAV-DualCog
 - Anonymous code repository: https://anonymous.4open.science/r/UAV-DualCog-Code
-- Dataset access: release instructions are provided on the supplementary website and will be updated after review.
+- Full dataset access is unavailable during review; curated examples are included below.
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
 For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Real World -> Evaluation -> Leaderboard -> Analysis -> Training -> Usage.
@@ -25,11 +25,16 @@ For benchmark definitions, leaderboard interpretation, and supplementary explana
 - `configs/uav_dualcog/templates/`: fully commented templates for customization.
 - `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
 - `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
+- `scene_data/`: complete reviewed landmark-list metadata for each example scene, plus images for two selected landmarks per scene.
+- `task_pipeline_data/`: complete V1 and Train landmark lists, four image-task examples per selected landmark, and compressed V1 video-task examples.
+- `docs/examples/index.json`: scene-to-example index and selected landmark IDs.
+
+The examples cover all 12 UAV-DualCog-V1 scenes, six UAV-DualCog-Train scenes, and three 3DGS real-scene pilot reconstructions. These are illustrative samples, not the full task releases. Original-resolution videos and source GauUscene assets are not redistributed.
 
 ## 2) What Is Excluded
 
 - No private keys or private endpoints.
-- No generated artifacts (`scene_data/`, `task_pipeline_data/`, caches, media outputs).
+- No full-resolution generated datasets, caches, or original video files; only the curated examples above are included.
 - No internal notes/workflow docs outside public release scope.
 
 Note:

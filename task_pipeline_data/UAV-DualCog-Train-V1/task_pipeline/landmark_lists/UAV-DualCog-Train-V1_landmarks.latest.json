@@ -1,0 +1,1412 @@
+{
+  "artifact_name": "UAV-DualCog-Train-V1_landmarks",
+  "generated_at": "2026-05-18T17:19:25+0800",
+  "seed": 29,
+  "selected_count": 234,
+  "selected_landmarks": [
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "1_10"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_178"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_412"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_242"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_239"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_146"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_416"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_243"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_244"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_423"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_240"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_127"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_163"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "24_593"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "24_591"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_189"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_406"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_203"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_156"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_109"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "1_9"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_219"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_136"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_435"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_431"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "26_599"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_123"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_164"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_129"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "1_1"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_430"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_417"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_166"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "7_82"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_105"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "31_744"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_427"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_415"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_103"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "6_25"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_407"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "4_13"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_428"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "6_23"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_410"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_424"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_421"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_441"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_110"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_214"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_218"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "26_598"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "6_24"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "6_27"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_101"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_204"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_429"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "7_49"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_434"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_409"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "7_65"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "7_83"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_171"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_208"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "7_35"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_432"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_108"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "1_7"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_437"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_209"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_433"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_222"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_418"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_179"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_426"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "1_11"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_125"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "10_241"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "31_747"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_1",
+      "config_path": "configs/uav_dualcog/task_airsim_env_1.yaml",
+      "instance_id": "25_595"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "32_40"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "27_30"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "32_39"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "29_33"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "31_38"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "31_36"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "27_31"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "31_37"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "28_32"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "30_35"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_51"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_10"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_50"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_56"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_9"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_54"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_42"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_41"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_45"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_43"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_18"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_48"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_44"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "33_52"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "14_21"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_12"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_20"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_17"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_16"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_14"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_3",
+      "config_path": "configs/uav_dualcog/task_airsim_env_3.yaml",
+      "instance_id": "12_15"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "5_28"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "5_27"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "20_96"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "22_107"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "20_97"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "5_31"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "5_29"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_5",
+      "config_path": "configs/uav_dualcog/task_airsim_env_5.yaml",
+      "instance_id": "5_30"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_103"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_105"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_106"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_359"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_104"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_101"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_109"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "28_55"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_108"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_120"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_115"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "17_23"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_357"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "61_350"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_116"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "28_35"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_363"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "28_56"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "28_58"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "17_22"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_117"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_112"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_111"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "61_347"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "40_89"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_355"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_358"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "28_33"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "55_338"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "48_95"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "38_84"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "11_18"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_121"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "17_21"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "68_354"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "50_118"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "17_25"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_15",
+      "config_path": "configs/uav_dualcog/task_airsim_env_15.yaml",
+      "instance_id": "26_31"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "9_109"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "6_72"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "18_223"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "5_50"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "3_23"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "5_47"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "3_26"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "3_24"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "3_28"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "6_83"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_12"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "6_84"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "11_113"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_7"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "14_155"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "8_108"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_199"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_8"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_176"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_172"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_9"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_195"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_212"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_181"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "4_40"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_193"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_183"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_216"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_175"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_180"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_202"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "4_39"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_15"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_210"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_207"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_190"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_205"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_208"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_191"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_209"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_177"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "4_41"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_188"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_178"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_218"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "4_42"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "16_179"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_11"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_203"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "17_222"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "15_159"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "2_14"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "15_161"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_18",
+      "config_path": "configs/uav_dualcog/task_airsim_env_18.yaml",
+      "instance_id": "15_160"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_237"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_239"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_235"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_247"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_233"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "4_24"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "76_337"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "76_338"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "11_80"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "12_91"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "12_93"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_232"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "12_92"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_242"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "87_415"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "86_399"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "44_250"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "11_86"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "11_82"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "97_494"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "12_95"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "25_141"
+    },
+    {
+      "engine": "airsim",
+      "scene_id": "env_22",
+      "config_path": "configs/uav_dualcog/task_airsim_env_22.yaml",
+      "instance_id": "12_87"
+    }
+  ]
+}

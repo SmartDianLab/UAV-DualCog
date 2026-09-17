@@ -1,0 +1,532 @@
+{
+  "scene_id": "gauu_upper_campus",
+  "sample_count": 8,
+  "samples": [
+    {
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0390",
+      "landmark_category": "building",
+      "landmark_description": "gray low-rise building with flat roof and adjacent green courts",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_04.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0390/gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020041_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6353956604003906,
+        0.5009771345258318,
+        0.8610110473632813,
+        0.7249421796289246
+      ],
+      "reference_view": "Front-Right",
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_01.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.3103794479370117,
+        0.12635165413853824,
+        0.5596907806396484,
+        0.4004961923672534
+      ],
+      "metadata": {
+        "reference_is_main_view": false,
+        "reference_label": "Front-Right",
+        "query_label": "Front"
+      },
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020041_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front"
+        },
+        {
+          "option_id": "B",
+          "label": "Left"
+        },
+        {
+          "option_id": "C",
+          "label": "Back"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Right"
+        }
+      ],
+      "answer_option_id": "A",
+      "prompt_text": "Image 1 shows the Front-Right facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Left\nC. Back\nD. Back-Right",
+      "user_prompt": "Image 1 shows the Front-Right facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Left\nC. Back\nD. Back-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0390",
+      "landmark_category": "building",
+      "landmark_description": "gray low-rise building with flat roof and adjacent green courts",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_04.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0390/gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020011_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6353956604003906,
+        0.5009771345258318,
+        0.8610110473632813,
+        0.7249421796289246
+      ],
+      "reference_view": "Front-Left",
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_07.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.3103794479370117,
+        0.12635165413853824,
+        0.5596907806396484,
+        0.4004961923672534
+      ],
+      "metadata": {
+        "reference_is_main_view": false,
+        "reference_label": "Front-Left",
+        "query_label": "Back-Right"
+      },
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020011_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 45-degree counterclockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_07.jpg",
+          "view_under_definition": "Back-Right",
+          "bbox_xyxy_norm": [
+            0.8469812774658203,
+            0.37211264241155106,
+            0.9987212371826172,
+            0.5316593988877988
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_01.jpg",
+          "view_under_definition": "Front",
+          "bbox_xyxy_norm": [
+            0.3103794479370117,
+            0.12635165413853824,
+            0.5596907806396484,
+            0.4004961923672534
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_06.jpg",
+          "view_under_definition": "Front-Right",
+          "bbox_xyxy_norm": [
+            0.6906378173828125,
+            0.4206665382277999,
+            0.8781170654296875,
+            0.6597362114317303
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_04.jpg",
+          "view_under_definition": "Front-Left",
+          "bbox_xyxy_norm": [
+            0.6353956604003906,
+            0.5009771345258318,
+            0.8610110473632813,
+            0.7249421796289246
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "B"
+      ],
+      "answer_option_id": "B",
+      "prompt_text": "Image 1 shows the Front-Right facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Front-Right facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020044_where",
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0390",
+      "landmark_category": "building",
+      "landmark_description": "gray low-rise building with flat roof and adjacent green courts",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Right"
+        },
+        {
+          "option_id": "B",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Back"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Right"
+        }
+      ],
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_01.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0390/gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020044_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.3103794479370117,
+        0.12635165413853824,
+        0.5596907806396484,
+        0.4004961923672534
+      ],
+      "reference_object_view": "Front",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_06.jpg",
+      "answer_option_id": "A",
+      "answer_bbox_xyxy_norm": [
+        0.6906378173828125,
+        0.4206665382277999,
+        0.8781170654296875,
+        0.6597362114317303
+      ],
+      "metadata": {
+        "query_position_label": "Right",
+        "query_position_label_raw": "right",
+        "query_position_confidence": 0.95,
+        "query_position_source": "vlm:Qwen/Qwen3.5-9B",
+        "query_position_relative_path": "rgb_views/gauu_upper_candidate_0390/view_06.jpg"
+      },
+      "prompt_text": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Right\nB. Front-Right\nC. Back\nD. Back-Right",
+      "user_prompt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Right\nB. Front-Right\nC. Back\nD. Back-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020044_how",
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0390",
+      "landmark_category": "building",
+      "landmark_description": "gray low-rise building with flat roof and adjacent green courts",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Back"
+        },
+        {
+          "option_id": "D",
+          "label": "Front-Left"
+        }
+      ],
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_01.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0390/gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020044_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.3103794479370117,
+        0.12635165413853824,
+        0.5596907806396484,
+        0.4004961923672534
+      ],
+      "reference_object_view": "Front",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0390/view_06.jpg",
+      "answer_option_id": "B",
+      "answer_bbox_xyxy_norm": [
+        0.6906378173828125,
+        0.4206665382277999,
+        0.8781170654296875,
+        0.6597362114317303
+      ],
+      "metadata": {
+        "query_position_label": "Right",
+        "query_position_label_raw": "right",
+        "query_position_confidence": 0.95,
+        "query_position_source": "vlm:Qwen/Qwen3.5-9B",
+        "query_position_relative_path": "rgb_views/gauu_upper_candidate_0390/view_06.jpg"
+      },
+      "prompt_text": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Right\nC. Back\nD. Front-Left",
+      "user_prompt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Right\nC. Back\nD. Front-Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0158",
+      "landmark_category": "transport_infrastructure",
+      "landmark_description": "white striped pedestrian crosswalk on asphalt road",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0158/gauu_upper_campus_gauu_upper_candidate_0158_self_shared_8way_070033_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6090380477905274,
+        0.5962282447135661,
+        0.6808438873291016,
+        0.6854840665636716
+      ],
+      "reference_view": "Front-Right",
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_01.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.5795146942138671,
+        0.2445554009306174,
+        0.6788516998291015,
+        0.34638815453483773
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front-Right",
+        "query_label": "Front"
+      },
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0158_self_shared_8way_070033_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Front"
+        },
+        {
+          "option_id": "C",
+          "label": "Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Right"
+        }
+      ],
+      "answer_option_id": "B",
+      "prompt_text": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Front\nC. Left\nD. Back-Right",
+      "user_prompt": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Front\nC. Left\nD. Back-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0158",
+      "landmark_category": "transport_infrastructure",
+      "landmark_description": "white striped pedestrian crosswalk on asphalt road",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0158/gauu_upper_campus_gauu_upper_candidate_0158_self_shared_8way_070037_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6090380477905274,
+        0.5962282447135661,
+        0.6808438873291016,
+        0.6854840665636716
+      ],
+      "reference_view": "Front-Left",
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_05.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.5795146942138671,
+        0.2445554009306174,
+        0.6788516998291015,
+        0.34638815453483773
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front-Left",
+        "query_label": "Back-Right"
+      },
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0158_self_shared_8way_070037_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 45-degree counterclockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_01.jpg",
+          "view_under_definition": "Front",
+          "bbox_xyxy_norm": [
+            0.5795146942138671,
+            0.2445554009306174,
+            0.6788516998291015,
+            0.34638815453483773
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+          "view_under_definition": "Front-Left",
+          "bbox_xyxy_norm": [
+            0.6090380477905274,
+            0.5962282447135661,
+            0.6808438873291016,
+            0.6854840665636716
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_05.jpg",
+          "view_under_definition": "Back-Right",
+          "bbox_xyxy_norm": [
+            0.9056902313232422,
+            0.3980154879426107,
+            0.973848876953125,
+            0.44527202917240216
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_03.jpg",
+          "view_under_definition": "Back-Left",
+          "bbox_xyxy_norm": [
+            0.38123149871826173,
+            0.5680195916559279,
+            0.462137451171875,
+            0.6531143832005624
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "A"
+      ],
+      "answer_option_id": "A",
+      "prompt_text": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0158_env_shared_8way_070016_where",
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0158",
+      "landmark_category": "transport_infrastructure",
+      "landmark_description": "white striped pedestrian crosswalk on asphalt road",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front"
+        },
+        {
+          "option_id": "B",
+          "label": "Back"
+        },
+        {
+          "option_id": "C",
+          "label": "Front-Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Front-Right"
+        }
+      ],
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0158/gauu_upper_campus_gauu_upper_candidate_0158_env_shared_8way_070016_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6090380477905274,
+        0.5962282447135661,
+        0.6808438873291016,
+        0.6854840665636716
+      ],
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_01.jpg",
+      "answer_option_id": "A",
+      "answer_bbox_xyxy_norm": [
+        0.5795146942138671,
+        0.2445554009306174,
+        0.6788516998291015,
+        0.34638815453483773
+      ],
+      "metadata": {
+        "query_position_label": "Front",
+        "query_position_label_raw": "center",
+        "query_position_confidence": 0.9,
+        "query_position_source": "vlm:Qwen/Qwen3.5-9B",
+        "query_position_relative_path": "rgb_views/gauu_upper_candidate_0158/view_01.jpg"
+      },
+      "prompt_text": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Back\nC. Front-Left\nD. Front-Right",
+      "user_prompt": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Back\nC. Front-Left\nD. Front-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "gauu_upper_campus_gauu_upper_candidate_0158_env_shared_8way_070016_how",
+      "scene_id": "gauu_upper_campus",
+      "engine": "gsplat",
+      "landmark_id": "gauu_upper_candidate_0158",
+      "landmark_category": "transport_infrastructure",
+      "landmark_description": "white striped pedestrian crosswalk on asphalt road",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Left"
+        },
+        {
+          "option_id": "C",
+          "label": "Front"
+        },
+        {
+          "option_id": "D",
+          "label": "Back"
+        }
+      ],
+      "reference_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+      "reference_image_with_bbox": "scene_data/gsplat_gauu_upper_campus/qa/assets/reference_bbox/gauu_upper_candidate_0158/gauu_upper_campus_gauu_upper_candidate_0158_env_shared_8way_070016_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.6090380477905274,
+        0.5962282447135661,
+        0.6808438873291016,
+        0.6854840665636716
+      ],
+      "reference_object_view": "Front-Right",
+      "target_image": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/rgb_views/gauu_upper_candidate_0158/view_01.jpg",
+      "answer_option_id": "C",
+      "answer_bbox_xyxy_norm": [
+        0.5795146942138671,
+        0.2445554009306174,
+        0.6788516998291015,
+        0.34638815453483773
+      ],
+      "metadata": {
+        "query_position_label": "Front",
+        "query_position_label_raw": "center",
+        "query_position_confidence": 0.9,
+        "query_position_source": "vlm:Qwen/Qwen3.5-9B",
+        "query_position_relative_path": "rgb_views/gauu_upper_candidate_0158/view_01.jpg"
+      },
+      "prompt_text": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Left\nC. Front\nD. Back",
+      "user_prompt": "Image 1 shows the Front-Right facade of white striped pedestrian crosswalk on asphalt road in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Left\nC. Front\nD. Back",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    }
+  ]
+}

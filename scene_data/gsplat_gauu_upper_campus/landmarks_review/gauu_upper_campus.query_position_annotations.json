@@ -1,0 +1,778 @@
+{
+  "schema_version": "1.0",
+  "scene_id": "gauu_upper_campus",
+  "generated_at": "2026-09-15T22:34:27.036149+00:00",
+  "model": "Qwen/Qwen3.5-9B",
+  "prompt_version": "screen_position_5way_v1",
+  "label_mapping": {
+    "left": "Left",
+    "front-left": "Front-Left",
+    "center": "Front",
+    "front-right": "Front-Right",
+    "right": "Right"
+  },
+  "valid_landmark_count": 9,
+  "annotation_count": 33,
+  "errors": [],
+  "annotations": [
+    {
+      "instance_id": "gauu_upper_candidate_0022",
+      "view_id": 1,
+      "source_view_id": "339",
+      "relative_path": "rgb_views/gauu_upper_candidate_0022/view_01.jpg",
+      "bbox_2d_xyxy": [
+        300.6141662597656,
+        409.466796875,
+        659.3624267578125,
+        730.5348510742188
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.9,
+      "reason": "The red rectangle enclosing the sports courts is located in the left portion of the image, clearly within the far-left peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.9, \"reason\": \"The red rectangle enclosing the sports courts is located in the left portion of the image, clearly within the far-left peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0022",
+      "view_id": 3,
+      "source_view_id": "259",
+      "relative_path": "rgb_views/gauu_upper_candidate_0022/view_03.jpg",
+      "bbox_2d_xyxy": [
+        637.8682861328125,
+        326.5398864746094,
+        904.140869140625,
+        532.9343872070312
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_right",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle enclosing the sports courts is located almost exactly in the horizontal center of the image.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle enclosing the sports courts is located almost exactly in the horizontal center of the image.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0022",
+      "view_id": 6,
+      "source_view_id": "703",
+      "relative_path": "rgb_views/gauu_upper_candidate_0022/view_06.jpg",
+      "bbox_2d_xyxy": [
+        1077.4876708984375,
+        185.909912109375,
+        1319.7764892578125,
+        327.62091064453125
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle enclosing the tennis courts is located in the upper-right quadrant of the image, clearly within the far-right peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle enclosing the tennis courts is located in the upper-right quadrant of the image, clearly within the far-right peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0063",
+      "view_id": 0,
+      "source_view_id": "31",
+      "relative_path": "rgb_views/gauu_upper_candidate_0063/view_00.jpg",
+      "bbox_2d_xyxy": [
+        339.5042419433594,
+        375.6809997558594,
+        652.0277709960938,
+        788.5440673828125
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.9,
+      "reason": "The red rectangle enclosing the sports courts is located in the left half of the image, clearly within the far-left peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.9, \"reason\": \"The red rectangle enclosing the sports courts is located in the left half of the image, clearly within the far-left peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0063",
+      "view_id": 2,
+      "source_view_id": "177",
+      "relative_path": "rgb_views/gauu_upper_candidate_0063/view_02.jpg",
+      "bbox_2d_xyxy": [
+        451.4943542480469,
+        349.0948791503906,
+        639.9111328125,
+        467.1914367675781
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "right",
+      "position_label": "front-left",
+      "benchmark_label": "Front-Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle enclosing the sports courts is located in the left half of the image, positioned between the far-left edge and the vertical centerline.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"front-left\", \"confidence\": 0.95, \"reason\": \"The red rectangle enclosing the sports courts is located in the left half of the image, positioned between the far-left edge and the vertical centerline.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0063",
+      "view_id": 4,
+      "source_view_id": "107",
+      "relative_path": "rgb_views/gauu_upper_candidate_0063/view_04.jpg",
+      "bbox_2d_xyxy": [
+        869.651123046875,
+        218.39828491210938,
+        1030.3099365234375,
+        313.1634216308594
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle enclosing the sports courts is located in the central region of the image, slightly to the right of the exact center, but clearly within the central zone rather than the peripheral left or right areas.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle enclosing the sports courts is located in the central region of the image, slightly to the right of the exact center, but clearly within the central zone rather than the peripheral left or right areas.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0074",
+      "view_id": 0,
+      "source_view_id": "619",
+      "relative_path": "rgb_views/gauu_upper_candidate_0074/view_00.jpg",
+      "bbox_2d_xyxy": [
+        1046.3018798828125,
+        862.44775390625,
+        1216.546875,
+        1042.408935546875
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "right",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the lower-right quadrant of the image, clearly within the far-right peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the lower-right quadrant of the image, clearly within the far-right peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0074",
+      "view_id": 5,
+      "source_view_id": "609",
+      "relative_path": "rgb_views/gauu_upper_candidate_0074/view_05.jpg",
+      "bbox_2d_xyxy": [
+        593.6866455078125,
+        465.6497802734375,
+        706.4856567382812,
+        567.6712036132812
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the central region of the image, slightly to the left of the exact middle, but clearly within the central zone rather than the peripheral left or right areas.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the central region of the image, slightly to the left of the exact middle, but clearly within the central zone rather than the peripheral left or right areas.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0074",
+      "view_id": 6,
+      "source_view_id": "689",
+      "relative_path": "rgb_views/gauu_upper_candidate_0074/view_06.jpg",
+      "bbox_2d_xyxy": [
+        419.03375244140625,
+        313.1151428222656,
+        532.402587890625,
+        420.21795654296875
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.9,
+      "reason": "The red rectangle is located in the upper-left quadrant of the image, clearly within the far-left peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.9, \"reason\": \"The red rectangle is located in the upper-left quadrant of the image, clearly within the far-left peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0138",
+      "view_id": 0,
+      "source_view_id": "219",
+      "relative_path": "rgb_views/gauu_upper_candidate_0138/view_00.jpg",
+      "bbox_2d_xyxy": [
+        1236.2276611328125,
+        772.7315673828125,
+        1371.511962890625,
+        908.5267333984375
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back_right",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a roundabout located in the far-right peripheral region of the image.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a roundabout located in the far-right peripheral region of the image.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0138",
+      "view_id": 1,
+      "source_view_id": "217",
+      "relative_path": "rgb_views/gauu_upper_candidate_0138/view_01.jpg",
+      "bbox_2d_xyxy": [
+        1242.911865234375,
+        146.6713409423828,
+        1369.4305419921875,
+        272.8252868652344
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a circular landscaped area located at the intersection in the upper-right corner of the image, which falls into the far-right peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a circular landscaped area located at the intersection in the upper-right corner of the image, which falls into the far-right peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0138",
+      "view_id": 2,
+      "source_view_id": "193",
+      "relative_path": "rgb_views/gauu_upper_candidate_0138/view_02.jpg",
+      "bbox_2d_xyxy": [
+        1513.6378173828125,
+        183.29827880859375,
+        1597.7261962890625,
+        309.8684387207031
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the far-right peripheral region of the image, clearly separated from the central area.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the far-right peripheral region of the image, clearly separated from the central area.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0138",
+      "view_id": 3,
+      "source_view_id": "255",
+      "relative_path": "rgb_views/gauu_upper_candidate_0138/view_03.jpg",
+      "bbox_2d_xyxy": [
+        422.78240966796875,
+        547.2425537109375,
+        517.7333984375,
+        626.5616455078125
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "front-left",
+      "benchmark_label": "Front-Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the left half of the image, positioned between the far-left edge and the vertical centerline.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"front-left\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the left half of the image, positioned between the far-left edge and the vertical centerline.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0158",
+      "view_id": 1,
+      "source_view_id": "389",
+      "relative_path": "rgb_views/gauu_upper_candidate_0158/view_01.jpg",
+      "bbox_2d_xyxy": [
+        927.2235107421875,
+        260.94061279296875,
+        1086.1627197265625,
+        369.5961608886719
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.9,
+      "reason": "The red rectangle is located at the horizontal center of the image, marking a crosswalk at a road intersection.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.9, \"reason\": \"The red rectangle is located at the horizontal center of the image, marking a crosswalk at a road intersection.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0158",
+      "view_id": 2,
+      "source_view_id": "75",
+      "relative_path": "rgb_views/gauu_upper_candidate_0158/view_02.jpg",
+      "bbox_2d_xyxy": [
+        974.4608764648438,
+        636.175537109375,
+        1089.3502197265625,
+        731.4114990234375
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_right",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.9,
+      "reason": "The red rectangle highlights a road intersection located near the horizontal center of the image, slightly below the vertical midpoint.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.9, \"reason\": \"The red rectangle highlights a road intersection located near the horizontal center of the image, slightly below the vertical midpoint.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0158",
+      "view_id": 3,
+      "source_view_id": "425",
+      "relative_path": "rgb_views/gauu_upper_candidate_0158/view_03.jpg",
+      "bbox_2d_xyxy": [
+        609.9703979492188,
+        606.076904296875,
+        739.419921875,
+        696.873046875
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back_right",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a road intersection located near the horizontal center of the image, slightly below the vertical midpoint.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a road intersection located near the horizontal center of the image, slightly below the vertical midpoint.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0158",
+      "view_id": 5,
+      "source_view_id": "409",
+      "relative_path": "rgb_views/gauu_upper_candidate_0158/view_05.jpg",
+      "bbox_2d_xyxy": [
+        1449.1043701171875,
+        424.6825256347656,
+        1558.158203125,
+        475.1052551269531
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a pedestrian crossing located on the far right side of the image, near the edge of the frame.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a pedestrian crossing located on the far right side of the image, near the edge of the frame.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0164",
+      "view_id": 2,
+      "source_view_id": "533",
+      "relative_path": "rgb_views/gauu_upper_candidate_0164/view_02.jpg",
+      "bbox_2d_xyxy": [
+        27.446359634399414,
+        619.844970703125,
+        79.3666763305664,
+        715.280029296875
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back_left",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a small tree located on the far-left edge of the image, clearly within the peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a small tree located on the far-left edge of the image, clearly within the peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0164",
+      "view_id": 3,
+      "source_view_id": "447",
+      "relative_path": "rgb_views/gauu_upper_candidate_0164/view_03.jpg",
+      "bbox_2d_xyxy": [
+        522.376953125,
+        897.7296142578125,
+        580.6613159179688,
+        966.6734619140625
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "front-left",
+      "benchmark_label": "Front-Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a small patch of greenery located in the lower-left quadrant of the image, clearly to the left of the vertical centerline and in the foreground area.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"front-left\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a small patch of greenery located in the lower-left quadrant of the image, clearly to the left of the vertical centerline and in the foreground area.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0164",
+      "view_id": 4,
+      "source_view_id": "431",
+      "relative_path": "rgb_views/gauu_upper_candidate_0164/view_04.jpg",
+      "bbox_2d_xyxy": [
+        999.0098876953125,
+        470.49798583984375,
+        1043.871826171875,
+        521.2858276367188
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located near the horizontal center of the image, slightly to the right of the exact middle, placing it in the central region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located near the horizontal center of the image, slightly to the right of the exact middle, placing it in the central region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0164",
+      "view_id": 5,
+      "source_view_id": "515",
+      "relative_path": "rgb_views/gauu_upper_candidate_0164/view_05.jpg",
+      "bbox_2d_xyxy": [
+        942.0552368164062,
+        432.1241760253906,
+        987.6290283203125,
+        480.5570373535156
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the central region of the image, slightly to the right of the exact middle, but clearly within the central zone rather than the peripheral left or right areas.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the central region of the image, slightly to the right of the exact middle, but clearly within the central zone rather than the peripheral left or right areas.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0186",
+      "view_id": 0,
+      "source_view_id": "447",
+      "relative_path": "rgb_views/gauu_upper_candidate_0186/view_00.jpg",
+      "bbox_2d_xyxy": [
+        1000.3760375976562,
+        823.3259887695312,
+        1168.142578125,
+        994.6607055664062
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "front-right",
+      "benchmark_label": "Front-Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the lower-right quadrant of the image, placing it in the front-right zone relative to the image center.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"front-right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the lower-right quadrant of the image, placing it in the front-right zone relative to the image center.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0186",
+      "view_id": 1,
+      "source_view_id": "399",
+      "relative_path": "rgb_views/gauu_upper_candidate_0186/view_01.jpg",
+      "bbox_2d_xyxy": [
+        428.98248291015625,
+        877.5294799804688,
+        583.3858032226562,
+        1050.4288330078125
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back",
+      "position_label": "front-left",
+      "benchmark_label": "Front-Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the lower-left quadrant of the image, clearly to the left of the vertical centerline.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"front-left\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the lower-left quadrant of the image, clearly to the left of the vertical centerline.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0186",
+      "view_id": 2,
+      "source_view_id": "543",
+      "relative_path": "rgb_views/gauu_upper_candidate_0186/view_02.jpg",
+      "bbox_2d_xyxy": [
+        66.3164291381836,
+        128.2391815185547,
+        216.2567596435547,
+        274.86083984375
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.95,
+      "reason": "The red rectangle is located in the upper-left corner of the image, clearly within the far-left peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.95, \"reason\": \"The red rectangle is located in the upper-left corner of the image, clearly within the far-left peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0186",
+      "view_id": 3,
+      "source_view_id": "467",
+      "relative_path": "rgb_views/gauu_upper_candidate_0186/view_03.jpg",
+      "bbox_2d_xyxy": [
+        1388.0986328125,
+        22.353797912597656,
+        1475.2369384765625,
+        104.81967163085938
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the far-right peripheral region of the image.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the far-right peripheral region of the image.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0267",
+      "view_id": 0,
+      "source_view_id": "465",
+      "relative_path": "rgb_views/gauu_upper_candidate_0267/view_00.jpg",
+      "bbox_2d_xyxy": [
+        5.925095081329346,
+        6.278736114501953,
+        343.96258544921875,
+        218.40223693847656
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "left",
+      "benchmark_label": "Left",
+      "confidence": 0.9,
+      "reason": "The red rectangle is located in the upper-left corner of the image, clearly within the far-left peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"left\", \"confidence\": 0.9, \"reason\": \"The red rectangle is located in the upper-left corner of the image, clearly within the far-left peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0267",
+      "view_id": 1,
+      "source_view_id": "75",
+      "relative_path": "rgb_views/gauu_upper_candidate_0267/view_01.jpg",
+      "bbox_2d_xyxy": [
+        1162.1505126953125,
+        102.07929992675781,
+        1436.3858642578125,
+        363.17681884765625
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle encloses a building located in the far-right peripheral region of the image.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle encloses a building located in the far-right peripheral region of the image.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0267",
+      "view_id": 2,
+      "source_view_id": "85",
+      "relative_path": "rgb_views/gauu_upper_candidate_0267/view_02.jpg",
+      "bbox_2d_xyxy": [
+        793.571044921875,
+        164.0436248779297,
+        1036.21533203125,
+        386.3406066894531
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_right",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle encloses a building complex located in the central region of the image, slightly to the right of the exact middle, but clearly within the central zone.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle encloses a building complex located in the central region of the image, slightly to the right of the exact middle, but clearly within the central zone.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0267",
+      "view_id": 4,
+      "source_view_id": "427",
+      "relative_path": "rgb_views/gauu_upper_candidate_0267/view_04.jpg",
+      "bbox_2d_xyxy": [
+        946.8886108398438,
+        34.90705490112305,
+        1114.998779296875,
+        238.48863220214844
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the upper-right quadrant of the image, clearly within the far-right peripheral region.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the upper-right quadrant of the image, clearly within the far-right peripheral region.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0390",
+      "view_id": 1,
+      "source_view_id": "385",
+      "relative_path": "rgb_views/gauu_upper_candidate_0390/view_01.jpg",
+      "bbox_2d_xyxy": [
+        496.60711669921875,
+        134.8172149658203,
+        895.5052490234375,
+        427.3294372558594
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front",
+      "position_label": "center",
+      "benchmark_label": "Front",
+      "confidence": 0.95,
+      "reason": "The red rectangle encloses a large building located in the central region of the image, slightly to the left of the exact vertical centerline, but clearly within the central zone.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"center\", \"confidence\": 0.95, \"reason\": \"The red rectangle encloses a large building located in the central region of the image, slightly to the left of the exact vertical centerline, but clearly within the central zone.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0390",
+      "view_id": 4,
+      "source_view_id": "87",
+      "relative_path": "rgb_views/gauu_upper_candidate_0390/view_04.jpg",
+      "bbox_2d_xyxy": [
+        1016.633056640625,
+        534.5426025390625,
+        1377.61767578125,
+        773.5133056640625
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_right",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the far-right peripheral region of the image, adjacent to the sports courts.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the far-right peripheral region of the image, adjacent to the sports courts.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0390",
+      "view_id": 6,
+      "source_view_id": "73",
+      "relative_path": "rgb_views/gauu_upper_candidate_0390/view_06.jpg",
+      "bbox_2d_xyxy": [
+        1105.0205078125,
+        448.8511962890625,
+        1404.9873046875,
+        703.9385375976562
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "front_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the far-right peripheral region of the image, well past the horizontal center.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the far-right peripheral region of the image, well past the horizontal center.\"}\n```"
+    },
+    {
+      "instance_id": "gauu_upper_candidate_0390",
+      "view_id": 7,
+      "source_view_id": "533",
+      "relative_path": "rgb_views/gauu_upper_candidate_0390/view_07.jpg",
+      "bbox_2d_xyxy": [
+        1355.1700439453125,
+        397.044189453125,
+        1597.9539794921875,
+        567.2805786132812
+      ],
+      "bbox_2d_image_size": [
+        1600,
+        1067
+      ],
+      "reviewed_view_direction": "back_left",
+      "position_label": "right",
+      "benchmark_label": "Right",
+      "confidence": 0.95,
+      "reason": "The red rectangle highlights a building located in the far-right peripheral region of the image.",
+      "source": "vlm:Qwen/Qwen3.5-9B",
+      "raw_response": "```json\n{\"position\": \"right\", \"confidence\": 0.95, \"reason\": \"The red rectangle highlights a building located in the far-right peripheral region of the image.\"}\n```"
+    }
+  ]
+}
