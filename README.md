@@ -3,9 +3,9 @@
 This repository provides the anonymized code for **UAV-DualCog**. The corresponding paper is currently under peer review. Identifying project and dataset links are intentionally withheld during review.
 
 <p align="center">
-  <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
+  <img src="docs/overview/fig_benchmark_overview.png" alt="UAV-DualCog benchmark overview" />
 </p>
-<p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports benchmark construction, evaluation, and a small Real-to-Sim image pilot.</em></p>
+<p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports benchmark construction, evaluation, and a small real-scene 3DGS image pilot.</em></p>
 
 - Supplementary website: https://anonymous.4open.science/w/UAV-DualCog
 - Anonymous code repository: https://anonymous.4open.science/r/UAV-DualCog-Code
@@ -782,7 +782,7 @@ python scripts/uav_dualcog/task_pipeline.py \
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-## 10) GauUscene Real-to-Sim Image Pilot
+## 10) GauUscene Real-Scene 3DGS Image Pilot
 
 The pilot reuses the Stage 2 review and Stage 4 image-task interfaces on three real aerial scenes reconstructed with CityGaussianV2: Upper Campus, SMBU, and LFLS. It keeps real-scene reconstruction separate from physical-flight evaluation.
 
