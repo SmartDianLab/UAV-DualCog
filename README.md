@@ -16,15 +16,16 @@ For benchmark definitions, leaderboard interpretation, and supplementary explana
 
 ## 1) What Is Included
 
-- `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities.
+- `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities, 3DGS construction tools, and optimization-probe code.
+- `scripts/uav_dualcog/uav_dualcog_optimize/`: training-manifest preparation, multimodal SFT, joint GRPO, checkpoint auditing, and transfer evaluation.
 - `trajectory/`: hierarchical atomic/composite behavior library and composition logic.
 - `sim_bridge/`: simulator abstraction and AirSim bridge.
 - `sim_bridge/gaussian_splat_bridge.py`: programmable 3DGS RGB/depth adapter.
-- `configs/uav_dualcog/`: 18 AirSim scene configs, three GauUscene pilot configs, shared configs, and task-pipeline specifications.
+- `configs/uav_dualcog/`: 18 AirSim scene configs, three GauUscene scene configs, shared configs, and task-pipeline specifications.
 - `configs/uav_dualcog/3dgs/`: GauUscene/CityGaussian scene manifests and rendering dependencies.
 - `configs/uav_dualcog/templates/`: fully commented templates for customization.
 - `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
-- `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
+- `environment.yml`, `requirements.txt`, `requirements-training.txt`, `deps/`: construction, evaluation, and optional training dependency references.
 - `scene_data/`: complete reviewed landmark-list metadata for each example scene, plus images for two selected landmarks per scene.
 - `task_pipeline_data/`: complete V1 and Train landmark lists, up to four available image-task examples per selected landmark, and compressed V1 video-task examples where matching records exist.
 - `docs/examples/index.json`: scene-to-example index and selected landmark IDs.
@@ -97,11 +98,11 @@ Recommended workflow:
 4. Stage 4 generates image tasks and evaluation manifests.
 
 Important operational notes:
-- Stage 2 Step 2-4 are completed in the internal review web (`review_instances_web` + auto-label flow).
-- Stage 3 and Stage 4 both provide internal web workbenches for inspection (behavior library, landmark/task previews, experiment outputs), but for released split generation we recommend `task_pipeline.py` batch phases.
+- Stage 2 Step 2-4 are completed in the local review workspace (`review_instances_web` + auto-label flow).
+- Stage 3 and Stage 4 both provide local review workspaces for inspection (behavior library, landmark/task previews, experiment outputs), but released split generation should use the reproducible `task_pipeline.py` batch phases.
 - Some operations are available in both CLI and web forms. In practice, we recommend:
-  - **Stage 2**: use the internal review web for Step 2-4 (screening, representative main-view confirmation, single-direction anchoring, auto-label review).
-  - **Stage 3 / Stage 4**: use `task_pipeline.py` for released-scale batch generation, and use the internal web mainly for visual inspection, prompt/debug checks, and experiment/result browsing.
+  - **Stage 2**: use the local review workspace for Step 2-4 (screening, representative main-view confirmation, single-direction anchoring, and auto-label review).
+  - **Stage 3 / Stage 4**: use `task_pipeline.py` for released-scale batch generation, and use the review workspaces for visual inspection, prompt/debug checks, and experiment/result browsing.
 
 ### Mode B: Experiment Only (No Scene Reconstruction)
 
@@ -162,8 +163,8 @@ export CUDA_VISIBLE_DEVICES=3
 export VLLM_USE_MODELSCOPE=true
 
 vllm serve \
-  ./models/internvl3_5-4b \
-  --served-model-name OpenGVLab/InternVL3_5-4B-Instant \
+  ./models/qwen3_5-4b \
+  --served-model-name Qwen/Qwen3.5-4B \
   --tensor-parallel-size 1 \
   --reasoning-parser qwen3 \
   --max-model-len 32K \
@@ -461,7 +462,7 @@ python scripts/uav_dualcog/task_pipeline.py \
   --stage stage3 --phase render
 ```
 
-Optional internal web workbench:
+Optional local review workspace:
 ```bash
 python scripts/uav_dualcog/stage3_generate_traj.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
@@ -488,7 +489,7 @@ python scripts/uav_dualcog/task_pipeline.py \
   --stage stage4 --phase render
 ```
 
-Optional internal web workbench:
+Optional local review workspace:
 ```bash
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
@@ -497,9 +498,9 @@ python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --port 20264
 ```
 
-## 8) Internal Web Workspaces (Stage 2-4)
+## 8) Local Review Workspaces (Stage 2-4)
 
-The internal web tools are designed for **interactive inspection, review, and run-level debugging**.
+The browser-based workspaces support **interactive inspection, review, and run-level debugging**.
 They are especially useful when you need to confirm whether geometry, views, prompts, task rows, or
 model outputs are qualitatively correct before launching large batches.
 
@@ -581,9 +582,9 @@ Artifacts written during this workflow:
 - `landmarks_review/auto_label_debug/` (when debug export is enabled)
 
 <p align="center">
-  <img src="docs/internal_web/stage2_web.png" alt="Stage 2 internal review workspace" />
+  <img src="docs/internal_web/stage2_web.png" alt="Stage 2 landmark review workspace" />
 </p>
-<p align="center"><em>Stage 2 internal review workspace. Point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval are combined here so that Stage 2 Step 2-4 can be completed in one continuous workflow.</em></p>
+<p align="center"><em>Stage 2 landmark review workspace. Point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval are combined so that Stage 2 Step 2-4 can be completed in one continuous workflow.</em></p>
 
 ### 8.2 Stage 3 Web: Mission Review, Dataset Browsing, And Experiment Tracking
 
@@ -782,7 +783,56 @@ python scripts/uav_dualcog/task_pipeline.py \
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-## 10) GauUscene Real-Scene 3DGS Image Pilot
+## 10) UAV-DualCog-Train Optimization Probe
+
+The public package includes the two-stage optimization code used to test whether the benchmark's
+structured image supervision improves a compact multimodal model. UAV-DualCog-Train contains
+11,232 image samples from six scenes that are disjoint from the evaluation split. This experiment
+is a lightweight supervision probe rather than a new general-purpose training method.
+
+Use a dedicated modern multimodal-training environment for this optional stage:
+
+```bash
+pip install -r requirements-training.txt
+```
+
+Prepare the training and validation manifests:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/prepare_train_dataset.py \
+  --train-root task_pipeline_data/UAV-DualCog-Train-V1 \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm
+```
+
+Run multimodal SFT with the reported effective batch size of 32:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/run_sft_lora.py \
+  --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl \
+  --valid-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_valid.latest.jsonl \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full \
+  --num-epochs 3 --gradient-accumulation-steps 32 \
+  --max-seq-length 4096 --max-image-side 720 --save-merged
+```
+
+Run joint GRPO with two completions per prompt and equal reward weights:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/run_grpo_light.py \
+  --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl \
+  --sft-checkpoint task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full/merged_model \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/grpo_joint \
+  --learning-rate 1e-6 --num-steps 600 \
+  --gradient-accumulation-steps 16 --group-size 2 \
+  --max-completion-length 128 --max-image-side 720 \
+  --w-format 1.0 --w-mcq 1.0 --w-bbox 1.0 --save-merged
+```
+
+Use `--dry-run` and `--smoke-limit` on either training entry point to validate paths and write a
+run plan without starting a full optimization job. `check_training_run.py` audits the resulting
+checkpoints, while `evaluate_transfer.py` aggregates task-level evaluation reports.
+
+## 11) GauUscene Real-Scene 3DGS Image Pilot
 
 The pilot reuses the Stage 2 review and Stage 4 image-task interfaces on three real aerial scenes reconstructed with CityGaussianV2: Upper Campus, SMBU, and LFLS. It keeps real-scene reconstruction separate from physical-flight evaluation.
 
@@ -795,27 +845,26 @@ python scripts/uav_dualcog/stage2_landmark_label.py \
   --phase review_web
 ```
 
-The release includes five visually preselected landmarks for each scene in `configs/uav_dualcog/3dgs/gauu_*_selected_5.json`. After review, each scene produces 40 image questions: five landmarks, four task types, and two difficulty levels. Use `--clear-stage4` only for an intentional clean rebuild; subsequent experiment-only runs preserve generated assets by default.
+The current pilot reviews 300 candidate instances across the three scenes, retains 30 landmarks,
+and balances 400 high-difficulty image questions across the four image tasks (100 per task).
+Landmark use is balanced where geometry permits; another valid landmark supplies a task when a
+selected instance cannot support the required view relation. The same Stage 4 answer-and-BBox
+contract is used for AirSim and 3DGS observations.
 
 ```bash
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_upper_pilot.yaml \
-  --stage stage4 --phase data_render --clear-stage4
+python scripts/uav_dualcog/annotate_gauu_query_positions.py --help
+python scripts/uav_dualcog/build_gauu_balanced_400.py --help
+python scripts/uav_dualcog/prepare_gauu_3scene_experiment.py --help
 
 python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_smbu_pilot.yaml \
-  --stage stage4 --phase data_render --clear-stage4
-
-python scripts/uav_dualcog/task_pipeline.py \
-  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_lfls_pilot.yaml \
-  --stage stage4 --phase data_render --clear-stage4
-
-python scripts/uav_dualcog/validate_3dgs_pilot.py --help
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_3scene_400.yaml \
+  --stage stage4 --phase experiment \
+  --experiment-models <model-alias-1> <model-alias-2>
 ```
 
 Model calls use the same Stage 4 experiment interface as the AirSim benchmark and are intentionally separated from data construction.
 
-## 11) Smoke-Test Commands (Reviewer Quick Check)
+## 12) Smoke-Test Commands (Reviewer Quick Check)
 
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py --help
