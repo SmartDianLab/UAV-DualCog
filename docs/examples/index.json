@@ -4,204 +4,286 @@
       "env_10": {
         "landmarks": [
           {
-            "id": "20_71",
-            "category": "vegetation",
-            "quality_score": 1.341
-          },
-          {
             "id": "23_96",
             "category": "building",
-            "quality_score": 1.286
+            "quality_score": 3.786,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
+          },
+          {
+            "id": "39_182",
+            "category": "public_facility",
+            "quality_score": 3.621,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_10/landmarks_review/env_10.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_10/landmarks_raw/env_10.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/manifests/env_10.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/stage3_tasks/datasets/env_10.review_examples.json"
       },
       "env_11": {
         "landmarks": [
           {
-            "id": "45_647",
-            "category": "building",
-            "quality_score": 1.365
-          },
-          {
             "id": "12_231",
             "category": "public_facility",
-            "quality_score": 0.829
+            "quality_score": 3.329,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
+          },
+          {
+            "id": "45_647",
+            "category": "building",
+            "quality_score": 3.865,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_11/landmarks_review/env_11.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_11/landmarks_raw/env_11.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_11/qa/manifests/env_11.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_11/stage3_tasks/datasets/env_11.review_examples.json"
       },
       "env_13": {
         "landmarks": [
           {
-            "id": "12_32",
-            "category": "building",
-            "quality_score": 0.955
+            "id": "23_55",
+            "category": "class_23",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           },
           {
-            "id": "16_47",
-            "category": "public_facility",
-            "quality_score": 0.81
+            "id": "7_17",
+            "category": "class_7",
+            "quality_score": 0.84,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           }
         ],
         "landmark_list": "scene_data/airsim_env_13/landmarks_review/env_13.valid_instances.json",
-        "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_13/qa/manifests/env_13.review_examples.json",
-        "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_13/stage3_tasks/datasets/env_13.review_examples.json"
+        "raw_landmark_list": "scene_data/airsim_env_13/landmarks_raw/env_13.instances.json",
+        "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_13/qa/manifests/env_13.review_examples.json"
       },
       "env_16": {
         "landmarks": [
           {
-            "id": "32_290",
-            "category": "urban_landscape",
-            "quality_score": 1.435
+            "id": "33_403",
+            "category": "building",
+            "quality_score": 3.561,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "29_265",
-            "category": "public_facility",
-            "quality_score": 1.369
+            "id": "23_197",
+            "category": "industrial_infrastructure",
+            "quality_score": 3.786,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_16/landmarks_review/env_16.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_16/landmarks_raw/env_16.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_16/qa/manifests/env_16.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_16/stage3_tasks/datasets/env_16.review_examples.json"
       },
       "env_17": {
         "landmarks": [
           {
-            "id": "56_114",
-            "category": "transport_infrastructure",
-            "quality_score": 1.432
+            "id": "11_17",
+            "category": "class_11",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           },
           {
-            "id": "16_40",
-            "category": "building",
-            "quality_score": 1.14
+            "id": "1_3",
+            "category": "class_1",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           }
         ],
         "landmark_list": "scene_data/airsim_env_17/landmarks_review/env_17.valid_instances.json",
-        "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_17/qa/manifests/env_17.review_examples.json",
-        "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_17/stage3_tasks/datasets/env_17.review_examples.json"
+        "raw_landmark_list": "scene_data/airsim_env_17/landmarks_raw/env_17.instances.json",
+        "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_17/qa/manifests/env_17.review_examples.json"
       },
       "env_20": {
         "landmarks": [
           {
             "id": "23_216",
             "category": "industrial_infrastructure",
-            "quality_score": 1.345
+            "quality_score": 3.845,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "73_612",
-            "category": "other",
-            "quality_score": 1.302
+            "id": "99_684",
+            "category": "industrial_infrastructure",
+            "quality_score": 3.708,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_20/landmarks_review/env_20.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_20/landmarks_raw/env_20.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/manifests/env_20.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/stage3_tasks/datasets/env_20.review_examples.json"
       },
       "env_21": {
         "landmarks": [
           {
-            "id": "1_14",
+            "id": "1_12",
             "category": "industrial_infrastructure",
-            "quality_score": 1.58
+            "quality_score": 3.89,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
             "id": "9_68",
             "category": "public_facility",
-            "quality_score": 1.129
+            "quality_score": 3.629,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_21/landmarks_review/env_21.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_21/landmarks_raw/env_21.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_21/qa/manifests/env_21.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_21/stage3_tasks/datasets/env_21.review_examples.json"
       },
       "env_23": {
         "landmarks": [
           {
-            "id": "37_435",
-            "category": "public_facility",
-            "quality_score": 1.338
+            "id": "10_34",
+            "category": "vehicle",
+            "quality_score": 3.77,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "42_462",
-            "category": "industrial_infrastructure",
-            "quality_score": 1.28
+            "id": "30_317",
+            "category": "urban_landscape",
+            "quality_score": 3.765,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_23/landmarks_review/env_23.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_23/landmarks_raw/env_23.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_23/qa/manifests/env_23.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_23/stage3_tasks/datasets/env_23.review_examples.json"
       },
       "env_24": {
         "landmarks": [
           {
-            "id": "38_32",
+            "id": "38_33",
             "category": "building",
-            "quality_score": 1.492
+            "quality_score": 3.855,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "38_29",
+            "id": "38_38",
             "category": "building",
-            "quality_score": 1.482
+            "quality_score": 3.918,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_24/landmarks_review/env_24.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_24/landmarks_raw/env_24.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_24/qa/manifests/env_24.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_24/stage3_tasks/datasets/env_24.review_examples.json"
       },
       "env_7": {
         "landmarks": [
           {
-            "id": "36_357",
-            "category": "vegetation",
-            "quality_score": 1.457
+            "id": "27_237",
+            "category": "building",
+            "quality_score": 3.668,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "27_239",
-            "category": "building",
-            "quality_score": 1.433
+            "id": "36_357",
+            "category": "vegetation",
+            "quality_score": 3.957,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_7/landmarks_review/env_7.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_7/landmarks_raw/env_7.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_7/qa/manifests/env_7.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_7/stage3_tasks/datasets/env_7.review_examples.json"
       },
       "env_8": {
         "landmarks": [
           {
-            "id": "11_38",
-            "category": "building",
-            "quality_score": 1.081
-          },
-          {
             "id": "3_28",
             "category": "vegetation",
-            "quality_score": 0.911
+            "quality_score": 3.411,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
+          },
+          {
+            "id": "11_38",
+            "category": "building",
+            "quality_score": 3.581,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_8/landmarks_review/env_8.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_8/landmarks_raw/env_8.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_8/qa/manifests/env_8.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_8/stage3_tasks/datasets/env_8.review_examples.json"
       },
       "env_9": {
         "landmarks": [
           {
-            "id": "16_54",
-            "category": "vehicle",
-            "quality_score": 1.426
+            "id": "26_107",
+            "category": "building",
+            "quality_score": 3.769,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           },
           {
-            "id": "49_230",
-            "category": "building",
-            "quality_score": 1.403
+            "id": "48_206",
+            "category": "industrial_infrastructure",
+            "quality_score": 3.791,
+            "exported_task_count": 4,
+            "has_paired_video": true,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_9/landmarks_review/env_9.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_9/landmarks_raw/env_9.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_9/qa/manifests/env_9.review_examples.json",
         "video_manifest": "task_pipeline_data/UAV-DualCog-V1/airsim_env_9/stage3_tasks/datasets/env_9.review_examples.json"
       }
@@ -210,97 +292,139 @@
       "env_1": {
         "landmarks": [
           {
-            "id": "10_409",
-            "category": "vegetation",
-            "quality_score": 1.435
+            "id": "4_13",
+            "category": "public_facility",
+            "quality_score": 3.164,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           },
           {
             "id": "31_744",
             "category": "urban_landscape",
-            "quality_score": 1.421
+            "quality_score": 3.421,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_1/landmarks_review/env_1.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_1/landmarks_raw/env_1.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_1/qa/manifests/env_1.review_examples.json"
       },
       "env_15": {
         "landmarks": [
           {
-            "id": "68_363",
-            "category": "other",
-            "quality_score": 1.473
+            "id": "4_2",
+            "category": "class_4",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           },
           {
             "id": "50_120",
             "category": "industrial_infrastructure",
-            "quality_score": 1.442
+            "quality_score": 3.442,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_15/landmarks_review/env_15.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_15/landmarks_raw/env_15.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_15/qa/manifests/env_15.review_examples.json"
       },
       "env_18": {
         "landmarks": [
           {
-            "id": "6_72",
+            "id": "2_8",
             "category": "building",
-            "quality_score": 1.534
+            "quality_score": 3.518,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           },
           {
             "id": "15_160",
             "category": "vegetation",
-            "quality_score": 1.43
+            "quality_score": 3.43,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_18/landmarks_review/env_18.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_18/landmarks_raw/env_18.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_18/qa/manifests/env_18.review_examples.json"
       },
       "env_22": {
         "landmarks": [
           {
-            "id": "44_250",
-            "category": "building",
-            "quality_score": 1.466
+            "id": "25_141",
+            "category": "vehicle",
+            "quality_score": 3.247,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           },
           {
-            "id": "12_95",
-            "category": "industrial_infrastructure",
-            "quality_score": 1.417
+            "id": "12_90",
+            "category": "class_12",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           }
         ],
         "landmark_list": "scene_data/airsim_env_22/landmarks_review/env_22.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_22/landmarks_raw/env_22.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_22/qa/manifests/env_22.review_examples.json"
       },
       "env_3": {
         "landmarks": [
           {
-            "id": "31_38",
-            "category": "building",
-            "quality_score": 1.282
-          },
-          {
             "id": "14_21",
             "category": "vehicle",
-            "quality_score": 0.888
+            "quality_score": 2.888,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
+          },
+          {
+            "id": "28_32",
+            "category": "building",
+            "quality_score": 3.265,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/airsim_env_3/landmarks_review/env_3.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_3/landmarks_raw/env_3.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_3/qa/manifests/env_3.review_examples.json"
       },
       "env_5": {
         "landmarks": [
           {
-            "id": "5_29",
-            "category": "building",
-            "quality_score": 1.096
-          },
-          {
             "id": "22_107",
             "category": "other",
-            "quality_score": 0.923
+            "quality_score": 2.923,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
+          },
+          {
+            "id": "47_188",
+            "category": "class_47",
+            "quality_score": 0.96,
+            "exported_task_count": 0,
+            "has_paired_video": false,
+            "review_status": "candidate"
           }
         ],
         "landmark_list": "scene_data/airsim_env_5/landmarks_review/env_5.valid_instances.json",
+        "raw_landmark_list": "scene_data/airsim_env_5/landmarks_raw/env_5.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-Train-V1/airsim_env_5/qa/manifests/env_5.review_examples.json"
       }
     },
@@ -308,33 +432,47 @@
       "gauu_lfls": {
         "landmarks": [
           {
-            "id": "gauu_lfls_candidate_0038",
-            "category": "vegetation",
-            "quality_score": 2.43
-          },
-          {
             "id": "gauu_lfls_candidate_0204",
             "category": "other",
-            "quality_score": 2.36
+            "quality_score": 4.36,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
+          },
+          {
+            "id": "gauu_lfls_candidate_0038",
+            "category": "vegetation",
+            "quality_score": 4.43,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/gsplat_gauu_lfls/landmarks_review/gauu_lfls.valid_instances.json",
+        "raw_landmark_list": "scene_data/gsplat_gauu_lfls/landmarks_raw/gauu_lfls.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-3DGS-RealScene-400/gsplat_gauu_lfls/qa/manifests/gauu_lfls.review_examples.json"
       },
       "gauu_smbu": {
         "landmarks": [
           {
-            "id": "gauu_smbu_candidate_0059",
+            "id": "gauu_smbu_candidate_0178",
             "category": "building",
-            "quality_score": 2.827
+            "quality_score": 4.798,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           },
           {
-            "id": "gauu_smbu_candidate_0011",
-            "category": "vegetation",
-            "quality_score": 2.793
+            "id": "gauu_smbu_candidate_0059",
+            "category": "building",
+            "quality_score": 4.827,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/gsplat_gauu_smbu/landmarks_review/gauu_smbu.valid_instances.json",
+        "raw_landmark_list": "scene_data/gsplat_gauu_smbu/landmarks_raw/gauu_smbu.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-3DGS-RealScene-400/gsplat_gauu_smbu/qa/manifests/gauu_smbu.review_examples.json"
       },
       "gauu_upper_campus": {
@@ -342,19 +480,26 @@
           {
             "id": "gauu_upper_candidate_0390",
             "category": "building",
-            "quality_score": 2.643
+            "quality_score": 4.643,
+            "exported_task_count": 4,
+            "has_paired_video": false,
+            "review_status": "validated"
           },
           {
-            "id": "gauu_upper_candidate_0158",
-            "category": "transport_infrastructure",
-            "quality_score": 2.377
+            "id": "gauu_upper_candidate_0063",
+            "category": "urban_landscape",
+            "quality_score": 3.197,
+            "exported_task_count": 2,
+            "has_paired_video": false,
+            "review_status": "validated"
           }
         ],
         "landmark_list": "scene_data/gsplat_gauu_upper_campus/landmarks_review/gauu_upper_campus.valid_instances.json",
+        "raw_landmark_list": "scene_data/gsplat_gauu_upper_campus/landmarks_raw/gauu_upper_campus.instances.json",
         "image_manifest": "task_pipeline_data/UAV-DualCog-3DGS-RealScene-400/gsplat_gauu_upper_campus/qa/manifests/gauu_upper_campus.review_examples.json"
       }
     }
   },
-  "image_max_side": 1280,
+  "image_max_side": 1600,
   "video": "H.264 720p CRF 30"
 }

@@ -12,7 +12,7 @@ This repository provides the anonymized code for **UAV-DualCog**. The correspond
 - Full dataset access is unavailable during review; curated examples are included below.
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
-For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Real World -> Evaluation -> Leaderboard -> Analysis -> Training -> Usage.
+For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Sim-to-Real -> Training -> Usage.
 
 ## 1) What Is Included
 
@@ -26,7 +26,7 @@ For benchmark definitions, leaderboard interpretation, and supplementary explana
 - `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
 - `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
 - `scene_data/`: complete reviewed landmark-list metadata for each example scene, plus images for two selected landmarks per scene.
-- `task_pipeline_data/`: complete V1 and Train landmark lists, four image-task examples per selected landmark, and compressed V1 video-task examples.
+- `task_pipeline_data/`: complete V1 and Train landmark lists, up to four available image-task examples per selected landmark, and compressed V1 video-task examples where matching records exist.
 - `docs/examples/index.json`: scene-to-example index and selected landmark IDs.
 
 The examples cover all 12 UAV-DualCog-V1 scenes, six UAV-DualCog-Train scenes, and three 3DGS real-scene pilot reconstructions. These are illustrative samples, not the full task releases. Original-resolution videos and source GauUscene assets are not redistributed.

@@ -254,157 +254,157 @@
     {
       "scene_id": "env_20",
       "engine": "airsim",
-      "landmark_id": "73_612",
-      "landmark_category": "other",
-      "landmark_description": "weathered wooden scaffolding structure with cross-bracing and vertical posts",
+      "landmark_id": "99_684",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_description": "metal shipyard crane with a long boom and pulley system located on a dock",
       "task_family": "qa",
       "task_group": "self-aware",
       "difficulty": "8way",
-      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_03_yaw_p089.jpg",
-      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/73_612/env_20_73_612_self_shared_8way_000215_ref.jpg",
+      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_03_yaw_p079.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/99_684/env_20_99_684_self_shared_8way_000143_ref.jpg",
       "reference_bbox_xyxy_norm": [
-        0.39111328125,
-        0.4195963541666667,
-        0.649169921875,
-        0.5947265625
+        0.385986328125,
+        0.3902994791666667,
+        0.614501953125,
+        0.6409505208333334
       ],
       "reference_view": "Right",
       "reference_object_view": "Right",
-      "target_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_07_yaw_p044.jpg",
+      "target_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_07_yaw_p034.jpg",
       "answer_bbox_xyxy_norm": [
-        0.408447265625,
-        0.4065755208333333,
-        0.606201171875,
-        0.6363932291666666
+        0.40966796875,
+        0.3671875,
+        0.5888671875,
+        0.662109375
       ],
       "metadata": {
         "reference_is_main_view": true,
         "reference_label": "Right",
         "query_label": "Back-Right"
       },
-      "sample_id": "env_20_73_612_self_shared_8way_000215_where",
+      "sample_id": "env_20_99_684_self_shared_8way_000143_where",
       "view_definition": "Self-Aware",
       "task_type": "self_where",
       "label_options": [
         {
           "option_id": "A",
-          "label": "Back-Right"
-        },
-        {
-          "option_id": "B",
           "label": "Front"
         },
         {
+          "option_id": "B",
+          "label": "Back-Left"
+        },
+        {
           "option_id": "C",
-          "label": "Right"
+          "label": "Back-Right"
         },
         {
           "option_id": "D",
-          "label": "Back-Left"
+          "label": "Left"
         }
       ],
-      "answer_option_id": "A",
-      "prompt_text": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Front\nC. Right\nD. Back-Left",
-      "user_prompt": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Front\nC. Right\nD. Back-Left",
+      "answer_option_id": "C",
+      "prompt_text": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Back-Left\nC. Back-Right\nD. Left",
+      "user_prompt": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Back-Left\nC. Back-Right\nD. Left",
       "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
     },
     {
       "scene_id": "env_20",
       "engine": "airsim",
-      "landmark_id": "73_612",
-      "landmark_category": "other",
-      "landmark_description": "weathered wooden scaffolding structure with cross-bracing and vertical posts",
+      "landmark_id": "99_684",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_description": "metal shipyard crane with a long boom and pulley system located on a dock",
       "task_family": "qa",
       "task_group": "self-aware",
       "difficulty": "8way",
-      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_03_yaw_p089.jpg",
-      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/73_612/env_20_73_612_self_shared_8way_000215_ref.jpg",
+      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_03_yaw_p079.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/99_684/env_20_99_684_self_shared_8way_000143_ref.jpg",
       "reference_bbox_xyxy_norm": [
-        0.39111328125,
-        0.4195963541666667,
-        0.649169921875,
-        0.5947265625
+        0.385986328125,
+        0.3902994791666667,
+        0.614501953125,
+        0.6409505208333334
       ],
       "reference_view": "Left",
       "reference_object_view": "Right",
-      "target_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_07_yaw_p044.jpg",
+      "target_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_07_yaw_p034.jpg",
       "answer_bbox_xyxy_norm": [
-        0.408447265625,
-        0.4065755208333333,
-        0.606201171875,
-        0.6363932291666666
+        0.429931640625,
+        0.3655598958333333,
+        0.592529296875,
+        0.6669921875
       ],
       "metadata": {
         "reference_is_main_view": true,
         "reference_label": "Left",
         "query_label": "Back-Left"
       },
-      "sample_id": "env_20_73_612_self_shared_8way_000215_what",
+      "sample_id": "env_20_99_684_self_shared_8way_000143_what",
       "view_definition": "Self-Aware",
       "task_type": "self_what",
       "multi_select": false,
-      "behavior_instance": "a 45-degree clockwise turn around the landmark",
+      "behavior_instance": "a 135-degree clockwise turn around the landmark",
       "candidates": [
         {
           "option_id": "A",
-          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_01_yaw_n001.jpg",
+          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_01_yaw_n011.jpg",
           "view_under_definition": "Back",
           "bbox_xyxy_norm": [
-            0.4833984375,
-            0.3876953125,
-            0.573486328125,
-            0.6731770833333334
+            0.48974609375,
+            0.3597005208333333,
+            0.543701171875,
+            0.6832682291666666
           ]
         },
         {
           "option_id": "B",
-          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_07_yaw_p044.jpg",
-          "view_under_definition": "Back-Left",
+          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_00_yaw_p169.jpg",
+          "view_under_definition": "Front",
           "bbox_xyxy_norm": [
-            0.408447265625,
-            0.4065755208333333,
-            0.606201171875,
-            0.6363932291666666
+            0.45751953125,
+            0.3889973958333333,
+            0.5126953125,
+            0.6627604166666666
           ]
         },
         {
           "option_id": "C",
-          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_00_yaw_p179.jpg",
-          "view_under_definition": "Front",
+          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_02_yaw_n101.jpg",
+          "view_under_definition": "Right",
           "bbox_xyxy_norm": [
-            0.409912109375,
-            0.3942057291666667,
-            0.518798828125,
-            0.7184244791666666
+            0.383056640625,
+            0.3977864583333333,
+            0.611083984375,
+            0.6031901041666666
           ]
         },
         {
           "option_id": "D",
-          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_02_yaw_n091.jpg",
-          "view_under_definition": "Right",
+          "image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_06_yaw_n056.jpg",
+          "view_under_definition": "Back-Right",
           "bbox_xyxy_norm": [
-            0.35205078125,
-            0.39453125,
-            0.607421875,
-            0.6097005208333334
+            0.429931640625,
+            0.3655598958333333,
+            0.592529296875,
+            0.6669921875
           ]
         }
       ],
       "answer_option_ids": [
-        "B"
+        "D"
       ],
-      "answer_option_id": "B",
-      "prompt_text": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
-      "user_prompt": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "answer_option_id": "D",
+      "prompt_text": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 135-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 135-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
       "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
     },
     {
-      "sample_id": "env_20_73_612_env_shared_8way_000216_where",
+      "sample_id": "env_20_99_684_env_shared_8way_000144_where",
       "scene_id": "env_20",
       "engine": "airsim",
-      "landmark_id": "73_612",
-      "landmark_category": "other",
-      "landmark_description": "weathered wooden scaffolding structure with cross-bracing and vertical posts",
+      "landmark_id": "99_684",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_description": "metal shipyard crane with a long boom and pulley system located on a dock",
       "task_family": "qa",
       "task_group": "environment-aware",
       "view_definition": "Environment-Aware",
@@ -417,45 +417,45 @@
         },
         {
           "option_id": "B",
-          "label": "Front"
+          "label": "Right"
         },
         {
           "option_id": "C",
-          "label": "Front-Left"
+          "label": "Front"
         },
         {
           "option_id": "D",
           "label": "Front-Right"
         }
       ],
-      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_03_yaw_p089.jpg",
-      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/73_612/env_20_73_612_env_shared_8way_000216_ref.jpg",
+      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_03_yaw_p079.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/99_684/env_20_99_684_env_shared_8way_000144_ref.jpg",
       "reference_bbox_xyxy_norm": [
-        0.39111328125,
-        0.4195963541666667,
-        0.649169921875,
-        0.5947265625
+        0.385986328125,
+        0.3902994791666667,
+        0.614501953125,
+        0.6409505208333334
       ],
       "reference_object_view": "Right",
-      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/env_observations/73_612/env_20_73_612_env_shared_8way_000216.jpg",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/env_observations/99_684/env_20_99_684_env_shared_8way_000144.jpg",
       "answer_option_id": "C",
       "answer_bbox_xyxy_norm": [
-        0.016944289207458496,
-        0.36836810906728107,
-        0.38200268149375916,
-        0.7768561045328776
+        0.3641539216041565,
+        0.3395395278930664,
+        0.6158643364906311,
+        0.7281916936238607
       ],
-      "prompt_text": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front\nC. Front-Left\nD. Front-Right",
-      "user_prompt": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front\nC. Front-Left\nD. Front-Right",
+      "prompt_text": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Right\nC. Front\nD. Front-Right",
+      "user_prompt": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Right\nC. Front\nD. Front-Right",
       "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
     },
     {
-      "sample_id": "env_20_73_612_env_shared_8way_000216_how",
+      "sample_id": "env_20_99_684_env_shared_8way_000144_how",
       "scene_id": "env_20",
       "engine": "airsim",
-      "landmark_id": "73_612",
-      "landmark_category": "other",
-      "landmark_description": "weathered wooden scaffolding structure with cross-bracing and vertical posts",
+      "landmark_id": "99_684",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_description": "metal shipyard crane with a long boom and pulley system located on a dock",
       "task_family": "qa",
       "task_group": "environment-aware",
       "view_definition": "Environment-Aware",
@@ -464,40 +464,40 @@
       "label_options": [
         {
           "option_id": "A",
-          "label": "Back"
+          "label": "Front"
         },
         {
           "option_id": "B",
-          "label": "Front-Right"
-        },
-        {
-          "option_id": "C",
           "label": "Front-Left"
         },
         {
+          "option_id": "C",
+          "label": "Front-Right"
+        },
+        {
           "option_id": "D",
-          "label": "Left"
+          "label": "Back"
         }
       ],
-      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/73_612/view_03_yaw_p089.jpg",
-      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/73_612/env_20_73_612_env_shared_8way_000216_ref.jpg",
+      "reference_image": "scene_data/airsim_env_20/landmarks_raw/rgb_views/99_684/view_03_yaw_p079.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/reference_bbox/99_684/env_20_99_684_env_shared_8way_000144_ref.jpg",
       "reference_bbox_xyxy_norm": [
-        0.39111328125,
-        0.4195963541666667,
-        0.649169921875,
-        0.5947265625
+        0.385986328125,
+        0.3902994791666667,
+        0.614501953125,
+        0.6409505208333334
       ],
       "reference_object_view": "Right",
-      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/env_observations/73_612/env_20_73_612_env_shared_8way_000216.jpg",
-      "answer_option_id": "C",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_20/qa/assets/env_observations/99_684/env_20_99_684_env_shared_8way_000144.jpg",
+      "answer_option_id": "A",
       "answer_bbox_xyxy_norm": [
-        0.016944289207458496,
-        0.36836810906728107,
-        0.38200268149375916,
-        0.7768561045328776
+        0.3641539216041565,
+        0.3395395278930664,
+        0.6158643364906311,
+        0.7281916936238607
       ],
-      "prompt_text": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front-Right\nC. Front-Left\nD. Left",
-      "user_prompt": "Image 1 shows the Right facade of weathered wooden scaffolding structure with cross-bracing and vertical posts in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front-Right\nC. Front-Left\nD. Left",
+      "prompt_text": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Front-Left\nC. Front-Right\nD. Back",
+      "user_prompt": "Image 1 shows the Right facade of metal shipyard crane with a long boom and pulley system located on a dock in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Front-Left\nC. Front-Right\nD. Back",
       "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
     }
   ]
