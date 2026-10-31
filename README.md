@@ -7,8 +7,10 @@ This repository provides the anonymized code for **UAV-DualCog**. The correspond
 </p>
 <p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports benchmark construction, evaluation, and a small real-scene 3DGS image pilot.</em></p>
 
-- Supplementary website: https://anonymous.4open.science/w/UAV-DualCog
-- Anonymous code repository: https://anonymous.4open.science/r/UAV-DualCog-Code
+- Recovery supplementary website: https://anonymous.4open.science/w/UAV-DualCog-Recovery/
+- Recovery code repository: https://anonymous.4open.science/r/UAV-DualCog-Code-Recovery/
+- for-Replacement supplementary website: https://anonymous.4open.science/w/UAV-DualCog-for-Replacement/
+- for-Replacement code repository: https://anonymous.4open.science/r/UAV-DualCog-Code-for-Replacement/
 - Full dataset access is unavailable during review; curated examples are included below.
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
