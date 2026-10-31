@@ -142,7 +142,7 @@
     "representative_gallery": [
       {
         "id": "env_10_20_77",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_10_20_77_deciduous_tree.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_10_20_77_deciduous_tree.jpg",
         "view_label": "Front",
         "category": "Vegetation",
         "subcategory": "Deciduous Tree",
@@ -151,7 +151,7 @@
       },
       {
         "id": "env_10_35_159",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_10_35_159_mid-rise_building.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_10_35_159_mid-rise_building.jpg",
         "view_label": "Front",
         "category": "Building",
         "subcategory": "Mid Rise Building",
@@ -160,7 +160,7 @@
       },
       {
         "id": "env_10_35_168",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_10_35_168_low-rise_building.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_10_35_168_low-rise_building.jpg",
         "view_label": "Front",
         "category": "Building",
         "subcategory": "Low Rise Building",
@@ -169,7 +169,7 @@
       },
       {
         "id": "env_10_39_182",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_10_39_182_street_lamp_post.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_10_39_182_street_lamp_post.jpg",
         "view_label": "Front",
         "category": "Public Facility",
         "subcategory": "Street Lamp Post",
@@ -178,7 +178,7 @@
       },
       {
         "id": "env_11_44_601",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_11_44_601_high-rise_building.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_11_44_601_high-rise_building.jpg",
         "view_label": "Front",
         "category": "Building",
         "subcategory": "High Rise Building",
@@ -187,7 +187,7 @@
       },
       {
         "id": "env_16_32_281",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_16_32_281_signboard.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_16_32_281_signboard.jpg",
         "view_label": "Front",
         "category": "Urban Landscape",
         "subcategory": "Signboard",
@@ -196,7 +196,7 @@
       },
       {
         "id": "env_16_32_283",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_16_32_283_billboard.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_16_32_283_billboard.jpg",
         "view_label": "Front",
         "category": "Urban Landscape",
         "subcategory": "Billboard",
@@ -205,7 +205,7 @@
       },
       {
         "id": "env_16_51_688",
-        "image_url": "/w/UAV-DualCog/media/examples/benchmark/subcategory_gallery/env_16_51_688_public_bench.jpg",
+        "image_url": "media/examples/benchmark/subcategory_gallery/env_16_51_688_public_bench.jpg",
         "view_label": "Front",
         "category": "Public Facility",
         "subcategory": "Public Bench",
@@ -1524,8 +1524,8 @@
         "scene_id": "env_7",
         "label": "ENV 7 · Waterfront City",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s7-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s7-2.jpg"
+          "media/scenes/s7-1.jpg",
+          "media/scenes/s7-2.jpg"
         ],
         "landmarks": 86,
         "image_samples": 688,
@@ -1536,8 +1536,8 @@
         "scene_id": "env_8",
         "label": "ENV 8 · Southern Village",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s8-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s8-2.jpg"
+          "media/scenes/s8-1.jpg",
+          "media/scenes/s8-2.jpg"
         ],
         "landmarks": 4,
         "image_samples": 32,
@@ -1548,8 +1548,8 @@
         "scene_id": "env_9",
         "label": "ENV 9 · Industrial Zone",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s9-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s9-2.jpg"
+          "media/scenes/s9-1.jpg",
+          "media/scenes/s9-2.jpg"
         ],
         "landmarks": 48,
         "image_samples": 384,
@@ -1560,8 +1560,8 @@
         "scene_id": "env_10",
         "label": "ENV 10 · Riverside Town",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s10-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s10-2.jpg"
+          "media/scenes/s10-1.jpg",
+          "media/scenes/s10-2.jpg"
         ],
         "landmarks": 48,
         "image_samples": 384,
@@ -1572,8 +1572,8 @@
         "scene_id": "env_11",
         "label": "ENV 11 · Nighttime City",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s11-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s11-2.jpg"
+          "media/scenes/s11-1.jpg",
+          "media/scenes/s11-2.jpg"
         ],
         "landmarks": 56,
         "image_samples": 448,
@@ -1584,8 +1584,8 @@
         "scene_id": "env_13",
         "label": "ENV 13 · European Town",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s13-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s13-2.jpg"
+          "media/scenes/s13-1.jpg",
+          "media/scenes/s13-2.jpg"
         ],
         "landmarks": 8,
         "image_samples": 64,
@@ -1596,8 +1596,8 @@
         "scene_id": "env_16",
         "label": "ENV 16 · Modern Metropolis",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s16-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s16-2.jpg"
+          "media/scenes/s16-1.jpg",
+          "media/scenes/s16-2.jpg"
         ],
         "landmarks": 126,
         "image_samples": 1008,
@@ -1608,8 +1608,8 @@
         "scene_id": "env_17",
         "label": "ENV 17 · Rail Station",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s17-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s17-2.jpg"
+          "media/scenes/s17-1.jpg",
+          "media/scenes/s17-2.jpg"
         ],
         "landmarks": 8,
         "image_samples": 64,
@@ -1620,8 +1620,8 @@
         "scene_id": "env_20",
         "label": "ENV 20 · Abandoned Port",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s20-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s20-2.jpg"
+          "media/scenes/s20-1.jpg",
+          "media/scenes/s20-2.jpg"
         ],
         "landmarks": 61,
         "image_samples": 488,
@@ -1632,8 +1632,8 @@
         "scene_id": "env_21",
         "label": "ENV 21 · Container Wharf",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s21-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s21-2.jpg"
+          "media/scenes/s21-1.jpg",
+          "media/scenes/s21-2.jpg"
         ],
         "landmarks": 16,
         "image_samples": 128,
@@ -1644,8 +1644,8 @@
         "scene_id": "env_23",
         "label": "ENV 23 · Japanese City",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s23-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s23-2.jpg"
+          "media/scenes/s23-1.jpg",
+          "media/scenes/s23-2.jpg"
         ],
         "landmarks": 41,
         "image_samples": 328,
@@ -1656,8 +1656,8 @@
         "scene_id": "env_24",
         "label": "ENV 24 · Hong Kong City",
         "images": [
-          "/w/UAV-DualCog/media/scenes/s24-1.jpg",
-          "/w/UAV-DualCog/media/scenes/s24-2.jpg"
+          "media/scenes/s24-1.jpg",
+          "media/scenes/s24-2.jpg"
         ],
         "landmarks": 10,
         "image_samples": 80,
@@ -1802,43 +1802,43 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 137.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": 92.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_right_pcd.jpg"
           },
           {
             "key": "right",
             "label": "Right",
             "angle_deg": 47.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_right_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -42.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_back_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -132.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": -177.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_237_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_237_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_237_front_left_pcd.jpg"
           }
         ]
       },
@@ -1860,36 +1860,36 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 108.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_16_33_403_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_16_33_403_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": 63.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_16_33_403_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_16_33_403_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_16_33_403_front_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": -26.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_16_33_403_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_16_33_403_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_right_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": -116.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_16_33_403_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_16_33_403_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_16_33_403_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -161.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_16_33_403_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_16_33_403_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_16_33_403_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_16_33_403_left_pcd.jpg"
           }
         ]
       },
@@ -1911,57 +1911,57 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 1.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": -43.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_right_pcd.jpg"
           },
           {
             "key": "right",
             "label": "Right",
             "angle_deg": -88.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": -133.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_right_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -178.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": 136.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": 91.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": 46.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_26_107_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_26_107_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_26_107_front_left_pcd.jpg"
           }
         ]
       },
@@ -1982,29 +1982,29 @@
             "key": "front",
             "label": "Front",
             "angle_deg": -174.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_11_45_627_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_11_45_627_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": 140.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_11_45_627_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_11_45_627_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_11_45_627_front_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": 50.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_11_45_627_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_11_45_627_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_11_45_627_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_11_45_627_back_right_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -84.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_11_45_627_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_11_45_627_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_11_45_627_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_11_45_627_left_pcd.jpg"
           }
         ]
       },
@@ -2025,36 +2025,36 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 90.5,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_20_31_273_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_20_31_273_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -89.5,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_20_31_273_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_20_31_273_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": -134.5,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_20_31_273_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_20_31_273_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_20_31_273_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -179.5,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_20_31_273_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_20_31_273_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_20_31_273_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_20_31_273_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": 135.5,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_20_31_273_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_20_31_273_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_20_31_273_front_left_pcd.jpg"
           }
         ]
       },
@@ -2075,36 +2075,36 @@
             "key": "front",
             "label": "Front",
             "angle_deg": -37.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_10_23_94_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_10_23_94_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": -82.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_10_23_94_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_10_23_94_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_right_pcd.jpg"
           },
           {
             "key": "right",
             "label": "Right",
             "angle_deg": -127.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_10_23_94_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_10_23_94_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_10_23_94_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_10_23_94_right_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": 52.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_10_23_94_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_10_23_94_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_10_23_94_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_10_23_94_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": 7.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_10_23_94_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_10_23_94_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_10_23_94_front_left_pcd.jpg"
           }
         ]
       },
@@ -2125,43 +2125,43 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 158.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": 23.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_right_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -22.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": -67.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -112.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": -157.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_20_134_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_20_134_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_20_134_front_left_pcd.jpg"
           }
         ]
       },
@@ -2183,36 +2183,36 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 25.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_243_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_243_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": -20.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_243_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_243_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": -110.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_243_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_243_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_243_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_243_back_right_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": 115.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_243_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_243_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_243_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_243_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": 70.0,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_7_27_243_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_7_27_243_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_7_27_243_front_left_pcd.jpg"
           }
         ]
       },
@@ -2233,57 +2233,57 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 1.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": -43.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_right_pcd.jpg"
           },
           {
             "key": "right",
             "label": "Right",
             "angle_deg": -88.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": -133.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_right_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -178.6,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": 136.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": 91.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": 46.4,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_9_49_230_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_9_49_230_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_9_49_230_front_left_pcd.jpg"
           }
         ]
       },
@@ -2304,50 +2304,50 @@
             "key": "front",
             "label": "Front",
             "angle_deg": 171.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_front.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_front.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_pcd.jpg"
           },
           {
             "key": "front_right",
             "label": "Front Right",
             "angle_deg": 126.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_front_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_front_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_right_pcd.jpg"
           },
           {
             "key": "back_right",
             "label": "Back Right",
             "angle_deg": 36.8,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_back_right.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_right_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_back_right.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_right_pcd.jpg"
           },
           {
             "key": "back",
             "label": "Back",
             "angle_deg": -8.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_back.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_back.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_pcd.jpg"
           },
           {
             "key": "back_left",
             "label": "Back Left",
             "angle_deg": -53.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_back_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_back_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_back_left_pcd.jpg"
           },
           {
             "key": "left",
             "label": "Left",
             "angle_deg": -98.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_left_pcd.jpg"
           },
           {
             "key": "front_left",
             "label": "Front Left",
             "angle_deg": -143.2,
-            "url": "/w/UAV-DualCog/media/examples/benchmark/landmark_views/env_23_10_34_front_left.jpg",
-            "pcd_url": "/w/UAV-DualCog/media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_left_pcd.jpg"
+            "url": "media/examples/benchmark/landmark_views/env_23_10_34_front_left.jpg",
+            "pcd_url": "media/examples/benchmark/landmark_scanning_views/env_23_10_34_front_left_pcd.jpg"
           }
         ]
       }

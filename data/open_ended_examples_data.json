@@ -21,11 +21,11 @@
       "media": [
         {
           "label": "Reference View (Front facade)",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
+          "url": "media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
         },
         {
           "label": "Query Observation",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
+          "url": "media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
           "overlays": [
             {
               "label": "Ground Truth",
@@ -100,11 +100,11 @@
       "media": [
         {
           "label": "Reference View (Front facade)",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_reference.jpg"
+          "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_reference.jpg"
         },
         {
           "label": "Selected Future View (Image 3)",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_b.jpg",
+          "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_b.jpg",
           "overlays": [
             {
               "label": "Ground Truth",
@@ -169,11 +169,11 @@
       "media": [
         {
           "label": "Reference View",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_reference.jpg"
+          "url": "media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_reference.jpg"
         },
         {
           "label": "Query Observation",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_target.jpg",
+          "url": "media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_target.jpg",
           "overlays": [
             {
               "label": "Ground Truth",
@@ -248,11 +248,11 @@
       "media": [
         {
           "label": "Reference View",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_reference.jpg"
+          "url": "media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_reference.jpg"
         },
         {
           "label": "Query Observation",
-          "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_target.jpg",
+          "url": "media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_target.jpg",
           "overlays": [
             {
               "label": "Ground Truth",
@@ -308,11 +308,11 @@
       "media": [
         {
           "label": "Landmark Reference",
-          "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
+          "url": "media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
         },
         {
           "label": "Flight Video",
-          "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
+          "url": "media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
         }
       ],
       "predictions": [
@@ -355,11 +355,11 @@
       "media": [
         {
           "label": "Landmark Reference",
-          "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_reference.jpg"
+          "url": "media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_reference.jpg"
         },
         {
           "label": "Flight Video",
-          "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_video.mp4"
+          "url": "media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_video.mp4"
         }
       ],
       "predictions": [

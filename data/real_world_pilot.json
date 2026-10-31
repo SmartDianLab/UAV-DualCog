@@ -63,19 +63,19 @@
       "images": [
         {
           "label": "Rendered 3DGS RGB Overview - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_oblique.png"
+          "url": "media/real-world/gauu_lfls_oblique.png"
         },
         {
           "label": "LiDAR Point Cloud - Top-Down",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_pointcloud_top.png"
+          "url": "media/real-world/gauu_lfls_pointcloud_top.png"
         },
         {
           "label": "LiDAR Point Cloud - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_pointcloud_oblique.png"
+          "url": "media/real-world/gauu_lfls_pointcloud_oblique.png"
         },
         {
           "label": "Selected landmark gauu_lfls_candidate_0204",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_gauu_lfls_candidate_0204_scene.jpg"
+          "url": "media/real-world/gauu_lfls_gauu_lfls_candidate_0204_scene.jpg"
         }
       ],
       "boundary": "Registered reconstruction coverage",
@@ -89,19 +89,19 @@
       "images": [
         {
           "label": "Rendered 3DGS RGB Overview - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_oblique.png"
+          "url": "media/real-world/gauu_smbu_oblique.png"
         },
         {
           "label": "LiDAR Point Cloud - Top-Down",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_pointcloud_top.png"
+          "url": "media/real-world/gauu_smbu_pointcloud_top.png"
         },
         {
           "label": "LiDAR Point Cloud - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_pointcloud_oblique.png"
+          "url": "media/real-world/gauu_smbu_pointcloud_oblique.png"
         },
         {
           "label": "Selected landmark gauu_smbu_candidate_0178",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_gauu_smbu_candidate_0178_scene.jpg"
+          "url": "media/real-world/gauu_smbu_gauu_smbu_candidate_0178_scene.jpg"
         }
       ],
       "boundary": "Registered reconstruction coverage",
@@ -115,19 +115,19 @@
       "images": [
         {
           "label": "Rendered 3DGS RGB Overview - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_oblique.png"
+          "url": "media/real-world/gauu_upper_campus_oblique.png"
         },
         {
           "label": "LiDAR Point Cloud - Top-Down",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_pointcloud_top.png"
+          "url": "media/real-world/gauu_upper_campus_pointcloud_top.png"
         },
         {
           "label": "LiDAR Point Cloud - Oblique",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_pointcloud_oblique.png"
+          "url": "media/real-world/gauu_upper_campus_pointcloud_oblique.png"
         },
         {
           "label": "Selected landmark gauu_upper_candidate_0390",
-          "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_gauu_upper_candidate_0390_scene.jpg"
+          "url": "media/real-world/gauu_upper_campus_gauu_upper_candidate_0390_scene.jpg"
         }
       ],
       "boundary": "Registered reconstruction coverage",
@@ -259,12 +259,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_reference.jpg"
+                "url": "media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_query.jpg",
+                "url": "media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -508,12 +508,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_reference.jpg"
+                "url": "media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_query.jpg",
+                "url": "media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -757,12 +757,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_reference.jpg"
+                "url": "media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_query.jpg",
+                "url": "media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -1012,12 +1012,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_reference.jpg"
+                "url": "media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_query.jpg",
+                "url": "media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -1261,12 +1261,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_reference.jpg"
+                "url": "media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_query.jpg",
+                "url": "media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -1510,12 +1510,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_reference.jpg"
+                "url": "media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_query.jpg",
+                "url": "media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -1765,12 +1765,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_reference.jpg"
+                "url": "media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_query.jpg",
+                "url": "media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -2014,12 +2014,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_reference.jpg"
+                "url": "media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_query.jpg",
+                "url": "media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -2263,12 +2263,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_reference.jpg"
+                "url": "media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_query.jpg",
+                "url": "media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -2508,12 +2508,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_reference.jpg"
+                "url": "media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_query.jpg",
+                "url": "media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -2746,12 +2746,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_reference.jpg"
+                "url": "media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_query.jpg",
+                "url": "media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",
@@ -2995,12 +2995,12 @@
               {
                 "kind": "image",
                 "label": "Reference landmark view",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_reference.jpg"
+                "url": "media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_reference.jpg"
               },
               {
                 "kind": "image",
                 "label": "Query observation",
-                "url": "/w/UAV-DualCog/media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_query.jpg",
+                "url": "media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_query.jpg",
                 "overlays": [
                   {
                     "label": "Ground truth",

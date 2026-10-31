@@ -290,12 +290,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
+              "url": "media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
+              "url": "media/examples/stage4/env_7_27_237_self_shared_4way_000149_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -767,12 +767,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_12_231_self_shared_4way_000021_where_reference.jpg"
+              "url": "media/examples/stage4/env_11_12_231_self_shared_4way_000021_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_12_231_self_shared_4way_000021_where_target.jpg",
+              "url": "media/examples/stage4/env_11_12_231_self_shared_4way_000021_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -1235,12 +1235,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
+              "url": "media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
+              "url": "media/examples/stage4/env_21_1_12_self_shared_4way_000029_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -1659,12 +1659,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_10_34_self_shared_4way_000133_where_reference.jpg"
+              "url": "media/examples/stage4/env_23_10_34_self_shared_4way_000133_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_10_34_self_shared_4way_000133_where_target.jpg",
+              "url": "media/examples/stage4/env_23_10_34_self_shared_4way_000133_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -2098,12 +2098,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_102_self_shared_4way_000029_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_21_102_self_shared_4way_000029_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_102_self_shared_4way_000029_where_target.jpg",
+              "url": "media/examples/stage4/env_9_21_102_self_shared_4way_000029_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -2565,12 +2565,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_reference.jpg"
+              "url": "media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_target.jpg",
+              "url": "media/examples/stage4/env_16_33_403_self_shared_8way_000127_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -3026,12 +3026,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_26_107_self_shared_8way_000067_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_26_107_self_shared_8way_000067_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_26_107_self_shared_8way_000067_where_target.jpg",
+              "url": "media/examples/stage4/env_9_26_107_self_shared_8way_000067_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -3493,12 +3493,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_134_self_shared_4way_000129_where_reference.jpg"
+              "url": "media/examples/stage4/env_7_20_134_self_shared_4way_000129_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_134_self_shared_4way_000129_where_target.jpg",
+              "url": "media/examples/stage4/env_7_20_134_self_shared_4way_000129_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -3954,12 +3954,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_45_627_self_shared_4way_000005_where_reference.jpg"
+              "url": "media/examples/stage4/env_11_45_627_self_shared_4way_000005_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_45_627_self_shared_4way_000005_where_target.jpg",
+              "url": "media/examples/stage4/env_11_45_627_self_shared_4way_000005_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -4426,12 +4426,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_15_42_self_shared_8way_000095_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_15_42_self_shared_8way_000095_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_15_42_self_shared_8way_000095_where_target.jpg",
+              "url": "media/examples/stage4/env_9_15_42_self_shared_8way_000095_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -4901,27 +4901,27 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_reference.jpg"
+              "url": "media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Front-Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_a.jpg"
+              "url": "media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_b.jpg"
+              "url": "media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_c.jpg"
+              "url": "media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Front",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_d.jpg",
+              "url": "media/examples/stage4/env_16_33_417_self_shared_4way_000061_what_d.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -5239,12 +5239,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_reference.jpg"
+              "url": "media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_a.jpg",
+              "url": "media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_a.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -5317,17 +5317,17 @@
             {
               "kind": "image",
               "label": "B · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_b.jpg"
+              "url": "media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_c.jpg"
+              "url": "media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_d.jpg"
+              "url": "media/examples/stage4/env_7_11_56_self_shared_4way_000145_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -5606,27 +5606,27 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_reference.jpg"
+              "url": "media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_a.jpg"
+              "url": "media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_b.jpg"
+              "url": "media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Front",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_c.jpg"
+              "url": "media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_d.jpg",
+              "url": "media/examples/stage4/env_23_30_331_self_shared_8way_000071_what_d.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -5957,27 +5957,27 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_reference.jpg"
+              "url": "media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_a.jpg"
+              "url": "media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Front",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_b.jpg"
+              "url": "media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_c.jpg"
+              "url": "media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_d.jpg",
+              "url": "media/examples/stage4/env_20_99_684_self_shared_8way_000143_what_d.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -6329,22 +6329,22 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_reference.jpg"
+              "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_a.jpg"
+              "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_b.jpg"
+              "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_c.jpg",
+              "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_c.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -6395,7 +6395,7 @@
             {
               "kind": "image",
               "label": "D · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_d.jpg"
+              "url": "media/examples/stage4/env_10_27_122_self_shared_4way_000009_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -6684,17 +6684,17 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_reference.jpg"
+              "url": "media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Back-Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_a.jpg"
+              "url": "media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_b.jpg",
+              "url": "media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_b.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -6745,12 +6745,12 @@
             {
               "kind": "image",
               "label": "C · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_c.jpg"
+              "url": "media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Front-Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_d.jpg"
+              "url": "media/examples/stage4/env_7_27_243_self_shared_4way_000317_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -7029,22 +7029,22 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_reference.jpg"
+              "url": "media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_a.jpg"
+              "url": "media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_b.jpg"
+              "url": "media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Front",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_c.jpg",
+              "url": "media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_c.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -7128,7 +7128,7 @@
             {
               "kind": "image",
               "label": "D · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_d.jpg"
+              "url": "media/examples/stage4/env_20_31_273_self_shared_4way_000033_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -7417,17 +7417,17 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_reference.jpg"
+              "url": "media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_a.jpg"
+              "url": "media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_b.jpg",
+              "url": "media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_b.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -7577,12 +7577,12 @@
             {
               "kind": "image",
               "label": "C · Left",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_c.jpg"
+              "url": "media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_d.jpg"
+              "url": "media/examples/stage4/env_9_49_230_self_shared_8way_000075_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -7866,12 +7866,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_reference.jpg"
+              "url": "media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_a.jpg",
+              "url": "media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_a.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -7944,17 +7944,17 @@
             {
               "kind": "image",
               "label": "B · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_b.jpg"
+              "url": "media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_c.jpg"
+              "url": "media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_d.jpg"
+              "url": "media/examples/stage4/env_7_2_36_self_shared_8way_000119_what_d.jpg"
             }
           ],
           "answer_media_panels": [],
@@ -8243,27 +8243,27 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_reference.jpg"
+              "url": "media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_reference.jpg"
             },
             {
               "kind": "image",
               "label": "A · Front-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_a.jpg"
+              "url": "media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_a.jpg"
             },
             {
               "kind": "image",
               "label": "B · Back-Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_b.jpg"
+              "url": "media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_b.jpg"
             },
             {
               "kind": "image",
               "label": "C · Right",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_c.jpg"
+              "url": "media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_c.jpg"
             },
             {
               "kind": "image",
               "label": "D · Back",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_d.jpg",
+              "url": "media/examples/stage4/env_9_8_15_self_shared_8way_000143_what_d.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -8656,12 +8656,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_env_shared_4way_000062_where_reference.jpg"
+              "url": "media/examples/stage4/env_16_33_417_env_shared_4way_000062_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_417_env_shared_4way_000062_where_target.jpg",
+              "url": "media/examples/stage4/env_16_33_417_env_shared_4way_000062_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -9117,12 +9117,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_env_shared_4way_000146_where_reference.jpg"
+              "url": "media/examples/stage4/env_7_11_56_env_shared_4way_000146_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_env_shared_4way_000146_where_target.jpg",
+              "url": "media/examples/stage4/env_7_11_56_env_shared_4way_000146_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -9584,12 +9584,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_314_env_shared_4way_000106_where_reference.jpg"
+              "url": "media/examples/stage4/env_23_30_314_env_shared_4way_000106_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_30_314_env_shared_4way_000106_where_target.jpg",
+              "url": "media/examples/stage4/env_23_30_314_env_shared_4way_000106_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -10030,12 +10030,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_env_shared_8way_000144_where_reference.jpg"
+              "url": "media/examples/stage4/env_20_99_684_env_shared_8way_000144_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_99_684_env_shared_8way_000144_where_target.jpg",
+              "url": "media/examples/stage4/env_20_99_684_env_shared_8way_000144_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -10469,12 +10469,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_target.jpg",
+              "url": "media/examples/stage4/env_9_21_87_env_shared_4way_000110_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -10941,12 +10941,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_118_env_shared_8way_000084_where_reference.jpg"
+              "url": "media/examples/stage4/env_7_20_118_env_shared_8way_000084_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_118_env_shared_8way_000084_where_target.jpg",
+              "url": "media/examples/stage4/env_7_20_118_env_shared_8way_000084_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -11413,12 +11413,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_224_env_shared_4way_000026_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_49_224_env_shared_4way_000026_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_224_env_shared_4way_000026_where_target.jpg",
+              "url": "media/examples/stage4/env_9_49_224_env_shared_4way_000026_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -11870,12 +11870,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_env_shared_4way_000034_where_reference.jpg"
+              "url": "media/examples/stage4/env_20_31_273_env_shared_4way_000034_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_31_273_env_shared_4way_000034_where_target.jpg",
+              "url": "media/examples/stage4/env_20_31_273_env_shared_4way_000034_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -12314,12 +12314,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_env_shared_8way_000120_where_reference.jpg"
+              "url": "media/examples/stage4/env_7_2_36_env_shared_8way_000120_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_2_36_env_shared_8way_000120_where_target.jpg",
+              "url": "media/examples/stage4/env_7_2_36_env_shared_8way_000120_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -12792,12 +12792,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_15_42_env_shared_4way_000094_where_reference.jpg"
+              "url": "media/examples/stage4/env_9_15_42_env_shared_4way_000094_where_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_15_42_env_shared_4way_000094_where_target.jpg",
+              "url": "media/examples/stage4/env_9_15_42_env_shared_4way_000094_where_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -13261,12 +13261,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_env_shared_4way_000318_how_reference.jpg"
+              "url": "media/examples/stage4/env_7_27_243_env_shared_4way_000318_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_27_243_env_shared_4way_000318_how_target.jpg",
+              "url": "media/examples/stage4/env_7_27_243_env_shared_4way_000318_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -13733,12 +13733,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_env_shared_4way_000146_how_reference.jpg"
+              "url": "media/examples/stage4/env_7_11_56_env_shared_4way_000146_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_11_56_env_shared_4way_000146_how_target.jpg",
+              "url": "media/examples/stage4/env_7_11_56_env_shared_4way_000146_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -14200,12 +14200,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_10_34_env_shared_4way_000134_how_reference.jpg"
+              "url": "media/examples/stage4/env_23_10_34_env_shared_4way_000134_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_23_10_34_env_shared_4way_000134_how_target.jpg",
+              "url": "media/examples/stage4/env_23_10_34_env_shared_4way_000134_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -14651,12 +14651,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_85_652_env_shared_8way_000240_how_reference.jpg"
+              "url": "media/examples/stage4/env_20_85_652_env_shared_8way_000240_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_20_85_652_env_shared_8way_000240_how_target.jpg",
+              "url": "media/examples/stage4/env_20_85_652_env_shared_8way_000240_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -15086,12 +15086,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_reference.jpg"
+              "url": "media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_target.jpg",
+              "url": "media/examples/stage4/env_21_1_12_env_shared_4way_000030_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -15520,12 +15520,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_403_env_shared_8way_000128_how_reference.jpg"
+              "url": "media/examples/stage4/env_16_33_403_env_shared_8way_000128_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_16_33_403_env_shared_8way_000128_how_target.jpg",
+              "url": "media/examples/stage4/env_16_33_403_env_shared_8way_000128_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -15976,12 +15976,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_env_shared_8way_000076_how_reference.jpg"
+              "url": "media/examples/stage4/env_9_49_230_env_shared_8way_000076_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_49_230_env_shared_8way_000076_how_target.jpg",
+              "url": "media/examples/stage4/env_9_49_230_env_shared_8way_000076_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -16442,12 +16442,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_134_env_shared_4way_000130_how_reference.jpg"
+              "url": "media/examples/stage4/env_7_20_134_env_shared_4way_000130_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_7_20_134_env_shared_4way_000130_how_target.jpg",
+              "url": "media/examples/stage4/env_7_20_134_env_shared_4way_000130_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -16930,12 +16930,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_45_627_env_shared_4way_000006_how_reference.jpg"
+              "url": "media/examples/stage4/env_11_45_627_env_shared_4way_000006_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_11_45_627_env_shared_4way_000006_how_target.jpg",
+              "url": "media/examples/stage4/env_11_45_627_env_shared_4way_000006_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -17408,12 +17408,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_env_shared_8way_000144_how_reference.jpg"
+              "url": "media/examples/stage4/env_9_8_15_env_shared_8way_000144_how_reference.jpg"
             },
             {
               "kind": "image",
               "label": "Query Observation",
-              "url": "/w/UAV-DualCog/media/examples/stage4/env_9_8_15_env_shared_8way_000144_how_target.jpg",
+              "url": "media/examples/stage4/env_9_8_15_env_shared_8way_000144_how_target.jpg",
               "overlays": [
                 {
                   "label": "GT",
@@ -17951,12 +17951,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_322_atomic_0004_self_instance_recognition_joint_000165_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -18542,12 +18542,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_99_687_composite_0051_self_instance_recognition_joint_000235_reference.jpg"
+              "url": "media/examples/stage3/env_20_batch_env_20_99_687_composite_0051_self_instance_recognition_joint_000235_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_99_687_composite_0051_self_instance_recognition_joint_000235_video.mp4"
+              "url": "media/examples/stage3/env_20_batch_env_20_99_687_composite_0051_self_instance_recognition_joint_000235_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -19271,12 +19271,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_15_42_composite_0035_self_instance_recognition_joint_000047_reference.jpg"
+              "url": "media/examples/stage3/env_9_batch_env_9_15_42_composite_0035_self_instance_recognition_joint_000047_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_15_42_composite_0035_self_instance_recognition_joint_000047_video.mp4"
+              "url": "media/examples/stage3/env_9_batch_env_9_15_42_composite_0035_self_instance_recognition_joint_000047_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -20023,12 +20023,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_23_220_composite_0032_self_instance_recognition_joint_000043_reference.jpg"
+              "url": "media/examples/stage3/env_20_batch_env_20_23_220_composite_0032_self_instance_recognition_joint_000043_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_23_220_composite_0032_self_instance_recognition_joint_000043_video.mp4"
+              "url": "media/examples/stage3/env_20_batch_env_20_23_220_composite_0032_self_instance_recognition_joint_000043_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -20711,12 +20711,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_23_batch_env_23_42_473_atomic_0035_self_instance_recognition_joint_000129_reference.jpg"
+              "url": "media/examples/stage3/env_23_batch_env_23_42_473_atomic_0035_self_instance_recognition_joint_000129_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_23_batch_env_23_42_473_atomic_0035_self_instance_recognition_joint_000129_video.mp4"
+              "url": "media/examples/stage3/env_23_batch_env_23_42_473_atomic_0035_self_instance_recognition_joint_000129_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -21279,12 +21279,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_27_243_atomic_0012_self_instance_recognition_joint_000145_reference.jpg"
+              "url": "media/examples/stage3/env_7_batch_env_7_27_243_atomic_0012_self_instance_recognition_joint_000145_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_27_243_atomic_0012_self_instance_recognition_joint_000145_video.mp4"
+              "url": "media/examples/stage3/env_7_batch_env_7_27_243_atomic_0012_self_instance_recognition_joint_000145_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -21933,12 +21933,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_10_batch_env_10_23_94_composite_0003_self_instance_recognition_joint_000035_reference.jpg"
+              "url": "media/examples/stage3/env_10_batch_env_10_23_94_composite_0003_self_instance_recognition_joint_000035_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_10_batch_env_10_23_94_composite_0003_self_instance_recognition_joint_000035_video.mp4"
+              "url": "media/examples/stage3/env_10_batch_env_10_23_94_composite_0003_self_instance_recognition_joint_000035_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -22612,12 +22612,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_403_atomic_0008_self_instance_recognition_joint_000225_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_403_atomic_0008_self_instance_recognition_joint_000225_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_403_atomic_0008_self_instance_recognition_joint_000225_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_403_atomic_0008_self_instance_recognition_joint_000225_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -23174,12 +23174,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_26_107_atomic_0025_self_instance_recognition_joint_000117_reference.jpg"
+              "url": "media/examples/stage3/env_9_batch_env_9_26_107_atomic_0025_self_instance_recognition_joint_000117_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_26_107_atomic_0025_self_instance_recognition_joint_000117_video.mp4"
+              "url": "media/examples/stage3/env_9_batch_env_9_26_107_atomic_0025_self_instance_recognition_joint_000117_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -23745,12 +23745,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_32_286_composite_0083_self_instance_recognition_joint_000115_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_32_286_composite_0083_self_instance_recognition_joint_000115_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_32_286_composite_0083_self_instance_recognition_joint_000115_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_32_286_composite_0083_self_instance_recognition_joint_000115_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -24290,12 +24290,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_reference.jpg"
+              "url": "media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_video.mp4"
+              "url": "media/examples/stage3/env_7_batch_env_7_25_230_atomic_0004_env_visibility_reasoning_000122_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -24725,12 +24725,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_21_86_composite_0024_env_visibility_reasoning_000108_reference.jpg"
+              "url": "media/examples/stage3/env_9_batch_env_9_21_86_composite_0024_env_visibility_reasoning_000108_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_21_86_composite_0024_env_visibility_reasoning_000108_video.mp4"
+              "url": "media/examples/stage3/env_9_batch_env_9_21_86_composite_0024_env_visibility_reasoning_000108_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -25176,12 +25176,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
+              "url": "media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
+              "url": "media/examples/stage3/env_20_batch_env_20_85_652_atomic_0005_env_visibility_reasoning_000218_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -25612,12 +25612,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_23_batch_env_23_42_469_atomic_0013_env_visibility_reasoning_000126_reference.jpg"
+              "url": "media/examples/stage3/env_23_batch_env_23_42_469_atomic_0013_env_visibility_reasoning_000126_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_23_batch_env_23_42_469_atomic_0013_env_visibility_reasoning_000126_video.mp4"
+              "url": "media/examples/stage3/env_23_batch_env_23_42_469_atomic_0013_env_visibility_reasoning_000126_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -26096,12 +26096,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_23_197_atomic_0039_env_visibility_reasoning_000042_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_23_197_atomic_0039_env_visibility_reasoning_000042_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_23_197_atomic_0039_env_visibility_reasoning_000042_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_23_197_atomic_0039_env_visibility_reasoning_000042_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -26573,12 +26573,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_378_composite_0027_env_visibility_reasoning_000192_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_378_composite_0027_env_visibility_reasoning_000192_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_378_composite_0027_env_visibility_reasoning_000192_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_378_composite_0027_env_visibility_reasoning_000192_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -26991,12 +26991,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_384_atomic_0017_env_visibility_reasoning_000202_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_384_atomic_0017_env_visibility_reasoning_000202_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_33_384_atomic_0017_env_visibility_reasoning_000202_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_33_384_atomic_0017_env_visibility_reasoning_000202_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -27457,12 +27457,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_18_61_atomic_0012_env_visibility_reasoning_000078_reference.jpg"
+              "url": "media/examples/stage3/env_9_batch_env_9_18_61_atomic_0012_env_visibility_reasoning_000078_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_9_batch_env_9_18_61_atomic_0012_env_visibility_reasoning_000078_video.mp4"
+              "url": "media/examples/stage3/env_9_batch_env_9_18_61_atomic_0012_env_visibility_reasoning_000078_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -27961,12 +27961,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_10_batch_env_10_23_96_composite_0004_env_visibility_reasoning_000040_reference.jpg"
+              "url": "media/examples/stage3/env_10_batch_env_10_23_96_composite_0004_env_visibility_reasoning_000040_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_10_batch_env_10_23_96_composite_0004_env_visibility_reasoning_000040_video.mp4"
+              "url": "media/examples/stage3/env_10_batch_env_10_23_96_composite_0004_env_visibility_reasoning_000040_video.mp4"
             }
           ],
           "prefer_side_answer": false,
@@ -28446,12 +28446,12 @@
             {
               "kind": "image",
               "label": "Reference Image",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_32_283_composite_0121_env_visibility_reasoning_000104_reference.jpg"
+              "url": "media/examples/stage3/env_16_batch_env_16_32_283_composite_0121_env_visibility_reasoning_000104_reference.jpg"
             },
             {
               "kind": "video",
               "label": "Flight Video",
-              "url": "/w/UAV-DualCog/media/examples/stage3/env_16_batch_env_16_32_283_composite_0121_env_visibility_reasoning_000104_video.mp4"
+              "url": "media/examples/stage3/env_16_batch_env_16_32_283_composite_0121_env_visibility_reasoning_000104_video.mp4"
             }
           ],
           "prefer_side_answer": false,
