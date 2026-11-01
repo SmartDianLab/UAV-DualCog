@@ -5,7 +5,7 @@
     <a href="https://likeliu.com">Like Liu</a><sup>1</sup>,
     Zhengzheng Xu<sup>2</sup>,
     Hongzhe Li<sup>2</sup>,
-    Lin Wang<sup>3</sup>,
+    <a href="https://scholar.google.com/citations?user=SReb2csAAAAJ">Lin Wang</a><sup>3</sup>,
     <a href="https://scholar.google.com/citations?user=amxDSLoAAAAJ&amp;hl=en">Dian Shao</a><sup>2,&dagger;</sup>
   </strong>
 </p>
