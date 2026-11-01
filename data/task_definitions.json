@@ -1,0 +1,239 @@
+{
+  "generated_at": "2026-04-11T09:40:14.420799+00:00",
+  "release_summary": {
+    "selected_scene_count": 12,
+    "selected_landmark_count": 512,
+    "stage4_sample_count": 4096,
+    "stage3_sample_count": 2048
+  },
+  "tasks": [
+    {
+      "id": "self_where",
+      "title": "Self-relative Position Reasoning",
+      "summary": "Infer the UAV position relative to the target landmark from a landmark-centric reference view and a current egocentric observation.",
+      "modality": "image",
+      "cognition": "Agent-State Reasoning",
+      "interface": "Reference image + query observation",
+      "sample_count": 1024,
+      "difficulty_breakdown": {
+        "4way": 512,
+        "8way": 512
+      },
+      "inputs": [
+        "Reference image + query observation"
+      ],
+      "outputs": [
+        "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}"
+      ],
+      "output_schema": "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}",
+      "metrics": [
+        {
+          "id": "option_accuracy",
+          "label": "Option Accuracy",
+          "meaning": "Correct relative-position choice."
+        },
+        {
+          "id": "bbox_acc@50iou",
+          "label": "BBox Acc@50IoU",
+          "meaning": "Predicted box overlaps the GT landmark with IoU >= 0.5."
+        },
+        {
+          "id": "bbox_mean_iou",
+          "label": "BBox Mean IoU",
+          "meaning": "Continuous localization quality on the query image."
+        }
+      ],
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference.",
+      "user_prompt": "Image 1 shows the {{reference_object_view}} facade of {{landmark_description}} in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\n{{options_text}}"
+    },
+    {
+      "id": "self_what",
+      "title": "Action-conditioned Future Observation Prediction",
+      "summary": "Predict which candidate image is the correct future observation after a described orbit action and localize the landmark in that selected image.",
+      "modality": "image",
+      "cognition": "Agent-State Reasoning",
+      "interface": "Reference image + four future-view candidates",
+      "sample_count": 1024,
+      "difficulty_breakdown": {
+        "4way": 512,
+        "8way": 512
+      },
+      "inputs": [
+        "Reference image + four future-view candidates"
+      ],
+      "outputs": [
+        "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}"
+      ],
+      "output_schema": "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}",
+      "metrics": [
+        {
+          "id": "option_accuracy",
+          "label": "Option Accuracy",
+          "meaning": "Correct future-view selection under the orbit action."
+        },
+        {
+          "id": "bbox_acc@50iou",
+          "label": "BBox Acc@50IoU",
+          "meaning": "Localization quality in the selected candidate image."
+        },
+        {
+          "id": "bbox_mean_iou",
+          "label": "BBox Mean IoU",
+          "meaning": "Continuous grounding quality after view prediction."
+        }
+      ],
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference.",
+      "user_prompt": "Image 1 shows the {{reference_object_view}} facade of {{landmark_description}} in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking {{behavior_instance}}? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5"
+    },
+    {
+      "id": "env_where",
+      "title": "Landmark-relative Direction Reasoning",
+      "summary": "Judge where the target landmark lies relative to the UAV's current forward direction and ground it in the same observation.",
+      "modality": "image",
+      "cognition": "World-State Reasoning",
+      "interface": "Reference image + query observation",
+      "sample_count": 1024,
+      "difficulty_breakdown": {
+        "4way": 512,
+        "8way": 512
+      },
+      "inputs": [
+        "Reference image + query observation"
+      ],
+      "outputs": [
+        "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}"
+      ],
+      "output_schema": "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}",
+      "metrics": [
+        {
+          "id": "option_accuracy",
+          "label": "Option Accuracy",
+          "meaning": "Correct egocentric direction judgment."
+        },
+        {
+          "id": "bbox_acc@50iou",
+          "label": "BBox Acc@50IoU",
+          "meaning": "Localization on the current observation image."
+        },
+        {
+          "id": "bbox_mean_iou",
+          "label": "BBox Mean IoU",
+          "meaning": "Continuous target grounding fidelity."
+        }
+      ],
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference.",
+      "user_prompt": "Image 1 shows the {{reference_object_view}} facade of {{landmark_description}} in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\n{{options_text}}"
+    },
+    {
+      "id": "env_how",
+      "title": "Goal-conditioned Action Decision",
+      "summary": "Choose which direction the UAV should move to approach the target landmark and ground the landmark in the current observation.",
+      "modality": "image",
+      "cognition": "World-State Reasoning",
+      "interface": "Reference image + query observation",
+      "sample_count": 1024,
+      "difficulty_breakdown": {
+        "4way": 512,
+        "8way": 512
+      },
+      "inputs": [
+        "Reference image + query observation"
+      ],
+      "outputs": [
+        "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}"
+      ],
+      "output_schema": "{\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}",
+      "metrics": [
+        {
+          "id": "option_accuracy",
+          "label": "Option Accuracy",
+          "meaning": "Correct action direction toward the landmark."
+        },
+        {
+          "id": "bbox_acc@50iou",
+          "label": "BBox Acc@50IoU",
+          "meaning": "Whether the decision is grounded on the correct landmark."
+        },
+        {
+          "id": "bbox_mean_iou",
+          "label": "BBox Mean IoU",
+          "meaning": "Continuous localization quality while making the action decision."
+        }
+      ],
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference.",
+      "user_prompt": "Image 1 shows the {{reference_object_view}} facade of {{landmark_description}} in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\n{{options_text}}"
+    },
+    {
+      "id": "self_instance_recognition_joint",
+      "title": "Flight Behavior Recognition and Temporal Localization",
+      "summary": "Recognize the UAV's own flight behaviors from first-person video and localize the corresponding temporal intervals.",
+      "modality": "video",
+      "cognition": "Agent-State Reasoning",
+      "interface": "Flight video",
+      "sample_count": 1024,
+      "difficulty_breakdown": {},
+      "inputs": [
+        "Flight video"
+      ],
+      "outputs": [
+        "{\"answers\":[{\"option_id\":\"A\",\"intervals_sec\":[[0.0,1.2]]},{\"option_id\":\"C\",\"intervals_sec\":[[3.4,5.0]]}]}"
+      ],
+      "output_schema": "{\"answers\":[{\"option_id\":\"A\",\"intervals_sec\":[[0.0,1.2]]},{\"option_id\":\"C\",\"intervals_sec\":[[3.4,5.0]]}]}",
+      "metrics": [
+        {
+          "id": "main_metric",
+          "label": "Semantic Accuracy / F1",
+          "meaning": "Semantic recognition of composite or atomic behaviors depending on the view."
+        },
+        {
+          "id": "self_temporal_loc_f1@0.5",
+          "label": "Temporal F1@0.5",
+          "meaning": "Interval-level success at the 0.5 threshold."
+        },
+        {
+          "id": "self_temporal_loc_mean_tIoU",
+          "label": "Mean tIoU",
+          "meaning": "Continuous temporal localization quality."
+        }
+      ],
+      "system_prompt": "",
+      "user_prompt": ""
+    },
+    {
+      "id": "env_visibility_reasoning",
+      "title": "Landmark Visibility Counting and Interval Reasoning",
+      "summary": "Count landmark appearances in flight video and localize every visible interval of the target landmark.",
+      "modality": "video",
+      "cognition": "World-State Reasoning",
+      "interface": "Flight video + reference image + landmark description",
+      "sample_count": 1024,
+      "difficulty_breakdown": {},
+      "inputs": [
+        "Flight video + reference image + landmark description"
+      ],
+      "outputs": [
+        "{\"visible_count\":2,\"visible_intervals_sec\":[[0.0,9.1],[17.7,26.8]]}"
+      ],
+      "output_schema": "{\"visible_count\":2,\"visible_intervals_sec\":[[0.0,9.1],[17.7,26.8]]}",
+      "metrics": [
+        {
+          "id": "main_metric",
+          "label": "Count Accuracy",
+          "meaning": "Exact visible-count correctness."
+        },
+        {
+          "id": "segment_f1@0.5",
+          "label": "Segment F1@0.5",
+          "meaning": "Interval-level visibility success at the 0.5 threshold."
+        },
+        {
+          "id": "mean_best_tIoU",
+          "label": "Mean tIoU",
+          "meaning": "Continuous temporal overlap quality for visible intervals."
+        }
+      ],
+      "system_prompt": "",
+      "user_prompt": ""
+    }
+  ]
+}

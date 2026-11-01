@@ -1,0 +1,3 @@
+section,table_name,source,note
+leaderboard,stage3,data/leaderboard/stage3_metrics_latest.csv,Current exported Stage 3 metrics matrix used by the website leaderboard.
+leaderboard,stage4,data/leaderboard/stage4_metrics_latest.csv,Current exported Stage 4 metrics matrix used by the website leaderboard.

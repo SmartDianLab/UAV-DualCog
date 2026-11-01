@@ -1,0 +1,4026 @@
+{
+  "generated_at": "2026-09-21T14:52:26.970070+00:00",
+  "status": "evaluation_complete",
+  "statistics": {
+    "registered_views": 1326,
+    "sampled_views": 600,
+    "landmark_candidates": 300,
+    "reviewed_landmarks": 30,
+    "image_tasks": 400,
+    "models": 16
+  },
+  "scenes": [
+    {
+      "scene_id": "gauu_lfls",
+      "scene": "LFLS",
+      "statistics": {
+        "registered_views": 553,
+        "landmarks": 11,
+        "image_tasks": 114
+      },
+      "task_counts": {
+        "self_where": 20,
+        "self_what": 20,
+        "env_where": 37,
+        "env_how": 37
+      }
+    },
+    {
+      "scene_id": "gauu_smbu",
+      "scene": "SMBU",
+      "statistics": {
+        "registered_views": 415,
+        "landmarks": 10,
+        "image_tasks": 166
+      },
+      "task_counts": {
+        "self_where": 50,
+        "self_what": 50,
+        "env_where": 33,
+        "env_how": 33
+      }
+    },
+    {
+      "scene_id": "gauu_upper_campus",
+      "scene": "Upper Campus",
+      "statistics": {
+        "registered_views": 358,
+        "landmarks": 9,
+        "image_tasks": 120
+      },
+      "task_counts": {
+        "self_where": 30,
+        "self_what": 30,
+        "env_where": 30,
+        "env_how": 30
+      }
+    }
+  ],
+  "scene_gallery": [
+    {
+      "scene_id": "gauu_lfls",
+      "label": "LFLS",
+      "images": [
+        {
+          "label": "Rendered 3DGS RGB Overview - Oblique",
+          "url": "media/real-world/gauu_lfls_oblique.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Top-Down",
+          "url": "media/real-world/gauu_lfls_pointcloud_top.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Oblique",
+          "url": "media/real-world/gauu_lfls_pointcloud_oblique.png"
+        },
+        {
+          "label": "Selected landmark gauu_lfls_candidate_0204",
+          "url": "media/real-world/gauu_lfls_gauu_lfls_candidate_0204_scene.jpg"
+        }
+      ],
+      "boundary": "Registered reconstruction coverage",
+      "area_m2": 0,
+      "raw_landmark_candidates": 100,
+      "reviewed_valid_landmarks": 11
+    },
+    {
+      "scene_id": "gauu_smbu",
+      "label": "SMBU",
+      "images": [
+        {
+          "label": "Rendered 3DGS RGB Overview - Oblique",
+          "url": "media/real-world/gauu_smbu_oblique.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Top-Down",
+          "url": "media/real-world/gauu_smbu_pointcloud_top.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Oblique",
+          "url": "media/real-world/gauu_smbu_pointcloud_oblique.png"
+        },
+        {
+          "label": "Selected landmark gauu_smbu_candidate_0178",
+          "url": "media/real-world/gauu_smbu_gauu_smbu_candidate_0178_scene.jpg"
+        }
+      ],
+      "boundary": "Registered reconstruction coverage",
+      "area_m2": 0,
+      "raw_landmark_candidates": 100,
+      "reviewed_valid_landmarks": 10
+    },
+    {
+      "scene_id": "gauu_upper_campus",
+      "label": "Upper Campus",
+      "images": [
+        {
+          "label": "Rendered 3DGS RGB Overview - Oblique",
+          "url": "media/real-world/gauu_upper_campus_oblique.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Top-Down",
+          "url": "media/real-world/gauu_upper_campus_pointcloud_top.png"
+        },
+        {
+          "label": "LiDAR Point Cloud - Oblique",
+          "url": "media/real-world/gauu_upper_campus_pointcloud_oblique.png"
+        },
+        {
+          "label": "Selected landmark gauu_upper_candidate_0390",
+          "url": "media/real-world/gauu_upper_campus_gauu_upper_candidate_0390_scene.jpg"
+        }
+      ],
+      "boundary": "Registered reconstruction coverage",
+      "area_m2": 0,
+      "raw_landmark_candidates": 100,
+      "reviewed_valid_landmarks": 9
+    }
+  ],
+  "examples": {
+    "groups": [
+      {
+        "task_id": "self_where",
+        "task_title": "Self-relative Position Reasoning",
+        "examples": [
+          {
+            "example_id": "gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where",
+            "scene_id": "gauu_lfls",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Right facade of dense green deciduous tree cluster with irregular shape located in urban gap in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Left\nC. Back-Left\nD. Front-Left",
+            "input_summary": "dense green deciduous tree cluster with irregular shape located in urban gap",
+            "task_id": "self_where",
+            "task_modality": "image",
+            "gold_answer": "C",
+            "gold_bbox": "[0.478, 0.427, 0.549, 0.511]",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Self-relative Position Reasoning question, the target is GT option C and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 3/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are Gemini 3.8 Flash, GPT-5.6 Sol, and Kimi K2.6, evidence-only cases are none, and 7/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.430, 0.420, 0.550, 0.540]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.413"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.272, 0.455, 0.459, 0.652]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.320, 0.660, 0.590, 0.810]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.260, 0.840, 0.325, 0.920]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.510, 0.430, 0.620, 0.520]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.250"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.420, 0.400, 0.560, 0.580]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.236"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.482, 0.535, 0.576, 0.651]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.380, 0.480, 0.480, 0.580]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.003"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.460, 0.420, 0.580, 0.540]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.413"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.460, 0.390, 0.560, 0.500]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.438"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_lfls_self_where_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.4783928394317627,
+                      0.4269613107231829,
+                      0.5490325927734375,
+                      0.5111510085612361
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.43,
+                      0.42,
+                      0.55,
+                      0.54
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.272,
+                      0.455,
+                      0.459,
+                      0.652
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.32,
+                      0.66,
+                      0.59,
+                      0.81
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.26,
+                      0.84,
+                      0.325,
+                      0.92
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.51,
+                      0.43,
+                      0.62,
+                      0.52
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.42,
+                      0.4,
+                      0.56,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.482,
+                      0.535,
+                      0.576,
+                      0.651
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.38,
+                      0.48,
+                      0.48,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.46,
+                      0.42,
+                      0.58,
+                      0.54
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.46,
+                      0.39,
+                      0.56,
+                      0.5
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where",
+            "scene_id": "gauu_smbu",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Back-Left facade of gray mid-rise building with flat roof and rectangular windows in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Back-Left\nC. Left\nD. Back",
+            "input_summary": "gray mid-rise building with flat roof and rectangular windows",
+            "task_id": "self_where",
+            "task_modality": "image",
+            "gold_answer": "A",
+            "gold_bbox": "[0.074, 0.311, 0.336, 0.681]",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.074, 0.311, 0.336, 0.681]. Across 10 available outputs, option prediction succeeds for 4/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 3/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and MiMo-V2.5). Semantic-only cases are GPT-6 Astra, evidence-only cases are Muse Spark 1.3 Contributor, GLM-5.3-Flash, and Qwen3.8-27B (+1 more), and 2/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.074, 0.316, 0.336, 0.678]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.977"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.138, 0.708, 0.406, 0.992]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.125, 0.528, 0.395, 0.750]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.259"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.078, 0.315, 0.345, 0.705]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.884"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.000, 0.320, 0.290, 0.650]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.588"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.050, 0.300, 0.350, 0.750]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.719"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.082, 0.476, 0.338, 0.720]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.484"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.070, 0.320, 0.330, 0.660]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.886"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.060, 0.300, 0.330, 0.680]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.900"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.110, 0.310, 0.360, 0.660]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.747"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_smbu_self_where_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.07378444075584412,
+                      0.31075577551426947,
+                      0.33604648113250735,
+                      0.6808926760102213
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.074,
+                      0.316,
+                      0.336,
+                      0.678
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.1375,
+                      0.7083,
+                      0.4063,
+                      0.9917
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.125,
+                      0.528,
+                      0.395,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.078,
+                      0.315,
+                      0.345,
+                      0.705
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.0,
+                      0.32,
+                      0.29,
+                      0.65
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.05,
+                      0.3,
+                      0.35,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.082,
+                      0.476,
+                      0.338,
+                      0.72
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.07,
+                      0.32,
+                      0.33,
+                      0.66
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.06,
+                      0.3,
+                      0.33,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.11,
+                      0.31,
+                      0.36,
+                      0.66
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where",
+            "scene_id": "gauu_upper_campus",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Left\nB. Right\nC. Front\nD. Front-Right",
+            "input_summary": "gray low-rise building with flat roof and adjacent green courts",
+            "task_id": "self_where",
+            "task_modality": "image",
+            "gold_answer": "A",
+            "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 0/10 and landmark localization at IoU >= 0.5 for 4/10; both succeed for 0/10 (none). Semantic-only cases are none, evidence-only cases are Gemini 3.8 Flash, GLM-5.3-Flash, and Kimi K2.6 (+1 more), and 6/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.690, 0.420, 0.880, 0.660]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.983"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.694, 0.534, 0.947, 0.836]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.236"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.734, 0.291, 1.000, 0.506]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.137"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.730, 0.560, 0.935, 0.790]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.191"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.710, 0.470, 0.990, 0.750]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.349"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.680, 0.420, 0.960, 0.630]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.610"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.692, 0.448, 0.878, 0.626]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.739"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.720, 0.480, 0.920, 0.680]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.504"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.700, 0.400, 0.950, 0.750]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.475"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.720, 0.480, 0.960, 0.650]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.458"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_upper_campus_self_where_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.6906378173828125,
+                      0.4206665382277999,
+                      0.8781170654296875,
+                      0.6597362114317303
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.42,
+                      0.88,
+                      0.66
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.694,
+                      0.534,
+                      0.947,
+                      0.836
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.734,
+                      0.291,
+                      1.0,
+                      0.506
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.73,
+                      0.56,
+                      0.935,
+                      0.79
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.71,
+                      0.47,
+                      0.99,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.68,
+                      0.42,
+                      0.96,
+                      0.63
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.692,
+                      0.448,
+                      0.878,
+                      0.626
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.72,
+                      0.48,
+                      0.92,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.7,
+                      0.4,
+                      0.95,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.72,
+                      0.48,
+                      0.96,
+                      0.65
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          }
+        ]
+      },
+      {
+        "task_id": "self_what",
+        "task_title": "Action-conditioned Future Observation Prediction",
+        "examples": [
+          {
+            "example_id": "gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what",
+            "scene_id": "gauu_lfls",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Right facade of dense green deciduous tree cluster with irregular shape located in urban gap in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 135-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+            "input_summary": "dense green deciduous tree cluster with irregular shape located in urban gap",
+            "task_id": "self_what",
+            "task_modality": "image",
+            "gold_answer": "C",
+            "gold_bbox": "[0.216, 0.270, 0.300, 0.426]",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Action-conditioned Future Observation Prediction question, the target is GT option C and BBox [0.216, 0.270, 0.300, 0.426]. Across 10 available outputs, option prediction succeeds for 5/10 and landmark localization at IoU >= 0.5 for 1/10; both succeed for 1/10 (Gemini 3.8 Flash). Semantic-only cases are GPT-6 Astra, GLM-5.3-Flash, and Kimi K2.6 (+1 more), evidence-only cases are none, and 5/10 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.218, 0.268, 0.308, 0.405]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.764"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.800, 0.680, 1.000, 1.000]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.550, 0.430, 0.680, 0.610]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.350, 0.700, 0.410, 0.770]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.430, 0.420, 0.510, 0.500]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.230"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.440, 0.550, 0.540, 0.680]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.450, 0.480, 0.530, 0.570]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.370, 0.650, 0.480, 0.780]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.580, 0.800, 0.680, 0.920]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.590, 0.710, 0.860, 0.990]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_lfls_self_what_gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_what_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.2156557559967041,
+                      0.2703056916821604,
+                      0.2995469570159912,
+                      0.42560225885889874
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.218,
+                      0.268,
+                      0.308,
+                      0.405
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.8,
+                      0.68,
+                      1.0,
+                      1.0
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.55,
+                      0.43,
+                      0.68,
+                      0.61
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.35,
+                      0.7,
+                      0.41,
+                      0.77
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.43,
+                      0.42,
+                      0.51,
+                      0.5
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.44,
+                      0.55,
+                      0.54,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.45,
+                      0.48,
+                      0.53,
+                      0.57
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.37,
+                      0.65,
+                      0.48,
+                      0.78
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.58,
+                      0.8,
+                      0.68,
+                      0.92
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.59,
+                      0.71,
+                      0.86,
+                      0.99
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what",
+            "scene_id": "gauu_smbu",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Back-Left facade of gray mid-rise building with flat roof and rectangular windows in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 90-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+            "input_summary": "gray mid-rise building with flat roof and rectangular windows",
+            "task_id": "self_what",
+            "task_modality": "image",
+            "gold_answer": "C",
+            "gold_bbox": "[0.074, 0.311, 0.336, 0.681]",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Action-conditioned Future Observation Prediction question, the target is GT option C and BBox [0.074, 0.311, 0.336, 0.681]. Across 10 available outputs, option prediction succeeds for 4/10 and landmark localization at IoU >= 0.5 for 4/10; both succeed for 3/10 (Gemini 3.8 Flash, GLM-5.3-Flash, and Qwen3.8-27B). Semantic-only cases are Kimi K2.6, evidence-only cases are MiMo-V2.5, and 5/10 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.075, 0.315, 0.335, 0.675]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.964"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.075, 0.716, 0.227, 0.953]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.109, 0.717, 0.256, 0.827]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.125, 0.765, 0.315, 0.925]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.150, 0.380, 0.420, 0.720]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.364"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.050, 0.300, 0.340, 0.680]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.877"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.109, 0.512, 0.336, 0.794]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.312"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.140, 0.280, 0.350, 0.580]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.850"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.080, 0.400, 0.280, 0.750]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.507"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.760, 0.410, 0.970, 0.580]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_smbu_self_what_gauu_smbu_gauu_smbu_candidate_0059_self_shared_8way_030019_what_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.07378444075584412,
+                      0.31075577551426947,
+                      0.33604648113250735,
+                      0.6808926760102213
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.075,
+                      0.315,
+                      0.335,
+                      0.675
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.075,
+                      0.716,
+                      0.227,
+                      0.953
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.109,
+                      0.717,
+                      0.256,
+                      0.827
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.125,
+                      0.765,
+                      0.315,
+                      0.925
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.15,
+                      0.38,
+                      0.42,
+                      0.72
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.05,
+                      0.3,
+                      0.34,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.109,
+                      0.512,
+                      0.336,
+                      0.794
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.14,
+                      0.28,
+                      0.35,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.08,
+                      0.4,
+                      0.28,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.76,
+                      0.41,
+                      0.97,
+                      0.58
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what",
+            "scene_id": "gauu_upper_campus",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+            "input_summary": "gray low-rise building with flat roof and adjacent green courts",
+            "task_id": "self_what",
+            "task_modality": "image",
+            "gold_answer": "D",
+            "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Action-conditioned Future Observation Prediction question, the target is GT option D and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 5/10 and landmark localization at IoU >= 0.5 for 5/10; both succeed for 2/10 (Gemini 3.8 Flash and GPT-6 Astra). Semantic-only cases are Kimi K2.6, Qwen3.8-27B, and Qwen3.6-27B, evidence-only cases are Muse Spark 1.3 Contributor, GLM-5.3-Flash, and MiMo-V2.5, and 2/10 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.690, 0.420, 0.880, 0.660]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.983"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.638, 0.447, 0.928, 0.694]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.521"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.672, 0.564, 0.998, 0.950]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.208"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.680, 0.540, 0.930, 0.730]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.519"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.630, 0.450, 0.870, 0.620]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.416"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.900, 0.370, 1.000, 0.520]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.593"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.690, 0.540, 0.860, 0.760]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.327"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.270, 0.130, 0.550, 0.390]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.790"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.700, 0.550, 0.850, 0.750]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.282"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.750, 0.650, 0.970, 0.850]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.014"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_upper_campus_self_what_gauu_upper_campus_gauu_upper_candidate_0390_self_shared_8way_020025_what_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.6906378173828125,
+                      0.4206665382277999,
+                      0.8781170654296875,
+                      0.6597362114317303
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.42,
+                      0.88,
+                      0.66
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.638,
+                      0.447,
+                      0.928,
+                      0.694
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.672,
+                      0.564,
+                      0.998,
+                      0.95
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.68,
+                      0.54,
+                      0.93,
+                      0.73
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.63,
+                      0.45,
+                      0.87,
+                      0.62
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.9,
+                      0.37,
+                      1.0,
+                      0.52
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.54,
+                      0.86,
+                      0.76
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.27,
+                      0.13,
+                      0.55,
+                      0.39
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.7,
+                      0.55,
+                      0.85,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.75,
+                      0.65,
+                      0.97,
+                      0.85
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          }
+        ]
+      },
+      {
+        "task_id": "env_where",
+        "task_title": "Landmark-relative Position Reasoning",
+        "examples": [
+          {
+            "example_id": "gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where",
+            "scene_id": "gauu_lfls",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Right facade of dense green deciduous tree cluster with irregular shape located in urban gap in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Back-Right\nC. Front-Right\nD. Front",
+            "input_summary": "dense green deciduous tree cluster with irregular shape located in urban gap",
+            "task_id": "env_where",
+            "task_modality": "image",
+            "gold_answer": "D",
+            "gold_bbox": "[0.478, 0.427, 0.549, 0.511]",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Landmark-relative Position Reasoning question, the target is GT option D and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 5/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are GPT-6 Astra, Muse Spark 1.3 Contributor, and GLM-5.3-Flash (+2 more), evidence-only cases are none, and 5/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.430, 0.430, 0.540, 0.530]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.418"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.397, 0.582, 0.531, 0.746]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.269, 0.438, 0.412, 0.561]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.260, 0.770, 0.320, 0.850]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.410, 0.390, 0.520, 0.460]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.112"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.400, 0.350, 0.560, 0.520]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.219"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.450, 0.560, 0.560, 0.710]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.350, 0.450, 0.550, 0.650]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.104"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.450, 0.400, 0.550, 0.550]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.396"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.450, 0.460, 0.580, 0.580]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.201"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_lfls_env_where_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.4783928394317627,
+                      0.4269613107231829,
+                      0.5490325927734375,
+                      0.5111510085612361
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.43,
+                      0.43,
+                      0.54,
+                      0.53
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.397,
+                      0.582,
+                      0.531,
+                      0.746
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.269,
+                      0.438,
+                      0.412,
+                      0.561
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.26,
+                      0.77,
+                      0.32,
+                      0.85
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.41,
+                      0.39,
+                      0.52,
+                      0.46
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.4,
+                      0.35,
+                      0.56,
+                      0.52
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.45,
+                      0.56,
+                      0.56,
+                      0.71
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.35,
+                      0.45,
+                      0.55,
+                      0.65
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.45,
+                      0.4,
+                      0.55,
+                      0.55
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.45,
+                      0.46,
+                      0.58,
+                      0.58
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where",
+            "scene_id": "gauu_smbu",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Left facade of gray mid-rise building with flat roof and rectangular windows in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Left\nB. Back\nC. Front\nD. Front-Left",
+            "input_summary": "gray mid-rise building with flat roof and rectangular windows",
+            "task_id": "env_where",
+            "task_modality": "image",
+            "gold_answer": "A",
+            "gold_bbox": "[0.127, 0.295, 0.347, 0.593]",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.127, 0.295, 0.347, 0.593]. Across 10 available outputs, option prediction succeeds for 7/10 and landmark localization at IoU >= 0.5 for 8/10; both succeed for 6/10 (GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+3 more)). Semantic-only cases are Muse Spark 1.3 Contributor, evidence-only cases are Gemini 3.8 Flash and MiMo-V2.5, and 1/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.128, 0.298, 0.347, 0.589]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.974"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.117, 0.326, 0.328, 0.586]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.766"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.100, 0.300, 0.400, 0.580]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.700"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.130, 0.500, 0.345, 0.720]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.215"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.130, 0.320, 0.350, 0.620]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.821"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.120, 0.270, 0.340, 0.600]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.847"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.109, 0.424, 0.346, 0.677]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.417"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.140, 0.340, 0.350, 0.660]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.653"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.100, 0.250, 0.350, 0.650]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.654"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.160, 0.350, 0.370, 0.620]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.593"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_smbu_env_where_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.1273723363876343,
+                      0.2952258880364797,
+                      0.347210168838501,
+                      0.5929001587915812
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.128,
+                      0.298,
+                      0.347,
+                      0.589
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.117,
+                      0.326,
+                      0.328,
+                      0.586
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.1,
+                      0.3,
+                      0.4,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.13,
+                      0.5,
+                      0.345,
+                      0.72
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.13,
+                      0.32,
+                      0.35,
+                      0.62
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.12,
+                      0.27,
+                      0.34,
+                      0.6
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.109,
+                      0.424,
+                      0.346,
+                      0.677
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.14,
+                      0.34,
+                      0.35,
+                      0.66
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.1,
+                      0.25,
+                      0.35,
+                      0.65
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.16,
+                      0.35,
+                      0.37,
+                      0.62
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where",
+            "scene_id": "gauu_upper_campus",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Right\nB. Front\nC. Back-Left\nD. Back",
+            "input_summary": "gray low-rise building with flat roof and adjacent green courts",
+            "task_id": "env_where",
+            "task_modality": "image",
+            "gold_answer": "A",
+            "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 9/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 6/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and GLM-5.3-Flash (+3 more)). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Muse Spark 1.3 Contributor, evidence-only cases are Qwen3.8-27B, and 0/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.688, 0.422, 0.872, 0.658]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.942"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.780, 0.380, 1.000, 0.750]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.228"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.725, 0.465, 0.995, 0.860]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.245"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.690, 0.560, 0.920, 0.720]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.297"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.710, 0.430, 0.950, 0.680]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.583"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.700, 0.400, 0.950, 0.680]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.589"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.702, 0.456, 0.878, 0.628]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.675"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.670, 0.490, 0.880, 0.730]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.502"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.700, 0.400, 0.900, 0.600]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.604"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.690, 0.480, 0.940, 0.660]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.600"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_upper_campus_env_where_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_where_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.6906378173828125,
+                      0.4206665382277999,
+                      0.8781170654296875,
+                      0.6597362114317303
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.688,
+                      0.422,
+                      0.872,
+                      0.658
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.78,
+                      0.38,
+                      1.0,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.725,
+                      0.465,
+                      0.995,
+                      0.86
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.56,
+                      0.92,
+                      0.72
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.71,
+                      0.43,
+                      0.95,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.7,
+                      0.4,
+                      0.95,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.702,
+                      0.456,
+                      0.878,
+                      0.628
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.67,
+                      0.49,
+                      0.88,
+                      0.73
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.7,
+                      0.4,
+                      0.9,
+                      0.6
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.48,
+                      0.94,
+                      0.66
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          }
+        ]
+      },
+      {
+        "task_id": "env_how",
+        "task_title": "Goal-conditioned Action Decision",
+        "examples": [
+          {
+            "example_id": "gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how",
+            "scene_id": "gauu_lfls",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Right facade of dense green deciduous tree cluster with irregular shape located in urban gap in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Front-Left\nC. Back\nD. Front",
+            "input_summary": "dense green deciduous tree cluster with irregular shape located in urban gap",
+            "task_id": "env_how",
+            "task_modality": "image",
+            "gold_answer": "D",
+            "gold_bbox": "[0.478, 0.427, 0.549, 0.511]",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Goal-conditioned Action Decision question, the target is GT option D and BBox [0.478, 0.427, 0.549, 0.511]. Across 9 available outputs, option prediction succeeds for 2/9 and landmark localization at IoU >= 0.5 for 1/9; both succeed for 0/9 (none). Semantic-only cases are Kimi K2.6 and MiMo-V2.5, evidence-only cases are Qwen3.6-27B, and 6/9 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.428, 0.423, 0.563, 0.540]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.377"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.391, 0.446, 0.584, 0.648]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.114"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.220, 0.840, 0.280, 0.915]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.510, 0.430, 0.610, 0.520]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.269"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.420, 0.420, 0.620, 0.630]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.142"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.430, 0.560, 0.560, 0.710]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.380, 0.450, 0.520, 0.580]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.118"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.450, 0.400, 0.580, 0.550]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.305"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.440, 0.430, 0.550, 0.530]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.511"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_lfls_env_how_gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_how_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.4783928394317627,
+                      0.4269613107231829,
+                      0.5490325927734375,
+                      0.5111510085612361
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.428,
+                      0.423,
+                      0.563,
+                      0.54
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.391,
+                      0.446,
+                      0.584,
+                      0.648
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.22,
+                      0.84,
+                      0.28,
+                      0.915
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.51,
+                      0.43,
+                      0.61,
+                      0.52
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.42,
+                      0.42,
+                      0.62,
+                      0.63
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.43,
+                      0.56,
+                      0.56,
+                      0.71
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.38,
+                      0.45,
+                      0.52,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.45,
+                      0.4,
+                      0.58,
+                      0.55
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.44,
+                      0.43,
+                      0.55,
+                      0.53
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how",
+            "scene_id": "gauu_smbu",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front-Left facade of gray mid-rise building with flat roof and rectangular windows in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Left\nC. Back-Right\nD. Right",
+            "input_summary": "gray mid-rise building with flat roof and rectangular windows",
+            "task_id": "env_how",
+            "task_modality": "image",
+            "gold_answer": "B",
+            "gold_bbox": "[0.127, 0.295, 0.347, 0.593]",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Goal-conditioned Action Decision question, the target is GT option B and BBox [0.127, 0.295, 0.347, 0.593]. Across 10 available outputs, option prediction succeeds for 7/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 6/10 (Gemini 3.8 Flash, Muse Spark 1.3 Contributor, and GLM-5.3-Flash (+3 more)). Semantic-only cases are GPT-6 Astra, evidence-only cases are Qwen3.7-Plus, and 2/10 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.128, 0.301, 0.345, 0.589]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.955"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.077, 0.431, 0.325, 0.849]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.233"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.000, 0.406, 0.319, 0.831]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.216"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.125, 0.365, 0.345, 0.655]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.623"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "C",
+                "answer_option_id": "C",
+                "bbox": "[0.080, 0.310, 0.320, 0.620]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.639"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.130, 0.280, 0.350, 0.580]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.889"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.109, 0.409, 0.345, 0.688]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.439"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.130, 0.330, 0.350, 0.630]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.768"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.100, 0.300, 0.350, 0.600]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.847"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.150, 0.320, 0.360, 0.650]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.665"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_smbu_env_how_gauu_smbu_gauu_smbu_candidate_0059_env_shared_8way_030040_how_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.1273723363876343,
+                      0.2952258880364797,
+                      0.347210168838501,
+                      0.5929001587915812
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.128,
+                      0.301,
+                      0.345,
+                      0.589
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.077,
+                      0.431,
+                      0.325,
+                      0.849
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.0,
+                      0.40625,
+                      0.31875,
+                      0.83125
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.125,
+                      0.365,
+                      0.345,
+                      0.655
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.08,
+                      0.31,
+                      0.32,
+                      0.62
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.13,
+                      0.28,
+                      0.35,
+                      0.58
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.109,
+                      0.409,
+                      0.345,
+                      0.688
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.13,
+                      0.33,
+                      0.35,
+                      0.63
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.1,
+                      0.3,
+                      0.35,
+                      0.6
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.15,
+                      0.32,
+                      0.36,
+                      0.65
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          },
+          {
+            "example_id": "gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how",
+            "scene_id": "gauu_upper_campus",
+            "difficulty": "8way",
+            "prompt_excerpt": "Image 1 shows the Front facade of gray low-rise building with flat roof and adjacent green courts in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front\nB. Front-Right\nC. Left\nD. Right",
+            "input_summary": "gray low-rise building with flat roof and adjacent green courts",
+            "task_id": "env_how",
+            "task_modality": "image",
+            "gold_answer": "D",
+            "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Goal-conditioned Action Decision question, the target is GT option D and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 4/10 and landmark localization at IoU >= 0.5 for 6/10; both succeed for 1/10 (Qwen3.7-Plus). Semantic-only cases are Muse Spark 1.3 Contributor, Kimi K2.6, and Qwen3.8-27B, evidence-only cases are Gemini 3.8 Flash, GPT-5.6 Sol, and GLM-5.3-Flash (+2 more), and 1/10 fail both. The split outcomes show that action-observation reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "predictions": [
+              {
+                "model": "Gemini 3.8 Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.690, 0.425, 0.880, 0.660]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.968"
+              },
+              {
+                "model": "GPT-6 Astra",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.786, 0.707, 0.998, 0.998]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.000"
+              },
+              {
+                "model": "GPT-5.6 Sol",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.680, 0.430, 0.970, 0.710]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.519"
+              },
+              {
+                "model": "Muse Spark 1.3 Contributor",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.688, 0.558, 0.920, 0.722]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.299"
+              },
+              {
+                "model": "Qwen3.7-Plus",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.710, 0.430, 0.990, 0.680]",
+                "status": "correct",
+                "option_status": "correct",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.507"
+              },
+              {
+                "model": "GLM-5.3-Flash",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.680, 0.420, 0.940, 0.750]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.522"
+              },
+              {
+                "model": "Kimi K2.6",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.710, 0.520, 0.880, 0.720]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.425"
+              },
+              {
+                "model": "MiMo-V2.5",
+                "answer": "A",
+                "answer_option_id": "A",
+                "bbox": "[0.720, 0.450, 0.920, 0.680]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.575"
+              },
+              {
+                "model": "Qwen3.8-27B",
+                "answer": "D",
+                "answer_option_id": "D",
+                "bbox": "[0.700, 0.500, 1.000, 0.950]",
+                "status": "incorrect",
+                "option_status": "correct",
+                "bbox_status": "incorrect",
+                "bbox_metric": "IoU = 0.188"
+              },
+              {
+                "model": "Qwen3.6-27B",
+                "answer": "B",
+                "answer_option_id": "B",
+                "bbox": "[0.710, 0.460, 0.950, 0.650]",
+                "status": "incorrect",
+                "option_status": "incorrect",
+                "bbox_status": "correct",
+                "bbox_metric": "IoU = 0.546"
+              }
+            ],
+            "media_panels": [
+              {
+                "kind": "image",
+                "label": "Reference landmark view",
+                "url": "media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_reference.jpg"
+              },
+              {
+                "kind": "image",
+                "label": "Query observation",
+                "url": "media/real-world/gauu_upper_campus_env_how_gauu_upper_campus_gauu_upper_candidate_0390_env_shared_8way_020008_how_query.jpg",
+                "overlays": [
+                  {
+                    "label": "Ground truth",
+                    "color": "#16a34a",
+                    "bbox": [
+                      0.6906378173828125,
+                      0.4206665382277999,
+                      0.8781170654296875,
+                      0.6597362114317303
+                    ]
+                  },
+                  {
+                    "label": "Gemini 3.8 Flash",
+                    "color": "#2563eb",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.69,
+                      0.425,
+                      0.88,
+                      0.66
+                    ]
+                  },
+                  {
+                    "label": "GPT-6 Astra",
+                    "color": "#d97706",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.786,
+                      0.707,
+                      0.998,
+                      0.998
+                    ]
+                  },
+                  {
+                    "label": "GPT-5.6 Sol",
+                    "color": "#0f766e",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.68,
+                      0.43,
+                      0.97,
+                      0.71
+                    ]
+                  },
+                  {
+                    "label": "Muse Spark 1.3 Contributor",
+                    "color": "#dc2626",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.688,
+                      0.558,
+                      0.92,
+                      0.722
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.7-Plus",
+                    "color": "#7c3aed",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.71,
+                      0.43,
+                      0.99,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "GLM-5.3-Flash",
+                    "color": "#64748b",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.68,
+                      0.42,
+                      0.94,
+                      0.75
+                    ]
+                  },
+                  {
+                    "label": "Kimi K2.6",
+                    "color": "#0891b2",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.71,
+                      0.52,
+                      0.88,
+                      0.72
+                    ]
+                  },
+                  {
+                    "label": "MiMo-V2.5",
+                    "color": "#be123c",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.72,
+                      0.45,
+                      0.92,
+                      0.68
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.8-27B",
+                    "color": "#4d7c0f",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.7,
+                      0.5,
+                      1.0,
+                      0.95
+                    ]
+                  },
+                  {
+                    "label": "Qwen3.6-27B",
+                    "color": "#a16207",
+                    "line_style": "dashed",
+                    "bbox": [
+                      0.71,
+                      0.46,
+                      0.95,
+                      0.65
+                    ]
+                  }
+                ]
+              }
+            ],
+            "answer_media_panels": []
+          }
+        ]
+      }
+    ]
+  },
+  "results": {
+    "models": [
+      {
+        "model": "Gemini 3.8 Flash",
+        "group": "Proprietary",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.43,
+            "evidence_acc": 0.76,
+            "mean_iou": 0.6865837822522396,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.49,
+            "evidence_acc": 0.79,
+            "mean_iou": 0.7051675500477352,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.32,
+            "evidence_acc": 0.81,
+            "mean_iou": 0.7025152903857692,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.34,
+            "evidence_acc": 0.87,
+            "mean_iou": 0.7252225990960405,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.15151515151515152,
+          "evidence": 0.6666666666666666,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.7272727272727273,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.14354066985645936,
+          "evidence": 0.6956521739130435
+        },
+        "marginal": {
+          "semantic": 0.395,
+          "evidence": 0.8075000000000001,
+          "mean_iou": 0.7048723054454461
+        }
+      },
+      {
+        "model": "GLM-5.3-Flash",
+        "group": "Open-weights",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.28,
+            "evidence_acc": 0.33,
+            "mean_iou": 0.33433730309282994,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.36,
+            "evidence_acc": 0.31,
+            "mean_iou": 0.3220777923298826,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.57,
+            "evidence_acc": 0.42,
+            "mean_iou": 0.38216572886081784,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.48,
+            "evidence_acc": 0.47,
+            "mean_iou": 0.39366028070083803,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.2878787878787879,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.24242424242424243,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.2632034632034632
+        },
+        "marginal": {
+          "semantic": 0.4225,
+          "evidence": 0.3825,
+          "mean_iou": 0.3580602762460921
+        }
+      },
+      {
+        "model": "MiMo-V2.5",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.27,
+            "evidence_acc": 0.35,
+            "mean_iou": 0.3404184844114441,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.33,
+            "evidence_acc": 0.29,
+            "mean_iou": 0.3356547731541013,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.46,
+            "evidence_acc": 0.46,
+            "mean_iou": 0.3824185685631143,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.4,
+            "evidence_acc": 0.45,
+            "mean_iou": 0.3968684784424088,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.16666666666666666,
+          "evidence": 0.30303030303030304,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.21212121212121213,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.12962962962962962,
+          "evidence": 0.24955436720142607
+        },
+        "marginal": {
+          "semantic": 0.365,
+          "evidence": 0.38749999999999996,
+          "mean_iou": 0.36384007614276714
+        }
+      },
+      {
+        "model": "Qwen3.6-27B",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.26,
+            "evidence_acc": 0.36,
+            "mean_iou": 0.3450921474303463,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.31,
+            "evidence_acc": 0.11,
+            "mean_iou": 0.15179725374754172,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.53,
+            "evidence_acc": 0.46,
+            "mean_iou": 0.38380352230047976,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.5,
+            "evidence_acc": 0.44,
+            "mean_iou": 0.37590240521208407,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.15151515151515152,
+          "evidence": 0.2878787878787879,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.07575757575757576,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.12477718360071303,
+          "evidence": 0.11994949494949496
+        },
+        "marginal": {
+          "semantic": 0.4,
+          "evidence": 0.34249999999999997,
+          "mean_iou": 0.31414883217261297
+        }
+      },
+      {
+        "model": "Gemini 3 Flash",
+        "group": "Proprietary",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.33,
+            "evidence_acc": 0.61,
+            "mean_iou": 0.5702314354684102,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.32,
+            "evidence_acc": 0.55,
+            "mean_iou": 0.4950077841342836,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.5,
+            "evidence_acc": 0.68,
+            "mean_iou": 0.5886710663354728,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.28,
+            "evidence_acc": 0.76,
+            "mean_iou": 0.6186572598062829,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.5,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.5303030303030303,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.11931818181818181,
+          "evidence": 0.5147058823529411
+        },
+        "marginal": {
+          "semantic": 0.3575,
+          "evidence": 0.6500000000000001,
+          "mean_iou": 0.5681418864361124
+        }
+      },
+      {
+        "model": "Muse Spark 1.3 Contributor",
+        "group": "Proprietary",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.31,
+            "evidence_acc": 0.21,
+            "mean_iou": 0.23516349329856923,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.37,
+            "evidence_acc": 0.17,
+            "mean_iou": 0.18758149694086274,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.51,
+            "evidence_acc": 0.23,
+            "mean_iou": 0.2762912708327857,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.49,
+            "evidence_acc": 0.22,
+            "mean_iou": 0.26343632634233094,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.10606060606060606,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.11931818181818181,
+          "evidence": 0.07713498622589532
+        },
+        "marginal": {
+          "semantic": 0.42,
+          "evidence": 0.2075,
+          "mean_iou": 0.24061814685363714
+        }
+      },
+      {
+        "model": "Kimi K2.6",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.24,
+            "evidence_acc": 0.29,
+            "mean_iou": 0.2726505205912688,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.31,
+            "evidence_acc": 0.21,
+            "mean_iou": 0.22187584316030648,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.39,
+            "evidence_acc": 0.43,
+            "mean_iou": 0.3882888058368446,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.34,
+            "evidence_acc": 0.37,
+            "mean_iou": 0.3531964594231898,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.21212121212121213,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.030303030303030304,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.11931818181818181,
+          "evidence": 0.05303030303030303
+        },
+        "marginal": {
+          "semantic": 0.32,
+          "evidence": 0.32499999999999996,
+          "mean_iou": 0.3090029072529024
+        }
+      },
+      {
+        "model": "Kimi K2.5",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.28,
+            "evidence_acc": 0.25,
+            "mean_iou": 0.2408569291221672,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.27,
+            "evidence_acc": 0.12,
+            "mean_iou": 0.15879439999626122,
+            "valid_count": 88,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.38,
+            "evidence_acc": 0.39,
+            "mean_iou": 0.3334443296412752,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.23,
+            "evidence_acc": 0.39,
+            "mean_iou": 0.3349412781039475,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.15151515151515152,
+          "evidence": 0.21212121212121213,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.09090909090909091,
+          "evidence": 0.045454545454545456,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.11363636363636363,
+          "evidence": 0.07486631016042782
+        },
+        "marginal": {
+          "semantic": 0.29000000000000004,
+          "evidence": 0.2875,
+          "mean_iou": 0.26700923421591277
+        }
+      },
+      {
+        "model": "GPT-5.6 Sol",
+        "group": "Proprietary",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.32,
+            "evidence_acc": 0.19,
+            "mean_iou": 0.1978459483821547,
+            "valid_count": 98,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.33,
+            "evidence_acc": 0.08,
+            "mean_iou": 0.1388091082442175,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.46,
+            "evidence_acc": 0.14,
+            "mean_iou": 0.23833903043955146,
+            "valid_count": 99,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.31,
+            "evidence_acc": 0.25,
+            "mean_iou": 0.2955577189736704,
+            "valid_count": 98,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.15151515151515152,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.09090909090909091,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.11363636363636363,
+          "evidence": 0.06060606060606061
+        },
+        "marginal": {
+          "semantic": 0.35500000000000004,
+          "evidence": 0.165,
+          "mean_iou": 0.2176379515098985
+        }
+      },
+      {
+        "model": "Qwen3.8-27B",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.28,
+            "evidence_acc": 0.36,
+            "mean_iou": 0.34847448572231715,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.3,
+            "evidence_acc": 0.22,
+            "mean_iou": 0.23520273987095972,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.44,
+            "evidence_acc": 0.51,
+            "mean_iou": 0.42402634832534924,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.41,
+            "evidence_acc": 0.5,
+            "mean_iou": 0.4017535792357311,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.15151515151515152,
+          "evidence": 0.2727272727272727,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.07575757575757576,
+          "evidence": 0.22727272727272727,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.10101010101010101,
+          "evidence": 0.24793388429752064
+        },
+        "marginal": {
+          "semantic": 0.3575,
+          "evidence": 0.39749999999999996,
+          "mean_iou": 0.35236428828858934
+        }
+      },
+      {
+        "model": "GPT-5.5",
+        "group": "Proprietary",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.29,
+            "evidence_acc": 0.19,
+            "mean_iou": 0.2052550071477442,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.37,
+            "evidence_acc": 0.1,
+            "mean_iou": 0.15327853548770112,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.37,
+            "evidence_acc": 0.21,
+            "mean_iou": 0.25639822176443605,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.36,
+            "evidence_acc": 0.16,
+            "mean_iou": 0.2154369650556386,
+            "valid_count": 99,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.045454545454545456,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.07575757575757576,
+          "evidence": 0.015151515151515152,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.09740259740259742,
+          "evidence": 0.022727272727272728
+        },
+        "marginal": {
+          "semantic": 0.3474999999999999,
+          "evidence": 0.165,
+          "mean_iou": 0.20759218236388
+        }
+      },
+      {
+        "model": "Qwen3.7-Plus",
+        "group": "Proprietary",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.23,
+            "evidence_acc": 0.26,
+            "mean_iou": 0.2765659044882036,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.25,
+            "evidence_acc": 0.15,
+            "mean_iou": 0.19698365642828505,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.45,
+            "evidence_acc": 0.28,
+            "mean_iou": 0.29909755890410156,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.37,
+            "evidence_acc": 0.35,
+            "mean_iou": 0.3035903437714269,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.12121212121212122,
+          "evidence": 0.16666666666666666,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.07575757575757576,
+          "evidence": 0.09090909090909091,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.09324009324009325,
+          "evidence": 0.11764705882352942
+        },
+        "marginal": {
+          "semantic": 0.32499999999999996,
+          "evidence": 0.26,
+          "mean_iou": 0.2690593658980043
+        }
+      },
+      {
+        "model": "GPT-6 Astra",
+        "group": "Proprietary",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.28,
+            "evidence_acc": 0.2,
+            "mean_iou": 0.20679603138485625,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.39,
+            "evidence_acc": 0.11,
+            "mean_iou": 0.16802245304317204,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.44,
+            "evidence_acc": 0.28,
+            "mean_iou": 0.29942113606781967,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.34,
+            "evidence_acc": 0.27,
+            "mean_iou": 0.26505767910286737,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.12121212121212122,
+          "evidence": 0.07575757575757576,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.07575757575757576,
+          "evidence": 0.09090909090909091,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.09324009324009325,
+          "evidence": 0.08264462809917354
+        },
+        "marginal": {
+          "semantic": 0.36250000000000004,
+          "evidence": 0.21500000000000002,
+          "mean_iou": 0.23482432489967883
+        }
+      },
+      {
+        "model": "Qwen3.6-Plus",
+        "group": "Proprietary",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.23,
+            "evidence_acc": 0.27,
+            "mean_iou": 0.2672601920847111,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.27,
+            "evidence_acc": 0.1,
+            "mean_iou": 0.17943053884313556,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.46,
+            "evidence_acc": 0.3,
+            "mean_iou": 0.28310297183062383,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.48,
+            "evidence_acc": 0.28,
+            "mean_iou": 0.28897934300650946,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.10606060606060606,
+          "evidence": 0.15151515151515152,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.07575757575757576,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.08838383838383838,
+          "evidence": 0.08658008658008658
+        },
+        "marginal": {
+          "semantic": 0.36,
+          "evidence": 0.2375,
+          "mean_iou": 0.254693261441245
+        }
+      },
+      {
+        "model": "Qwen3.5-27B",
+        "group": "Open-weights",
+        "thinking": false,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.19,
+            "evidence_acc": 0.13,
+            "mean_iou": 0.23963066423848797,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.27,
+            "evidence_acc": 0.04,
+            "mean_iou": 0.133060258446067,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.45,
+            "evidence_acc": 0.24,
+            "mean_iou": 0.27273853522247543,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.4,
+            "evidence_acc": 0.28,
+            "mean_iou": 0.27760367740854053,
+            "valid_count": 100,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.06060606060606061,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.13636363636363635,
+          "evidence": 0.0,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.08391608391608392,
+          "evidence": 0.0
+        },
+        "marginal": {
+          "semantic": 0.3275,
+          "evidence": 0.17250000000000001,
+          "mean_iou": 0.2307582838288927
+        }
+      },
+      {
+        "model": "GPT-5.6 Terra",
+        "group": "Proprietary",
+        "thinking": true,
+        "tasks": {
+          "self_where": {
+            "semantic_acc": 0.32,
+            "evidence_acc": 0.19,
+            "mean_iou": 0.1898749040623411,
+            "valid_count": 100,
+            "count": 100
+          },
+          "self_what": {
+            "semantic_acc": 0.31,
+            "evidence_acc": 0.09,
+            "mean_iou": 0.16316237045333018,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_where": {
+            "semantic_acc": 0.41,
+            "evidence_acc": 0.23,
+            "mean_iou": 0.26500208176063283,
+            "valid_count": 100,
+            "count": 100
+          },
+          "env_how": {
+            "semantic_acc": 0.35,
+            "evidence_acc": 0.25,
+            "mean_iou": 0.2705512204360708,
+            "valid_count": 99,
+            "count": 100
+          }
+        },
+        "position": {
+          "semantic": 0.12121212121212122,
+          "evidence": 0.06060606060606061,
+          "pairs": 66
+        },
+        "action_observation": {
+          "semantic": 0.045454545454545456,
+          "evidence": 0.07575757575757576,
+          "pairs": 66
+        },
+        "overall": {
+          "semantic": 0.06611570247933883,
+          "evidence": 0.06734006734006734
+        },
+        "marginal": {
+          "semantic": 0.34750000000000003,
+          "evidence": 0.19,
+          "mean_iou": 0.2221476441780937
+        }
+      }
+    ]
+  },
+  "protocol": {
+    "scenes": [
+      "gauu_lfls",
+      "gauu_smbu",
+      "gauu_upper_campus"
+    ],
+    "scene_count": 3,
+    "landmark_count": 30,
+    "sample_count": 400,
+    "task_counts": {
+      "self_where": 100,
+      "self_what": 100,
+      "env_where": 100,
+      "env_how": 100
+    },
+    "model_count": 19,
+    "missing_predictions_policy": "failure",
+    "pairing": "Deterministic rank matching within the same scene, landmark, and difficulty stratum.",
+    "excluded_models": [
+      "Qwen/Qwen3.5-9B",
+      "Qwen/Qwen3.5-4B",
+      "Qwen/Qwen3.5-4B-UAV-DualCog-GRPO"
+    ]
+  }
+}

@@ -1,0 +1,316 @@
+{
+  "updatedAt": "2026-09-15T12:47:11.769434+00:00",
+  "model_count": 6,
+  "scene_count": 12,
+  "protocol": "Original open-ended validation metrics, not the revised main-table Dual protocol. Percentages; null means unreported, not zero.",
+  "missing_response_policy": "Unreturned image responses are excluded from the reported completed-prediction denominator and are not silently imputed as errors.",
+  "image": {
+    "columns": [
+      "Self-relative Position: Acc",
+      "Self-relative Position: BBox Acc@0.5",
+      "Self-relative Position: mIoU",
+      "Future Observation: Acc",
+      "Future Observation: BBox Acc@0.5",
+      "Future Observation: mIoU",
+      "Landmark-relative Position: Acc",
+      "Landmark-relative Position: BBox Acc@0.5",
+      "Landmark-relative Position: mIoU",
+      "Action Decision: Acc",
+      "Action Decision: BBox Acc@0.5",
+      "Action Decision: mIoU"
+    ],
+    "coverage": {
+      "qwen35_9b_completed_count": 3940,
+      "qwen35_9b_task_counts": {
+        "self_where": 937,
+        "self_what": 939,
+        "env_where": 1032,
+        "env_how": 1032
+      },
+      "target_count": 4096
+    },
+    "rows": [
+      {
+        "model": "InternVL 3.5-4B",
+        "mode": "Instant",
+        "values": [
+          20.39,
+          2.11,
+          18.39,
+          23.38,
+          1.66,
+          13.46,
+          20.19,
+          2.27,
+          10.2,
+          37.43,
+          1.07,
+          9
+        ]
+      },
+      {
+        "model": "InternVL 3.5-8B",
+        "mode": "Instant",
+        "values": [
+          19.48,
+          18.19,
+          33.16,
+          22.77,
+          5.99,
+          26.61,
+          19.36,
+          4.54,
+          14.15,
+          29.61,
+          4.2,
+          14.01
+        ]
+      },
+      {
+        "model": "Qwen3.5-4B",
+        "mode": "Instant",
+        "values": [
+          20.83,
+          9.74,
+          21.78,
+          26.92,
+          10.6,
+          21.33,
+          24.29,
+          10.43,
+          22.3,
+          28.2,
+          8.77,
+          21.15
+        ]
+      },
+      {
+        "model": "Qwen3.5-9B",
+        "mode": "Instant",
+        "values": [
+          11.73,
+          20.78,
+          29.58,
+          26.02,
+          12.47,
+          24.83,
+          29.88,
+          20.21,
+          28.19,
+          22.95,
+          18.95,
+          26.34
+        ]
+      },
+      {
+        "model": "mimo-v2-omni",
+        "mode": "Instant",
+        "values": [
+          15.62,
+          20.12,
+          19.73,
+          28.52,
+          18.36,
+          21.36,
+          30.37,
+          21.97,
+          25.67,
+          31.35,
+          19.24,
+          23.63
+        ]
+      },
+      {
+        "model": "mimo-v2.5",
+        "mode": "Instant",
+        "values": [
+          14.16,
+          21.68,
+          21.31,
+          28.03,
+          18.75,
+          22.57,
+          30.18,
+          20.02,
+          24.59,
+          31.25,
+          21.48,
+          24.56
+        ]
+      }
+    ]
+  },
+  "video": {
+    "columns": [
+      "Single-landmark: Composite Acc",
+      "Single-landmark: Composite tIoU@50",
+      "Single-landmark: Composite mtIoU",
+      "Single-landmark: Atomic Acc",
+      "Single-landmark: Atomic F1@50",
+      "Single-landmark: Atomic mtIoU",
+      "Single-landmark: Visibility Acc",
+      "Single-landmark: Visibility F1@50",
+      "Single-landmark: Visibility mtIoU",
+      "Multi-landmark: Composite Acc",
+      "Multi-landmark: Composite tIoU@50",
+      "Multi-landmark: Composite mtIoU",
+      "Multi-landmark: Atomic Acc",
+      "Multi-landmark: Atomic F1@50",
+      "Multi-landmark: Atomic mtIoU",
+      "Multi-landmark: Visibility Acc",
+      "Multi-landmark: Visibility F1@50",
+      "Multi-landmark: Visibility mtIoU"
+    ],
+    "coverage": {
+      "qwen35_9b_completed_count": 2048,
+      "qwen35_9b_agent_state_count": 1024,
+      "qwen35_9b_world_state_count": 1024
+    },
+    "rows": [
+      {
+        "model": "InternVL 3.5-4B",
+        "mode": "Instant",
+        "values": [
+          30.18,
+          11.32,
+          14.56,
+          50.11,
+          11.32,
+          14.56,
+          46.97,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "InternVL 3.5-8B",
+        "mode": "Instant",
+        "values": [
+          45.31,
+          17.75,
+          23.35,
+          69.14,
+          17.75,
+          23.35,
+          44.34,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "Qwen3.5-4B",
+        "mode": "Instant",
+        "values": [
+          27.31,
+          26.67,
+          28.22,
+          59.97,
+          26.67,
+          28.22,
+          45.61,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "Qwen3.5-9B",
+        "mode": "Instant",
+        "values": [
+          25.39,
+          26.1,
+          30.35,
+          62.55,
+          26.1,
+          30.35,
+          48.34,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "mimo-v2-omni",
+        "mode": "Instant",
+        "values": [
+          15,
+          17.2,
+          17.52,
+          37.33,
+          17.2,
+          17.52,
+          38.33,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "mimo-v2.5",
+        "mode": "Instant",
+        "values": [
+          18.13,
+          21.68,
+          22.41,
+          40.76,
+          21.68,
+          22.41,
+          44.44,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ]
+  }
+}

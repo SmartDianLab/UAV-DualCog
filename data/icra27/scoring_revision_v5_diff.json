@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "scoring_revision": "icra27-dual-v5-class-aware-f1-selected-view",
+  "description": "Derived metric changes only; raw annotations and model outputs are unchanged.",
+  "rows": [
+    {
+      "medium": "image",
+      "model": "Qwen 3.7-Plus",
+      "column_index": 11,
+      "old_percent": 18.8,
+      "new_percent": 18.75,
+      "delta_pp": -0.05
+    },
+    {
+      "medium": "video",
+      "model": "Gemini 3 Flash",
+      "column_index": 11,
+      "old_percent": 7.8,
+      "new_percent": 12.5977,
+      "delta_pp": 4.7977
+    },
+    {
+      "medium": "video",
+      "model": "Mimo v2 Omni",
+      "column_index": 11,
+      "old_percent": 11.2,
+      "new_percent": 11.5234,
+      "delta_pp": 0.3234
+    },
+    {
+      "medium": "video",
+      "model": "Qwen 3.7-Plus",
+      "column_index": 11,
+      "old_percent": 11.3,
+      "new_percent": 11.5234,
+      "delta_pp": 0.2234
+    },
+    {
+      "medium": "video",
+      "model": "Qwen 3.5-Plus",
+      "column_index": 11,
+      "old_percent": 9.0,
+      "new_percent": 9.082,
+      "delta_pp": 0.082
+    },
+    {
+      "medium": "video",
+      "model": "GLM 4.6V",
+      "column_index": 7,
+      "old_percent": 31.2,
+      "new_percent": 31.25,
+      "delta_pp": 0.05
+    },
+    {
+      "medium": "video",
+      "model": "GLM 4.6V",
+      "column_index": 11,
+      "old_percent": 0.4,
+      "new_percent": 0.4883,
+      "delta_pp": 0.0883
+    },
+    {
+      "medium": "video",
+      "model": "Kimi K2.6",
+      "column_index": 11,
+      "old_percent": 7.6,
+      "new_percent": 7.8125,
+      "delta_pp": 0.2125
+    },
+    {
+      "medium": "video",
+      "model": "Kimi K2.5",
+      "column_index": 11,
+      "old_percent": 10.1,
+      "new_percent": 10.1562,
+      "delta_pp": 0.0563
+    },
+    {
+      "medium": "video",
+      "model": "Mimo v2.5",
+      "column_index": 11,
+      "old_percent": 9.4,
+      "new_percent": 9.9609,
+      "delta_pp": 0.5609
+    },
+    {
+      "medium": "video",
+      "model": "Qwen 3.5-35B-A3B",
+      "column_index": 11,
+      "old_percent": 8.9,
+      "new_percent": 8.9844,
+      "delta_pp": 0.0844
+    }
+  ]
+}

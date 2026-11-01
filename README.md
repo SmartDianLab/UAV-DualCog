@@ -1,21 +1,23 @@
 <!-- <p align="center">
     <img src="assets/a-logo-representing - omnicreator - -a-powerful-ai-t.png" width="150" style="margin-bottom: 0.2;"/>
 <p> -->
-<h2 align="center"> Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs</h2>
+<h2 align="center">UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs</h2>
 <!-- ![](./assets/logo_long.png#gh-light-mode-only){: width="50%"} -->
 <!-- ![](./assets/logo_long_dark.png#gh-dark-mode-only=100x20) -->
 <div align="center">
 <!-- <img src='assets/logo_long.png' style="height:100px"></img> -->
 
-_**[Like Liu](https://likeliu.com), Zhengzheng Xu, Haitao He, Hongzhe Li, Shuchang Zhang, [Dian Shao](https://scholar.google.com/citations?user=amxDSLoAAAAJ&hl=en)<sup>†</sup>**_
+_**[Like Liu](https://likeliu.com)<sup>1</sup>, Zhengzheng Xu<sup>2</sup>, Hongzhe Li<sup>2</sup>, Lin Wang<sup>3</sup>, [Dian Shao](https://scholar.google.com/citations?user=amxDSLoAAAAJ&hl=en)<sup>2,†</sup>**_
 <br><br>
-<sup>†</sup>Corresponding Author
+<sup>†</sup>Corresponding author: Dian Shao (shaodian@nwpu.edu.cn)
 <br>
-Northwestern Polytechnical University, China University of Petroleum
+<sup>1</sup>School of Software, Northwestern Polytechnical University, China<br>
+<sup>2</sup>Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University, China<br>
+<sup>3</sup>Embodied Perception and Interaction Lab (EmPACT Lab), School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore
 
 <h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for latest update.  </h2>
  <a href='https://arxiv.org/abs/2607.16193'><img src='https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg'></a> &nbsp;
- <a href='https://uav-dualcog.lozumi.com/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp; 
+ <a href='https://smartdianlab.github.io/UAV-DualCog/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
  <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-orange'></a> &nbsp; 
  <a href='https://github.com/SmartDianLab/UAV-DualCog'><img src='https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog'></a> &nbsp;  
 </div>
@@ -29,7 +31,7 @@ This is the official code package for **UAV-DualCog**.
 </p>
 <p align="center"><em>UAV-DualCog benchmark overview. The benchmark organizes self-aware and environment-aware reasoning across image and video tasks, and the released code package supports the corresponding Stage 1-4 construction and evaluation workflow.</em></p>
 
-- Website: https://uav-dualcog.lozumi.com/
+- Website: https://smartdianlab.github.io/UAV-DualCog/
 - Code repo: https://github.com/SmartDianLab/UAV-DualCog
 - Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
 - Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog
@@ -813,12 +815,12 @@ python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualco
 These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.
 
 ## Citing
-If you use FineCog-Nav in your research, please cite the following paper:
+If you use UAV-DualCog in your research, please cite the following paper:
 
 ```
 @misc{liu2026uavdualcog,
-      title={Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs}, 
-      author={Like Liu and Zhengzheng Xu and Haitao He and Hongzhe Li and Shuchang Zhang and Dian Shao},
+      title={UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs},
+      author={Like Liu and Zhengzheng Xu and Hongzhe Li and Lin Wang and Dian Shao},
       year={2026},
       eprint={2607.16193},
       archivePrefix={arXiv},

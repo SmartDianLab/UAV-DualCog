@@ -1,0 +1,1810 @@
+{
+  "generated_at": "2026-09-15",
+  "sort_metric": "summary_score",
+  "sort_note": "Derived reporting view for the 45 image models in the ICRA manuscript.",
+  "rows": [
+    {
+      "model": "gemini-3.8-flash-Thinking",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 57.37,
+      "option_accuracy": 66.6,
+      "bbox_acc@50iou": 55.91,
+      "bbox_mean_iou": 49.61,
+      "row_count": 4096
+    },
+    {
+      "model": "gemini-3.1-pro-preview-Thinking",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 48.32,
+      "option_accuracy": 52.64,
+      "bbox_acc@50iou": 48.32,
+      "bbox_mean_iou": 43.99,
+      "row_count": 4096
+    },
+    {
+      "model": "z-ai_glm-5.3-flash-Thinking",
+      "model_group": "open_weight",
+      "model_family": "GLM",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 40.63,
+      "option_accuracy": 47.14,
+      "bbox_acc@50iou": 37.38,
+      "bbox_mean_iou": 37.38,
+      "row_count": 4096
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 36.92,
+      "option_accuracy": 40.33,
+      "bbox_acc@50iou": 35.28,
+      "bbox_mean_iou": 35.16,
+      "row_count": 4096
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 33.0,
+      "option_accuracy": 36.82,
+      "bbox_acc@50iou": 28.76,
+      "bbox_mean_iou": 33.41,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-6-astra-Thinking",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 32.49,
+      "option_accuracy": 47.66,
+      "bbox_acc@50iou": 21.68,
+      "bbox_mean_iou": 28.12,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 32.09,
+      "option_accuracy": 52.61,
+      "bbox_acc@50iou": 18.09,
+      "bbox_mean_iou": 25.57,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen_Qwen3.6-27B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 32.05,
+      "option_accuracy": 45.24,
+      "bbox_acc@50iou": 22.61,
+      "bbox_mean_iou": 28.29,
+      "row_count": 4096
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "model_group": "proprietary",
+      "model_family": "Gemini",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 31.68,
+      "option_accuracy": 50.22,
+      "bbox_acc@50iou": 20.29,
+      "bbox_mean_iou": 24.53,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen_Qwen3.8-27B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 31.63,
+      "option_accuracy": 41.58,
+      "bbox_acc@50iou": 24.07,
+      "bbox_mean_iou": 29.24,
+      "row_count": 4096
+    },
+    {
+      "model": "meta_muse-spark-1.3-contributor-Thinking-Minimal",
+      "model_group": "proprietary",
+      "model_family": "Muse",
+      "reasoning_mode": "Thinking (minimum)",
+      "partial_run": false,
+      "summary_score": 31.62,
+      "option_accuracy": 53.96,
+      "bbox_acc@50iou": 16.33,
+      "bbox_mean_iou": 24.58,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.6-terra-Thinking",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 31.52,
+      "option_accuracy": 48.32,
+      "bbox_acc@50iou": 19.8,
+      "bbox_mean_iou": 26.45,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 30.82,
+      "option_accuracy": 43.31,
+      "bbox_acc@50iou": 20.46,
+      "bbox_mean_iou": 28.68,
+      "row_count": 4096
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "model_group": "open_weight",
+      "model_family": "GLM",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 30.76,
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 28.0,
+      "bbox_mean_iou": 31.48,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 30.6,
+      "option_accuracy": 44.29,
+      "bbox_acc@50iou": 20.09,
+      "bbox_mean_iou": 27.43,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.6-sol-Thinking",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 30.49,
+      "option_accuracy": 46.9,
+      "bbox_acc@50iou": 18.48,
+      "bbox_mean_iou": 26.08,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 29.61,
+      "option_accuracy": 41.65,
+      "bbox_acc@50iou": 19.21,
+      "bbox_mean_iou": 27.97,
+      "row_count": 4096
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 28.55,
+      "option_accuracy": 47.83,
+      "bbox_acc@50iou": 14.04,
+      "bbox_mean_iou": 23.79,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 28.21,
+      "option_accuracy": 42.29,
+      "bbox_acc@50iou": 16.99,
+      "bbox_mean_iou": 25.34,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 27.12,
+      "option_accuracy": 40.87,
+      "bbox_acc@50iou": 15.16,
+      "bbox_mean_iou": 25.33,
+      "row_count": 4096
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "model_group": "proprietary",
+      "model_family": "Mimo",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 27.1,
+      "option_accuracy": 31.18,
+      "bbox_acc@50iou": 23.9,
+      "bbox_mean_iou": 26.22,
+      "row_count": 4096
+    },
+    {
+      "model": "claude-opus-4-8-Thinking",
+      "model_group": "proprietary",
+      "model_family": "Claude",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 26.64,
+      "option_accuracy": 45.31,
+      "bbox_acc@50iou": 11.04,
+      "bbox_mean_iou": 23.57,
+      "row_count": 4096
+    },
+    {
+      "model": "zai-org_GLM-4.5V-Instant",
+      "model_group": "open_weight",
+      "model_family": "GLM",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 26.2,
+      "option_accuracy": 30.13,
+      "bbox_acc@50iou": 22.19,
+      "bbox_mean_iou": 26.28,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 25.93,
+      "option_accuracy": 40.92,
+      "bbox_acc@50iou": 13.77,
+      "bbox_mean_iou": 23.09,
+      "row_count": 4096
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 25.05,
+      "option_accuracy": 37.72,
+      "bbox_acc@50iou": 14.84,
+      "bbox_mean_iou": 22.58,
+      "row_count": 4096
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "model_group": "proprietary",
+      "model_family": "GPT",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 24.86,
+      "option_accuracy": 37.33,
+      "bbox_acc@50iou": 12.74,
+      "bbox_mean_iou": 24.5,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 24.69,
+      "option_accuracy": 38.53,
+      "bbox_acc@50iou": 12.92,
+      "bbox_mean_iou": 22.62,
+      "row_count": 4096
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "model_group": "proprietary",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 24.5,
+      "option_accuracy": 39.31,
+      "bbox_acc@50iou": 11.18,
+      "bbox_mean_iou": 23.0,
+      "row_count": 4096
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 24.03,
+      "option_accuracy": 34.81,
+      "bbox_acc@50iou": 14.36,
+      "bbox_mean_iou": 22.93,
+      "row_count": 4096
+    },
+    {
+      "model": "claude-opus-4-6-Thinking",
+      "model_group": "proprietary",
+      "model_family": "Claude",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 24.02,
+      "option_accuracy": 47.85,
+      "bbox_acc@50iou": 5.69,
+      "bbox_mean_iou": 18.52,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 23.04,
+      "option_accuracy": 38.99,
+      "bbox_acc@50iou": 9.62,
+      "bbox_mean_iou": 20.51,
+      "row_count": 4096
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "model_group": "open_weight",
+      "model_family": "Kimi",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 22.98,
+      "option_accuracy": 34.11,
+      "bbox_acc@50iou": 13.79,
+      "bbox_mean_iou": 21.05,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 22.8,
+      "option_accuracy": 41.92,
+      "bbox_acc@50iou": 10.38,
+      "bbox_mean_iou": 16.09,
+      "row_count": 4096
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "model_group": "proprietary",
+      "model_family": "Claude",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 22.58,
+      "option_accuracy": 42.72,
+      "bbox_acc@50iou": 6.67,
+      "bbox_mean_iou": 18.35,
+      "row_count": 4096
+    },
+    {
+      "model": "claude-opus-4-7-Thinking",
+      "model_group": "proprietary",
+      "model_family": "Claude",
+      "reasoning_mode": "Thinking (low)",
+      "partial_run": false,
+      "summary_score": 22.53,
+      "option_accuracy": 41.31,
+      "bbox_acc@50iou": 7.57,
+      "bbox_mean_iou": 18.71,
+      "row_count": 4096
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "model_group": "open_weight",
+      "model_family": "Qwen",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 20.37,
+      "option_accuracy": 39.36,
+      "bbox_acc@50iou": 6.01,
+      "bbox_mean_iou": 15.75,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 19.29,
+      "option_accuracy": 27.12,
+      "bbox_acc@50iou": 8.98,
+      "bbox_mean_iou": 21.76,
+      "row_count": 4096
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "model_group": "open_weight",
+      "model_family": "Intern",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 18.73,
+      "option_accuracy": 28.42,
+      "bbox_acc@50iou": 8.47,
+      "bbox_mean_iou": 19.3,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 18.24,
+      "option_accuracy": 31.13,
+      "bbox_acc@50iou": 6.2,
+      "bbox_mean_iou": 17.39,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 16.0,
+      "option_accuracy": 32.01,
+      "bbox_acc@50iou": 3.44,
+      "bbox_mean_iou": 12.54,
+      "row_count": 4096
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "model_group": "open_weight",
+      "model_family": "InternVL",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 15.6,
+      "option_accuracy": 27.76,
+      "bbox_acc@50iou": 4.27,
+      "bbox_mean_iou": 14.76,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceR-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceR",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 13.79,
+      "option_accuracy": 33.96,
+      "bbox_acc@50iou": 2.03,
+      "bbox_mean_iou": 5.38,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceOm",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 13.46,
+      "option_accuracy": 29.3,
+      "bbox_acc@50iou": 2.81,
+      "bbox_mean_iou": 8.28,
+      "row_count": 4096
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "model_group": "specialized",
+      "model_family": "ViLaSR",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 13.42,
+      "option_accuracy": 33.42,
+      "bbox_acc@50iou": 2.39,
+      "bbox_mean_iou": 4.46,
+      "row_count": 4096
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "model_group": "specialized",
+      "model_family": "SpaceThinker",
+      "reasoning_mode": "Instant",
+      "partial_run": false,
+      "summary_score": 11.49,
+      "option_accuracy": 28.76,
+      "bbox_acc@50iou": 1.05,
+      "bbox_mean_iou": 4.67,
+      "row_count": 4096
+    }
+  ],
+  "task_rows": [
+    {
+      "model": "claude-opus-4-8-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 51.86,
+      "bbox_acc@50iou": 8.01,
+      "bbox_mean_iou": 21.71
+    },
+    {
+      "model": "claude-opus-4-8-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 54.1,
+      "bbox_acc@50iou": 10.45,
+      "bbox_mean_iou": 23.71
+    },
+    {
+      "model": "claude-opus-4-8-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 35.94,
+      "bbox_acc@50iou": 14.26,
+      "bbox_mean_iou": 25.36
+    },
+    {
+      "model": "claude-opus-4-8-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 39.36,
+      "bbox_acc@50iou": 11.43,
+      "bbox_mean_iou": 23.51
+    },
+    {
+      "model": "claude-opus-4-7-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 39.06,
+      "bbox_acc@50iou": 7.91,
+      "bbox_mean_iou": 17.99
+    },
+    {
+      "model": "claude-opus-4-7-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 7.13,
+      "bbox_mean_iou": 18.62
+    },
+    {
+      "model": "claude-opus-4-7-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 37.21,
+      "bbox_acc@50iou": 7.03,
+      "bbox_mean_iou": 18.12
+    },
+    {
+      "model": "claude-opus-4-7-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 39.26,
+      "bbox_acc@50iou": 8.2,
+      "bbox_mean_iou": 20.09
+    },
+    {
+      "model": "claude-opus-4-6-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 58.89,
+      "bbox_acc@50iou": 9.18,
+      "bbox_mean_iou": 20.06
+    },
+    {
+      "model": "claude-opus-4-6-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 62.01,
+      "bbox_acc@50iou": 8.59,
+      "bbox_mean_iou": 19.68
+    },
+    {
+      "model": "claude-opus-4-6-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 32.42,
+      "bbox_acc@50iou": 2.83,
+      "bbox_mean_iou": 18.73
+    },
+    {
+      "model": "claude-opus-4-6-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 38.09,
+      "bbox_acc@50iou": 2.15,
+      "bbox_mean_iou": 15.63
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 61.04,
+      "bbox_acc@50iou": 8.59,
+      "bbox_mean_iou": 19.87
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 48.54,
+      "bbox_acc@50iou": 9.57,
+      "bbox_mean_iou": 20.22
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 23.63,
+      "bbox_acc@50iou": 3.61,
+      "bbox_mean_iou": 15.08
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.7,
+      "bbox_acc@50iou": 4.88,
+      "bbox_mean_iou": 18.23
+    },
+    {
+      "model": "gemini-3.8-flash-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 69.53,
+      "bbox_acc@50iou": 42.29,
+      "bbox_mean_iou": 39.28
+    },
+    {
+      "model": "gemini-3.8-flash-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 61.91,
+      "bbox_acc@50iou": 40.82,
+      "bbox_mean_iou": 39.02
+    },
+    {
+      "model": "gemini-3.8-flash-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 74.9,
+      "bbox_acc@50iou": 73.83,
+      "bbox_mean_iou": 62.54
+    },
+    {
+      "model": "gemini-3.8-flash-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 60.06,
+      "bbox_acc@50iou": 66.7,
+      "bbox_mean_iou": 57.61
+    },
+    {
+      "model": "gemini-3.1-pro-preview-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 47.17,
+      "bbox_acc@50iou": 37.11,
+      "bbox_mean_iou": 36.43
+    },
+    {
+      "model": "gemini-3.1-pro-preview-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 63.67,
+      "bbox_acc@50iou": 37.5,
+      "bbox_mean_iou": 36.78
+    },
+    {
+      "model": "gemini-3.1-pro-preview-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 58.79,
+      "bbox_acc@50iou": 59.86,
+      "bbox_mean_iou": 52.29
+    },
+    {
+      "model": "gemini-3.1-pro-preview-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 40.92,
+      "bbox_acc@50iou": 58.79,
+      "bbox_mean_iou": 50.47
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 35.94,
+      "bbox_acc@50iou": 9.28,
+      "bbox_mean_iou": 20.8
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 9.67,
+      "bbox_mean_iou": 21.11
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 30.08,
+      "bbox_acc@50iou": 47.95,
+      "bbox_mean_iou": 46.04
+    },
+    {
+      "model": "google/gemini-3.1-flash-lite-preview-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.69,
+      "bbox_acc@50iou": 48.14,
+      "bbox_mean_iou": 45.67
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 51.27,
+      "bbox_acc@50iou": 5.08,
+      "bbox_mean_iou": 12.24
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 56.15,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 13.52
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 45.9,
+      "bbox_acc@50iou": 37.5,
+      "bbox_mean_iou": 38.49
+    },
+    {
+      "model": "google/gemini-3-flash-preview-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 33.59,
+      "bbox_mean_iou": 33.85
+    },
+    {
+      "model": "gpt-6-astra-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 55.37,
+      "bbox_acc@50iou": 14.94,
+      "bbox_mean_iou": 24.3
+    },
+    {
+      "model": "gpt-6-astra-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 57.23,
+      "bbox_acc@50iou": 16.11,
+      "bbox_mean_iou": 24.33
+    },
+    {
+      "model": "gpt-6-astra-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 42.97,
+      "bbox_acc@50iou": 27.83,
+      "bbox_mean_iou": 32.69
+    },
+    {
+      "model": "gpt-6-astra-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 35.06,
+      "bbox_acc@50iou": 27.83,
+      "bbox_mean_iou": 31.16
+    },
+    {
+      "model": "gpt-5.6-sol-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 55.76,
+      "bbox_acc@50iou": 12.5,
+      "bbox_mean_iou": 22.39
+    },
+    {
+      "model": "gpt-5.6-sol-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 55.66,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 23.02
+    },
+    {
+      "model": "gpt-5.6-sol-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 42.09,
+      "bbox_acc@50iou": 24.61,
+      "bbox_mean_iou": 30.08
+    },
+    {
+      "model": "gpt-5.6-sol-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 34.08,
+      "bbox_acc@50iou": 23.93,
+      "bbox_mean_iou": 28.82
+    },
+    {
+      "model": "gpt-5.6-terra-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 60.16,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 22.5
+    },
+    {
+      "model": "gpt-5.6-terra-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 58.89,
+      "bbox_acc@50iou": 14.45,
+      "bbox_mean_iou": 23.43
+    },
+    {
+      "model": "gpt-5.6-terra-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 40.53,
+      "bbox_acc@50iou": 27.05,
+      "bbox_mean_iou": 31.0
+    },
+    {
+      "model": "gpt-5.6-terra-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 33.69,
+      "bbox_acc@50iou": 24.8,
+      "bbox_mean_iou": 28.86
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 53.61,
+      "bbox_acc@50iou": 17.87,
+      "bbox_mean_iou": 24.74
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 65.43,
+      "bbox_acc@50iou": 17.58,
+      "bbox_mean_iou": 25.06
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 53.42,
+      "bbox_acc@50iou": 17.48,
+      "bbox_mean_iou": 26.33
+    },
+    {
+      "model": "gpt-5.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.99,
+      "bbox_acc@50iou": 19.43,
+      "bbox_mean_iou": 26.17
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 36.04,
+      "bbox_acc@50iou": 12.01,
+      "bbox_mean_iou": 23.55
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 37.79,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 24.45
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.6,
+      "bbox_acc@50iou": 13.87,
+      "bbox_mean_iou": 25.86
+    },
+    {
+      "model": "gpt-5.4-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 37.89,
+      "bbox_acc@50iou": 12.21,
+      "bbox_mean_iou": 24.15
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "env_how",
+      "option_accuracy": 62.3,
+      "bbox_acc@50iou": 15.43,
+      "bbox_mean_iou": 22.45
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "env_where",
+      "option_accuracy": 56.54,
+      "bbox_acc@50iou": 14.94,
+      "bbox_mean_iou": 22.52
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "self_what",
+      "option_accuracy": 37.3,
+      "bbox_acc@50iou": 13.87,
+      "bbox_mean_iou": 26.7
+    },
+    {
+      "model": "openai/gpt-5.3-chat",
+      "task_type": "self_where",
+      "option_accuracy": 35.16,
+      "bbox_acc@50iou": 11.91,
+      "bbox_mean_iou": 23.48
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 38.18,
+      "bbox_acc@50iou": 9.18,
+      "bbox_mean_iou": 17.34
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 36.52,
+      "bbox_acc@50iou": 8.79,
+      "bbox_mean_iou": 17.61
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 21.29,
+      "bbox_acc@50iou": 36.91,
+      "bbox_mean_iou": 33.44
+    },
+    {
+      "model": "xiaomi/mimo-v2-omni-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.71,
+      "bbox_acc@50iou": 40.72,
+      "bbox_mean_iou": 36.51
+    },
+    {
+      "model": "meta_muse-spark-1.3-contributor-Thinking-Minimal",
+      "task_type": "env_how",
+      "option_accuracy": 64.36,
+      "bbox_acc@50iou": 14.94,
+      "bbox_mean_iou": 24.9
+    },
+    {
+      "model": "meta_muse-spark-1.3-contributor-Thinking-Minimal",
+      "task_type": "env_where",
+      "option_accuracy": 64.16,
+      "bbox_acc@50iou": 14.84,
+      "bbox_mean_iou": 25.53
+    },
+    {
+      "model": "meta_muse-spark-1.3-contributor-Thinking-Minimal",
+      "task_type": "self_what",
+      "option_accuracy": 48.63,
+      "bbox_acc@50iou": 15.04,
+      "bbox_mean_iou": 21.24
+    },
+    {
+      "model": "meta_muse-spark-1.3-contributor-Thinking-Minimal",
+      "task_type": "self_where",
+      "option_accuracy": 38.67,
+      "bbox_acc@50iou": 20.51,
+      "bbox_mean_iou": 26.65
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 43.36,
+      "bbox_acc@50iou": 18.75,
+      "bbox_mean_iou": 26.97
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 55.37,
+      "bbox_acc@50iou": 18.36,
+      "bbox_mean_iou": 26.69
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 34.57,
+      "bbox_acc@50iou": 21.39,
+      "bbox_mean_iou": 30.28
+    },
+    {
+      "model": "qwen3.7-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.3,
+      "bbox_acc@50iou": 18.36,
+      "bbox_mean_iou": 27.95
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 42.48,
+      "bbox_acc@50iou": 5.96,
+      "bbox_mean_iou": 19.86
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 48.44,
+      "bbox_acc@50iou": 7.42,
+      "bbox_mean_iou": 18.97
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 33.5,
+      "bbox_acc@50iou": 14.75,
+      "bbox_mean_iou": 26.08
+    },
+    {
+      "model": "qwen3.6-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 16.6,
+      "bbox_mean_iou": 27.09
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 56.74,
+      "bbox_acc@50iou": 18.55,
+      "bbox_mean_iou": 25.81
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 62.7,
+      "bbox_acc@50iou": 19.43,
+      "bbox_mean_iou": 27.08
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 28.71,
+      "bbox_acc@50iou": 19.24,
+      "bbox_mean_iou": 29.83
+    },
+    {
+      "model": "qwen3.6-flash-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 25.1,
+      "bbox_acc@50iou": 24.61,
+      "bbox_mean_iou": 32.02
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 48.93,
+      "bbox_acc@50iou": 8.3,
+      "bbox_mean_iou": 20.01
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.56,
+      "bbox_acc@50iou": 9.67,
+      "bbox_mean_iou": 19.32
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 12.3,
+      "bbox_mean_iou": 24.09
+    },
+    {
+      "model": "qwen3.5-plus-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.61,
+      "bbox_acc@50iou": 21.39,
+      "bbox_mean_iou": 27.08
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 54.49,
+      "bbox_acc@50iou": 8.89,
+      "bbox_mean_iou": 20.06
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 52.44,
+      "bbox_acc@50iou": 8.79,
+      "bbox_mean_iou": 19.36
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 28.91,
+      "bbox_acc@50iou": 15.82,
+      "bbox_mean_iou": 23.13
+    },
+    {
+      "model": "qwen3.5-flash-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.83,
+      "bbox_acc@50iou": 21.58,
+      "bbox_mean_iou": 29.82
+    },
+    {
+      "model": "z-ai_glm-5.3-flash-Thinking",
+      "task_type": "env_how",
+      "option_accuracy": 57.42,
+      "bbox_acc@50iou": 33.01,
+      "bbox_mean_iou": 34.1
+    },
+    {
+      "model": "z-ai_glm-5.3-flash-Thinking",
+      "task_type": "env_where",
+      "option_accuracy": 63.57,
+      "bbox_acc@50iou": 32.71,
+      "bbox_mean_iou": 33.49
+    },
+    {
+      "model": "z-ai_glm-5.3-flash-Thinking",
+      "task_type": "self_what",
+      "option_accuracy": 35.16,
+      "bbox_acc@50iou": 45.41,
+      "bbox_mean_iou": 43.83
+    },
+    {
+      "model": "z-ai_glm-5.3-flash-Thinking",
+      "task_type": "self_where",
+      "option_accuracy": 32.42,
+      "bbox_acc@50iou": 38.38,
+      "bbox_mean_iou": 38.1
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 44.24,
+      "bbox_acc@50iou": 10.16,
+      "bbox_mean_iou": 20.62
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 29.2,
+      "bbox_acc@50iou": 9.47,
+      "bbox_mean_iou": 19.99
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.05,
+      "bbox_acc@50iou": 44.92,
+      "bbox_mean_iou": 42.31
+    },
+    {
+      "model": "z-ai/glm-4.6v-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 30.76,
+      "bbox_acc@50iou": 47.46,
+      "bbox_mean_iou": 42.99
+    },
+    {
+      "model": "zai-org_GLM-4.5V-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 39.65,
+      "bbox_acc@50iou": 17.77,
+      "bbox_mean_iou": 24.16
+    },
+    {
+      "model": "zai-org_GLM-4.5V-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 19.92,
+      "bbox_acc@50iou": 15.92,
+      "bbox_mean_iou": 22.54
+    },
+    {
+      "model": "zai-org_GLM-4.5V-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 23.44,
+      "bbox_mean_iou": 26.33
+    },
+    {
+      "model": "zai-org_GLM-4.5V-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 31.93,
+      "bbox_acc@50iou": 31.64,
+      "bbox_mean_iou": 32.11
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.27,
+      "bbox_acc@50iou": 3.22,
+      "bbox_mean_iou": 14.03
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 27.83,
+      "bbox_acc@50iou": 2.73,
+      "bbox_mean_iou": 13.67
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.17,
+      "bbox_acc@50iou": 10.55,
+      "bbox_mean_iou": 22.65
+    },
+    {
+      "model": "intern-s1-pro-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.39,
+      "bbox_acc@50iou": 17.38,
+      "bbox_mean_iou": 26.84
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.8,
+      "bbox_acc@50iou": 5.18,
+      "bbox_mean_iou": 15.26
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 50.1,
+      "bbox_acc@50iou": 5.37,
+      "bbox_mean_iou": 16.17
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.07,
+      "bbox_acc@50iou": 17.48,
+      "bbox_mean_iou": 24.76
+    },
+    {
+      "model": "internvl3.5-241b-a28b-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.91,
+      "bbox_acc@50iou": 31.35,
+      "bbox_mean_iou": 34.11
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.31,
+      "bbox_acc@50iou": 1.27,
+      "bbox_mean_iou": 7.3
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 35.35,
+      "bbox_acc@50iou": 0.59,
+      "bbox_mean_iou": 7.56
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.02,
+      "bbox_acc@50iou": 7.03,
+      "bbox_mean_iou": 15.29
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-30B-A3B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.34,
+      "bbox_acc@50iou": 4.88,
+      "bbox_mean_iou": 20.0
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 41.31,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 11.95
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 28.52,
+      "bbox_acc@50iou": 4.69,
+      "bbox_mean_iou": 12.92
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 31.93,
+      "bbox_acc@50iou": 7.52,
+      "bbox_mean_iou": 22.46
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-14B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 22.75,
+      "bbox_acc@50iou": 7.62,
+      "bbox_mean_iou": 22.22
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.76,
+      "bbox_acc@50iou": 2.54,
+      "bbox_mean_iou": 11.43
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 24.71,
+      "bbox_acc@50iou": 4.2,
+      "bbox_mean_iou": 12.27
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.51,
+      "bbox_acc@50iou": 9.47,
+      "bbox_mean_iou": 29.1
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-8B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 28.52,
+      "bbox_acc@50iou": 19.73,
+      "bbox_mean_iou": 34.24
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 36.72,
+      "bbox_acc@50iou": 0.98,
+      "bbox_mean_iou": 7.49
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 22.36,
+      "bbox_acc@50iou": 0.98,
+      "bbox_mean_iou": 8.05
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 26.37,
+      "bbox_acc@50iou": 12.01,
+      "bbox_mean_iou": 23.73
+    },
+    {
+      "model": "OpenGVLab/InternVL3_5-4B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 25.59,
+      "bbox_acc@50iou": 3.12,
+      "bbox_mean_iou": 19.78
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 30.08,
+      "bbox_acc@50iou": 4.69,
+      "bbox_mean_iou": 14.36
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 39.36,
+      "bbox_acc@50iou": 4.98,
+      "bbox_mean_iou": 15.55
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 32.71,
+      "bbox_acc@50iou": 18.46,
+      "bbox_mean_iou": 23.9
+    },
+    {
+      "model": "moonshotai/kimi-k2.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 34.28,
+      "bbox_acc@50iou": 27.05,
+      "bbox_mean_iou": 30.4
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 28.03,
+      "bbox_acc@50iou": 10.84,
+      "bbox_mean_iou": 20.43
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 42.77,
+      "bbox_acc@50iou": 12.3,
+      "bbox_mean_iou": 21.95
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 32.32,
+      "bbox_acc@50iou": 12.21,
+      "bbox_mean_iou": 20.83
+    },
+    {
+      "model": "kimi-k2.6-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 36.13,
+      "bbox_acc@50iou": 22.07,
+      "bbox_mean_iou": 28.49
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 27.83,
+      "bbox_mean_iou": 31.49
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 51.17,
+      "bbox_acc@50iou": 26.56,
+      "bbox_mean_iou": 30.75
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.34,
+      "bbox_acc@50iou": 43.46,
+      "bbox_mean_iou": 40.15
+    },
+    {
+      "model": "mimo-v2.5-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 33.11,
+      "bbox_acc@50iou": 43.26,
+      "bbox_mean_iou": 38.27
+    },
+    {
+      "model": "Qwen_Qwen3.8-27B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.41,
+      "bbox_acc@50iou": 21.88,
+      "bbox_mean_iou": 28.08
+    },
+    {
+      "model": "Qwen_Qwen3.8-27B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 61.91,
+      "bbox_acc@50iou": 22.75,
+      "bbox_mean_iou": 27.63
+    },
+    {
+      "model": "Qwen_Qwen3.8-27B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 28.81,
+      "bbox_acc@50iou": 16.99,
+      "bbox_mean_iou": 26.08
+    },
+    {
+      "model": "Qwen_Qwen3.8-27B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 26.17,
+      "bbox_acc@50iou": 34.67,
+      "bbox_mean_iou": 35.19
+    },
+    {
+      "model": "Qwen_Qwen3.6-27B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 53.42,
+      "bbox_acc@50iou": 19.53,
+      "bbox_mean_iou": 27.27
+    },
+    {
+      "model": "Qwen_Qwen3.6-27B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 60.35,
+      "bbox_acc@50iou": 21.68,
+      "bbox_mean_iou": 27.85
+    },
+    {
+      "model": "Qwen_Qwen3.6-27B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 36.43,
+      "bbox_acc@50iou": 13.18,
+      "bbox_mean_iou": 22.81
+    },
+    {
+      "model": "Qwen_Qwen3.6-27B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 30.76,
+      "bbox_acc@50iou": 36.04,
+      "bbox_mean_iou": 35.23
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 46.19,
+      "bbox_acc@50iou": 4.39,
+      "bbox_mean_iou": 13.86
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.95,
+      "bbox_acc@50iou": 2.83,
+      "bbox_mean_iou": 13.01
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 35.84,
+      "bbox_acc@50iou": 13.48,
+      "bbox_mean_iou": 23.54
+    },
+    {
+      "model": "Qwen/Qwen3.5-397B-A17B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 27.44,
+      "bbox_acc@50iou": 3.32,
+      "bbox_mean_iou": 12.58
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.02,
+      "bbox_acc@50iou": 6.84,
+      "bbox_mean_iou": 18.78
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 6.05,
+      "bbox_mean_iou": 19.39
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.79,
+      "bbox_acc@50iou": 25.98,
+      "bbox_mean_iou": 31.62
+    },
+    {
+      "model": "Qwen/Qwen3.5-122B-A10B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 32.62,
+      "bbox_acc@50iou": 29.1,
+      "bbox_mean_iou": 31.58
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 57.52,
+      "bbox_acc@50iou": 7.23,
+      "bbox_mean_iou": 18.53
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 53.22,
+      "bbox_acc@50iou": 6.05,
+      "bbox_mean_iou": 14.51
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 27.44,
+      "bbox_acc@50iou": 0.59,
+      "bbox_mean_iou": 0.84
+    },
+    {
+      "model": "Qwen/Qwen3.5-35B-A3B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.49,
+      "bbox_acc@50iou": 27.64,
+      "bbox_mean_iou": 30.48
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 50.59,
+      "bbox_acc@50iou": 7.52,
+      "bbox_mean_iou": 20.96
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 57.81,
+      "bbox_acc@50iou": 7.32,
+      "bbox_mean_iou": 20.38
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 37.11,
+      "bbox_acc@50iou": 22.75,
+      "bbox_mean_iou": 28.5
+    },
+    {
+      "model": "Qwen/Qwen3.5-27B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 31.64,
+      "bbox_acc@50iou": 42.77,
+      "bbox_mean_iou": 39.89
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 52.25,
+      "bbox_acc@50iou": 11.52,
+      "bbox_mean_iou": 22.15
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 53.22,
+      "bbox_acc@50iou": 10.25,
+      "bbox_mean_iou": 20.9
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 22.95,
+      "bbox_mean_iou": 32.49
+    },
+    {
+      "model": "Qwen/Qwen3.5-9B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 29.0,
+      "bbox_acc@50iou": 15.92,
+      "bbox_mean_iou": 25.81
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 47.46,
+      "bbox_acc@50iou": 6.35,
+      "bbox_mean_iou": 17.96
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 47.46,
+      "bbox_acc@50iou": 6.84,
+      "bbox_mean_iou": 17.77
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 30.18,
+      "bbox_acc@50iou": 12.4,
+      "bbox_mean_iou": 23.1
+    },
+    {
+      "model": "Qwen/Qwen3.5-4B-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 30.86,
+      "bbox_acc@50iou": 12.89,
+      "bbox_mean_iou": 23.21
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 1.76,
+      "bbox_mean_iou": 6.48
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 35.16,
+      "bbox_acc@50iou": 2.44,
+      "bbox_mean_iou": 8.59
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.51,
+      "bbox_acc@50iou": 4.2,
+      "bbox_mean_iou": 11.39
+    },
+    {
+      "model": "SpaceOm-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 24.71,
+      "bbox_acc@50iou": 2.83,
+      "bbox_mean_iou": 6.68
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 48.83,
+      "bbox_acc@50iou": 2.34,
+      "bbox_mean_iou": 6.93
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 42.38,
+      "bbox_acc@50iou": 2.15,
+      "bbox_mean_iou": 6.5
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 24.02,
+      "bbox_acc@50iou": 1.07,
+      "bbox_mean_iou": 1.83
+    },
+    {
+      "model": "SpaceR-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 20.61,
+      "bbox_acc@50iou": 2.54,
+      "bbox_mean_iou": 6.25
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 34.28,
+      "bbox_acc@50iou": 0.68,
+      "bbox_mean_iou": 4.66
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 32.81,
+      "bbox_acc@50iou": 0.59,
+      "bbox_mean_iou": 5.09
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 25.39,
+      "bbox_acc@50iou": 1.76,
+      "bbox_mean_iou": 5.92
+    },
+    {
+      "model": "SpaceThinker-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 22.56,
+      "bbox_acc@50iou": 1.17,
+      "bbox_mean_iou": 3.03
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "env_how",
+      "option_accuracy": 49.71,
+      "bbox_acc@50iou": 1.46,
+      "bbox_mean_iou": 3.17
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "env_where",
+      "option_accuracy": 43.07,
+      "bbox_acc@50iou": 1.86,
+      "bbox_mean_iou": 3.5
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "self_what",
+      "option_accuracy": 22.07,
+      "bbox_acc@50iou": 1.95,
+      "bbox_mean_iou": 3.55
+    },
+    {
+      "model": "ViLaSR-Instant",
+      "task_type": "self_where",
+      "option_accuracy": 18.85,
+      "bbox_acc@50iou": 4.3,
+      "bbox_mean_iou": 7.63
+    }
+  ],
+  "difficulty_rows": []
+}
