@@ -23,19 +23,21 @@ authors:
 repository-code: "https://github.com/SmartDianLab/UAV-DualCog"
 url: "https://smartdianlab.github.io/UAV-DualCog/"
 license: MIT
-references:
-  - type: article
-    title: "UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs"
-    authors:
-      - family-names: Liu
-        given-names: Like
-      - family-names: Xu
-        given-names: Zhengzheng
-      - family-names: Li
-        given-names: Hongzhe
-      - family-names: Wang
-        given-names: Lin
-      - family-names: Shao
-        given-names: Dian
-    year: 2026
-    url: "https://arxiv.org/abs/2607.16193"
+preferred-citation:
+  type: article
+  title: "Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs"
+  authors:
+    - family-names: Liu
+      given-names: Like
+    - family-names: Xu
+      given-names: Zhengzheng
+    - family-names: He
+      given-names: Haitao
+    - family-names: Li
+      given-names: Hongzhe
+    - family-names: Zhang
+      given-names: Shuchang
+    - family-names: Shao
+      given-names: Dian
+  year: 2026
+  url: "https://arxiv.org/abs/2607.16193"

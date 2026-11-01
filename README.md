@@ -1,12 +1,33 @@
-# UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs
+<h2 align="center">UAV-DualCog: A Dual-Cognition Benchmark<br>for Grounded UAV Agent-World Reasoning with MLLMs</h2>
 
-**Like Liu<sup>1</sup>, Zhengzheng Xu<sup>2</sup>, Hongzhe Li<sup>2</sup>, Lin Wang<sup>3</sup>, Dian Shao<sup>2,&dagger;</sup>**
+<p align="center">
+  <strong>
+    <a href="https://likeliu.com">Like Liu</a><sup>1</sup>,
+    Zhengzheng Xu<sup>2</sup>,
+    Hongzhe Li<sup>2</sup>,
+    Lin Wang<sup>3</sup>,
+    <a href="https://scholar.google.com/citations?user=amxDSLoAAAAJ&amp;hl=en">Dian Shao</a><sup>2,&dagger;</sup>
+  </strong>
+</p>
 
-<sup>1</sup>School of Software, Northwestern Polytechnical University, Xi'an, China.<br>
-<sup>2</sup>Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University, Xi'an, China.<br>
-<sup>3</sup>Embodied Perception and Interaction Lab (EmPACT Lab), School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore.
+<p align="center">
+  <sup>1</sup>School of Software, Northwestern Polytechnical University, Xi'an, China.<br>
+  <sup>2</sup>Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University, Xi'an, China.<br>
+  <sup>3</sup>Embodied Perception and Interaction Lab (EmPACT Lab), School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore.
+</p>
 
-<sup>&dagger;</sup>Corresponding author: [Dian Shao](mailto:shaodian@nwpu.edu.cn). Contact: [Like Liu](mailto:like.liu@mail.nwpu.edu.cn).
+<p align="center">
+  <sup>&dagger;</sup>Corresponding author: <a href="mailto:shaodian@nwpu.edu.cn">Dian Shao</a>
+  &middot; Contact: <a href="mailto:like.liu@mail.nwpu.edu.cn">Like Liu</a>
+</p>
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2607.16193"><img src="https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg" alt="arXiv paper"></a>
+  <a href="https://smartdianlab.github.io/UAV-DualCog/"><img src="https://img.shields.io/badge/Project-Website-2b8a6e.svg" alt="Project website"></a>
+  <a href="https://huggingface.co/datasets/Lozumi/UAV-DualCog"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcf40.svg" alt="Hugging Face dataset"></a>
+  <a href="https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog"><img src="https://img.shields.io/badge/Dataset-ModelScope-2277dd.svg" alt="ModelScope dataset"></a>
+  <a href="https://github.com/SmartDianLab/UAV-DualCog"><img src="https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog" alt="GitHub stars"></a>
+</p>
 
 This repository provides the construction, evaluation, and training code for **UAV-DualCog**, together with curated dataset examples.
 
@@ -888,6 +909,22 @@ python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualco
 ```
 
 These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.
+
+## Citation
+
+Please cite the current arXiv version:
+
+```bibtex
+@misc{liu2026knowingselfunderstandingworld,
+      title={Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs},
+      author={Like Liu and Zhengzheng Xu and Haitao He and Hongzhe Li and Shuchang Zhang and Dian Shao},
+      year={2026},
+      eprint={2607.16193},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2607.16193},
+}
+```
 
 ## Acknowledgement
 
