@@ -1,0 +1,41 @@
+{
+  "scene_id": "gauu_smbu",
+  "selection_status": "visual_preselection_pending_user_confirmation",
+  "selections": [
+    {
+      "instance_id": "gauu_smbu_candidate_0055",
+      "landmark_category": "urban_landscape",
+      "landmark_subcategory": "ornamental campus lake",
+      "landmark_description": "an elongated ornamental lake beside a circular white building and paved plaza",
+      "review_note": "Large, stable water landmark with a distinctive shoreline and nearby circular building."
+    },
+    {
+      "instance_id": "gauu_smbu_candidate_0011",
+      "landmark_category": "public_facility",
+      "landmark_subcategory": "oval athletics field",
+      "landmark_description": "a large oval athletics field enclosed by a red running track",
+      "review_note": "Highly distinctive shape, clear boundary, and broad multiview coverage."
+    },
+    {
+      "instance_id": "gauu_smbu_candidate_0271",
+      "landmark_category": "building",
+      "landmark_subcategory": "courtyard academic complex",
+      "landmark_description": "a U-shaped academic complex surrounding a paved internal courtyard",
+      "review_note": "Clear building group with a recognizable courtyard configuration."
+    },
+    {
+      "instance_id": "gauu_smbu_candidate_0077",
+      "landmark_category": "building",
+      "landmark_subcategory": "cylindrical domed building",
+      "landmark_description": "a cylindrical white building capped by a smooth circular dome",
+      "review_note": "Unique circular roof silhouette and strong separation from adjacent structures."
+    },
+    {
+      "instance_id": "gauu_smbu_candidate_0329",
+      "landmark_category": "building",
+      "landmark_subcategory": "white residential tower",
+      "landmark_description": "a tall white residential tower beside an open lawn and wooded area",
+      "review_note": "Large, sharp high-rise target with good contrast and a compact projected box."
+    }
+  ]
+}

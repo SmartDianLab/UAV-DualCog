@@ -16,10 +16,14 @@ def create_bridge(engine: str, scene_id: str, config: Optional[dict] = None) -> 
         from .unrealcv_bridge import UnrealCVBridge
 
         return UnrealCVBridge(scene_id=scene_id, config=config)
-    if engine_normalized in {"sibr", "gs", "3dgs"}:
+    if engine_normalized == "sibr":
         from .sibr_bridge import SIBRBridge
 
         return SIBRBridge(scene_id=scene_id, config=config)
+    if engine_normalized in {"gs", "3dgs", "gsplat"}:
+        from .gaussian_splat_bridge import GaussianSplatBridge
+
+        return GaussianSplatBridge(scene_id=scene_id, config=config)
     if engine_normalized == "carla":
         from .carla_bridge import CarlaBridge
 

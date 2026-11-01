@@ -1,0 +1,33 @@
+{
+  "scene_id": "gauu_lfls",
+  "source": {
+    "dataset": "GauUscene V2.1",
+    "scene": "LFLS",
+    "reconstruction": "CityGaussianV2 official LFLS.zip",
+    "is_real_capture": true,
+    "is_physical_flight_experiment": false,
+    "license_reviewed": true
+  },
+  "asset_root": "../../../task_pipeline_data/UAV-DualCog-3DGS-Pilot/assets/gauu_lfls",
+  "citygaussian_root": "../../../task_pipeline_data/UAV-DualCog-3DGS-Pilot/vendor/CityGaussian",
+  "gs_checkpoint": "citygaussian_v2/extracted/LFLS",
+  "renderer_backend": "citygaussian_v2_checkpoint",
+  "geometry_path": "gauu_v2_1/lidar_world_voxel_0p5m.npy",
+  "colmap_path": "gauu_v2_1/colmap_metrics",
+  "metadata_xml": "gauu_v2_1/colmap_metrics/metadata.xml",
+  "T_world_to_gs": [
+    [-0.007238622059288205, 0.007342612687380727, -0.0001962638545707882, 5.1901771096442245],
+    [0.005385105752224876, 0.005117652291462346, -0.007152649925430014, -0.9840066857311744],
+    [-0.004995309461369724, -0.005123065863476186, -0.0074263386028099006, 0.06034358096861073],
+    [0.0, 0.0, 0.0, 1.0]
+  ],
+  "camera_intrinsics": {"width": 1280, "height": 720, "fov_deg": 72.0},
+  "appearance_id": 0,
+  "normalized_appearance_id": 0.0,
+  "alpha_threshold": 0.05,
+  "coverage_mode": "full_scene",
+  "scene_grid": {"rows": 6, "cols": 6},
+  "candidate_landmark_count_target": 100,
+  "landmark_count_target": 20,
+  "landmarks": []
+}

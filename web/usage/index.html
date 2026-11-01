@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="en"> <head><base data-site-base href="../"><script data-site-base-bootstrap>(()=>{const suffix="/usage";const path=location.pathname.replace(/\/index\.html$/, "").replace(/\/+$/,"");const root=suffix&&path.endsWith(suffix)?path.slice(0,-suffix.length)+"/":path+"/";document.querySelector("base[data-site-base]").setAttribute("href",root);})();</script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Usage | UAV-DualCog</title><meta name="description" content="Benchmark for coordinated Agent-State and World-State Reasoning with explicit spatial-temporal localization."><meta name="author" content="Like Liu, Zhengzheng Xu, Hongzhe Li, Lin Wang, Dian Shao"><link rel="icon" type="image/png" href="media/title.png"><link rel="stylesheet" href="_astro/analysis.D-ORIhqk.css">
+<style>.page-hero[data-astro-cid-cq575q6v],.section-head[data-astro-cid-cq575q6v],.article-block[data-astro-cid-cq575q6v],.metric-grid[data-astro-cid-cq575q6v],.article-grid[data-astro-cid-cq575q6v],.figure-block,.schema-block[data-astro-cid-cq575q6v]{width:100%;max-width:100%;margin-inline:auto}.release-channel-grid[data-astro-cid-cq575q6v] .metric-strip[data-astro-cid-cq575q6v]{display:grid;align-content:start;gap:12px}.release-channel-button[data-astro-cid-cq575q6v]{width:100%;text-decoration:none}.release-channel-button[data-astro-cid-cq575q6v]+.release-channel-button[data-astro-cid-cq575q6v]{margin-top:4px}
+</style></head> <body id="top"> <header class="site-header"> <div class="shell header-inner"> <a href="" class="brand"> <img class="brand-mark" src="media/title.png" alt="UAV-DualCog"> </a> <nav class="nav"> <a href="" class> Home </a><a href="benchmark/" class> Benchmark </a><a href="construction/" class> Construction </a><a href="evaluation/" class> Evaluation </a><a href="leaderboard/" class> Leaderboard </a><a href="analysis/" class> Analysis </a><a href="sim-to-real/" class> Sim-to-Real </a><a href="training/" class> Training </a><a href="usage/" class="is-active" aria-current="page"> Usage </a> </nav> </div> </header> <aside class="page-sidebar"> <div class="page-sidebar-inner"> <p class="page-sidebar-title">CONTENT</p> <nav class="page-sidebar-nav" aria-label="CONTENT"> <a href="usage/#channels" class="page-sidebar-link" data-section="channels"> Release Channels </a><a href="usage/#layout" class="page-sidebar-link" data-section="layout"> Project Structure </a><a href="usage/#modes" class="page-sidebar-link" data-section="modes"> Reproduction Modes </a><a href="usage/#configs" class="page-sidebar-link" data-section="configs"> Config Templates </a><a href="usage/#model-routing" class="page-sidebar-link" data-section="model-routing"> Model Routing </a><a href="usage/#vllm-local" class="page-sidebar-link" data-section="vllm-local"> vLLM Local Deploy </a><a href="usage/#commands-construction" class="page-sidebar-link" data-section="commands-construction"> Mode A Commands </a><a href="usage/#internal-web" class="page-sidebar-link" data-section="internal-web"> Review Workspaces </a><a href="usage/#commands-experiment" class="page-sidebar-link" data-section="commands-experiment"> Mode B Commands </a><a href="usage/#training-code" class="page-sidebar-link" data-section="training-code"> Training Probe </a><a href="usage/#smoke-test" class="page-sidebar-link" data-section="smoke-test"> Smoke Tests </a> </nav> </div> </aside> <main class="shell main-content">  <section class="page-hero" data-astro-cid-cq575q6v> <p class="eyebrow" data-astro-cid-cq575q6v>Usage</p> <h1 data-astro-cid-cq575q6v>Reproduction And Execution Guide</h1> <p class="lede" data-astro-cid-cq575q6v>
+This page provides a complete, execution-oriented path for researchers and users: release
+      channels, full project structure, two reproduction modes, model invocation methods, commented
+      config templates, and stage-by-stage commands consistent with the released code package.
+</p> </section> <nav class="section-nav-grid" aria-label="Page sections"><a class="section-link-card" href="usage/#channels"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M12 4.5v9M8.5 10 12 13.5 15.5 10M5 18.5h14"></path> </svg></span><span class="section-link-copy"><strong>Release Channels</strong><small>Code, dataset, and simulator download entries.</small></span></a><a class="section-link-card" href="usage/#layout"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 6.5h10l4 4v8A2 2 0 0 1 17 20.5H7A2 2 0 0 1 5 18.5v-12A2 2 0 0 1 7 4.5h8M15 4.5v6h6"></path> </svg></span><span class="section-link-copy"><strong>Project Structure</strong><small>Complete workspace tree for code, env files, configs, and outputs.</small></span></a><a class="section-link-card" href="usage/#modes"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4 8h6l2 3 3-5 3 9 2-4h6M4 18h16"></path> </svg></span><span class="section-link-copy"><strong>Reproduction Modes</strong><small>Data construction mode and experiment-only mode.</small></span></a><a class="section-link-card" href="usage/#configs"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M8 8.5 4.5 12 8 15.5M16 8.5 19.5 12 16 15.5M13.5 5.5 10.5 18.5"></path> </svg></span><span class="section-link-copy"><strong>Config Templates</strong><small>Four core config files with commented runnable examples.</small></span></a><a class="section-link-card" href="usage/#model-routing"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 18.5h14M6 15.5V9.5M10 15.5V5.5M14 15.5v-3M18 15.5V7.5"></path> </svg></span><span class="section-link-copy"><strong>Model Routing</strong><small>Instant/Thinking suffix handling and base-model route resolution.</small></span></a><a class="section-link-card" href="usage/#vllm-local"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 6.5h10l4 4v8A2 2 0 0 1 17 20.5H7A2 2 0 0 1 5 18.5v-12A2 2 0 0 1 7 4.5h8M15 4.5v6h6"></path> </svg></span><span class="section-link-copy"><strong>vLLM Local Deploy</strong><small>Official vLLM setup entry and a runnable local serving example.</small></span></a><a class="section-link-card" href="usage/#commands-construction"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4 6.5h16M4 12h16M4 17.5h10M15.5 15.5l4 4M19.5 15.5l-4 4"></path> </svg></span><span class="section-link-copy"><strong>Mode A Commands</strong><small>Stage 1-4 construction workflow and review checkpoints.</small></span></a><a class="section-link-card" href="usage/#internal-web"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4 8h6l2 3 3-5 3 9 2-4h6M4 18h16"></path> </svg></span><span class="section-link-copy"><strong>Review Workspaces</strong><small>Detailed page-by-page usage of the Stage 2/3/4 review workspaces.</small></span></a><a class="section-link-card" href="usage/#commands-experiment"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M4.5 18.5h15M6.5 15V8M11.5 15V5M16.5 15v-6M5 5.5h3l1.5 2L11 5.5h4l1.5 2 1.5-2h2"></path> </svg></span><span class="section-link-copy"><strong>Mode B Commands</strong><small>Experiment-only workflow on released benchmark data.</small></span></a><a class="section-link-card" href="usage/#training-code"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M5 16c1.6-4.5 4.1-7 7.4-7 1.9 0 3.7.8 5.6 2.6M5 8c1.7 2 3.2 3 4.8 3 2 0 3.7-1.2 5.4-3.9M4 18.5h16"></path> </svg></span><span class="section-link-copy"><strong>Training Probe</strong><small>Image-manifest preparation, SFT, and joint GRPO commands.</small></span></a><a class="section-link-card" href="usage/#smoke-test"><span class="section-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon"> <path d="M8 8.5 4.5 12 8 15.5M16 8.5 19.5 12 16 15.5M13.5 5.5 10.5 18.5"></path> </svg></span><span class="section-link-copy"><strong>Smoke Tests</strong><small>CLI interface checks before long jobs.</small></span></a></nav> <section class="section-divider" id="channels" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Release Channels</p> <h2 data-astro-cid-cq575q6v>Code, data, and simulator assets</h2> <p class="sublede" data-astro-cid-cq575q6v>
+The code and examples repositories include full landmark lists and curated task examples from all three collections.
+        Dataset repositories are linked below. For scene-side data construction in Mode A, the AerialVLN simulator
+        assets are not bundled with the benchmark dataset and need to be downloaded separately.
+</p> </div> <div class="metric-grid release-channel-grid" data-astro-cid-cq575q6v> <article class="metric-strip" data-astro-cid-cq575q6v> <h3 data-astro-cid-cq575q6v>Code</h3> <a class="dataset-menu-item release-channel-button" href="https://github.com/SmartDianLab/UAV-DualCog" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v> <span class="dataset-menu-label" data-astro-cid-cq575q6v>GitHub</span> <span class="dataset-menu-status" data-astro-cid-cq575q6v>Repository</span> </a> <p class="dataset-menu-note" data-astro-cid-cq575q6v><a href="https://github.com/SmartDianLab/UAV-DualCog" data-astro-cid-cq575q6v>https://github.com/SmartDianLab/UAV-DualCog</a></p> </article> <article class="metric-strip" data-astro-cid-cq575q6v> <h3 data-astro-cid-cq575q6v>Dataset</h3> <a class="dataset-menu-item release-channel-button" href="https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v> <span class="dataset-menu-label" data-astro-cid-cq575q6v>ModelScope</span> <span class="dataset-menu-status" data-astro-cid-cq575q6v>Dataset repository</span> </a> <a class="dataset-menu-item release-channel-button" href="https://huggingface.co/datasets/Lozumi/UAV-DualCog" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v> <span class="dataset-menu-label" data-astro-cid-cq575q6v>Hugging Face</span> <span class="dataset-menu-status" data-astro-cid-cq575q6v>Dataset repository</span> </a> </article> <article class="metric-strip" data-astro-cid-cq575q6v> <h3 data-astro-cid-cq575q6v>Data Examples</h3> <p data-astro-cid-cq575q6v>Each scene has complete landmark-list metadata and examples from two selected landmarks. Video examples contain compressed clips only.</p> <a class="dataset-menu-item release-channel-button" href="https://github.com/SmartDianLab/UAV-DualCog/tree/main/task_pipeline_data/UAV-DualCog-V1/" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v><span class="dataset-menu-label" data-astro-cid-cq575q6v>UAV-DualCog-V1</span><span class="dataset-menu-status" data-astro-cid-cq575q6v>Examples</span></a> <a class="dataset-menu-item release-channel-button" href="https://github.com/SmartDianLab/UAV-DualCog/tree/main/task_pipeline_data/UAV-DualCog-Train-V1/" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v><span class="dataset-menu-label" data-astro-cid-cq575q6v>UAV-DualCog-Train</span><span class="dataset-menu-status" data-astro-cid-cq575q6v>Examples</span></a> <a class="dataset-menu-item release-channel-button" href="https://github.com/SmartDianLab/UAV-DualCog/tree/main/task_pipeline_data/UAV-DualCog-3DGS-RealScene-400/" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v><span class="dataset-menu-label" data-astro-cid-cq575q6v>Sim-to-Real 3DGS Examples</span><span class="dataset-menu-status" data-astro-cid-cq575q6v>Examples</span></a> </article> <article class="metric-strip" data-astro-cid-cq575q6v> <h3 data-astro-cid-cq575q6v>AerialVLN Simulator</h3> <a class="dataset-menu-item release-channel-button" href="https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v> <span class="dataset-menu-label" data-astro-cid-cq575q6v>Kaggle</span> <span class="dataset-menu-status" data-astro-cid-cq575q6v>Simulator assets</span> </a> </article> </div> </section> <section class="section-divider" id="layout" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Project Structure</p> <h2 data-astro-cid-cq575q6v>The full workspace contains code, simulator env files, configs, and benchmark artifacts</h2> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v>UAV-DualCog/
+├── scripts/uav_dualcog/                        # Stage 1-4 + task_pipeline entrypoints
+├── trajectory/                                  # atomic/composite behavior library
+├── sim_bridge/                                  # AirSim bridge abstraction
+├── configs/
+│   ├── uav_dualcog/
+│   │   ├── task_airsim_env_&lt;id&gt;.yaml           # runnable scene configs (18 scenes)
+│   │   ├── common_stage_configs.yaml            # stage-shared behavior config
+│   │   ├── common_api_runtime.yaml              # model routing config
+│   │   ├── task_pipeline/
+│   │   │   └── task_pipeline_uav_dualcog_v1.yaml
+│   │   └── templates/                           # fully-commented config templates
+│   └── prompts/uav_dualcog_prompts.yaml
+├── envs/
+│   └── airsim/env_*/                            # simulator environment files
+├── scene_data/
+│   └── airsim_env_*/                            # Stage 1-2 scene artifacts
+│       ├── pcd_map/
+│       ├── landmarks_raw/
+│       └── landmarks_review/
+├── task_pipeline_data/
+│   └── UAV-DualCog-V1/                          # released benchmark artifacts
+│       ├── airsim_env_*/
+│       │   ├── video_tasks/
+│       │   └── image_tasks/
+│       └── task_pipeline/
+│           ├── dataset_stats/
+│           ├── exports/
+│           └── landmark_lists/
+├── environment.yml
+└── requirements.txt</div> </article> </section> <section class="section-divider" id="modes" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Reproduction Modes</p> <h2 data-astro-cid-cq575q6v>UAV-DualCog supports both full construction and experiment-only workflows</h2> <p class="sublede" data-astro-cid-cq575q6v>
+Mode A reproduces Stage 1-4 construction and requires simulator environment files. Mode B
+        runs experiments directly on released artifacts and requires downloaded
+<code data-astro-cid-cq575q6v>scene_data/airsim_env_*</code> plus
+<code data-astro-cid-cq575q6v>task_pipeline_data/UAV-DualCog-V1</code>, but does not require simulator files.
+</p> </div> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Mode A: Data Construction</p> <h2 data-astro-cid-cq575q6v>Build scene and task artifacts from stage scripts and pipeline phases</h2> <div class="schema-block" data-astro-cid-cq575q6v># Mode A: Data Construction
+UAV-DualCog/
+├── envs/airsim/env_7/                # required
+├── scene_data/                       # writeable
+└── task_pipeline_data/               # writeable</div> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Mode B: Experiment Only</p> <h2 data-astro-cid-cq575q6v>Evaluate models on released benchmark artifacts without simulator runtime</h2> <div class="schema-block" data-astro-cid-cq575q6v># Mode B: Experiment Only
+UAV-DualCog/
+├── scene_data/                        # required for scene metadata and landmark context
+└── task_pipeline_data/UAV-DualCog-V1/ # downloaded benchmark release data
+
+# simulator files are NOT required for this mode</div> </article> </div> </section> <section class="section-divider" id="configs" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Config Templates</p> <h2 data-astro-cid-cq575q6v>Four core configs control scene runtime, stage defaults, model routing, and pipeline scope</h2> <p class="sublede" data-astro-cid-cq575q6v>
+The release provides runnable sanitized versions and fully-commented templates. Runnable
+        examples are listed below (env_7), and the template files in
+<code data-astro-cid-cq575q6v>configs/uav_dualcog/templates/</code> for custom runs.
+</p> </div> <article class="article-block" style="margin-bottom: 16px;" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># Runnable examples (env_7 shown)
+# scene_id values are recommended to use the canonical env_&lt;id&gt; format throughout configs and commands
+# if --scene-id is provided on the command line, keep it identical to task.scene_id in the config; do not mix 7 and env_7 within one workspace
+configs/uav_dualcog/task_airsim_env_7.yaml
+configs/uav_dualcog/common_stage_configs.yaml
+configs/uav_dualcog/common_api_runtime.yaml
+configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml</div> </article> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Scene Config</p> <div class="schema-block" data-astro-cid-cq575q6v># configs/uav_dualcog/task_airsim_env_7.yaml
+task:
+  name: UAV-DualCog-env_7                  # scene-level log name
+  engine: airsim                           # simulator backend
+  base_dir: scene_data                     # scene root parent
+  scene_id: env_7
+  scene_dir_name: airsim_env_7
+output_layout:
+  scene_dir_include_engine: true           # write under scene_data/airsim_env_7
+  stage1_dir: pcd_map                      # Stage 1 outputs
+  stage2_raw_dir: landmarks_raw
+  stage2_review_dir: landmarks_review
+  stage3_task_root_dir: video_tasks        # Stage 3 root under task_pipeline_data/UAV-DualCog-V1
+  stage4_qa_dir: image_tasks               # Stage 4 root under task_pipeline_data/UAV-DualCog-V1
+camera:
+  width: 4096                              # source capture resolution (4096x3072, 4:3)
+  height: 3072
+  fov: 72.0                                # FoV in degrees
+  fps: 10                                  # source-frame sampling rate
+collect:
+  yaw_list_deg: [0]
+  pose_settle_sec: 0.05                    # settle time before capture
+traj_map:
+  VoxelWidth: 1.5                          # grid size (m) for map representation
+  LidarDelta: [30, 30, 50]                 # local lidar sampling span (m), [x, y, z]
+  MapBound: [-219, 191, -270, 268, -50, 52]
+parallel:
+  mode: single_instance_multi_thread       # one AirSim process + multi-thread workers
+  workers: 6
+stage2:
+  mode: collect_instances
+  collect_enable_rgb_views: true
+  collect_rgb_views_count: 8               # side views per landmark
+  collect_add_birdseye_view: true
+  collect_parallel_workers: 6
+  collect_rgb_parallel_workers: 6
+  collect_view_image_width: 4096
+  collect_view_image_height: 3072
+stage3:
+  auto_mission_enabled: true
+  final_video_fps: 2                       # released benchmark video FPS
+  final_video_width: 1440                  # released video = 1080P (4:3)
+  final_video_height: 1080
+engine_params:
+  airsim:
+    sim_ip: 127.0.0.1
+    sim_port: 41070
+    launch_sim: true
+    headless: true
+    vehicle_name: drone_1
+    camera_name: front_0
+    lidar_range: 500.0                     # lidar max range (m)</div> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Common Stage Config</p> <div class="schema-block" data-astro-cid-cq575q6v># configs/uav_dualcog/common_stage_configs.yaml
+stage3_behavior_library:
+  shared:
+    safety_distance_m: 2.0                 # global minimum safe distance
+  elements:
+    gradual_approach:
+      display_name: Gradual Approach
+      family: inspection
+      camera_mode_default: landmark_track
+      params:
+        travel_distance_m: {min: 30, max: 120, default: 40, step: 10}
+        descent_m: {min: 5, max: 40, default: 15, step: 5}
+    circular_orbit:
+      display_name: Circular Orbit
+      family: orbit
+      camera_mode_default: landmark_track
+      params:
+        extension_m: {min: 4, max: 36, default: 12, step: 2}
+        arc_deg: {min: 45, max: 720, default: 180, step: 90}</div> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>API Runtime Config</p> <div class="schema-block" data-astro-cid-cq575q6v># configs/uav_dualcog/common_api_runtime.yaml
+api:
+  default_models:
+    stage2: Qwen/Qwen3.5-9B                # default Stage 2 model
+    stage3: openai/gpt-5.3-chat
+    stage4: Qwen/Qwen3.5-4B
+  models:
+    # API routing mode
+    openai/gpt-5.3-chat:
+      api_source: cloud
+      api_base: ${UAV_DUALCOG_API_BASE}
+      api_key: ${UAV_DUALCOG_API_KEY}
+      request_model: gpt-5.3-chat
+      rpm_limit: 60
+      tpm_limit: 200000
+      rate_limit_reserve_ratio: 0.1
+    # local deployment mode (no additional quantization handling in this repo)
+    # you can invoke as Qwen/Qwen3.5-9B-Instant or Qwen/Qwen3.5-9B-Thinking in experiments
+    Qwen/Qwen3.5-9B:
+      api_source: local
+      api_base: http://127.0.0.1:28000/v1
+      api_key: ${UAV_DUALCOG_LOCAL_API_KEY}
+      request_model: Qwen/Qwen3.5-9B
+      rpm_limit: 1000
+      tpm_limit: 1000000
+      rate_limit_reserve_ratio: 0.2
+stage3_temporal:
+  api_upload_resize_enabled: true
+  api_upload_max_width: 640
+  api_upload_max_height: 480
+  api_upload_jpeg_quality: 80
+  timeout_s: 600
+  experiment_concurrency: 1</div> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Task Pipeline Spec</p> <div class="schema-block" data-astro-cid-cq575q6v># configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml
+task_name: UAV-DualCog-V1
+task_pipeline_root_dir: task_pipeline_data
+stage: both                                   # both|stage3|stage4
+phase: both                                   # selection|data|render|experiment|analyze|both
+seed: 29
+scene_ids: [env_7, env_8, env_9, env_10, env_11, env_13, env_16, env_17, env_20, env_21, env_23, env_24]
+landmark_list:
+  artifact_name: AirMultiviewST_Test_Single_landmarks
+  scene_ids: [env_7, env_8, env_9, env_10, env_11, env_13, env_16, env_17, env_20, env_21, env_23, env_24]
+  scene_landmark_counts:
+    env_7: all
+stage3:
+  single_landmark:
+    landmark_count: all
+    atomic_classes_per_landmark: 1
+    composite_classes_per_landmark: 1
+    instances_per_class: 1
+    self_state_forms: [self_instance_recognition_joint]
+    environmental_forms: [env_visibility_reasoning]
+    qa_samples_per_task: 1
+  manifest_mode: all
+  final_video_width: 1440
+  final_video_height: 1080
+  final_capture_parallel_workers: 16
+  record_parallel_workers: 16
+stage4:
+  env_capture_parallel_workers: 8
+  overlay_parallel_workers: 32
+  landmark_count: all
+  per_landmark:
+    task_types: [self_where, self_what, env_where, env_how]
+    qa_samples_per_difficulty: 1
+  difficulties: [4way, 8way]</div> </article> </div> <article class="article-block" style="margin-top: 18px;" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v>Parameter impact notes (efficiency vs quality):
+- Resolution (camera width/height, collect_view_image_*): higher improves detail and bbox tightness but increases capture and I/O cost.
+- FoV (camera.fov): smaller FoV magnifies target but reduces context; larger FoV increases context but also distortion.
+- LiDAR radius/span (lidar_range, LidarDelta): larger coverage gives richer geometry but heavier point-cloud fusion.
+- Grid size (traj_map.VoxelWidth): smaller grid preserves detail but costs more memory/time.
+- Parallel capture workers: improves throughput under one simulator process but too high can hurt stability.
+- Frame rate (camera.fps / final_video_fps): higher preserves temporal detail, but increases storage and inference overhead.
+
+Machine baseline used for current runnable defaults:
+- CPU: 2 x AMD EPYC 7452 (128 vCPUs total)
+- RAM: 503 GiB
+- GPU: 4 x NVIDIA GeForce RTX 4090 (24GB each)
+
+Operational constraint:
+- AirSim is tested to be stable as a single process in this workflow.
+- Therefore collection uses single-process, multi-thread parallel capture (single_instance_multi_thread).</div> </article> </section> <section class="section-divider" id="model-routing" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Model Routing</p> <h2 data-astro-cid-cq575q6v>Experiment model suffixes control reasoning mode while routes stay on base model aliases</h2> <p class="sublede" data-astro-cid-cq575q6v>
+In <code data-astro-cid-cq575q6v>--experiment-models</code>, suffixes such as <code data-astro-cid-cq575q6v>-Instant</code> and
+<code data-astro-cid-cq575q6v>-Thinking</code> are request-mode switches. Routing still resolves from
+<code data-astro-cid-cq575q6v>common_api_runtime.yaml</code> using the suffix-stripped base model alias, while
+        family-specific controls are applied automatically.
+</p> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># Runtime suffix behavior for --experiment-models
+# Base model is resolved from common_api_runtime.yaml routes.
+# Suffix only changes request controls (family-specific reasoning toggles).
+Qwen/Qwen3.5-9B-Instant
+Qwen/Qwen3.5-9B-Thinking
+OpenGVLab/InternVL3_5-4B-Instant
+
+# Notes
+# -Instant =&gt; disable thinking/reasoning controls where supported
+# -Thinking / -Reasoning =&gt; enable thinking/reasoning controls where supported
+# If a provider/model family does not expose that toggle, runtime keeps a safe no-op</div> </article> </section> <section class="section-divider" id="vllm-local" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>vLLM Local Deployment</p> <h2 data-astro-cid-cq575q6v>Use official vLLM installation guidance and serve OpenAI-compatible local endpoints</h2> <p class="sublede" data-astro-cid-cq575q6v>
+Follow the official vLLM quickstart for environment setup:
+<a href="https://docs.vllm.com.cn/en/latest/getting_started/quickstart/#installation" target="_blank" rel="noreferrer" data-astro-cid-cq575q6v> vLLM installation guide</a>.
+        After serving, point <code data-astro-cid-cq575q6v>common_api_runtime.yaml</code> to the local endpoint and ensure
+        the served model name matches your experiment aliasing convention.
+</p> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># vLLM install guide (official)
+# https://docs.vllm.com.cn/en/latest/getting_started/quickstart/#installation
+
+# Download from ModelScope
+modelscope download --model Qwen/Qwen3.5-4B --local_dir ./models/qwen3_5-4b
+
+export CUDA_VISIBLE_DEVICES=3
+export VLLM_USE_MODELSCOPE=true
+
+vllm serve   ./models/qwen3_5-4b   --served-model-name Qwen/Qwen3.5-4B   --tensor-parallel-size 1   --reasoning-parser qwen3   --max-model-len 32K   --kv-cache-dtype fp8   --gpu-memory-utilization 0.90   --max-num-seqs 8   --max-num-batched-tokens 16K   --enable-prefix-caching   --host 0.0.0.0   --port 40900</div> </article> </section> <section class="section-divider" id="commands-construction" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Mode A Commands</p> <h2 data-astro-cid-cq575q6v>Stage-by-stage construction workflow with visual review checkpoints</h2> <p class="sublede" data-astro-cid-cq575q6v>
+Stage 1 is typically preceded by scene-boundary probing
+        (<code data-astro-cid-cq575q6v>probe_airsim_mapbound.py</code>) so MapBound and surface anchors are stable.
+        Stage 2 Step 2-4 are completed in the local review workspace. Stage 3 and Stage 4 also expose
+        local review workspaces, but batch generation and released-scale reruns are recommended
+        through <code data-astro-cid-cq575q6v>task_pipeline.py</code>.
+</p> <p class="sublede" data-astro-cid-cq575q6v>
+Environment setup records and Stage 1-4 empirical run logs are included in the released code package under
+<code data-astro-cid-cq575q6v>logs/</code>.
+</p> <p class="sublede" data-astro-cid-cq575q6v>
+The command block follows the same sequence as README:
+<strong data-astro-cid-cq575q6v>Step 0</strong> environment setup, <strong data-astro-cid-cq575q6v>Step 1</strong> scene fusion,
+<strong data-astro-cid-cq575q6v>Step 2</strong> landmark construction/review/auto-label, <strong data-astro-cid-cq575q6v>Step 3</strong> video tasks,
+        and <strong data-astro-cid-cq575q6v>Step 4</strong> image tasks.
+</p> <p class="sublede" data-astro-cid-cq575q6v>
+Detailed page-by-page usage of the Stage 2/3/4 browser workspaces is documented in
+        the <a href="usage/#internal-web" data-astro-cid-cq575q6v>Review Workspaces</a> section below.
+</p> </div> <article class="article-block" style="margin-bottom: 16px;" data-astro-cid-cq575q6v> <p data-astro-cid-cq575q6v>
+If your server has no display device, install the following packages before running AirSim:
+</p> <div class="schema-block" data-astro-cid-cq575q6v>sudo apt install xdg-user-dirs xdg-utils
+sudo apt install libegl1
+sudo apt install vulkan-tools libvulkan1 mesa-vulkan-drivers</div> </article> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># Step 0: environment setup
+conda env create -f environment.yml
+conda activate uav-dualcog
+
+# Stage 1.0: probe scene bounds and write back MapBound (recommended)
+python scripts/uav_dualcog/probe_airsim_mapbound.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --workers 6 --probe-source hybrid --write-back --output scene_data/airsim_env_7/pcd_map/mapbound_probe_env7.json
+
+# Stage 1: point-cloud collection + fusion
+python scripts/uav_dualcog/stage1_collect_pcd.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode all --engine airsim
+
+# Stage 2 Step 1: collect landmark candidates and multiview evidence
+python scripts/uav_dualcog/stage2_landmark_label.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode collect_instances
+
+# Stage 2 Step 2-4: open the local review workspace, then complete manual review and auto-label approval
+python scripts/uav_dualcog/stage2_landmark_label.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode review_instances_web --host 0.0.0.0 --port 20261
+python scripts/uav_dualcog/stage2_landmark_label.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode auto_label
+
+# Stage 3 recommended batch pipeline
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage3 --phase selection
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage3 --phase data
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage3 --phase render
+
+# Stage 4 recommended batch pipeline
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage4 --phase selection
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage4 --phase data
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage4 --phase render
+
+# Optional local review workspaces for inspection
+python scripts/uav_dualcog/stage3_generate_traj.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode web
+python scripts/uav_dualcog/stage4_qa_generate_and_eval.py --config configs/uav_dualcog/task_airsim_env_7.yaml --scene-id env_7 --mode web --port 20264</div> </article> </section> <section class="section-divider" id="internal-web" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Review Workspaces</p> <h2 data-astro-cid-cq575q6v>Stage 2 uses web for review and semantic finalization, while Stage 3 and Stage 4 use web as interactive workbenches</h2> <p class="sublede" data-astro-cid-cq575q6v>
+Some functions exist in both command-line and web forms, but they are not equally suitable
+        for everyday use. In practice, <strong data-astro-cid-cq575q6v>Stage 2 Step 2-4 should be completed in the local
+        review workspace</strong>, because representative main-view confirmation, single-direction
+        anchoring, invalid-view
+        cleanup, auto-label auditing, and manual semantic repair all benefit from direct visual
+        inspection. For <strong data-astro-cid-cq575q6v>Stage 3 and Stage 4</strong>, the browser workspaces are best used for
+        qualitative inspection, manifest browsing, prompt/debug checks, and experiment-result
+        browsing, while released-scale generation is still recommended through
+<code data-astro-cid-cq575q6v>task_pipeline.py</code>.
+</p> </div> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Stage 2 Web</p> <h2 data-astro-cid-cq575q6v>Landmark screening, representative main-view confirmation, single-direction anchoring, auto-labeling, and semantic review are completed in one review interface</h2> <p data-astro-cid-cq575q6v>
+Launch the Stage 2 web with
+<code data-astro-cid-cq575q6v>stage2_landmark_label.py --mode review_instances_web</code>. The interface combines
+        a left-side landmark list, point-cloud evidence, RGB evidence, auto-label controls, and the
+        final reviewed semantic fields. The left list groups items by <code data-astro-cid-cq575q6v>class_id</code> and
+<code data-astro-cid-cq575q6v>class_name</code>, so reviewers can process one semantic cluster at a time instead of
+        reviewing isolated candidates in random order.
+</p> <p data-astro-cid-cq575q6v>
+The recommended workflow is: first perform <strong data-astro-cid-cq575q6v>landmark screening</strong> with
+<code data-astro-cid-cq575q6v>Drop</code> can be applied immediately to unstable or obviously unusable candidates.
+<code data-astro-cid-cq575q6v>Keep</code> should only be applied after the reviewer has confirmed the
+<strong data-astro-cid-cq575q6v>main RGB view</strong> and one correct landmark-centric direction anchor. The main
+        view does <strong data-astro-cid-cq575q6v>not</strong> need to be <code data-astro-cid-cq575q6v>front</code>; it is simply the most
+        representative benchmark-facing view. Once one direction anchor is confirmed, the
+        remaining directions in the fixed ring order <code data-astro-cid-cq575q6v>front</code>,
+<code data-astro-cid-cq575q6v>front_right</code>, <code data-astro-cid-cq575q6v>right</code>, <code data-astro-cid-cq575q6v>back_right</code>, <code data-astro-cid-cq575q6v>back</code>,
+<code data-astro-cid-cq575q6v>back_left</code>, <code data-astro-cid-cq575q6v>left</code>, <code data-astro-cid-cq575q6v>front_left</code> are derived
+        automatically. After that, mark strongly occluded or visually unusable views as invalid,
+        then run auto-label and review the generated semantics.
+</p> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Evidence Panels</p> <p data-astro-cid-cq575q6v>
+The point-cloud panel is used to confirm that the candidate is geometrically coherent,
+            while the RGB panel is used to verify representative appearance. The web preserves the
+            eight-view layout even when some directions are invalid, which makes direction auditing
+            stable across landmarks.
+</p> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Direction And Main View</p> <p data-astro-cid-cq575q6v>
+The RGB panel is used to choose the most representative main view and to confirm one
+            direction anchor for that landmark. The main view is not necessarily the
+<code data-astro-cid-cq575q6v>front</code> image. After the reviewer selects the main view and confirms one
+            correct direction, the other seven visible-side directions are computed automatically in
+            the fixed ring order. If a kept landmark has no valid main view, it should not be
+            approved.
+</p> </article> </div> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Auto-Label Controls</p> <p data-astro-cid-cq575q6v>
+Auto-label can be launched for the current landmark, the current class, or the full
+            retained pool. The generated fields are shown as
+<code data-astro-cid-cq575q6v>auto_label_category</code>, <code data-astro-cid-cq575q6v>auto_label_subcategory</code>,
+<code data-astro-cid-cq575q6v>auto_label_description</code>, and confidence. This step is best done in the web
+            because reviewers can immediately compare the proposed semantics against the multiview
+            evidence.
+</p> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Manual Review Fields</p> <p data-astro-cid-cq575q6v>
+The final published fields are <code data-astro-cid-cq575q6v>landmark_category</code>,
+<code data-astro-cid-cq575q6v>landmark_subcategory</code>, and <code data-astro-cid-cq575q6v>landmark_description</code>. Use
+<code data-astro-cid-cq575q6v>Approve Auto Label</code> when the proposal is already correct; otherwise revise
+            the final fields manually and save the human correction. In practice, this page
+            completes Stage 2 Step 2-4 in one continuous review loop.
+</p> </article> </div> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage2_web.png" data-lightbox-alt="Stage 2 landmark review workspace" aria-label="Open enlarged image: Stage 2 landmark review workspace"> <img src="media/internal_web/stage2_web.png" alt="Stage 2 landmark review workspace" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 2 Review Workspace.</strong>  The review page combines point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval so that Stage 2 Step 2-4 can be completed in one continuous workflow. </figcaption> </figure> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Stage 3 Web</p> <h2 data-astro-cid-cq575q6v>The Stage 3 workbench supports behavior inspection, mission generation, candidate review, dataset browsing, experiments, and metrics</h2> <p data-astro-cid-cq575q6v>
+Launch the Stage 3 web with <code data-astro-cid-cq575q6v>stage3_generate_traj.py --mode web</code>. The workbench
+        exposes the pages <strong data-astro-cid-cq575q6v>Behavior Library</strong>, <strong data-astro-cid-cq575q6v>Missions</strong>,
+<strong data-astro-cid-cq575q6v>Review</strong>, <strong data-astro-cid-cq575q6v>Generate</strong>, <strong data-astro-cid-cq575q6v>Dataset</strong>,
+<strong data-astro-cid-cq575q6v>Experiments</strong>, <strong data-astro-cid-cq575q6v>Results</strong>, and <strong data-astro-cid-cq575q6v>Metrics</strong>. It is
+        intended as an interactive inspection and debugging surface rather than the primary route
+        for large released-scale generation.
+</p> <p data-astro-cid-cq575q6v>
+Before judging whether a page has content, first switch the top-right scene, task, mission,
+        or manifest selector. Several Stage 3 pages only populate after an active selection is made.
+</p> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Behavior Library</p> <p data-astro-cid-cq575q6v>
+Use this page to inspect the composite classes, atomic classes, parameter ranges,
+            defaults, and composition rules before generating trajectories. It is the best place to
+            confirm that a released behavior family matches the intended inspection or mapping
+            pattern.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_behavior_library.png" data-lightbox-alt="Stage 3 behavior library" aria-label="Open enlarged image: Stage 3 behavior library"> <img src="media/internal_web/stage3_behavior_library.png" alt="Stage 3 behavior library" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Behavior Library.</strong>  Composite inspection classes, atomic motion primitives, parameter defaults, and composition structure are inspected here before mission generation begins. </figcaption> </figure> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Missions And Review</p> <p data-astro-cid-cq575q6v>
+The <strong data-astro-cid-cq575q6v>Missions</strong> page is used to select landmarks, configure composite or
+            atomic mission generation, and produce panorama, preview, or final task videos. The
+<strong data-astro-cid-cq575q6v>Review</strong> page is then used to approve or reject candidates before they
+            are converted into benchmark-facing task rows.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_mission_generation.png" data-lightbox-alt="Stage 3 mission generation page" aria-label="Open enlarged image: Stage 3 mission generation page"> <img src="media/internal_web/stage3_mission_generation.png" alt="Stage 3 mission generation page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Mission Generation.</strong>  Landmark selection, mission-family configuration, and panorama or video rendering are coordinated here for interactive candidate prototyping. </figcaption> </figure> </article> </div> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Generate And Dataset</p> <p data-astro-cid-cq575q6v>
+The <strong data-astro-cid-cq575q6v>Generate</strong> page converts approved candidates into Stage 3 manifests
+            and lets you choose Agent-State and World-State task forms, sample count, seed, and
+            temporal-localization inclusion. It is useful for spot checks and small controlled
+            reruns, but released-scale Stage 3 generation is still recommended through
+<code data-astro-cid-cq575q6v>task_pipeline.py --stage stage3 --phase data/render</code>. The
+<strong data-astro-cid-cq575q6v>Dataset</strong> page is used to preview manifest rows, reference images,
+            overview images, keyframe boards, and interval targets.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_manifest_generation.png" data-lightbox-alt="Stage 3 manifest generation page" aria-label="Open enlarged image: Stage 3 manifest generation page"> <img src="media/internal_web/stage3_manifest_generation.png" alt="Stage 3 manifest generation page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Manifest Generation.</strong>  Approved mission candidates are converted into benchmark-facing task rows here, with task-form toggles and sampling controls exposed before export. </figcaption> </figure> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_dataset_browser.png" data-lightbox-alt="Stage 3 dataset browser" aria-label="Open enlarged image: Stage 3 dataset browser"> <img src="media/internal_web/stage3_dataset_browser.png" alt="Stage 3 dataset browser" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Dataset Browser.</strong>  Manifest rows, auxiliary media, sample videos, and temporal targets are spot-checked here before experiments are launched. </figcaption> </figure> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Experiments, Results, And Metrics</p> <p data-astro-cid-cq575q6v>
+The experiment pages support model selection, upload-size control, concurrency and
+            rate-limit settings, run tracking, per-sample report browsing, grouped bars, full metric
+            tables, and CSV export. These pages are ideal for targeted reruns and qualitative
+            diagnosis, but for released-scale experiment sweeps we still recommend
+<code data-astro-cid-cq575q6v>task_pipeline.py --stage stage3 --phase experiment</code>.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_results.png" data-lightbox-alt="Stage 3 results page" aria-label="Open enlarged image: Stage 3 results page"> <img src="media/internal_web/stage3_results.png" alt="Stage 3 results page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Results.</strong>  Run summaries and sample-level predictions are reviewed here to separate semantic mistakes, interval mistakes, and parsing failures. </figcaption> </figure> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage3_metrics.png" data-lightbox-alt="Stage 3 metrics page" aria-label="Open enlarged image: Stage 3 metrics page"> <img src="media/internal_web/stage3_metrics.png" alt="Stage 3 metrics page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 3 Metrics.</strong>  Summary cards, grouped comparisons, full tables, and progress views help diagnose Stage 3 model behavior before exporting CSV for offline aggregation. </figcaption> </figure> </article> </div> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Stage 4 Web</p> <h2 data-astro-cid-cq575q6v>The Stage 4 workbench supports image-task generation, manifest preview, model runs, and metric inspection</h2> <p data-astro-cid-cq575q6v>
+Launch the Stage 4 web with <code data-astro-cid-cq575q6v>stage4_qa_generate_and_eval.py --mode web</code>. The
+        workbench exposes five main pages: <strong data-astro-cid-cq575q6v>Generate</strong>, <strong data-astro-cid-cq575q6v>Dataset</strong>,
+<strong data-astro-cid-cq575q6v>Experiments</strong>, <strong data-astro-cid-cq575q6v>Results</strong>, and <strong data-astro-cid-cq575q6v>Metrics</strong>. It is
+        especially useful when we want to verify that reference images, query observations, answer
+        options, and normalized bounding boxes are aligned before launching a larger batch run.
+</p> <p data-astro-cid-cq575q6v>
+Before judging whether a page is empty, first switch the top-right scene, task type,
+        manifest, or report selector. Several Stage 4 pages only render detailed content after an
+        active selection is chosen.
+</p> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Generate</p> <p data-astro-cid-cq575q6v>
+The Generate page controls task strategy, view definitions, task types, category
+            filters, difficulty, sample counts, and per-landmark sampling density. The estimator is
+            useful for checking the expected scale of the current sampling plan before writing a new
+            manifest. It is best used for interactive validation and spot checks; released-scale
+            Stage 4 generation is still recommended through
+<code data-astro-cid-cq575q6v>task_pipeline.py --stage stage4 --phase data/render</code>.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage4_task_generation.png" data-lightbox-alt="Stage 4 task generation page" aria-label="Open enlarged image: Stage 4 task generation page"> <img src="media/internal_web/stage4_task_generation.png" alt="Stage 4 task generation page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 4 Task Generation.</strong>  Task strategy, difficulty, category filters, and per-landmark sampling density are configured here before a new image-QA manifest is written. </figcaption> </figure> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Dataset</p> <p data-astro-cid-cq575q6v>
+The Dataset page loads a manifest summary and sample preview. Use it to verify that the
+            paired image layout, option ordering, answer target, and bbox overlays are all visually
+            consistent. For Stage 4, this page is usually the fastest way to catch sampling or
+            render issues before experiments begin.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage4_data_browser.png" data-lightbox-alt="Stage 4 dataset browser" aria-label="Open enlarged image: Stage 4 dataset browser"> <img src="media/internal_web/stage4_data_browser.png" alt="Stage 4 dataset browser" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 4 Dataset Browser.</strong>  Reference images, query observations, option order, and bbox overlays are visually checked here before evaluation begins. </figcaption> </figure> </article> </div> <div class="article-grid" data-astro-cid-cq575q6v> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Experiments And Results</p> <p data-astro-cid-cq575q6v>
+The Experiments page is used to choose a manifest, select one or more models, set upload
+            resolution/quality, concurrency, and limits, then launch jobs. The Results page shows
+            run-level summaries and per-sample outputs, which makes it suitable for prompt debugging
+            and qualitative failure analysis. For released-scale benchmark runs and comparative
+            sweeps, we still recommend <code data-astro-cid-cq575q6v>task_pipeline.py --stage stage4 --phase experiment</code>.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage4_experiments.png" data-lightbox-alt="Stage 4 experiments page" aria-label="Open enlarged image: Stage 4 experiments page"> <img src="media/internal_web/stage4_experiments.png" alt="Stage 4 experiments page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 4 Experiments.</strong>  Model aliases, upload settings, concurrency, and rate limits are managed here for qualitative reruns and small-to-medium comparison jobs. </figcaption> </figure> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage4_results.png" data-lightbox-alt="Stage 4 results page" aria-label="Open enlarged image: Stage 4 results page"> <img src="media/internal_web/stage4_results.png" alt="Stage 4 results page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 4 Results.</strong>  Run summaries and sample-level outputs are reviewed here to identify option-selection errors, bbox errors, and parser failures. </figcaption> </figure> </article> <article class="article-block" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Metrics</p> <p data-astro-cid-cq575q6v>
+The Metrics page summarizes option accuracy, BBox Acc@50IoU, mean IoU, grouped
+            comparisons, the full experiment matrix, and progress tables. Use this page to inspect
+            small-to-medium comparison runs, while released-scale Stage 4 generation and experiments
+            should still be driven by <code data-astro-cid-cq575q6v>task_pipeline.py --stage stage4</code>.
+</p> <figure class="figure-block"> <div class="figure-frame"> <button type="button" class="image-zoom-trigger" data-lightbox-src="media/internal_web/stage4_metrics.png" data-lightbox-alt="Stage 4 metrics page" aria-label="Open enlarged image: Stage 4 metrics page"> <img src="media/internal_web/stage4_metrics.png" alt="Stage 4 metrics page" loading="lazy"> </button> </div> <figcaption class="figure-caption"> <strong>Stage 4 Metrics.</strong>  Summary cards, grouped comparisons, experiment matrices, and progress tables provide a compact view of image-task evaluation quality. </figcaption> </figure> </article> </div> </article> </section> <section class="section-divider" id="commands-experiment" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Mode B Commands</p> <h2 data-astro-cid-cq575q6v>Experiment workflow on downloaded benchmark artifacts</h2> <p class="sublede" data-astro-cid-cq575q6v>
+For model invocation, this release supports both API routing and local deployment. Configure
+<code data-astro-cid-cq575q6v>common_api_runtime.yaml</code> first, then run stage-specific experiment phases.
+</p> <p class="sublede" data-astro-cid-cq575q6v>
+If you only want to validate wiring before real API/model calls, run the smoke-test commands
+        below first.
+</p> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># Experiment-only mode
+# Required: downloaded scene_data/airsim_env_* + task_pipeline_data/UAV-DualCog-V1
+# Not required: simulator environment files
+
+# Stage 3 experiments
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage3 --phase experiment --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-9B-Instant
+
+# Stage 4 experiments
+python scripts/uav_dualcog/task_pipeline.py --spec configs/uav_dualcog/task_pipeline/task_pipeline_uav_dualcog_v1.yaml --stage stage4 --phase experiment --experiment-models openai/gpt-5.3-chat Qwen/Qwen3.5-4B-Thinking</div> </article> </section> <section class="section-divider" id="training-code" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Training Probe</p> <h2 data-astro-cid-cq575q6v>Reproduce the image-only SFT and joint GRPO optimization probe</h2> <p class="sublede" data-astro-cid-cq575q6v>
+These commands implement the lightweight probe reported in the paper. UAV-DualCog-Train
+        contains 11,232 image samples from six scenes that are disjoint from the evaluation split.
+        The procedure first stabilizes the answer-and-BBox contract with multimodal SFT and then
+        applies equal-weight format, answer, and GIoU rewards to evaluate the value of the
+        benchmark's structured supervision.
+</p> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># 1. Build the image-only training and validation manifests
+python scripts/uav_dualcog/uav_dualcog_optimize/prepare_train_dataset.py   --train-root task_pipeline_data/UAV-DualCog-Train-V1   --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm
+
+# 2. Multimodal SFT (effective batch size: 1 x 32)
+python scripts/uav_dualcog/uav_dualcog_optimize/run_sft_lora.py   --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl   --valid-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_valid.latest.jsonl   --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full   --num-epochs 3 --gradient-accumulation-steps 32   --max-seq-length 4096 --max-image-side 720 --save-merged
+
+# 3. Joint GRPO (two completions per prompt; all reward weights are 1.0)
+python scripts/uav_dualcog/uav_dualcog_optimize/run_grpo_light.py   --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl   --sft-checkpoint task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full/merged_model   --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/grpo_joint   --learning-rate 1e-6 --num-steps 600   --gradient-accumulation-steps 16 --group-size 2   --max-completion-length 128 --max-image-side 720   --w-format 1.0 --w-mcq 1.0 --w-bbox 1.0 --save-merged
+
+# Optional integrity and transfer summaries
+python scripts/uav_dualcog/uav_dualcog_optimize/check_training_run.py --help
+python scripts/uav_dualcog/uav_dualcog_optimize/evaluate_transfer.py --help</div> <p data-astro-cid-cq575q6v>
+Script defaults support smaller dry runs, while the explicit arguments above match the
+        reported run. Dataset preparation, checkpoint auditing, and transfer aggregation are kept
+        as separate entry points so each stage can be inspected independently.
+</p> </article> </section> <section class="section-divider" id="smoke-test" data-astro-cid-cq575q6v> <div class="section-head" data-astro-cid-cq575q6v> <p class="section-kicker" data-astro-cid-cq575q6v>Smoke Tests</p> <h2 data-astro-cid-cq575q6v>Quick CLI checks before long construction or experiment runs</h2> </div> <article class="article-block" data-astro-cid-cq575q6v> <div class="schema-block" data-astro-cid-cq575q6v># Interface smoke tests (no long-running construction required)
+python scripts/uav_dualcog/stage1_collect_pcd.py --help
+python scripts/uav_dualcog/stage2_landmark_label.py --help
+python scripts/uav_dualcog/probe_airsim_mapbound.py --help
+python scripts/uav_dualcog/stage3_generate_traj.py --help
+python scripts/uav_dualcog/stage4_qa_generate_and_eval.py --help
+python scripts/uav_dualcog/task_pipeline.py --help
+python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualcog/common_api_runtime.yaml</div> </article> </section> <nav class="chapter-pager" aria-label="Chapter navigation"> <div class="chapter-pager-slot"> <a class="chapter-pager-link is-prev" href="analysis/"> <span class="chapter-pager-direction">Previous</span> <span class="chapter-pager-label">Analysis</span> </a> </div> <div class="chapter-pager-slot is-next"> <a class="chapter-pager-link is-next" href=""> <span class="chapter-pager-direction">Next</span> <span class="chapter-pager-label">Home</span> </a> </div> </nav>  </main> <div class="image-lightbox is-hidden" id="image-lightbox" aria-hidden="true"> <button type="button" class="image-lightbox-close" id="image-lightbox-close" aria-label="Close enlarged image">×</button> <img class="image-lightbox-media" id="image-lightbox-media" src="" alt=""> </div> <a class="back-to-top" href="usage/#top" aria-label="Back to top">↑</a> <footer class="site-footer"> <div class="shell footer-inner"> <p>UAV-DualCog evaluates coordinated Agent-State and World-State Reasoning across image and video tasks.</p> <p><a href="https://arxiv.org/abs/2607.16193">Paper</a> · <a href="https://github.com/SmartDianLab/UAV-DualCog">Code</a> · <a href="mailto:shaodian@nwpu.edu.cn">Contact: Dian Shao</a></p> </div> </footer> <script type="module">const d=document.querySelector(".page-sidebar");if(d){const n=Array.from(d.querySelectorAll(".page-sidebar-link")),o=n.map(e=>document.getElementById(e.dataset.section)).filter(Boolean),r=e=>{n.forEach(t=>{const i=t.dataset.section===e;t.classList.toggle("is-active",i),i?t.setAttribute("aria-current","location"):t.removeAttribute("aria-current")})},c=()=>{if(!o.length)return;const e=window.innerHeight*.28;let t=o[0];for(const i of o)if(i.getBoundingClientRect().top<=e)t=i;else break;r(t.id)};n.forEach(e=>{e.addEventListener("click",()=>{const t=e.dataset.section;t&&r(t)})});let s=!1;const a=()=>{s||(s=!0,window.requestAnimationFrame(()=>{c(),s=!1}))};c(),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a),window.addEventListener("hashchange",()=>{const e=window.location.hash.replace("#","");e&&r(e)})}</script> <script type="module">const e=document.getElementById("image-lightbox"),i=document.getElementById("image-lightbox-media"),d=document.getElementById("image-lightbox-close"),n=(t,s)=>{!e||!i||!t||(i.setAttribute("src",t),i.setAttribute("alt",s||"Enlarged image"),e.classList.remove("is-hidden"),e.setAttribute("aria-hidden","false"),document.body.classList.add("lightbox-open"))},o=()=>{!e||!i||(e.classList.add("is-hidden"),e.setAttribute("aria-hidden","true"),i.setAttribute("src",""),i.setAttribute("alt",""),document.body.classList.remove("lightbox-open"))};document.addEventListener("click",t=>{const s=t.target.closest("[data-lightbox-src]");if(s){n(s.getAttribute("data-lightbox-src"),s.getAttribute("data-lightbox-alt"));return}t.target===e&&o()});d?.addEventListener("click",o);document.addEventListener("keydown",t=>{t.key==="Escape"&&o()});</script> </body> </html>

@@ -17,7 +17,7 @@ import yaml
 
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-DEFAULT_PYTHON_BIN = sys.executable
+DEFAULT_PYTHON_BIN = os.environ.get("UAV_DUALCOG_PYTHON", sys.executable)
 DEFAULT_CONFIG_DIR = ROOT_DIR / "configs" / "uav_dualcog"
 DEFAULT_CLEANUP_PATTERNS: list[str] = []
 DEFAULT_PROBE_SOURCE = "hybrid"

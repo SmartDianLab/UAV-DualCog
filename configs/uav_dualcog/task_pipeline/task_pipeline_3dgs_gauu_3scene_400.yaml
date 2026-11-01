@@ -1,0 +1,38 @@
+config_path: configs/uav_dualcog/task_3dgs_gauu_upper.yaml
+scene_configs:
+  - configs/uav_dualcog/task_3dgs_gauu_upper.yaml
+  - configs/uav_dualcog/task_3dgs_gauu_smbu.yaml
+  - configs/uav_dualcog/task_3dgs_gauu_lfls.yaml
+
+task_name: UAV-DualCog-3DGS-RealScene-400
+task_pipeline_root_dir: task_pipeline_data
+stage: stage4
+phase: experiment
+seed: 20260916
+clear_existing_stage3: false
+clear_existing_stage4: false
+
+# The three model workers run in parallel. Each worker processes all three
+# scenes sequentially and resumes from existing responses when rerun.
+experiment_models:
+  - gemini-3.8-flash-Thinking
+  - gpt-6-astra-Thinking
+  - z-ai/glm-5.3-flash-Thinking
+experiment_concurrency: 4
+experiment_model_parallelism: 3
+request_retry_attempts: 5
+request_retry_backoff_sec: 3
+request_retry_forever: false
+unique_experiment: true
+timeout_s: 600
+
+stage4:
+  per_landmark:
+    task_types:
+      - self_where
+      - self_what
+      - env_where
+      - env_how
+    qa_samples_per_difficulty: 1
+  difficulties:
+    - 8way

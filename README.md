@@ -1,58 +1,52 @@
-<!-- <p align="center">
-    <img src="assets/a-logo-representing - omnicreator - -a-powerful-ai-t.png" width="150" style="margin-bottom: 0.2;"/>
-<p> -->
-<h2 align="center">UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs</h2>
-<!-- ![](./assets/logo_long.png#gh-light-mode-only){: width="50%"} -->
-<!-- ![](./assets/logo_long_dark.png#gh-dark-mode-only=100x20) -->
-<div align="center">
-<!-- <img src='assets/logo_long.png' style="height:100px"></img> -->
+# UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs
 
-_**[Like Liu](https://likeliu.com)<sup>1</sup>, Zhengzheng Xu<sup>2</sup>, Hongzhe Li<sup>2</sup>, Lin Wang<sup>3</sup>, [Dian Shao](https://scholar.google.com/citations?user=amxDSLoAAAAJ&hl=en)<sup>2,†</sup>**_
-<br><br>
-<sup>†</sup>Corresponding author: Dian Shao (shaodian@nwpu.edu.cn)
-<br>
-<sup>1</sup>School of Software, Northwestern Polytechnical University, China<br>
-<sup>2</sup>Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University, China<br>
-<sup>3</sup>Embodied Perception and Interaction Lab (EmPACT Lab), School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore
+**Like Liu<sup>1</sup>, Zhengzheng Xu<sup>2</sup>, Hongzhe Li<sup>2</sup>, Lin Wang<sup>3</sup>, Dian Shao<sup>2,&dagger;</sup>**
 
-<h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for latest update.  </h2>
- <a href='https://arxiv.org/abs/2607.16193'><img src='https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg'></a> &nbsp;
- <a href='https://smartdianlab.github.io/UAV-DualCog/'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
- <a href='https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog'><img src='https://img.shields.io/badge/Dataset-UAV--DualCog-orange'></a> &nbsp; 
- <a href='https://github.com/SmartDianLab/UAV-DualCog'><img src='https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog'></a> &nbsp;  
-</div>
+<sup>1</sup>School of Software, Northwestern Polytechnical University, Xi'an, China.<br>
+<sup>2</sup>Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University, Xi'an, China.<br>
+<sup>3</sup>Embodied Perception and Interaction Lab (EmPACT Lab), School of Electrical and Electronic Engineering, Nanyang Technological University, Singapore.
 
-# UAV-DualCog Official Code Package
+<sup>&dagger;</sup>Corresponding author: [Dian Shao](mailto:shaodian@nwpu.edu.cn). Contact: [Like Liu](mailto:like.liu@mail.nwpu.edu.cn).
 
-This is the official code package for **UAV-DualCog**.
+This repository provides the construction, evaluation, and training code for **UAV-DualCog**, together with curated dataset examples.
 
 <p align="center">
-  <img src="docs/overview/fig_benchmark_overview.jpg" alt="UAV-DualCog benchmark overview" />
+  <img src="docs/overview/fig_benchmark_overview.png" alt="UAV-DualCog benchmark overview" />
 </p>
-<p align="center"><em>UAV-DualCog benchmark overview. The benchmark organizes self-aware and environment-aware reasoning across image and video tasks, and the released code package supports the corresponding Stage 1-4 construction and evaluation workflow.</em></p>
+<p align="center"><em>UAV-DualCog jointly evaluates Agent-State and World-State Reasoning across image and video tasks. The released code supports benchmark construction, evaluation, and a small real-scene 3DGS image pilot.</em></p>
 
-- Website: https://smartdianlab.github.io/UAV-DualCog/
-- Code repo: https://github.com/SmartDianLab/UAV-DualCog
-- Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
+- Project website: https://smartdianlab.github.io/UAV-DualCog/
+- Paper: https://arxiv.org/abs/2607.16193
+- Code: https://github.com/SmartDianLab/UAV-DualCog
 - Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog
+- Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
-For benchmark definitions, leaderboard interpretation, and detailed supplementary explanations, please read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Usage.
+For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Sim-to-Real -> Training -> Usage.
 
 ## 1) What Is Included
 
-- `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities.
+- `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities, 3DGS construction tools, and optimization-probe code.
+- `scripts/uav_dualcog/uav_dualcog_optimize/`: training-manifest preparation, multimodal SFT, joint GRPO, checkpoint auditing, and transfer evaluation.
 - `trajectory/`: hierarchical atomic/composite behavior library and composition logic.
 - `sim_bridge/`: simulator abstraction and AirSim bridge.
-- `configs/uav_dualcog/`: 18 runnable per-scene configs + shared configs + task-pipeline spec.
+- `sim_bridge/gaussian_splat_bridge.py`: programmable 3DGS RGB/depth adapter.
+- `configs/uav_dualcog/`: 18 AirSim scene configs, three GauUscene scene configs, shared configs, and task-pipeline specifications.
+- `configs/uav_dualcog/3dgs/`: GauUscene/CityGaussian scene manifests and rendering dependencies.
 - `configs/uav_dualcog/templates/`: fully commented templates for customization.
 - `configs/prompts/uav_dualcog_prompts.yaml`: Stage 2-4 prompt package.
-- `environment.yml`, `requirements.txt`, `deps/`: environment/dependency references.
+- `environment.yml`, `requirements.txt`, `requirements-training.txt`, `deps/`: construction, evaluation, and optional training dependency references.
+- `scene_data/`: complete reviewed landmark-list metadata for each example scene, plus images for two selected landmarks per scene.
+- `task_pipeline_data/`: complete V1 and Train landmark lists, up to four available image-task examples per selected landmark, and compressed V1 video-task examples where matching records exist.
+- `docs/examples/index.json`: scene-to-example index and selected landmark IDs.
+- `web/`: built project website, deployed separately by the GitHub Pages workflow.
+
+The examples cover all 12 UAV-DualCog-V1 scenes, six UAV-DualCog-Train scenes, and three 3DGS real-scene pilot reconstructions. These are illustrative samples, not the full task releases. Original-resolution videos and source GauUscene assets are not redistributed.
 
 ## 2) What Is Excluded
 
 - No private keys or private endpoints.
-- No generated artifacts (`scene_data/`, `task_pipeline_data/`, caches, media outputs).
+- No full-resolution generated datasets, caches, or original video files; only the curated examples above are included.
 - No internal notes/workflow docs outside public release scope.
 
 Note:
@@ -115,11 +109,11 @@ Recommended workflow:
 4. Stage 4 generates image tasks and evaluation manifests.
 
 Important operational notes:
-- Stage 2 Step 2-4 are completed in the internal review web (`review_instances_web` + auto-label flow).
-- Stage 3 and Stage 4 both provide internal web workbenches for inspection (behavior library, landmark/task previews, experiment outputs), but for released split generation we recommend `task_pipeline.py` batch phases.
+- Stage 2 Step 2-4 are completed in the local review workspace (`review_instances_web` + auto-label flow).
+- Stage 3 and Stage 4 both provide local review workspaces for inspection (behavior library, landmark/task previews, experiment outputs), but released split generation should use the reproducible `task_pipeline.py` batch phases.
 - Some operations are available in both CLI and web forms. In practice, we recommend:
-  - **Stage 2**: use the internal review web for Step 2-4 (screening, representative main-view confirmation, single-direction anchoring, auto-label review).
-  - **Stage 3 / Stage 4**: use `task_pipeline.py` for released-scale batch generation, and use the internal web mainly for visual inspection, prompt/debug checks, and experiment/result browsing.
+  - **Stage 2**: use the local review workspace for Step 2-4 (screening, representative main-view confirmation, single-direction anchoring, and auto-label review).
+  - **Stage 3 / Stage 4**: use `task_pipeline.py` for released-scale batch generation, and use the review workspaces for visual inspection, prompt/debug checks, and experiment/result browsing.
 
 ### Mode B: Experiment Only (No Scene Reconstruction)
 
@@ -135,10 +129,10 @@ Requires:
 
 `configs/uav_dualcog/common_api_runtime.yaml` supports:
 
-1. **API routing** (`api_source: cloud/openrouter/...`)  
+1. **API routing** (`api_source: cloud/openrouter/...`)
    Call remote OpenAI-compatible endpoints.
-2. **Local deployment** (`api_source: local`)  
-   Call local OpenAI-compatible serving endpoints.  
+2. **Local deployment** (`api_source: local`)
+   Call local OpenAI-compatible serving endpoints.
    The release package assumes local models are used as deployed, with no additional quantization handling logic in this code package.
 
 ### 5.1 Instant / Thinking Suffix Rules
@@ -180,8 +174,8 @@ export CUDA_VISIBLE_DEVICES=3
 export VLLM_USE_MODELSCOPE=true
 
 vllm serve \
-  ./models/internvl3_5-4b \
-  --served-model-name OpenGVLab/InternVL3_5-4B-Instant \
+  ./models/qwen3_5-4b \
+  --served-model-name Qwen/Qwen3.5-4B \
   --tensor-parallel-size 1 \
   --reasoning-parser qwen3 \
   --max-model-len 32K \
@@ -479,7 +473,7 @@ python scripts/uav_dualcog/task_pipeline.py \
   --stage stage3 --phase render
 ```
 
-Optional internal web workbench:
+Optional local review workspace:
 ```bash
 python scripts/uav_dualcog/stage3_generate_traj.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
@@ -506,7 +500,7 @@ python scripts/uav_dualcog/task_pipeline.py \
   --stage stage4 --phase render
 ```
 
-Optional internal web workbench:
+Optional local review workspace:
 ```bash
 python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --config configs/uav_dualcog/task_airsim_env_7.yaml \
@@ -515,9 +509,9 @@ python scripts/uav_dualcog/stage4_qa_generate_and_eval.py \
   --port 20264
 ```
 
-## 8) Internal Web Workspaces (Stage 2-4)
+## 8) Local Review Workspaces (Stage 2-4)
 
-The internal web tools are designed for **interactive inspection, review, and run-level debugging**.
+The browser-based workspaces support **interactive inspection, review, and run-level debugging**.
 They are especially useful when you need to confirm whether geometry, views, prompts, task rows, or
 model outputs are qualitatively correct before launching large batches.
 
@@ -549,48 +543,48 @@ This web is the operational center of **Stage 2 Step 2-4**. It combines:
 - final semantic review fields.
 
 Typical usage order:
-1. **Step 2 initial screening**  
+1. **Step 2 initial screening**
    Use `Drop` immediately for unstable or clearly unusable candidates. Use `Keep` only after the
    landmark has a confirmed main view and one confirmed landmark-centric direction anchor.
-2. **Main-view confirmation**  
+2. **Main-view confirmation**
    In the eight-view RGB panel, select the most representative RGB view as the main view. The
    main view does **not** need to be `front`; it is simply the clearest and most benchmark-facing
    reference image for that landmark.
-3. **Single-direction confirmation**  
+3. **Single-direction confirmation**
    Reviewers only need to assign one correct direction anchor for the chosen main view. The
    remaining seven directions in the fixed ring order
    (`front`, `front_right`, `right`, `back_right`, `back`, `back_left`, `left`, `front_left`)
    are then derived automatically from that anchor rather than edited one by one.
-4. **Invalid-view cleanup**  
+4. **Invalid-view cleanup**
    Mark strongly occluded or unusable RGB views as invalid. These views should not survive as
    reviewed evidence just because they were captured geometrically.
-5. **Class-name synchronization**  
+5. **Class-name synchronization**
    If the weak class hint is not suitable, edit `class_name` before auto-labeling so the prompt
    receives a cleaner prior.
-6. **Auto-label execution**  
+6. **Auto-label execution**
    Run auto-label by current landmark, by class, or globally. The web exposes all three actions:
    `Single`, `By Class`, and `All`.
-7. **Auto-label review**  
+7. **Auto-label review**
    Inspect `auto_label_category`, `auto_label_subcategory`, `auto_label_description`, and
    confidence. If the proposal is good, use `Approve Auto Label`; otherwise edit the final
    semantic fields manually.
-8. **Manual correction and save**  
+8. **Manual correction and save**
    Final reviewed fields are `landmark_category`, `landmark_subcategory`, and
    `landmark_description`. Save manual fixes if the automatic suggestion is incomplete or wrong.
 
 Important page areas:
-- **Left landmark list**  
+- **Left landmark list**
   Shows class grouping, review status, and auto-label status so reviewers can move through one
   semantic group at a time.
-- **Point-cloud evidence area**  
+- **Point-cloud evidence area**
   Use this area to confirm that the candidate remains geometrically coherent and is not a
   fragmented or unstable instance.
-- **Eight-view RGB area**  
+- **Eight-view RGB area**
   Use this area to confirm the representative image, one direction anchor, and invalid-view
   removal.
-- **Auto-label controls**  
+- **Auto-label controls**
   Use these controls to start, monitor, cancel, or clear annotation jobs.
-- **Final semantic fields**  
+- **Final semantic fields**
   Use these fields to publish the reviewed landmark semantics that later prompt templates depend on.
 
 Artifacts written during this workflow:
@@ -599,9 +593,9 @@ Artifacts written during this workflow:
 - `landmarks_review/auto_label_debug/` (when debug export is enabled)
 
 <p align="center">
-  <img src="docs/internal_web/stage2_web.png" alt="Stage 2 internal review workspace" />
+  <img src="docs/internal_web/stage2_web.png" alt="Stage 2 landmark review workspace" />
 </p>
-<p align="center"><em>Stage 2 internal review workspace. Point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval are combined here so that Stage 2 Step 2-4 can be completed in one continuous workflow.</em></p>
+<p align="center"><em>Stage 2 landmark review workspace. Point-cloud evidence, multiview RGB evidence, review-state controls, and auto-label approval are combined so that Stage 2 Step 2-4 can be completed in one continuous workflow.</em></p>
 
 ### 8.2 Stage 3 Web: Mission Review, Dataset Browsing, And Experiment Tracking
 
@@ -800,7 +794,88 @@ python scripts/uav_dualcog/task_pipeline.py \
 
 If you only want to verify interface wiring (without real model calls), use `--help` on stage/pipeline scripts and validate config parsing paths first.
 
-## 10) Smoke-Test Commands (Reviewer Quick Check)
+## 10) UAV-DualCog-Train Optimization Probe
+
+The public package includes the two-stage optimization code used to test whether the benchmark's
+structured image supervision improves a compact multimodal model. UAV-DualCog-Train contains
+11,232 image samples from six scenes that are disjoint from the evaluation split. This experiment
+is a lightweight supervision probe rather than a new general-purpose training method.
+
+Use a dedicated modern multimodal-training environment for this optional stage:
+
+```bash
+pip install -r requirements-training.txt
+```
+
+Prepare the training and validation manifests:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/prepare_train_dataset.py \
+  --train-root task_pipeline_data/UAV-DualCog-Train-V1 \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm
+```
+
+Run multimodal SFT with the reported effective batch size of 32:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/run_sft_lora.py \
+  --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl \
+  --valid-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_valid.latest.jsonl \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full \
+  --num-epochs 3 --gradient-accumulation-steps 32 \
+  --max-seq-length 4096 --max-image-side 720 --save-merged
+```
+
+Run joint GRPO with two completions per prompt and equal reward weights:
+
+```bash
+python scripts/uav_dualcog/uav_dualcog_optimize/run_grpo_light.py \
+  --train-jsonl task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/uav_dualcog_train.latest.jsonl \
+  --sft-checkpoint task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/sft_full/merged_model \
+  --output-dir task_pipeline_data/UAV-DualCog-Train-V1/optimization_vllm/checkpoints/grpo_joint \
+  --learning-rate 1e-6 --num-steps 600 \
+  --gradient-accumulation-steps 16 --group-size 2 \
+  --max-completion-length 128 --max-image-side 720 \
+  --w-format 1.0 --w-mcq 1.0 --w-bbox 1.0 --save-merged
+```
+
+Use `--dry-run` and `--smoke-limit` on either training entry point to validate paths and write a
+run plan without starting a full optimization job. `check_training_run.py` audits the resulting
+checkpoints, while `evaluate_transfer.py` aggregates task-level evaluation reports.
+
+## 11) GauUscene Real-Scene 3DGS Image Pilot
+
+The pilot reuses the Stage 2 review and Stage 4 image-task interfaces on three real aerial scenes reconstructed with CityGaussianV2: Upper Campus, SMBU, and LFLS. It keeps real-scene reconstruction separate from physical-flight evaluation.
+
+After placing the licensed GauUscene V2.1 and CityGaussianV2 assets under `task_pipeline_data/UAV-DualCog-3DGS-Pilot/`, start the renderer and inspect the candidate landmarks:
+
+```bash
+python scripts/uav_dualcog/gsplat_render_service.py --help
+python scripts/uav_dualcog/stage2_landmark_label.py \
+  --config configs/uav_dualcog/task_3dgs_gauu_upper.yaml \
+  --phase review_web
+```
+
+The current pilot reviews 300 candidate instances across the three scenes, retains 30 landmarks,
+and balances 400 high-difficulty image questions across the four image tasks (100 per task).
+Landmark use is balanced where geometry permits; another valid landmark supplies a task when a
+selected instance cannot support the required view relation. The same Stage 4 answer-and-BBox
+contract is used for AirSim and 3DGS observations.
+
+```bash
+python scripts/uav_dualcog/annotate_gauu_query_positions.py --help
+python scripts/uav_dualcog/build_gauu_balanced_400.py --help
+python scripts/uav_dualcog/prepare_gauu_3scene_experiment.py --help
+
+python scripts/uav_dualcog/task_pipeline.py \
+  --spec configs/uav_dualcog/task_pipeline/task_pipeline_3dgs_gauu_3scene_400.yaml \
+  --stage stage4 --phase experiment \
+  --experiment-models <model-alias-1> <model-alias-2>
+```
+
+Model calls use the same Stage 4 experiment interface as the AirSim benchmark and are intentionally separated from data construction.
+
+## 12) Smoke-Test Commands (Quick Check)
 
 ```bash
 python scripts/uav_dualcog/stage1_collect_pcd.py --help
@@ -813,21 +888,6 @@ python scripts/uav_dualcog/mock_api_runtime_check.py --config configs/uav_dualco
 ```
 
 These checks confirm runnable CLI interfaces before launching long construction or experiment jobs.
-
-## Citing
-If you use UAV-DualCog in your research, please cite the following paper:
-
-```
-@misc{liu2026uavdualcog,
-      title={UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs},
-      author={Like Liu and Zhengzheng Xu and Hongzhe Li and Lin Wang and Dian Shao},
-      year={2026},
-      eprint={2607.16193},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2607.16193}, 
-}
-```
 
 ## Acknowledgement
 

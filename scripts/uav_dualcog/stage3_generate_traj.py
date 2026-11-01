@@ -41,7 +41,7 @@ from image_compression_utils import preferred_output_path, save_bgr_image
 from progress_utils import StageLogger
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "uav_dualcog" / "common_stage_configs.yaml"
+COMMON_STAGE_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "flightmvstg" / "common_stage_configs.yaml"
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 
@@ -64,7 +64,6 @@ from pipeline_common import (
     prepare_airsim_runtime_unified,
     resolve_base_dir,
     resolve_output_dir_name,
-    resolve_scene_artifact_path,
     resolve_scene_root,
     resolve_task_pipeline_scene_root,
     validate_complete_indices,
@@ -581,7 +580,7 @@ def _resolve_stage3_layout(config: dict[str, Any], scene_id: str) -> dict[str, P
         engine=engine_name,
         workspace_root=WORKSPACE_ROOT,
     ) or scene_root
-    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="video_tasks")
+    task_root_name = resolve_output_dir_name(config, key="stage3_task_root_dir", default="stage3_tasks")
     stage3_root = artifact_scene_root / task_root_name
     missions_root = stage3_root / resolve_output_dir_name(config, key="stage3_mission_dir", default="missions")
     review_root = stage3_root / resolve_output_dir_name(config, key="stage3_review_dir", default="review")
@@ -764,11 +763,7 @@ def _resolve_source_instances(
             source_name = "instances"
     else:
         review_dir_name = resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
-        source_path = resolve_scene_artifact_path(
-            scene_root / review_dir_name,
-            scene_id,
-            ".valid_instances.json",
-        )
+        source_path = scene_root / review_dir_name / f"{scene_id}.valid_instances.json"
         payload = read_json_if_exists(source_path, default={})
         if not isinstance(payload, dict):
             raise ValueError(f"invalid json payload: {source_path}")
@@ -950,7 +945,7 @@ def _build_multi_landmark_composite_set(
             "set_key": "multi_landmark_composite_inspection",
             "display_name": f"Multi-Landmark Inspection-{explicit_multi}",
             "scope": "multi-landmark",
-            "description": f"Apply the {explicit_multi} composite inspection pattern to multiple landmarks, with direct transit segments between landmarks.",
+            "description": f"Apply the {explicit_multi} composite inspection pattern to multiple landmarks with fast direct transfers between landmarks.",
             "element_steps": composite_steps,
             "landmark_count_default": len(selected_landmarks),
             "allow_revisit": False,
@@ -986,7 +981,7 @@ def _build_multi_landmark_composite_set(
         "set_key": "multi_landmark_composite_inspection",
         "display_name": "Multi-Landmark Inspection",
         "scope": "multi-landmark",
-        "description": "Compose single-landmark inspection sets sequentially over the selected landmarks.",
+        "description": "Concatenate single-landmark inspection sets for the selected landmarks in sequence.",
         "element_steps": composite_steps,
         "landmark_count_default": len(selected_landmarks),
         "allow_revisit": False,
@@ -1960,8 +1955,8 @@ def _build_flight_description(
     if secondary:
         secondary_text = "; secondary targets include " + ", ".join(_landmark_description(item) for item in secondary[:4])
     return (
-        f"This flight mission uses the composite instance \"{set_instance.get('set_name', '')}\". "
-        f"The primary target is \"{primary_desc}\" ({primary_cat}), and the atomic-instance sequence is {element_names}{secondary_text}."
+        f"This flight mission uses the composite instance \"{set_instance.get('set_name', '')}\", "
+        f"with primary target \"{primary_desc}\" ({primary_cat}) and atomic sequence {element_names}{secondary_text}."
     )
 
 
@@ -3513,7 +3508,7 @@ def _generate_final_task_video_and_data(
     launched_by_bridge = False
     owns_runtime = True
 
-    if isinstance(shared_runtime, dict) and engine == "airsim":
+    if isinstance(shared_runtime, dict):
         runtime_port = int(shared_runtime.get("runtime_port", configured_port) or configured_port)
         configured_port = int(shared_runtime.get("configured_port", configured_port) or configured_port)
         bootstrap_bridge = shared_runtime.get("bootstrap_bridge", None)
@@ -4175,7 +4170,7 @@ def _generate_final_task_video_and_data(
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="UAV-DualCog Stage3 trajectory generation")
+    parser = argparse.ArgumentParser(description="FlightMVSTG Stage3 trajectory generation")
     parser.add_argument("--mode", type=str, default="generate_mission", choices=["generate", "generate_mission", "generate_dataset", "run_experiment", "record_scene_videos", "web"])
     parser.add_argument("--behavior-sequence", type=str, default=None)
     parser.add_argument("--mission-type", type=str, default=None)
@@ -5661,13 +5656,13 @@ HTML_TEMPLATE = """
             </div>
             <div class='left-tools'>
                 <select id='statusFilter'>
-                    <option value='all'>All Status</option>
-                    <option value='pending'>Pending Review</option>
-                    <option value='pano_ready'>Panorama Pending Confirmation</option>
-                    <option value='pano_confirmed'>Panorama Confirmed</option>
-                    <option value='video_ready'>Video Pending Confirmation</option>
-                    <option value='video_confirmed'>Video Confirmed</option>
-                    <option value='final_ready'>Final Task Generated</option>
+                    <option value='all'>All statuses</option>
+                    <option value='pending'>Pending review</option>
+                    <option value='pano_ready'>Panorama pending confirmation</option>
+                    <option value='pano_confirmed'>Panorama confirmed</option>
+                    <option value='video_ready'>Preview pending confirmation</option>
+                    <option value='video_confirmed'>Preview confirmed</option>
+                    <option value='final_ready'>Final task data generated</option>
                     <option value='valid'>valid</option>
                     <option value='invalid'>invalid</option>
                 </select>
@@ -5677,7 +5672,7 @@ HTML_TEMPLATE = """
 
         <div class='middle-pane'>
             <div class='card view-card'>
-                <p class='view-title'>Step 1: Point-cloud Trajectory Panorama (confirm first)</p>
+                <p class='view-title'>Step 1: Point-Cloud Trajectory Panorama (confirm first)</p>
                 <div class='plot-grid'>
                     <div class='plot-cell'>
                         <div class='hint'>Panorama Left</div>
@@ -5698,17 +5693,17 @@ HTML_TEMPLATE = """
                 <div class='card-pad'>
                     <div class='video-grid'>
                         <div>
-                            <div class='hint'>Point-cloud Preview Video</div>
+                            <div class='hint'>Point-Cloud Preview Video</div>
                             <video id='traj-video' class='video-box' controls></video>
                             <img id='traj-video-fallback' class='video-fallback' alt='traj-fallback' />
                         </div>
                         <div>
-                            <div class='hint'>Final Task RGB Video (720P @ 24 FPS)</div>
+                            <div class='hint'>Final Task RGB Video (720P@24FPS)</div>
                             <video id='final-video' class='video-box' controls></video>
                             <img id='final-video-fallback' class='video-fallback' alt='final-fallback' />
                         </div>
                     </div>
-                    <div class='hint' style='margin-top:8px;'>Target-landmark visibility intervals (frame / second)</div>
+                    <div class='hint' style='margin-top:8px;'>Target-landmark intervals (by frame / by second)</div>
                     <pre id='final-info'>{}</pre>
                     <pre id='res-json'>{}</pre>
                 </div>
@@ -5725,10 +5720,10 @@ HTML_TEMPLATE = """
                     <button class='primary' onclick='generateTrajectory()'>Generate Trajectory</button>
                     <button onclick='confirmPanorama(true)'>Approve Panorama</button>
                     <button onclick='confirmPanorama(false)'>Reject Panorama</button>
-                    <button class='primary' onclick='generateVideo()'>Generate Preview Video</button>
-                    <button onclick='confirmVideo(true)'>Approve Video</button>
-                    <button onclick='confirmVideo(false)'>Reject Video</button>
-                    <button class='primary' onclick='generateFinalTask()'>Generate Final Task</button>
+                    <button class='primary' onclick='generateVideo()'>Generate Preview</button>
+                    <button onclick='confirmVideo(true)'>Approve Preview</button>
+                    <button onclick='confirmVideo(false)'>Reject Preview</button>
+                    <button class='primary' onclick='generateFinalTask()'>Generate Final Task Data</button>
                 </div>
 
                 <hr style='border-color: var(--line); border-style: solid; border-width: 1px 0 0 0;' />
@@ -5958,7 +5953,7 @@ HTML_TEMPLATE = """
             document.getElementById('inp-note').value = inst.note || '';
             document.getElementById('res-json').innerText = '{}';
             document.getElementById('final-info').innerText = '{}';
-            document.getElementById('res-status').innerText = 'Instance selected. Generate the trajectory and confirm the panorama before generating video.';
+            document.getElementById('res-status').innerText = 'Instance selected. Generate the trajectory and confirm the panorama before generating the preview.';
             const urls = inst.asset_urls || {};
             document.getElementById('pano-left').src = assetUrl(urls.panorama_left || '');
             document.getElementById('pano-right').src = assetUrl(urls.panorama_right || '');
@@ -5976,9 +5971,9 @@ HTML_TEMPLATE = """
             document.getElementById('res-status').innerText = "Generating...";
             document.getElementById('save-status').innerText = "";
             document.getElementById('res-json').innerText = "Working...";
-            
+
             const behaviors = document.getElementById('inp-behaviors').value;
-            
+
             fetch('/api/generate', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -6000,7 +5995,7 @@ HTML_TEMPLATE = """
                     document.getElementById('pano-right').src = assetUrl(urls.panorama_right || '');
                     setVideoSource('traj-video', urls.video_web || urls.video || '', urls.video_frames_manifest || '');
                     const op = document.getElementById('opStatus');
-                    if(op) op.innerText = `Generation finished: ${data.traj_id || '-'}`;
+                    if(op) op.innerText = `Generation completed: ${data.traj_id || '-'}`;
                     loadInstances();
                 }
             });
@@ -6026,12 +6021,12 @@ HTML_TEMPLATE = """
                 body: JSON.stringify({instance_id: currentInstance.instance_id})
             }).then(r=>r.json()).then(data => {
                 if(data.error){
-                    document.getElementById('save-status').innerText = `Video generation failed: ${data.error}`;
+                    document.getElementById('save-status').innerText = `Preview generation failed: ${data.error}`;
                     return;
                 }
                 const urls = data.asset_urls || {};
                 setVideoSource('traj-video', urls.video_web || urls.video || '', urls.video_frames_manifest || '');
-                document.getElementById('save-status').innerText = 'Preview video generated. Please review it.';
+                document.getElementById('save-status').innerText = 'Preview generated. Please confirm it.';
                 loadInstances();
             });
         }
@@ -6043,7 +6038,7 @@ HTML_TEMPLATE = """
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({instance_id: currentInstance.instance_id, approved: !!approved})
             }).then(r=>r.json()).then(res => {
-                document.getElementById('save-status').innerText = approved ? 'Video approved' : 'Video rejected';
+                document.getElementById('save-status').innerText = approved ? 'Preview approved' : 'Preview rejected';
                 loadInstances();
             });
         }
@@ -6070,11 +6065,11 @@ HTML_TEMPLATE = """
                         document.getElementById('final-info').innerText = JSON.stringify(renderFinalIntervals(meta), null, 2);
                     }).catch(()=>{});
                 }
-                document.getElementById('save-status').innerText = 'Final task video and metadata generated';
+                document.getElementById('save-status').innerText = 'Final task video and metadata generated.';
                 loadInstances();
             });
         }
-        
+
         function saveDecision(decision) {
             if(!lastResult || !currentInstance) return;
             const label = document.getElementById('inp-label').value || '';
@@ -6095,7 +6090,7 @@ HTML_TEMPLATE = """
                 document.getElementById('save-status').innerText = `Saved: ${decision}`;
                 loadInstances();
                 const op = document.getElementById('opStatus');
-                if(op) op.innerText = `Review decision written: ${decision}`;
+                if(op) op.innerText = `Saved review decision: ${decision}`;
             });
         }
     </script>
@@ -6133,11 +6128,7 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
         _, _, instances = _resolve_source_instances(scene_root=scene_root, scene_id=scene_id, args=args, config=config)
     else:
         review_dir_name = resolve_output_dir_name(config, key="stage2_review_dir", default="landmarks_review")
-        valid_path = resolve_scene_artifact_path(
-            scene_root / review_dir_name,
-            scene_id,
-            ".valid_instances.json",
-        )
+        valid_path = scene_root / review_dir_name / f"{scene_id}.valid_instances.json"
         valid_payload = read_json_if_exists(valid_path, default={})
         if not isinstance(valid_payload, dict):
             raise FileNotFoundError(f"invalid valid_instances payload: {valid_path}")
@@ -6147,7 +6138,7 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
         instances = [it for it in instances if str(it.get("landmark_description", "") or it.get("description", "") or "").strip()]
         if not instances:
             raise FileNotFoundError(f"stage2 passed instances not found: {valid_path}")
-    
+
     asset_alias_map: dict[str, str] = {}
     register_stage3_task_routes(
         app,
@@ -6162,7 +6153,7 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
         token = hashlib.sha1(resolved.encode("utf-8")).hexdigest()
         asset_alias_map[token] = resolved
         return token
-        
+
     review_index_path, review_log_path = _review_files(review_root=review_root, scene_id=scene_id)
     progress_state: dict[str, Any] = {"active": False, "done": 0, "total": 0, "message": "idle"}
 
@@ -6884,7 +6875,7 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
                 },
             )
         return jsonify({"ok": True, "traj_status": new_status})
-            
+
     @app.route("/api/save_decision", methods=["POST"])
     def save_decision():
         data = request.json or {}
@@ -6929,7 +6920,7 @@ def run_web(args: argparse.Namespace, config: dict[str, Any], logger: StageLogge
             },
         )
         return jsonify({"ok": True, "status": status})
-        
+
     port = args.port or 20262
     host = str(args.host or "0.0.0.0")
     logger.info(f"Starting web server on {host}:{port}")
@@ -7054,16 +7045,25 @@ def record_scene_videos_cli(args: argparse.Namespace, config: dict[str, Any], pr
         image_width_override=int(stage3_cfg.get("final_capture_width", (config.get("camera", {}) or {}).get("width", 4096)) or 4096),
         image_height_override=int(stage3_cfg.get("final_capture_height", (config.get("camera", {}) or {}).get("height", 3072)) or 3072),
     )
-    if engine != "airsim":
-        raise RuntimeError("record_scene_videos_cli currently supports airsim only")
-    ensure_single_airsim_process("stage3_render")
-    runtime_port, bootstrap_bridge, launched_by_bridge, configured_port = prepare_airsim_runtime_unified(
-        config=config,
-        scene_id=scene_id,
-        base_bridge_cfg=base_bridge_cfg,
-        vehicle_name=str(vehicles[0] if vehicles else base_bridge_cfg.get("vehicle_name", "drone_1")),
-        vehicle_names=[str(v) for v in vehicles],
-    )
+    bootstrap_bridge = None
+    launched_by_bridge = False
+    configured_port = int(base_bridge_cfg.get("sim_port", 0) or 0)
+    runtime_port = int(configured_port)
+    if engine == "airsim":
+        ensure_single_airsim_process("stage3_render")
+        runtime_port, bootstrap_bridge, launched_by_bridge, configured_port = prepare_airsim_runtime_unified(
+            config=config,
+            scene_id=scene_id,
+            base_bridge_cfg=base_bridge_cfg,
+            vehicle_name=str(vehicles[0] if vehicles else base_bridge_cfg.get("vehicle_name", "drone_1")),
+            vehicle_names=[str(v) for v in vehicles],
+        )
+    else:
+        # HTTP-backed renderers share one scene state; serialize missions while
+        # retaining the common BaseSimBridge capture path.
+        task_parallel = 1
+        reuse_worker_connections = True
+        inputs = _spread_stage3_render_inputs(inputs, worker_count=task_parallel)
     shared_runtime = {
         "runtime_port": int(runtime_port),
         "configured_port": int(configured_port),
@@ -7100,7 +7100,7 @@ def record_scene_videos_cli(args: argparse.Namespace, config: dict[str, Any], pr
             local_config["parallel"]["bindings"] = [{"worker_id": 0, "vehicle": str(vehicle_name)}]
             local_config.setdefault("stage3", {})["final_capture_parallel_workers"] = 1
             local_config["stage3"]["final_capture_bindings"] = [{"worker_id": 0, "vehicle": str(vehicle_name)}]
-            local_config.setdefault("engine_params", {}).setdefault("airsim", {})["vehicle_name"] = str(vehicle_name)
+            local_config.setdefault("engine_params", {}).setdefault(engine, {})["vehicle_name"] = str(vehicle_name)
             out = _generate_final_task_video_and_data(
                 out_dir=mission_dir,
                 scene_root=layout["scene_root"],
@@ -7150,7 +7150,7 @@ def record_scene_videos_cli(args: argparse.Namespace, config: dict[str, Any], pr
                     local_config["parallel"]["bindings"] = [{"worker_id": 0, "vehicle": str(vehicles[worker_id])}]
                     local_config.setdefault("stage3", {})["final_capture_parallel_workers"] = 1
                     local_config["stage3"]["final_capture_bindings"] = [{"worker_id": 0, "vehicle": str(vehicles[worker_id])}]
-                    local_config.setdefault("engine_params", {}).setdefault("airsim", {})["vehicle_name"] = str(vehicles[worker_id])
+                    local_config.setdefault("engine_params", {}).setdefault(engine, {})["vehicle_name"] = str(vehicles[worker_id])
                     out = _generate_final_task_video_and_data(
                         out_dir=mission_dir,
                         scene_root=layout["scene_root"],
@@ -7387,7 +7387,7 @@ def main() -> None:
     logger = StageLogger("stage3.main")
     cfg_path = Path(str(args.config)).resolve()
     config = load_yaml(cfg_path)
-    
+
     if args.mode in {"generate", "generate_mission"}:
         out = generate_single(args, config, logger)
         print(json.dumps(out, ensure_ascii=False, indent=2))

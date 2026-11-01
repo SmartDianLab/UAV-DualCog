@@ -1,0 +1,3606 @@
+{
+  "scene_id": "gauu_lfls",
+  "source_instances_json": "scene_data/gsplat_gauu_lfls/landmarks_raw/gauu_lfls.instances.json",
+  "decision_file": null,
+  "summary": {
+    "instances_total": 120,
+    "valid_instances": 11,
+    "dropped_instances": 109,
+    "default_action": "keep",
+    "last_trigger": "decide",
+    "updated_at": 1789509357.90174
+  },
+  "valid_instances": [
+    {
+      "instance_id": "gauu_lfls_candidate_0204",
+      "landmark_category": "other",
+      "landmark_subcategory": "basketball court",
+      "landmark_description": "green rectangular basketball court with red markings and white lines on a rooftop",
+      "center_3d": [
+        149.16390228271484,
+        -92.92557525634766,
+        -167.42179107666016
+      ],
+      "bbox_3d": {
+        "min": [
+          134.12359619140625,
+          -105.69669342041016,
+          -169.40745544433594
+        ],
+        "max": [
+          162.7135467529297,
+          -81.0133056640625,
+          -163.87489318847656
+        ],
+        "size": [
+          28.589950561523438,
+          24.683387756347656,
+          5.532562255859375
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_03_01",
+      "source_grid_ids": [
+        "grid_02_01",
+        "grid_02_02",
+        "grid_03_01",
+        "grid_03_02"
+      ],
+      "valid_view_count": 5,
+      "valid_viewpoints": [
+        "13",
+        "25",
+        "3",
+        "31",
+        "5"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "5_004",
+          "view_id": "5",
+          "scene_grid_id": "grid_03_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.3724231421947479,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            147.84974670410156,
+            -92.91675567626953,
+            -166.46664428710938
+          ],
+          "bbox_3d": [
+            [
+              135.9119415283203,
+              -103.85514831542969,
+              -166.70777893066406
+            ],
+            [
+              160.15682983398438,
+              -82.0776138305664,
+              -166.1688232421875
+            ]
+          ],
+          "point_count": 2526,
+          "projection_area": 0.009252271395076202,
+          "bbox_2d_xyxy": [
+            314.77899169921875,
+            528.1490478515625,
+            417.78662109375,
+            679.8558959960938
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/5/mask_004.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/5/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/5/rgb.jpg"
+        },
+        {
+          "view_instance_id": "25_003",
+          "view_id": "25",
+          "scene_grid_id": "grid_03_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.3594638407230377,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            150.47805786132812,
+            -93.88581848144531,
+            -167.3980712890625
+          ],
+          "bbox_3d": [
+            [
+              138.81736755371094,
+              -104.6210708618164,
+              -168.43148803710938
+            ],
+            [
+              162.7135467529297,
+              -83.9271469116211,
+              -166.723876953125
+            ]
+          ],
+          "point_count": 1605,
+          "projection_area": 0.00587906652989449,
+          "bbox_2d_xyxy": [
+            857.53662109375,
+            567.1678466796875,
+            953.400390625,
+            677.037109375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/25/mask_003.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/25/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/25/rgb.jpg"
+        },
+        {
+          "view_instance_id": "31_004",
+          "view_id": "31",
+          "scene_grid_id": "grid_02_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.3066205382347107,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            150.7432098388672,
+            -92.51073455810547,
+            -167.4455108642578
+          ],
+          "bbox_3d": [
+            [
+              135.9068145751953,
+              -103.80706024169922,
+              -167.74465942382812
+            ],
+            [
+              160.48129272460938,
+              -83.4210205078125,
+              -163.95823669433594
+            ]
+          ],
+          "point_count": 913,
+          "projection_area": 0.0033420647713950763,
+          "bbox_2d_xyxy": [
+            552.7803955078125,
+            434.915283203125,
+            663.6060791015625,
+            490.6646728515625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/31/mask_004.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/31/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/31/rgb.jpg"
+        },
+        {
+          "view_instance_id": "3_002",
+          "view_id": "3",
+          "scene_grid_id": "grid_03_01",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.3016815483570099,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            147.26806640625,
+            -93.0887451171875,
+            -166.48410034179688
+          ],
+          "bbox_3d": [
+            [
+              135.92706298828125,
+              -105.69669342041016,
+              -166.72544860839844
+            ],
+            [
+              159.81808471679688,
+              -81.10639190673828,
+              -164.99647521972656
+            ]
+          ],
+          "point_count": 2698,
+          "projection_area": 0.009882400351699882,
+          "bbox_2d_xyxy": [
+            281.1389465332031,
+            3.309101104736328,
+            384.64947509765625,
+            161.1987762451172
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/3/mask_002.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/3/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/3/rgb.jpg"
+        },
+        {
+          "view_instance_id": "31_006",
+          "view_id": "31",
+          "scene_grid_id": "grid_02_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.29303255677223206,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            155.68618774414062,
+            -90.30169677734375,
+            -167.5528564453125
+          ],
+          "bbox_3d": [
+            [
+              151.25401306152344,
+              -96.50360107421875,
+              -167.7274169921875
+            ],
+            [
+              161.36968994140625,
+              -83.02632904052734,
+              -167.25970458984375
+            ]
+          ],
+          "point_count": 323,
+          "projection_area": 0.0011833235638921454,
+          "bbox_2d_xyxy": [
+            620.0725708007812,
+            437.6266784667969,
+            661.3757934570312,
+            480.5087890625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/31/mask_006.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/31/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/31/rgb.jpg"
+        },
+        {
+          "view_instance_id": "13_004",
+          "view_id": "13",
+          "scene_grid_id": "grid_02_01",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "landmark signage",
+          "landmark_description": "",
+          "detection_confidence": 0.27381432056427,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            146.96820068359375,
+            -92.93439483642578,
+            -167.50718688964844
+          ],
+          "bbox_3d": [
+            [
+              134.12359619140625,
+              -104.9422607421875,
+              -169.40745544433594
+            ],
+            [
+              159.68019104003906,
+              -81.0133056640625,
+              -163.87489318847656
+            ]
+          ],
+          "point_count": 1215,
+          "projection_area": 0.004450285756154748,
+          "bbox_2d_xyxy": [
+            343.06524658203125,
+            443.3932800292969,
+            415.8211669921875,
+            539.8067016601562
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/13/mask_004.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/13/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/13/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3178393244743347,
+      "cross_view_consistency": 0.625,
+      "mean_projection_area": 0.0056649020613520895,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.8635014226633533,
+      "quality_scores": {
+        "view_coverage": 0.625,
+        "detection_confidence": 0.3178393244743347,
+        "cross_view_consistency": 0.625,
+        "projection_quality": 0.11329804122704179,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 8,
+      "review_status": "pending",
+      "visual_quality_score": 0.9377359357071202,
+      "visual_valid_view_count": 6,
+      "visual_quality_audit": [
+        {
+          "view_id": "5",
+          "score": 0.9284106019342625,
+          "passed": true,
+          "near_black_ratio": 0.0006748826291079812,
+          "white_ratio": 0.009066901408450704,
+          "contrast": 47.18089294433594,
+          "gradient": 14.322755813598633
+        },
+        {
+          "view_id": "25",
+          "score": 0.9297733372533099,
+          "passed": true,
+          "near_black_ratio": 5.868544600938967e-05,
+          "white_ratio": 0.007511737089201878,
+          "contrast": 44.80632019042969,
+          "gradient": 15.535152435302734
+        },
+        {
+          "view_id": "31",
+          "score": 0.9417448983745716,
+          "passed": true,
+          "near_black_ratio": 1.4671361502347417e-05,
+          "white_ratio": 0.004709507042253521,
+          "contrast": 42.906394958496094,
+          "gradient": 17.85206413269043
+        },
+        {
+          "view_id": "3",
+          "score": 0.9314003288989372,
+          "passed": true,
+          "near_black_ratio": 0.015052816901408451,
+          "white_ratio": 0.003506455399061033,
+          "contrast": 53.754947662353516,
+          "gradient": 14.691751480102539
+        },
+        {
+          "view_id": "31",
+          "score": 0.9417448983745716,
+          "passed": true,
+          "near_black_ratio": 1.4671361502347417e-05,
+          "white_ratio": 0.004709507042253521,
+          "contrast": 42.906394958496094,
+          "gradient": 17.85206413269043
+        },
+        {
+          "view_id": "13",
+          "score": 0.9360536171804005,
+          "passed": true,
+          "near_black_ratio": 0.0011003521126760564,
+          "white_ratio": 0.003653169014084507,
+          "contrast": 46.84670639038086,
+          "gradient": 15.258657455444336
+        }
+      ],
+      "geometry_quality_score": 0.7892669096195863,
+      "class_id": 8,
+      "class_name": "landmark signage",
+      "point_count": 9280,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "3",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_00.jpg",
+          "view_direction": "front_left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            281.1389465332031,
+            3.309101104736328,
+            384.64947509765625,
+            161.1987762451172
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "5",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": false,
+          "bbox_2d_xyxy": [
+            314.77899169921875,
+            528.1490478515625,
+            417.78662109375,
+            679.8558959960938
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 2,
+          "source_view_id": "25",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_02.jpg",
+          "view_direction": "back_left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            857.53662109375,
+            567.1678466796875,
+            953.400390625,
+            677.037109375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 3,
+          "source_view_id": "13",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_03.jpg",
+          "view_direction": "back_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            343.06524658203125,
+            443.3932800292969,
+            415.8211669921875,
+            539.8067016601562
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 4,
+          "source_view_id": "31",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_04.jpg",
+          "view_direction": "left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            552.7803955078125,
+            434.915283203125,
+            663.6060791015625,
+            490.6646728515625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": true
+        },
+        {
+          "view_id": 5,
+          "source_view_id": "31",
+          "path": "rgb_views/gauu_lfls_candidate_0204/view_05.jpg",
+          "view_direction": "right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": false,
+          "bbox_2d_xyxy": [
+            620.0725708007812,
+            437.6266784667969,
+            661.3757934570312,
+            480.5087890625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_category": "other",
+      "auto_label_subcategory": "basketball court",
+      "auto_label_description": "green rectangular basketball court with red markings and white lines on a rooftop",
+      "auto_label_name": "basketball court",
+      "auto_label_confidence": 0.9,
+      "auto_label_landmark_type": "other",
+      "auto_label_landmark_description": "green rectangular basketball court with red markings and white lines on a rooftop",
+      "auto_label_reason": "auto_label_single:vlm:other",
+      "auto_label_views": "left,right,front_left,front_right",
+      "auto_label_comment": "green rectangular basketball court with red markings and white lines on a rooftop",
+      "landmark_decision": "approved",
+      "landmark_note": "auto approved by single",
+      "review_action": "keep",
+      "review_note": "Temporary automatic preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0038",
+      "landmark_category": "vegetation",
+      "landmark_subcategory": "deciduous tree",
+      "landmark_description": "dense green deciduous tree cluster with irregular shape located in urban gap",
+      "center_3d": [
+        270.23797607421875,
+        152.81304931640625,
+        -153.76922607421875
+      ],
+      "bbox_3d": {
+        "min": [
+          250.30909729003906,
+          141.89915466308594,
+          -164.491455078125
+        ],
+        "max": [
+          290.501708984375,
+          165.6217803955078,
+          -151.40794372558594
+        ],
+        "size": [
+          40.19261169433594,
+          23.722625732421875,
+          13.083511352539062
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_04_02",
+      "source_grid_ids": [
+        "grid_03_01",
+        "grid_04_02",
+        "grid_05_02",
+        "grid_05_03"
+      ],
+      "valid_view_count": 5,
+      "valid_viewpoints": [
+        "101",
+        "145",
+        "161",
+        "193",
+        "73"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "101_000",
+          "view_id": "101",
+          "scene_grid_id": "grid_04_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.46300652623176575,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            268.9560546875,
+            149.9816131591797,
+            -153.74591064453125
+          ],
+          "bbox_3d": [
+            [
+              260.98590087890625,
+              142.64813232421875,
+              -158.9989471435547
+            ],
+            [
+              275.8991394042969,
+              160.75332641601562,
+              -152.0141143798828
+            ]
+          ],
+          "point_count": 2440,
+          "projection_area": 0.00893629103165299,
+          "bbox_2d_xyxy": [
+            520.6571044921875,
+            602.7418823242188,
+            643.2894897460938,
+            743.1026000976562
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/101/mask_000.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/101/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/101/rgb.jpg"
+        },
+        {
+          "view_instance_id": "73_000",
+          "view_id": "73",
+          "scene_grid_id": "grid_04_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.4108913242816925,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            270.23797607421875,
+            152.81304931640625,
+            -153.05859375
+          ],
+          "bbox_3d": [
+            [
+              262.2613525390625,
+              144.43284606933594,
+              -157.07379150390625
+            ],
+            [
+              276.96112060546875,
+              161.69239807128906,
+              -151.40794372558594
+            ]
+          ],
+          "point_count": 3134,
+          "projection_area": 0.011478788100820633,
+          "bbox_2d_xyxy": [
+            656.5364990234375,
+            473.9759521484375,
+            802.5736083984375,
+            643.0562133789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/73/mask_000.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/73/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/73/rgb.jpg"
+        },
+        {
+          "view_instance_id": "145_002",
+          "view_id": "145",
+          "scene_grid_id": "grid_03_01",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.34954628348350525,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            266.6448669433594,
+            151.08370971679688,
+            -154.50778198242188
+          ],
+          "bbox_3d": [
+            [
+              250.30909729003906,
+              144.3924102783203,
+              -162.41603088378906
+            ],
+            [
+              283.95111083984375,
+              164.8617401123047,
+              -152.27523803710938
+            ]
+          ],
+          "point_count": 1274,
+          "projection_area": 0.004667350527549824,
+          "bbox_2d_xyxy": [
+            98.23518371582031,
+            161.22239685058594,
+            191.17160034179688,
+            261.9393615722656
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/145/mask_002.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/145/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/145/rgb.jpg"
+        },
+        {
+          "view_instance_id": "161_008",
+          "view_id": "161",
+          "scene_grid_id": "grid_05_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.27041733264923096,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            270.2931823730469,
+            155.01797485351562,
+            -153.76922607421875
+          ],
+          "bbox_3d": [
+            [
+              261.8916320800781,
+              144.68882751464844,
+              -158.2889862060547
+            ],
+            [
+              277.495361328125,
+              161.888916015625,
+              -152.20635986328125
+            ]
+          ],
+          "point_count": 950,
+          "projection_area": 0.0034776157678780774,
+          "bbox_2d_xyxy": [
+            612.3428344726562,
+            364.197998046875,
+            702.76171875,
+            436.0118103027344
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/161/mask_008.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/161/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/161/rgb.jpg"
+        },
+        {
+          "view_instance_id": "193_014",
+          "view_id": "193",
+          "scene_grid_id": "grid_05_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.26071515679359436,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            279.6146545410156,
+            154.56326293945312,
+            -154.411865234375
+          ],
+          "bbox_3d": [
+            [
+              255.30023193359375,
+              141.89915466308594,
+              -164.491455078125
+            ],
+            [
+              290.501708984375,
+              165.6217803955078,
+              -152.05853271484375
+            ]
+          ],
+          "point_count": 2169,
+          "projection_area": 0.007946219226260258,
+          "bbox_2d_xyxy": [
+            276.03936767578125,
+            230.5707550048828,
+            383.42010498046875,
+            363.0387268066406
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/193/mask_014.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/193/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/193/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3509153246879578,
+      "cross_view_consistency": 0.625,
+      "mean_projection_area": 0.007301252930832357,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.8802417859511145,
+      "quality_scores": {
+        "view_coverage": 0.625,
+        "detection_confidence": 0.3509153246879578,
+        "cross_view_consistency": 0.625,
+        "projection_quality": 0.14602505861664714,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 16,
+      "review_status": "pending",
+      "visual_quality_score": 0.9601531726261093,
+      "visual_valid_view_count": 5,
+      "visual_quality_audit": [
+        {
+          "view_id": "101",
+          "score": 0.9610482469403696,
+          "passed": true,
+          "near_black_ratio": 0.00038145539906103286,
+          "white_ratio": 0.0016872065727699531,
+          "contrast": 48.99601364135742,
+          "gradient": 16.790454864501953
+        },
+        {
+          "view_id": "73",
+          "score": 0.9467023743601021,
+          "passed": true,
+          "near_black_ratio": 0.0015698356807511736,
+          "white_ratio": 0.003227699530516432,
+          "contrast": 46.330989837646484,
+          "gradient": 16.922687530517578
+        },
+        {
+          "view_id": "145",
+          "score": 0.9580914795496837,
+          "passed": true,
+          "near_black_ratio": 0.00045481220657277,
+          "white_ratio": 0.01147300469483568,
+          "contrast": 47.086997985839844,
+          "gradient": 18.175548553466797
+        },
+        {
+          "view_id": "161",
+          "score": 0.9628136890733048,
+          "passed": true,
+          "near_black_ratio": 0.0004988262910798122,
+          "white_ratio": 0.005120305164319249,
+          "contrast": 47.548702239990234,
+          "gradient": 18.773937225341797
+        },
+        {
+          "view_id": "193",
+          "score": 0.9586592749410793,
+          "passed": true,
+          "near_black_ratio": 0.00023474178403755868,
+          "white_ratio": 0.00868544600938967,
+          "contrast": 50.93294906616211,
+          "gradient": 15.76756477355957
+        }
+      ],
+      "geometry_quality_score": 0.8003303992761197,
+      "class_id": 16,
+      "class_name": "deciduous tree",
+      "point_count": 9967,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "73",
+          "path": "rgb_views/gauu_lfls_candidate_0038/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": false,
+          "bbox_2d_xyxy": [
+            656.5364990234375,
+            473.9759521484375,
+            802.5736083984375,
+            643.0562133789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "101",
+          "path": "rgb_views/gauu_lfls_candidate_0038/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            520.6571044921875,
+            602.7418823242188,
+            643.2894897460938,
+            743.1026000976562
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": true
+        },
+        {
+          "view_id": 2,
+          "source_view_id": "193",
+          "path": "rgb_views/gauu_lfls_candidate_0038/view_02.jpg",
+          "view_direction": "left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            276.03936767578125,
+            230.5707550048828,
+            383.42010498046875,
+            363.0387268066406
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 3,
+          "source_view_id": "145",
+          "path": "rgb_views/gauu_lfls_candidate_0038/view_03.jpg",
+          "view_direction": "back_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            98.23518371582031,
+            161.22239685058594,
+            191.17160034179688,
+            261.9393615722656
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 4,
+          "source_view_id": "161",
+          "path": "rgb_views/gauu_lfls_candidate_0038/view_04.jpg",
+          "view_direction": "back_left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            612.3428344726562,
+            364.197998046875,
+            702.76171875,
+            436.0118103027344
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": false
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_category": "vegetation",
+      "auto_label_subcategory": "deciduous tree",
+      "auto_label_description": "dense green deciduous tree cluster with irregular shape located in urban gap",
+      "auto_label_name": "deciduous tree",
+      "auto_label_confidence": 0.95,
+      "auto_label_landmark_type": "vegetation",
+      "auto_label_landmark_description": "dense green deciduous tree cluster with irregular shape located in urban gap",
+      "auto_label_reason": "auto_label_single:vlm:vegetation",
+      "auto_label_views": "front_right,front,left,back_left",
+      "auto_label_comment": "dense green deciduous tree cluster with irregular shape located in urban gap",
+      "landmark_decision": "approved",
+      "landmark_note": "auto approved by single",
+      "review_action": "keep",
+      "review_note": "Temporary automatic preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0637",
+      "landmark_category": "vegetation",
+      "landmark_subcategory": "shrub cluster",
+      "landmark_description": "dense green shrub cluster with red ground markings",
+      "center_3d": [
+        475.93714904785156,
+        -358.90098571777344,
+        -162.91668701171875
+      ],
+      "bbox_3d": {
+        "min": [
+          466.4985656738281,
+          -366.31103515625,
+          -169.71615600585938
+        ],
+        "max": [
+          488.1090393066406,
+          -345.1059265136719,
+          -159.48912048339844
+        ],
+        "size": [
+          21.6104736328125,
+          21.205108642578125,
+          10.227035522460938
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_02_03",
+      "source_grid_ids": [
+        "grid_01_03",
+        "grid_02_02",
+        "grid_02_03"
+      ],
+      "valid_view_count": 6,
+      "valid_viewpoints": [
+        "237",
+        "277",
+        "279",
+        "281",
+        "287",
+        "289"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "279_007",
+          "view_id": "279",
+          "scene_grid_id": "grid_02_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.30940890312194824,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            474.6469421386719,
+            -358.6588439941406,
+            -163.249755859375
+          ],
+          "bbox_3d": [
+            [
+              467.9958190917969,
+              -365.9759521484375,
+              -168.74620056152344
+            ],
+            [
+              487.7042236328125,
+              -350.2700500488281,
+              -160.08914184570312
+            ]
+          ],
+          "point_count": 1577,
+          "projection_area": 0.005774655627198124,
+          "bbox_2d_xyxy": [
+            1033.240966796875,
+            366.2997741699219,
+            1120.28515625,
+            486.4089050292969
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/279/mask_007.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/279/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/279/rgb.jpg"
+        },
+        {
+          "view_instance_id": "277_011",
+          "view_id": "277",
+          "scene_grid_id": "grid_02_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.2956526577472687,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            474.4892883300781,
+            -359.14312744140625,
+            -163.11758422851562
+          ],
+          "bbox_3d": [
+            [
+              467.9078369140625,
+              -366.0985107421875,
+              -168.84054565429688
+            ],
+            [
+              488.1090393066406,
+              -350.84893798828125,
+              -160.16986083984375
+            ]
+          ],
+          "point_count": 1428,
+          "projection_area": 0.005228788100820633,
+          "bbox_2d_xyxy": [
+            1115.640869140625,
+            346.35333251953125,
+            1201.8414306640625,
+            464.0252685546875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/277/mask_011.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/277/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/277/rgb.jpg"
+        },
+        {
+          "view_instance_id": "281_010",
+          "view_id": "281",
+          "scene_grid_id": "grid_01_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.29182004928588867,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            476.65057373046875,
+            -359.2335205078125,
+            -162.7469482421875
+          ],
+          "bbox_3d": [
+            [
+              470.1378479003906,
+              -366.2671813964844,
+              -169.33840942382812
+            ],
+            [
+              482.9234924316406,
+              -350.7074279785156,
+              -160.01010131835938
+            ]
+          ],
+          "point_count": 1200,
+          "projection_area": 0.004394416764361079,
+          "bbox_2d_xyxy": [
+            635.7164916992188,
+            409.2567443847656,
+            709.6695556640625,
+            526.0519409179688
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/281/mask_010.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/281/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/281/rgb.jpg"
+        },
+        {
+          "view_instance_id": "287_006",
+          "view_id": "287",
+          "scene_grid_id": "grid_01_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.29038920998573303,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            476.58831787109375,
+            -361.914306640625,
+            -162.7151336669922
+          ],
+          "bbox_3d": [
+            [
+              470.436767578125,
+              -366.31103515625,
+              -168.82080078125
+            ],
+            [
+              482.0335388183594,
+              -351.40655517578125,
+              -159.88946533203125
+            ]
+          ],
+          "point_count": 2015,
+          "projection_area": 0.007381118112543963,
+          "bbox_2d_xyxy": [
+            174.82510375976562,
+            639.5570678710938,
+            270.71728515625,
+            795.924560546875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/287/mask_006.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/287/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/287/rgb.jpg"
+        },
+        {
+          "view_instance_id": "237_003",
+          "view_id": "237",
+          "scene_grid_id": "grid_02_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.28713613748550415,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            475.2859802246094,
+            -353.65631103515625,
+            -163.08642578125
+          ],
+          "bbox_3d": [
+            [
+              466.4985656738281,
+              -364.151123046875,
+              -169.71615600585938
+            ],
+            [
+              483.6253662109375,
+              -345.1059265136719,
+              -159.48912048339844
+            ]
+          ],
+          "point_count": 4278,
+          "projection_area": 0.015669878370457208,
+          "bbox_2d_xyxy": [
+            767.5098266601562,
+            326.37371826171875,
+            944.0380249023438,
+            496.03704833984375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/237/mask_003.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/237/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/237/rgb.jpg"
+        },
+        {
+          "view_instance_id": "289_005",
+          "view_id": "289",
+          "scene_grid_id": "grid_01_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.2646576166152954,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            479.757568359375,
+            -354.30218505859375,
+            -161.06082153320312
+          ],
+          "bbox_3d": [
+            [
+              476.1138916015625,
+              -357.60784912109375,
+              -163.2642822265625
+            ],
+            [
+              483.083984375,
+              -350.5025939941406,
+              -159.6321563720703
+            ]
+          ],
+          "point_count": 709,
+          "projection_area": 0.0025965342907385697,
+          "bbox_2d_xyxy": [
+            137.62258911132812,
+            786.20361328125,
+            207.70895385742188,
+            850.5327758789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/289/mask_005.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/289/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/289/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.2898440957069397,
+      "cross_view_consistency": 0.75,
+      "mean_projection_area": 0.006840898544353263,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.8814927082132871,
+      "quality_scores": {
+        "view_coverage": 0.75,
+        "detection_confidence": 0.2898440957069397,
+        "cross_view_consistency": 0.75,
+        "projection_quality": 0.13681797088706524,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 21,
+      "review_status": "pending",
+      "visual_quality_score": 0.9495249173131108,
+      "visual_valid_view_count": 6,
+      "visual_quality_audit": [
+        {
+          "view_id": "279",
+          "score": 0.9479983612543402,
+          "passed": true,
+          "near_black_ratio": 0.0004841549295774648,
+          "white_ratio": 0.000806924882629108,
+          "contrast": 43.8753776550293,
+          "gradient": 18.426029205322266
+        },
+        {
+          "view_id": "277",
+          "score": 0.9557617267161839,
+          "passed": true,
+          "near_black_ratio": 0.0002494131455399061,
+          "white_ratio": 0.0010123239436619718,
+          "contrast": 45.498558044433594,
+          "gradient": 17.99341583251953
+        },
+        {
+          "view_id": "281",
+          "score": 0.9465353221240898,
+          "passed": true,
+          "near_black_ratio": 5.868544600938967e-05,
+          "white_ratio": 0.002098004694835681,
+          "contrast": 43.52130126953125,
+          "gradient": 17.96908950805664
+        },
+        {
+          "view_id": "287",
+          "score": 0.9478042591578292,
+          "passed": true,
+          "near_black_ratio": 0.0013497652582159625,
+          "white_ratio": 0.00044014084507042255,
+          "contrast": 46.35247039794922,
+          "gradient": 16.840417861938477
+        },
+        {
+          "view_id": "237",
+          "score": 0.9181616412772687,
+          "passed": true,
+          "near_black_ratio": 0.0011296948356807513,
+          "white_ratio": 0.0020833333333333333,
+          "contrast": 44.19379806518555,
+          "gradient": 14.485849380493164
+        },
+        {
+          "view_id": "289",
+          "score": 0.9392299714549839,
+          "passed": true,
+          "near_black_ratio": 0.0007775821596244132,
+          "white_ratio": 0.0004841549295774648,
+          "contrast": 43.972373962402344,
+          "gradient": 16.95751190185547
+        }
+      ],
+      "geometry_quality_score": 0.8134604991134633,
+      "class_id": 21,
+      "class_name": "shrub cluster",
+      "point_count": 11207,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "237",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_00.jpg",
+          "view_direction": "back",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": false,
+          "bbox_2d_xyxy": [
+            767.5098266601562,
+            326.37371826171875,
+            944.0380249023438,
+            496.03704833984375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "287",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_01.jpg",
+          "view_direction": "right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            174.82510375976562,
+            639.5570678710938,
+            270.71728515625,
+            795.924560546875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 2,
+          "source_view_id": "279",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_02.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            1033.240966796875,
+            366.2997741699219,
+            1120.28515625,
+            486.4089050292969
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 3,
+          "source_view_id": "277",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_03.jpg",
+          "view_direction": "back_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            1115.640869140625,
+            346.35333251953125,
+            1201.8414306640625,
+            464.0252685546875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 4,
+          "source_view_id": "281",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_04.jpg",
+          "view_direction": "front",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            635.7164916992188,
+            409.2567443847656,
+            709.6695556640625,
+            526.0519409179688
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": true
+        },
+        {
+          "view_id": 5,
+          "source_view_id": "289",
+          "path": "rgb_views/gauu_lfls_candidate_0637/view_05.jpg",
+          "view_direction": "back_left",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": false,
+          "bbox_2d_xyxy": [
+            137.62258911132812,
+            786.20361328125,
+            207.70895385742188,
+            850.5327758789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_category": "vegetation",
+      "auto_label_subcategory": "shrub cluster",
+      "auto_label_description": "dense green shrub cluster with red ground markings",
+      "auto_label_name": "shrub cluster",
+      "auto_label_confidence": 0.9,
+      "auto_label_landmark_type": "vegetation",
+      "auto_label_landmark_description": "dense green shrub cluster with red ground markings",
+      "auto_label_reason": "auto_label_single:vlm:vegetation",
+      "auto_label_views": "front,back,right,front_right",
+      "auto_label_comment": "dense green shrub cluster with red ground markings",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by single",
+      "review_action": "keep",
+      "review_note": "Temporary automatic preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0376",
+      "landmark_category": "vegetation",
+      "landmark_subcategory": "deciduous tree",
+      "landmark_description": "small green deciduous tree with rounded canopy located on a rooftop",
+      "center_3d": [
+        334.92633056640625,
+        200.2577896118164,
+        -158.87894439697266
+      ],
+      "bbox_3d": {
+        "min": [
+          330.4453430175781,
+          195.89004516601562,
+          -169.49887084960938
+        ],
+        "max": [
+          341.39501953125,
+          206.43418884277344,
+          -155.99208068847656
+        ],
+        "size": [
+          10.949676513671875,
+          10.544143676757812,
+          13.506790161132812
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_05_02",
+      "source_grid_ids": [
+        "grid_04_02",
+        "grid_05_03"
+      ],
+      "valid_view_count": 4,
+      "valid_viewpoints": [
+        "101",
+        "193",
+        "71",
+        "99"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "193_002",
+          "view_id": "193",
+          "scene_grid_id": "grid_05_03",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.34292203187942505,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            338.3314514160156,
+            201.0768585205078,
+            -158.94581604003906
+          ],
+          "bbox_3d": [
+            [
+              331.03271484375,
+              195.89004516601562,
+              -167.03758239746094
+            ],
+            [
+              341.39501953125,
+              204.6487274169922,
+              -156.59237670898438
+            ]
+          ],
+          "point_count": 611,
+          "projection_area": 0.002236591441969519,
+          "bbox_2d_xyxy": [
+            461.9698791503906,
+            510.1584167480469,
+            520.8182983398438,
+            575.8908081054688
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/193/mask_002.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/193/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/193/rgb.jpg"
+        },
+        {
+          "view_instance_id": "101_006",
+          "view_id": "101",
+          "scene_grid_id": "grid_04_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.3067994713783264,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            334.48785400390625,
+            198.905517578125,
+            -159.31350708007812
+          ],
+          "bbox_3d": [
+            [
+              330.4536437988281,
+              195.94410705566406,
+              -169.49887084960938
+            ],
+            [
+              339.015869140625,
+              203.47494506835938,
+              -156.66836547851562
+            ]
+          ],
+          "point_count": 580,
+          "projection_area": 0.002123937573270809,
+          "bbox_2d_xyxy": [
+            932.3138427734375,
+            457.08099365234375,
+            991.8746948242188,
+            517.8447265625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/101/mask_006.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/101/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/101/rgb.jpg"
+        },
+        {
+          "view_instance_id": "99_012",
+          "view_id": "99",
+          "scene_grid_id": "grid_04_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.28947120904922485,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            334.23394775390625,
+            199.438720703125,
+            -158.81207275390625
+          ],
+          "bbox_3d": [
+            [
+              330.4453430175781,
+              196.10435485839844,
+              -167.56671142578125
+            ],
+            [
+              339.24298095703125,
+              205.14768981933594,
+              -156.47396850585938
+            ]
+          ],
+          "point_count": 1066,
+          "projection_area": 0.003904418229777257,
+          "bbox_2d_xyxy": [
+            1016.9690551757812,
+            706.0003662109375,
+            1095.52294921875,
+            787.7827758789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/99/mask_012.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/99/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/99/rgb.jpg"
+        },
+        {
+          "view_instance_id": "71_010",
+          "view_id": "71",
+          "scene_grid_id": "grid_04_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "deciduous tree",
+          "landmark_description": "",
+          "detection_confidence": 0.28813138604164124,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            335.36480712890625,
+            202.57083129882812,
+            -157.61923217773438
+          ],
+          "bbox_3d": [
+            [
+              332.1932067871094,
+              197.9028778076172,
+              -162.198974609375
+            ],
+            [
+              339.989501953125,
+              206.43418884277344,
+              -155.99208068847656
+            ]
+          ],
+          "point_count": 911,
+          "projection_area": 0.0033356535756154746,
+          "bbox_2d_xyxy": [
+            188.1971893310547,
+            175.7800750732422,
+            267.9080505371094,
+            249.07017517089844
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/71/mask_010.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/71/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/71/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3068310245871544,
+      "cross_view_consistency": 0.5,
+      "mean_projection_area": 0.0029001502051582647,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.8668403723357867,
+      "quality_scores": {
+        "view_coverage": 0.5,
+        "detection_confidence": 0.3068310245871544,
+        "cross_view_consistency": 0.5,
+        "projection_quality": 0.05800300410316529,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 64,
+      "review_status": "pending",
+      "visual_quality_score": 0.9617133515559714,
+      "visual_valid_view_count": 4,
+      "visual_quality_audit": [
+        {
+          "view_id": "193",
+          "score": 0.9586592749410793,
+          "passed": true,
+          "near_black_ratio": 0.00023474178403755868,
+          "white_ratio": 0.00868544600938967,
+          "contrast": 50.93294906616211,
+          "gradient": 15.76756477355957
+        },
+        {
+          "view_id": "101",
+          "score": 0.9610482469403696,
+          "passed": true,
+          "near_black_ratio": 0.00038145539906103286,
+          "white_ratio": 0.0016872065727699531,
+          "contrast": 48.99601364135742,
+          "gradient": 16.790454864501953
+        },
+        {
+          "view_id": "99",
+          "score": 0.9591101568549532,
+          "passed": true,
+          "near_black_ratio": 0.004680164319248827,
+          "white_ratio": 0.005311032863849765,
+          "contrast": 55.02334213256836,
+          "gradient": 14.63000202178955
+        },
+        {
+          "view_id": "71",
+          "score": 0.9680357274874835,
+          "passed": true,
+          "near_black_ratio": 0.0008215962441314554,
+          "white_ratio": 0.018485915492957746,
+          "contrast": 58.02346420288086,
+          "gradient": 15.336822509765625
+        }
+      ],
+      "geometry_quality_score": 0.771967393115602,
+      "class_id": 64,
+      "class_name": "deciduous tree",
+      "point_count": 3168,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "99",
+          "path": "rgb_views/gauu_lfls_candidate_0376/view_00.jpg",
+          "view_direction": "right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            1016.9690551757812,
+            706.0003662109375,
+            1095.52294921875,
+            787.7827758789062
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap",
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "71",
+          "path": "rgb_views/gauu_lfls_candidate_0376/view_01.jpg",
+          "view_direction": "back_left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            188.1971893310547,
+            175.7800750732422,
+            267.9080505371094,
+            249.07017517089844
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 2,
+          "source_view_id": "193",
+          "path": "rgb_views/gauu_lfls_candidate_0376/view_02.jpg",
+          "view_direction": "front_left",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            461.9698791503906,
+            510.1584167480469,
+            520.8182983398438,
+            575.8908081054688
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": false,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        },
+        {
+          "view_id": 3,
+          "source_view_id": "101",
+          "path": "rgb_views/gauu_lfls_candidate_0376/view_03.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "manual_reviewed_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            932.3138427734375,
+            457.08099365234375,
+            991.8746948242188,
+            517.8447265625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true,
+          "is_query_view": true,
+          "view_direction_auto": false,
+          "view_direction_source": "manual_swap"
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_category": "vegetation",
+      "auto_label_subcategory": "deciduous tree",
+      "auto_label_description": "small green deciduous tree with rounded canopy located on a rooftop",
+      "auto_label_name": "deciduous tree",
+      "auto_label_confidence": 0.95,
+      "auto_label_landmark_type": "vegetation",
+      "auto_label_landmark_description": "small green deciduous tree with rounded canopy located on a rooftop",
+      "auto_label_reason": "auto_label_single:vlm:vegetation",
+      "auto_label_views": "front_right,right,front_left,back_left",
+      "auto_label_comment": "small green deciduous tree with rounded canopy located on a rooftop",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by single",
+      "review_action": "keep",
+      "review_note": "Temporary automatic preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0510",
+      "landmark_category": "vegetation",
+      "landmark_subcategory": "shrub cluster",
+      "landmark_description": "a shrub cluster visible from multiple aerial viewpoints",
+      "center_3d": [
+        138.82506561279297,
+        -514.9711303710938,
+        -163.234375
+      ],
+      "bbox_3d": {
+        "min": [
+          117.66895294189453,
+          -534.4818725585938,
+          -167.3904266357422
+        ],
+        "max": [
+          167.61373901367188,
+          -498.40301513671875,
+          -157.1521453857422
+        ],
+        "size": [
+          49.944786071777344,
+          36.078857421875,
+          10.23828125
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_01_02",
+      "source_grid_ids": [
+        "grid_01_02"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "523",
+        "525"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "525_005",
+          "view_id": "525",
+          "scene_grid_id": "grid_01_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.3245011866092682,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            139.29237365722656,
+            -515.674072265625,
+            -163.27978515625
+          ],
+          "bbox_3d": [
+            [
+              117.66895294189453,
+              -534.4818725585938,
+              -167.14279174804688
+            ],
+            [
+              167.61373901367188,
+              -498.96728515625,
+              -157.1521453857422
+            ]
+          ],
+          "point_count": 14413,
+          "projection_area": 0.052802608440797184,
+          "bbox_2d_xyxy": [
+            729.8389282226562,
+            5.288105010986328,
+            1026.3363037109375,
+            455.7567138671875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/525/mask_005.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/525/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/525/rgb.jpg"
+        },
+        {
+          "view_instance_id": "523_010",
+          "view_id": "523",
+          "scene_grid_id": "grid_01_02",
+          "landmark_category": "vegetation",
+          "landmark_subcategory": "shrub cluster",
+          "landmark_description": "",
+          "detection_confidence": 0.29723453521728516,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            138.35775756835938,
+            -514.2681884765625,
+            -163.18896484375
+          ],
+          "bbox_3d": [
+            [
+              117.67855834960938,
+              -526.518798828125,
+              -167.3904266357422
+            ],
+            [
+              165.49774169921875,
+              -498.40301513671875,
+              -157.2715301513672
+            ]
+          ],
+          "point_count": 12742,
+          "projection_area": 0.0466780847010551,
+          "bbox_2d_xyxy": [
+            724.0072631835938,
+            4.5673322677612305,
+            1020.6529541015625,
+            436.53076171875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/523/mask_010.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/523/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/523/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3108678609132767,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.049740346570926144,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.7541939992241328,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.3108678609132767,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 0.9948069314185228,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 107,
+      "review_status": "pending",
+      "visual_quality_score": 0.9067070233684495,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "525",
+          "score": 0.9065453807651018,
+          "passed": true,
+          "near_black_ratio": 0.0004841549295774648,
+          "white_ratio": 0.002450117370892019,
+          "contrast": 41.4503288269043,
+          "gradient": 14.432903289794922
+        },
+        {
+          "view_id": "523",
+          "score": 0.9068686659717974,
+          "passed": true,
+          "near_black_ratio": 0.0006308685446009389,
+          "white_ratio": 0.003198356807511737,
+          "contrast": 41.84293746948242,
+          "gradient": 14.335640907287598
+        }
+      ],
+      "geometry_quality_score": 0.601680975079816,
+      "class_id": 30,
+      "class_name": "shrub cluster",
+      "point_count": 27155,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "525",
+          "path": "rgb_views/gauu_lfls_candidate_0510/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            729.8389282226562,
+            5.288105010986328,
+            1026.3363037109375,
+            455.7567138671875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "523",
+          "path": "rgb_views/gauu_lfls_candidate_0510/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            724.0072631835938,
+            4.5673322677612305,
+            1020.6529541015625,
+            436.53076171875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0463",
+      "landmark_category": "transport_infrastructure",
+      "landmark_subcategory": "pedestrian crosswalk",
+      "landmark_description": "a pedestrian crosswalk visible from multiple aerial viewpoints",
+      "center_3d": [
+        72.98429489135742,
+        -408.62696838378906,
+        -164.094482421875
+      ],
+      "bbox_3d": {
+        "min": [
+          20.4771728515625,
+          -459.1915588378906,
+          -165.2112274169922
+        ],
+        "max": [
+          119.3580322265625,
+          -354.69708251953125,
+          -161.4464569091797
+        ],
+        "size": [
+          98.880859375,
+          104.49447631835938,
+          3.7647705078125
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_02_01",
+      "source_grid_ids": [
+        "grid_02_01"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "587",
+        "589"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "587_004",
+          "view_id": "587",
+          "scene_grid_id": "grid_02_01",
+          "landmark_category": "transport_infrastructure",
+          "landmark_subcategory": "pedestrian crosswalk",
+          "landmark_description": "",
+          "detection_confidence": 0.3315146565437317,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            77.91290283203125,
+            -407.0401306152344,
+            -164.35992431640625
+          ],
+          "bbox_3d": [
+            [
+              62.44144821166992,
+              -422.74365234375,
+              -165.2112274169922
+            ],
+            [
+              93.1421127319336,
+              -391.4176330566406,
+              -163.8595733642578
+            ]
+          ],
+          "point_count": 2227,
+          "projection_area": 0.008156872801875733,
+          "bbox_2d_xyxy": [
+            410.4408264160156,
+            626.4247436523438,
+            746.1408081054688,
+            665.025146484375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/587/mask_004.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/587/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/587/rgb.jpg"
+        },
+        {
+          "view_instance_id": "589_008",
+          "view_id": "589",
+          "scene_grid_id": "grid_02_01",
+          "landmark_category": "transport_infrastructure",
+          "landmark_subcategory": "pedestrian crosswalk",
+          "landmark_description": "",
+          "detection_confidence": 0.2989022731781006,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            68.0556869506836,
+            -410.21380615234375,
+            -163.82904052734375
+          ],
+          "bbox_3d": [
+            [
+              20.4771728515625,
+              -459.1915588378906,
+              -165.0950469970703
+            ],
+            [
+              119.3580322265625,
+              -354.69708251953125,
+              -161.4464569091797
+            ]
+          ],
+          "point_count": 32722,
+          "projection_area": 0.11987653868698711,
+          "bbox_2d_xyxy": [
+            3.3607101440429688,
+            728.4556274414062,
+            1273.95166015625,
+            849.6434936523438
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/589/mask_008.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/589/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/589/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.31520846486091614,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.06401670574443143,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.7290345241800545,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.31520846486091614,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 1.0,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 109,
+      "review_status": "pending",
+      "visual_quality_score": 0.8552440325767992,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "587",
+          "score": 0.8592268173770639,
+          "passed": true,
+          "near_black_ratio": 0.004812206572769953,
+          "white_ratio": 0.0007042253521126761,
+          "contrast": 39.110443115234375,
+          "gradient": 11.109762191772461
+        },
+        {
+          "view_id": "589",
+          "score": 0.8512612477765346,
+          "passed": true,
+          "near_black_ratio": 0.007423708920187793,
+          "white_ratio": 0.0,
+          "contrast": 38.31454849243164,
+          "gradient": 11.256906509399414
+        }
+      ],
+      "geometry_quality_score": 0.6028250157833099,
+      "class_id": 45,
+      "class_name": "pedestrian crosswalk",
+      "point_count": 34949,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "589",
+          "path": "rgb_views/gauu_lfls_candidate_0463/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            3.3607101440429688,
+            728.4556274414062,
+            1273.95166015625,
+            849.6434936523438
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "587",
+          "path": "rgb_views/gauu_lfls_candidate_0463/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            410.4408264160156,
+            626.4247436523438,
+            746.1408081054688,
+            665.025146484375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0930",
+      "landmark_category": "urban_landscape",
+      "landmark_subcategory": "urban garden",
+      "landmark_description": "a urban garden visible from multiple aerial viewpoints",
+      "center_3d": [
+        364.7270812988281,
+        -685.088623046875,
+        -154.89686584472656
+      ],
+      "bbox_3d": {
+        "min": [
+          312.50482177734375,
+          -736.0630493164062,
+          -163.24176025390625
+        ],
+        "max": [
+          430.1923828125,
+          -630.8563232421875,
+          -142.7730255126953
+        ],
+        "size": [
+          117.68756103515625,
+          105.20672607421875,
+          20.468734741210938
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_00_02",
+      "source_grid_ids": [
+        "grid_00_02"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "533",
+        "603"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "533_005",
+          "view_id": "533",
+          "scene_grid_id": "grid_00_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "urban garden",
+          "landmark_description": "",
+          "detection_confidence": 0.2829764187335968,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            362.1278076171875,
+            -687.74853515625,
+            -154.7000732421875
+          ],
+          "bbox_3d": [
+            [
+              312.50482177734375,
+              -736.0630493164062,
+              -163.24176025390625
+            ],
+            [
+              414.3072509765625,
+              -636.3950805664062,
+              -144.017822265625
+            ]
+          ],
+          "point_count": 72031,
+          "projection_area": 0.2644526670574443,
+          "bbox_2d_xyxy": [
+            3.527374267578125,
+            3.302999973297119,
+            1273.8045654296875,
+            244.321533203125
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/533/mask_005.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/533/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/533/rgb.jpg"
+        },
+        {
+          "view_instance_id": "603_004",
+          "view_id": "603",
+          "scene_grid_id": "grid_00_02",
+          "landmark_category": "urban_landscape",
+          "landmark_subcategory": "urban garden",
+          "landmark_description": "",
+          "detection_confidence": 0.2783699631690979,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            367.32635498046875,
+            -682.4287109375,
+            -155.09365844726562
+          ],
+          "bbox_3d": [
+            [
+              315.191650390625,
+              -731.3818359375,
+              -162.2327117919922
+            ],
+            [
+              430.1923828125,
+              -630.8563232421875,
+              -142.7730255126953
+            ]
+          ],
+          "point_count": 55333,
+          "projection_area": 0.20295556125439626,
+          "bbox_2d_xyxy": [
+            7.6905059814453125,
+            447.92950439453125,
+            1224.6451416015625,
+            776.2623291015625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/603/mask_004.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/603/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/603/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.28067319095134735,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.2337041141559203,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.7085806829138295,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.28067319095134735,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 1.0,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 111,
+      "review_status": "pending",
+      "visual_quality_score": 0.8184805829134971,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "533",
+          "score": 0.8972449231035833,
+          "passed": true,
+          "near_black_ratio": 0.015316901408450705,
+          "white_ratio": 0.02608568075117371,
+          "contrast": 55.99467849731445,
+          "gradient": 11.146503448486328
+        },
+        {
+          "view_id": "603",
+          "score": 0.739716242723411,
+          "passed": true,
+          "near_black_ratio": 0.05335974178403756,
+          "white_ratio": 0.0009976525821596245,
+          "contrast": 37.8859977722168,
+          "gradient": 10.559297561645508
+        }
+      ],
+      "geometry_quality_score": 0.5986807829141617,
+      "class_id": 50,
+      "class_name": "urban garden",
+      "point_count": 127364,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "533",
+          "path": "rgb_views/gauu_lfls_candidate_0930/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            3.527374267578125,
+            3.302999973297119,
+            1273.8045654296875,
+            244.321533203125
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "603",
+          "path": "rgb_views/gauu_lfls_candidate_0930/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            7.6905059814453125,
+            447.92950439453125,
+            1224.6451416015625,
+            776.2623291015625
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0455",
+      "landmark_category": "building",
+      "landmark_subcategory": "high-rise building",
+      "landmark_description": "a high-rise building visible from multiple aerial viewpoints",
+      "center_3d": [
+        333.19342041015625,
+        -737.8974304199219,
+        -119.27724075317383
+      ],
+      "bbox_3d": {
+        "min": [
+          310.7940979003906,
+          -868.8873291015625,
+          -150.526611328125
+        ],
+        "max": [
+          369.2579650878906,
+          -717.1771850585938,
+          -88.5503158569336
+        ],
+        "size": [
+          58.4638671875,
+          151.71014404296875,
+          61.976295471191406
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_00_02",
+      "source_grid_ids": [
+        "grid_00_02"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "603",
+        "629"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "603_003",
+          "view_id": "603",
+          "scene_grid_id": "grid_00_02",
+          "landmark_category": "building",
+          "landmark_subcategory": "high-rise building",
+          "landmark_description": "",
+          "detection_confidence": 0.3324121832847595,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            338.02838134765625,
+            -738.3323974609375,
+            -118.73764038085938
+          ],
+          "bbox_3d": [
+            [
+              320.76116943359375,
+              -868.8873291015625,
+              -149.25608825683594
+            ],
+            [
+              369.2579650878906,
+              -723.17333984375,
+              -88.5503158569336
+            ]
+          ],
+          "point_count": 36880,
+          "projection_area": 0.13511045574443142,
+          "bbox_2d_xyxy": [
+            939.1934814453125,
+            9.929896354675293,
+            1275.22412109375,
+            610.9691162109375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/603/mask_003.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/603/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/603/rgb.jpg"
+        },
+        {
+          "view_instance_id": "629_006",
+          "view_id": "629",
+          "scene_grid_id": "grid_00_02",
+          "landmark_category": "building",
+          "landmark_subcategory": "high-rise building",
+          "landmark_description": "",
+          "detection_confidence": 0.3284003436565399,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            328.35845947265625,
+            -737.4624633789062,
+            -119.81684112548828
+          ],
+          "bbox_3d": [
+            [
+              310.7940979003906,
+              -760.9521484375,
+              -150.526611328125
+            ],
+            [
+              343.5849609375,
+              -717.1771850585938,
+              -93.667236328125
+            ]
+          ],
+          "point_count": 21571,
+          "projection_area": 0.07902439917936695,
+          "bbox_2d_xyxy": [
+            1.8081092834472656,
+            9.64863395690918,
+            250.37326049804688,
+            548.4207153320312
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/629/mask_006.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/629/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/629/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3304062634706497,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.10706742746189918,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.7193674189833001,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.3304062634706497,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 1.0,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 113,
+      "review_status": "pending",
+      "visual_quality_score": 0.8340860863501223,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "603",
+          "score": 0.739716242723411,
+          "passed": true,
+          "near_black_ratio": 0.05335974178403756,
+          "white_ratio": 0.0009976525821596245,
+          "contrast": 37.8859977722168,
+          "gradient": 10.559297561645508
+        },
+        {
+          "view_id": "629",
+          "score": 0.9284559299768337,
+          "passed": true,
+          "near_black_ratio": 0.005046948356807511,
+          "white_ratio": 0.02498532863849765,
+          "contrast": 55.66954040527344,
+          "gradient": 12.062347412109375
+        }
+      ],
+      "geometry_quality_score": 0.604648751616478,
+      "class_id": 57,
+      "class_name": "high-rise building",
+      "point_count": 58451,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "603",
+          "path": "rgb_views/gauu_lfls_candidate_0455/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            939.1934814453125,
+            9.929896354675293,
+            1275.22412109375,
+            610.9691162109375
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "629",
+          "path": "rgb_views/gauu_lfls_candidate_0455/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            1.8081092834472656,
+            9.64863395690918,
+            250.37326049804688,
+            548.4207153320312
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0644",
+      "landmark_category": "building",
+      "landmark_subcategory": "high-rise building",
+      "landmark_description": "a high-rise building visible from multiple aerial viewpoints",
+      "center_3d": [
+        -92.61058044433594,
+        -415.99420166015625,
+        -122.20448303222656
+      ],
+      "bbox_3d": {
+        "min": [
+          -104.20221710205078,
+          -434.82989501953125,
+          -155.9347381591797
+        ],
+        "max": [
+          -18.41145896911621,
+          -382.50341796875,
+          -106.09558868408203
+        ],
+        "size": [
+          85.79075813293457,
+          52.32647705078125,
+          49.839149475097656
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_02_00",
+      "source_grid_ids": [
+        "grid_02_00"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "1077",
+        "1079"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "1077_009",
+          "view_id": "1077",
+          "scene_grid_id": "grid_02_00",
+          "landmark_category": "building",
+          "landmark_subcategory": "high-rise building",
+          "landmark_description": "",
+          "detection_confidence": 0.30853569507598877,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            -94.71017456054688,
+            -417.4217224121094,
+            -122.88033294677734
+          ],
+          "bbox_3d": [
+            [
+              -104.20221710205078,
+              -433.7380676269531,
+              -152.56646728515625
+            ],
+            [
+              -76.52827453613281,
+              -402.5507507324219,
+              -106.18026733398438
+            ]
+          ],
+          "point_count": 5030,
+          "projection_area": 0.018426692555685815,
+          "bbox_2d_xyxy": [
+            828.4669189453125,
+            37.79595184326172,
+            989.3175048828125,
+            252.20895385742188
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/1077/mask_009.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1077/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1077/rgb.jpg"
+        },
+        {
+          "view_instance_id": "1077_011",
+          "view_id": "1077",
+          "scene_grid_id": "grid_02_00",
+          "landmark_category": "building",
+          "landmark_subcategory": "high-rise building",
+          "landmark_description": "",
+          "detection_confidence": 0.2799002230167389,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            -90.2155990600586,
+            -411.87286376953125,
+            -121.98849487304688
+          ],
+          "bbox_3d": [
+            [
+              -104.05376434326172,
+              -433.30035400390625,
+              -152.01622009277344
+            ],
+            [
+              -18.41145896911621,
+              -382.50341796875,
+              -106.16219329833984
+            ]
+          ],
+          "point_count": 7167,
+          "projection_area": 0.027998607854630715,
+          "bbox_2d_xyxy": [
+            779.5936279296875,
+            1.9822829961776733,
+            990.153076171875,
+            254.9207763671875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/1077/mask_011.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1077/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1077/rgb.jpg"
+        },
+        {
+          "view_instance_id": "1079_011",
+          "view_id": "1079",
+          "scene_grid_id": "grid_02_00",
+          "landmark_category": "building",
+          "landmark_subcategory": "high-rise building",
+          "landmark_description": "",
+          "detection_confidence": 0.27179664373397827,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            -92.61058044433594,
+            -415.99420166015625,
+            -122.20448303222656
+          ],
+          "bbox_3d": [
+            [
+              -103.90786743164062,
+              -434.82989501953125,
+              -155.9347381591797
+            ],
+            [
+              -74.37374877929688,
+              -401.09600830078125,
+              -106.09558868408203
+            ]
+          ],
+          "point_count": 7586,
+          "projection_area": 0.027790701934349356,
+          "bbox_2d_xyxy": [
+            872.967041015625,
+            152.7937774658203,
+            1076.44384765625,
+            399.1527404785156
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/1079/mask_011.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1079/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/1079/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.28674418727556866,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.024738667448221962,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.7193309440396702,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.28674418727556866,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 0.4947733489644392,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 115,
+      "review_status": "pending",
+      "visual_quality_score": 0.8998797837305396,
+      "visual_valid_view_count": 3,
+      "visual_quality_audit": [
+        {
+          "view_id": "1077",
+          "score": 0.9027339715258711,
+          "passed": true,
+          "near_black_ratio": 1.4671361502347417e-05,
+          "white_ratio": 0.0020099765258215965,
+          "contrast": 43.64167785644531,
+          "gradient": 12.63085651397705
+        },
+        {
+          "view_id": "1077",
+          "score": 0.9027339715258711,
+          "passed": true,
+          "near_black_ratio": 1.4671361502347417e-05,
+          "white_ratio": 0.0020099765258215965,
+          "contrast": 43.64167785644531,
+          "gradient": 12.63085651397705
+        },
+        {
+          "view_id": "1079",
+          "score": 0.8941714081398765,
+          "passed": true,
+          "near_black_ratio": 0.0,
+          "white_ratio": 0.0007629107981220657,
+          "contrast": 40.34955978393555,
+          "gradient": 13.330953598022461
+        }
+      ],
+      "geometry_quality_score": 0.5387821043488009,
+      "class_id": 63,
+      "class_name": "high-rise building",
+      "point_count": 19783,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "1077",
+          "path": "rgb_views/gauu_lfls_candidate_0644/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            779.5936279296875,
+            1.9822829961776733,
+            990.153076171875,
+            254.9207763671875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "1079",
+          "path": "rgb_views/gauu_lfls_candidate_0644/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            872.967041015625,
+            152.7937774658203,
+            1076.44384765625,
+            399.1527404785156
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 2,
+          "source_view_id": "1077",
+          "path": "rgb_views/gauu_lfls_candidate_0644/view_02.jpg",
+          "view_direction": "right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            828.4669189453125,
+            37.79595184326172,
+            989.3175048828125,
+            252.20895385742188
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0164",
+      "landmark_category": "industrial_infrastructure",
+      "landmark_subcategory": "shipping container stack",
+      "landmark_description": "a shipping container stack visible from multiple aerial viewpoints",
+      "center_3d": [
+        723.1394348144531,
+        -208.290283203125,
+        -140.5657501220703
+      ],
+      "bbox_3d": {
+        "min": [
+          710.7192993164062,
+          -220.8241729736328,
+          -162.49827575683594
+        ],
+        "max": [
+          734.5741577148438,
+          -196.197265625,
+          -136.6051483154297
+        ],
+        "size": [
+          23.8548583984375,
+          24.626907348632812,
+          25.89312744140625
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_03_04",
+      "source_grid_ids": [
+        "grid_02_04",
+        "grid_03_04"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "251",
+        "439"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "439_002",
+          "view_id": "439",
+          "scene_grid_id": "grid_02_04",
+          "landmark_category": "industrial_infrastructure",
+          "landmark_subcategory": "shipping container stack",
+          "landmark_description": "",
+          "detection_confidence": 0.38264426589012146,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            726.2451171875,
+            -210.99005126953125,
+            -140.76419067382812
+          ],
+          "bbox_3d": [
+            [
+              713.534912109375,
+              -220.8241729736328,
+              -159.4739227294922
+            ],
+            [
+              734.5741577148438,
+              -199.83470153808594,
+              -136.9295196533203
+            ]
+          ],
+          "point_count": 10630,
+          "projection_area": 0.03894343493552169,
+          "bbox_2d_xyxy": [
+            454.6035461425781,
+            575.7869873046875,
+            671.7481079101562,
+            833.8797607421875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/439/mask_002.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/439/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/439/rgb.jpg"
+        },
+        {
+          "view_instance_id": "251_003",
+          "view_id": "251",
+          "scene_grid_id": "grid_03_04",
+          "landmark_category": "industrial_infrastructure",
+          "landmark_subcategory": "shipping container stack",
+          "landmark_description": "",
+          "detection_confidence": 0.3142988681793213,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            720.0337524414062,
+            -205.59051513671875,
+            -140.3673095703125
+          ],
+          "bbox_3d": [
+            [
+              710.7192993164062,
+              -215.2939453125,
+              -162.49827575683594
+            ],
+            [
+              733.1156616210938,
+              -196.197265625,
+              -136.6051483154297
+            ]
+          ],
+          "point_count": 15251,
+          "projection_area": 0.05587265533411489,
+          "bbox_2d_xyxy": [
+            980.9937744140625,
+            498.0297546386719,
+            1276.622802734375,
+            763.6735229492188
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/251/mask_003.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/251/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/251/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.3484715670347214,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.04740804513481829,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.758949408872791,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.3484715670347214,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 0.9481609026963658,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 117,
+      "review_status": "pending",
+      "visual_quality_score": 0.9173029213778515,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "439",
+          "score": 0.9246920786676709,
+          "passed": true,
+          "near_black_ratio": 0.0007482394366197183,
+          "white_ratio": 0.0004841549295774648,
+          "contrast": 42.4664192199707,
+          "gradient": 16.026472091674805
+        },
+        {
+          "view_id": "251",
+          "score": 0.9099137640880322,
+          "passed": true,
+          "near_black_ratio": 0.0007188967136150235,
+          "white_ratio": 0.0030663145539906104,
+          "contrast": 44.60322952270508,
+          "gradient": 13.21241569519043
+        }
+      ],
+      "geometry_quality_score": 0.6005958963677305,
+      "class_id": 69,
+      "class_name": "shipping container stack",
+      "point_count": 25881,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "251",
+          "path": "rgb_views/gauu_lfls_candidate_0164/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            980.9937744140625,
+            498.0297546386719,
+            1276.622802734375,
+            763.6735229492188
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "439",
+          "path": "rgb_views/gauu_lfls_candidate_0164/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            454.6035461425781,
+            575.7869873046875,
+            671.7481079101562,
+            833.8797607421875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    },
+    {
+      "instance_id": "gauu_lfls_candidate_0124",
+      "landmark_category": "building",
+      "landmark_subcategory": "brick schoolhouse",
+      "landmark_description": "a brick schoolhouse visible from multiple aerial viewpoints",
+      "center_3d": [
+        599.4922180175781,
+        13.907767295837402,
+        -142.20624542236328
+      ],
+      "bbox_3d": {
+        "min": [
+          586.056884765625,
+          2.897482395172119,
+          -160.37254333496094
+        ],
+        "max": [
+          614.5242919921875,
+          28.466461181640625,
+          -133.4864501953125
+        ],
+        "size": [
+          28.4674072265625,
+          25.568978786468506,
+          26.886093139648438
+        ],
+        "yaw_deg": 0.0
+      },
+      "scene_grid_id": "grid_04_04",
+      "source_grid_ids": [
+        "grid_04_04"
+      ],
+      "valid_view_count": 2,
+      "valid_viewpoints": [
+        "213",
+        "371"
+      ],
+      "view_instances": [
+        {
+          "view_instance_id": "371_002",
+          "view_id": "371",
+          "scene_grid_id": "grid_04_04",
+          "landmark_category": "building",
+          "landmark_subcategory": "brick schoolhouse",
+          "landmark_description": "",
+          "detection_confidence": 0.39668044447898865,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            599.3701782226562,
+            15.511337280273438,
+            -143.1478271484375
+          ],
+          "bbox_3d": [
+            [
+              586.8775634765625,
+              3.6333889961242676,
+              -159.38729858398438
+            ],
+            [
+              614.5242919921875,
+              28.466461181640625,
+              -133.4864501953125
+            ]
+          ],
+          "point_count": 9385,
+          "projection_area": 0.03437957942555686,
+          "bbox_2d_xyxy": [
+            733.151611328125,
+            219.6705780029297,
+            1012.2601928710938,
+            408.3627624511719
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/371/mask_002.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/371/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/371/rgb.jpg"
+        },
+        {
+          "view_instance_id": "213_006",
+          "view_id": "213",
+          "scene_grid_id": "grid_04_04",
+          "landmark_category": "building",
+          "landmark_subcategory": "brick schoolhouse",
+          "landmark_description": "",
+          "detection_confidence": 0.2874671518802643,
+          "is_static": true,
+          "stability_confidence": 0.9,
+          "center_3d": [
+            599.6142578125,
+            12.304197311401367,
+            -141.26466369628906
+          ],
+          "bbox_3d": [
+            [
+              586.056884765625,
+              2.897482395172119,
+              -160.37254333496094
+            ],
+            [
+              614.1080322265625,
+              27.638442993164062,
+              -133.54795837402344
+            ]
+          ],
+          "point_count": 11679,
+          "projection_area": 0.04278374120750293,
+          "bbox_2d_xyxy": [
+            86.73353576660156,
+            509.73956298828125,
+            407.29742431640625,
+            801.012451171875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "camera_center_world_m": [],
+          "mask_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_lfls/masks/213/mask_006.png",
+          "depth_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/213/depth.npz",
+          "image_path": "task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_lfls/full_scene/213/rgb.jpg"
+        }
+      ],
+      "detection_confidence": 0.34207379817962646,
+      "cross_view_consistency": 0.25,
+      "mean_projection_area": 0.038581660316529896,
+      "mean_visible_ratio": 1.0,
+      "geometry_compactness": 0.8,
+      "stability_confidence": 0.9,
+      "is_static": true,
+      "quality_score": 0.75330814550178,
+      "quality_scores": {
+        "view_coverage": 0.25,
+        "detection_confidence": 0.34207379817962646,
+        "cross_view_consistency": 0.25,
+        "projection_quality": 0.7716332063305978,
+        "visibility_quality": 1.0,
+        "geometry_quality": 0.8,
+        "stability_confidence": 0.9
+      },
+      "candidate_status": "shortlisted",
+      "rejection_reasons": [],
+      "candidate_rank": 119,
+      "review_status": "pending",
+      "visual_quality_score": 0.9279714504623332,
+      "visual_valid_view_count": 2,
+      "visual_quality_audit": [
+        {
+          "view_id": "371",
+          "score": 0.9211449467258536,
+          "passed": true,
+          "near_black_ratio": 0.00010269953051643192,
+          "white_ratio": 0.0007629107981220657,
+          "contrast": 45.32767105102539,
+          "gradient": 13.880173683166504
+        },
+        {
+          "view_id": "213",
+          "score": 0.9347979541988128,
+          "passed": true,
+          "near_black_ratio": 5.868544600938967e-05,
+          "white_ratio": 0.0013937793427230046,
+          "contrast": 46.955711364746094,
+          "gradient": 14.651073455810547
+        }
+      ],
+      "geometry_quality_score": 0.5786448405412269,
+      "class_id": 72,
+      "class_name": "brick schoolhouse",
+      "point_count": 21064,
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "source_view_id": "213",
+          "path": "rgb_views/gauu_lfls_candidate_0124/view_00.jpg",
+          "view_direction": "front",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            86.73353576660156,
+            509.73956298828125,
+            407.29742431640625,
+            801.012451171875
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        },
+        {
+          "view_id": 1,
+          "source_view_id": "371",
+          "path": "rgb_views/gauu_lfls_candidate_0124/view_01.jpg",
+          "view_direction": "front_right",
+          "direction_reference": "review_slot_only_not_landmark_heading",
+          "is_valid": true,
+          "bbox_2d_xyxy": [
+            733.151611328125,
+            219.6705780029297,
+            1012.2601928710938,
+            408.3627624511719
+          ],
+          "bbox_2d_image_size": [
+            1280,
+            853
+          ],
+          "bbox_2d_valid": true
+        }
+      ],
+      "pcd_views": [],
+      "has_rgb": true,
+      "annotation_status": "labeled",
+      "auto_label_subcategory": null,
+      "auto_label_category": null,
+      "auto_label_description": null,
+      "auto_label_name": null,
+      "auto_label_landmark_type": null,
+      "auto_label_landmark_description": null,
+      "review_action": "keep",
+      "review_note": "Second-batch quality preselection; pending manual confirmation."
+    }
+  ]
+}

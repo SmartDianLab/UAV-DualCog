@@ -1,0 +1,504 @@
+{
+  "scene_id": "env_10",
+  "sample_count": 8,
+  "samples": [
+    {
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "23_96",
+      "landmark_category": "building",
+      "landmark_description": "red brick mid-rise building with stepped gable roof and visible signage",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_05_yaw_p043.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/23_96/env_10_23_96_self_shared_8way_000047_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.39111328125,
+        0.3626302083333333,
+        0.588623046875,
+        0.6959635416666666
+      ],
+      "reference_view": "Front",
+      "reference_object_view": "Front",
+      "target_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_03_yaw_n137.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.400634765625,
+        0.3427734375,
+        0.607177734375,
+        0.7356770833333334
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front",
+        "query_label": "Back"
+      },
+      "sample_id": "env_10_23_96_self_shared_8way_000047_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Right"
+        },
+        {
+          "option_id": "B",
+          "label": "Back"
+        },
+        {
+          "option_id": "C",
+          "label": "Front"
+        },
+        {
+          "option_id": "D",
+          "label": "Right"
+        }
+      ],
+      "answer_option_id": "B",
+      "prompt_text": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Back\nC. Front\nD. Right",
+      "user_prompt": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Back\nC. Front\nD. Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "23_96",
+      "landmark_category": "building",
+      "landmark_description": "red brick mid-rise building with stepped gable roof and visible signage",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_05_yaw_p043.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/23_96/env_10_23_96_self_shared_8way_000047_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.39111328125,
+        0.3626302083333333,
+        0.588623046875,
+        0.6959635416666666
+      ],
+      "reference_view": "Front",
+      "reference_object_view": "Front",
+      "target_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_03_yaw_n137.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.412109375,
+        0.3684895833333333,
+        0.59912109375,
+        0.6790364583333334
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front",
+        "query_label": "Back"
+      },
+      "sample_id": "env_10_23_96_self_shared_8way_000047_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 45-degree counterclockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_02_yaw_p088.jpg",
+          "view_under_definition": "Front-Right",
+          "bbox_xyxy_norm": [
+            0.412109375,
+            0.3684895833333333,
+            0.59912109375,
+            0.6790364583333334
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_03_yaw_n137.jpg",
+          "view_under_definition": "Back",
+          "bbox_xyxy_norm": [
+            0.400634765625,
+            0.3427734375,
+            0.607177734375,
+            0.7356770833333334
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_01_yaw_n002.jpg",
+          "view_under_definition": "Front-Left",
+          "bbox_xyxy_norm": [
+            0.417236328125,
+            0.3645833333333333,
+            0.556396484375,
+            0.7021484375
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_00_yaw_p178.jpg",
+          "view_under_definition": "Back-Right",
+          "bbox_xyxy_norm": [
+            0.45166015625,
+            0.3447265625,
+            0.58837890625,
+            0.7141927083333334
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "A"
+      ],
+      "answer_option_id": "A",
+      "prompt_text": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree counterclockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_10_23_96_env_shared_8way_000048_where",
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "23_96",
+      "landmark_category": "building",
+      "landmark_description": "red brick mid-rise building with stepped gable roof and visible signage",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Front-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Right"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Right"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_05_yaw_p043.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/23_96/env_10_23_96_env_shared_8way_000048_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.39111328125,
+        0.3626302083333333,
+        0.588623046875,
+        0.6959635416666666
+      ],
+      "reference_object_view": "Front",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/env_observations/23_96/env_10_23_96_env_shared_8way_000048.jpg",
+      "answer_option_id": "B",
+      "answer_bbox_xyxy_norm": [
+        0.640527606010437,
+        0.3139536380767822,
+        0.8748553991317749,
+        0.8155551751454672
+      ],
+      "prompt_text": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Left\nB. Front-Right\nC. Right\nD. Back-Right",
+      "user_prompt": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Front-Left\nB. Front-Right\nC. Right\nD. Back-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_10_23_96_env_shared_8way_000048_how",
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "23_96",
+      "landmark_category": "building",
+      "landmark_description": "red brick mid-rise building with stepped gable roof and visible signage",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "D",
+          "label": "Back-Right"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/23_96/view_05_yaw_p043.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/23_96/env_10_23_96_env_shared_8way_000048_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.39111328125,
+        0.3626302083333333,
+        0.588623046875,
+        0.6959635416666666
+      ],
+      "reference_object_view": "Front",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/env_observations/23_96/env_10_23_96_env_shared_8way_000048.jpg",
+      "answer_option_id": "C",
+      "answer_bbox_xyxy_norm": [
+        0.640527606010437,
+        0.3139536380767822,
+        0.8748553991317749,
+        0.8155551751454672
+      ],
+      "prompt_text": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Right\nC. Front-Right\nD. Back-Right",
+      "user_prompt": "Image 1 shows the Front facade of red brick mid-rise building with stepped gable roof and visible signage in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Right\nC. Front-Right\nD. Back-Right",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "39_182",
+      "landmark_category": "public_facility",
+      "landmark_description": "black metal street lamp post with a lantern-style head",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_07_yaw_n078.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/39_182/env_10_39_182_self_shared_8way_000099_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.48876953125,
+        0.3385416666666667,
+        0.5263671875,
+        0.6708984375
+      ],
+      "reference_view": "Front",
+      "reference_object_view": "Front",
+      "target_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_05_yaw_p012.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.472900390625,
+        0.3365885416666667,
+        0.508544921875,
+        0.6669921875
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front",
+        "query_label": "Left"
+      },
+      "sample_id": "env_10_39_182_self_shared_8way_000099_where",
+      "view_definition": "Self-Aware",
+      "task_type": "self_where",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Right"
+        },
+        {
+          "option_id": "B",
+          "label": "Left"
+        },
+        {
+          "option_id": "C",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Front"
+        }
+      ],
+      "answer_option_id": "B",
+      "prompt_text": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Left\nC. Back-Left\nD. Front",
+      "user_prompt": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. Based on that reference, what is your position relative to the landmark in image 2? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Right\nB. Left\nC. Back-Left\nD. Front",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current first-person view. Decide your position relative to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide your position relative to the landmark in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "39_182",
+      "landmark_category": "public_facility",
+      "landmark_description": "black metal street lamp post with a lantern-style head",
+      "task_family": "qa",
+      "task_group": "self-aware",
+      "difficulty": "8way",
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_07_yaw_n078.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/39_182/env_10_39_182_self_shared_8way_000099_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.48876953125,
+        0.3385416666666667,
+        0.5263671875,
+        0.6708984375
+      ],
+      "reference_view": "Front",
+      "reference_object_view": "Front",
+      "target_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_05_yaw_p012.jpg",
+      "answer_bbox_xyxy_norm": [
+        0.492431640625,
+        0.3346354166666667,
+        0.52880859375,
+        0.6748046875
+      ],
+      "metadata": {
+        "reference_is_main_view": true,
+        "reference_label": "Front",
+        "query_label": "Right"
+      },
+      "sample_id": "env_10_39_182_self_shared_8way_000099_what",
+      "view_definition": "Self-Aware",
+      "task_type": "self_what",
+      "multi_select": false,
+      "behavior_instance": "a 45-degree clockwise turn around the landmark",
+      "candidates": [
+        {
+          "option_id": "A",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_01_yaw_n123.jpg",
+          "view_under_definition": "Front-Left",
+          "bbox_xyxy_norm": [
+            0.492431640625,
+            0.3346354166666667,
+            0.52880859375,
+            0.6748046875
+          ]
+        },
+        {
+          "option_id": "B",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_03_yaw_n033.jpg",
+          "view_under_definition": "Front-Right",
+          "bbox_xyxy_norm": [
+            0.48046875,
+            0.3395182291666667,
+            0.517333984375,
+            0.6640625
+          ]
+        },
+        {
+          "option_id": "C",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_00_yaw_p057.jpg",
+          "view_under_definition": "Back-Right",
+          "bbox_xyxy_norm": [
+            0.470947265625,
+            0.3330078125,
+            0.507080078125,
+            0.6695963541666666
+          ]
+        },
+        {
+          "option_id": "D",
+          "image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_02_yaw_p147.jpg",
+          "view_under_definition": "Back-Left",
+          "bbox_xyxy_norm": [
+            0.48291015625,
+            0.3307291666666667,
+            0.5185546875,
+            0.6682942708333334
+          ]
+        }
+      ],
+      "answer_option_ids": [
+        "A"
+      ],
+      "answer_option_id": "A",
+      "prompt_text": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "user_prompt": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. Which candidate image is the resulting future view after taking a 45-degree clockwise turn around the landmark? Select one option and return the normalized bounding box of the landmark in the selected image.\n\nOptions:\nA. Image 2\nB. Image 3\nC. Image 4\nD. Image 5",
+      "system_prompt": "[TASK]: You are a UAV agent. Given a current first-person view including a landmark, decide which future view is correct after taking a described orbit action.\n\n[INPUT]:\n- You are given one reference view image of a landmark and four candidate future views.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Images 2 to 5 are candidate future views around the same landmark.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives one orbit behavior instance.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. The behavior instance specifies one orbit direction and one orbit angle.\n2. Select the single candidate future view that matches the reference view and the behavior instance.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_10_39_182_env_shared_8way_000100_where",
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "39_182",
+      "landmark_category": "public_facility",
+      "landmark_description": "black metal street lamp post with a lantern-style head",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_where",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back-Left"
+        },
+        {
+          "option_id": "B",
+          "label": "Front"
+        },
+        {
+          "option_id": "C",
+          "label": "Front-Left"
+        },
+        {
+          "option_id": "D",
+          "label": "Left"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_07_yaw_n078.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/39_182/env_10_39_182_env_shared_8way_000100_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.48876953125,
+        0.3385416666666667,
+        0.5263671875,
+        0.6708984375
+      ],
+      "reference_object_view": "Front",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/env_observations/39_182/env_10_39_182_env_shared_8way_000100.jpg",
+      "answer_option_id": "C",
+      "answer_bbox_xyxy_norm": [
+        0.09086334705352783,
+        0.3460424741109212,
+        0.2390120029449463,
+        0.7704931894938151
+      ],
+      "prompt_text": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Front\nC. Front-Left\nD. Left",
+      "user_prompt": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. In image 2, what is this landmark's position relative to your forward direction? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back-Left\nB. Front\nC. Front-Left\nD. Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide the landmark's position relative to your forward direction.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide where the landmark is relative to your forward direction in image 2.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    },
+    {
+      "sample_id": "env_10_39_182_env_shared_8way_000100_how",
+      "scene_id": "env_10",
+      "engine": "airsim",
+      "landmark_id": "39_182",
+      "landmark_category": "public_facility",
+      "landmark_description": "black metal street lamp post with a lantern-style head",
+      "task_family": "qa",
+      "task_group": "environment-aware",
+      "view_definition": "Environment-Aware",
+      "task_type": "env_how",
+      "difficulty": "8way",
+      "label_options": [
+        {
+          "option_id": "A",
+          "label": "Back"
+        },
+        {
+          "option_id": "B",
+          "label": "Front-Right"
+        },
+        {
+          "option_id": "C",
+          "label": "Back-Right"
+        },
+        {
+          "option_id": "D",
+          "label": "Front-Left"
+        }
+      ],
+      "reference_image": "scene_data/airsim_env_10/landmarks_raw/rgb_views/39_182/view_07_yaw_n078.jpg",
+      "reference_image_with_bbox": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/reference_bbox/39_182/env_10_39_182_env_shared_8way_000100_ref.jpg",
+      "reference_bbox_xyxy_norm": [
+        0.48876953125,
+        0.3385416666666667,
+        0.5263671875,
+        0.6708984375
+      ],
+      "reference_object_view": "Front",
+      "target_image": "task_pipeline_data/UAV-DualCog-V1/airsim_env_10/qa/assets/env_observations/39_182/env_10_39_182_env_shared_8way_000100.jpg",
+      "answer_option_id": "D",
+      "answer_bbox_xyxy_norm": [
+        0.09086334705352783,
+        0.3460424741109212,
+        0.2390120029449463,
+        0.7704931894938151
+      ],
+      "prompt_text": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front-Right\nC. Back-Right\nD. Front-Left",
+      "user_prompt": "Image 1 shows the Front facade of black metal street lamp post with a lantern-style head in the landmark-centric coordinate frame. In image 2, which direction should you fly to get closer to this landmark? Select one option and return the normalized bounding box of the landmark in image 2.\n\nOptions:\n\nA. Back\nB. Front-Right\nC. Back-Right\nD. Front-Left",
+      "system_prompt": "[TASK]: You are a UAV agent. Compare a reference view including a landmark and your current view. Decide which direction you should fly to get closer to the landmark.\n\n[INPUT]:\n- You are given two first-person view images.\n- Image 1 is the reference view, showing the landmark and its bounding box.\n- Image 2 is your current view.\n- Image 1 tells you which facade of the landmark is visible in the landmark-centric coordinate frame.\n- The user prompt gives the question and answer options.\n\n[OUTPUT]:\n1. Return exactly one valid JSON object.\n2. Do not output markdown, explanation, or extra text.\n3. Use exactly one option_id from the user prompt.\n4. The bounding box must use normalized [x1,y1,x2,y2] coordinates.\n5. Strictly follow this JSON schema:\n   {\"answer_option_id\":\"A\",\"bbox_xyxy_norm\":[0.1,0.2,0.3,0.4]}\n\n[NOTE]:\n1. Decide which direction you should move in image 2 to approach the landmark.\n2. Also localize the landmark in image 2.\n3. The visible facade in image 1 defines the landmark's forward-facing reference."
+    }
+  ]
+}

@@ -12,7 +12,7 @@ except Exception:
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-PROMPT_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "prompts" / "uav_dualcog_prompts.yaml"
+PROMPT_CONFIG_PATH = WORKSPACE_ROOT / "configs" / "prompts" / "flightmvstg_prompts.yaml"
 _TOKEN_RE = re.compile(r"\{\{\s*([A-Za-z0-9_]+)\s*\}\}")
 
 

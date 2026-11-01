@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "Please acknowledge the UAV-DualCog authors when using this code and refer to the paper linked below."
+title: "UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs"
+type: software
+authors:
+  - family-names: Liu
+    given-names: Like
+    affiliation: "School of Software, Northwestern Polytechnical University"
+    email: like.liu@mail.nwpu.edu.cn
+  - family-names: Xu
+    given-names: Zhengzheng
+    affiliation: "Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University"
+  - family-names: Li
+    given-names: Hongzhe
+    affiliation: "Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University"
+  - family-names: Wang
+    given-names: Lin
+    affiliation: "EmPACT Lab, School of Electrical and Electronic Engineering, Nanyang Technological University"
+  - family-names: Shao
+    given-names: Dian
+    affiliation: "Unmanned System Research Institute and School of Artificial Intelligence, Northwestern Polytechnical University"
+    email: shaodian@nwpu.edu.cn
+repository-code: "https://github.com/SmartDianLab/UAV-DualCog"
+url: "https://smartdianlab.github.io/UAV-DualCog/"
+license: MIT
+references:
+  - type: article
+    title: "UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs"
+    authors:
+      - family-names: Liu
+        given-names: Like
+      - family-names: Xu
+        given-names: Zhengzheng
+      - family-names: Li
+        given-names: Hongzhe
+      - family-names: Wang
+        given-names: Lin
+      - family-names: Shao
+        given-names: Dian
+    year: 2026
+    url: "https://arxiv.org/abs/2607.16193"

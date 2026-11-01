@@ -1,0 +1,9 @@
+# Optional dependencies for the UAV-DualCog-Train optimization probe.
+# Install these in a dedicated environment after selecting a CUDA-compatible
+# PyTorch build for the target machine.
+torch>=2.4
+transformers>=4.51
+accelerate>=1.2
+peft>=0.14
+trl>=0.17
+Pillow>=10.0

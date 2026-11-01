@@ -1,0 +1,1482 @@
+{
+  "scene_id": "env_8",
+  "source_instances_json": "scene_data/airsim_env_8/landmarks_raw/env_8.instances.json",
+  "decision_file": null,
+  "summary": {
+    "instances_total": 7,
+    "valid_instances": 4,
+    "dropped_instances": 3,
+    "undecided_instances": 0,
+    "default_action": "keep",
+    "repaired_at": "1774793615.1169596"
+  },
+  "valid_instances": [
+    {
+      "instance_id": "11_38",
+      "class_id": 11,
+      "class_name": "building",
+      "instance_numeric_id": 38,
+      "center_3d": [
+        -21.1835994720459,
+        -2.2945432662963867,
+        7.924499988555908
+      ],
+      "bbox_3d": {
+        "min": [
+          -21.336803436279297,
+          -4.492315292358398,
+          4.440624237060547
+        ],
+        "max": [
+          -17.253984451293945,
+          0.6492404937744141,
+          9.743006706237793
+        ],
+        "size": [
+          4.082818984985352,
+          5.1415557861328125,
+          5.302382469177246
+        ],
+        "yaw_deg": 78.56533775314207
+      },
+      "point_count": 564,
+      "preview_image": "",
+      "pcd_views": [
+        {
+          "view_id": 0,
+          "path": "pcd_views/11_38/pcd_view_00_yaw_p079.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "front",
+          "yaw_deg": 78.56533775314207,
+          "pitch_deg": -21.909443112765175,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 1,
+          "path": "pcd_views/11_38/pcd_view_01_yaw_n101.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "back",
+          "yaw_deg": -101.4346622468579,
+          "pitch_deg": -21.909443112765175,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 2,
+          "path": "pcd_views/11_38/pcd_view_02_yaw_p169.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "left",
+          "yaw_deg": 168.56533775314207,
+          "pitch_deg": -21.90944183845425,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 3,
+          "path": "pcd_views/11_38/pcd_view_03_yaw_n011.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "right",
+          "yaw_deg": -11.434662246857926,
+          "pitch_deg": -21.90944152854559,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 4,
+          "path": "pcd_views/11_38/pcd_view_04_yaw_p124.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "front_left",
+          "yaw_deg": 123.56533775314207,
+          "pitch_deg": -21.90944152854559,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 5,
+          "path": "pcd_views/11_38/pcd_view_05_yaw_p034.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_right",
+          "yaw_deg": 33.565337753142074,
+          "pitch_deg": -21.909443422673725,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 6,
+          "path": "pcd_views/11_38/pcd_view_06_yaw_n146.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "back_left",
+          "yaw_deg": -146.43466224685793,
+          "pitch_deg": -21.909440564143466,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 7,
+          "path": "pcd_views/11_38/pcd_view_07_yaw_n056.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "back_right",
+          "yaw_deg": -56.434662246857926,
+          "pitch_deg": -21.90944183845425,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 8,
+          "path": "pcd_views/11_38/pcd_view_08_yaw_p079.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "topdown",
+          "yaw_deg": 78.56533775314207,
+          "pitch_deg": -89.99994270421367,
+          "pitch_offset_deg": 0.0
+        }
+      ],
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "path": "rgb_views/11_38/view_00_yaw_p079.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "left",
+          "yaw_deg": 78.56533775314207,
+          "pitch_deg": -21.909443112765175,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1974,
+            1155,
+            2478,
+            1767
+          ],
+          "bbox_2d_xywh": [
+            1974,
+            1155,
+            505,
+            613
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "path": "rgb_views/11_38/view_01_yaw_n101.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "right",
+          "yaw_deg": -101.4346622468579,
+          "pitch_deg": -21.909443112765175,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1487,
+            1138,
+            2143,
+            2127
+          ],
+          "bbox_2d_xywh": [
+            1487,
+            1138,
+            657,
+            990
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 2,
+          "path": "rgb_views/11_38/view_02_yaw_p169.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "back",
+          "yaw_deg": 168.56533775314207,
+          "pitch_deg": -21.90944183845425,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1711,
+            1188,
+            2619,
+            2188
+          ],
+          "bbox_2d_xywh": [
+            1711,
+            1188,
+            909,
+            1001
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 3,
+          "path": "rgb_views/11_38/view_03_yaw_n011.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "front",
+          "yaw_deg": -11.434662246857926,
+          "pitch_deg": -21.90944152854559,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1596,
+            1197,
+            2373,
+            1704
+          ],
+          "bbox_2d_xywh": [
+            1596,
+            1197,
+            778,
+            508
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": true
+        },
+        {
+          "view_id": 4,
+          "path": "rgb_views/11_38/view_04_yaw_p124.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "back_left",
+          "yaw_deg": 123.56533775314207,
+          "pitch_deg": -21.90944152854559,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1824,
+            1159,
+            2685,
+            1940
+          ],
+          "bbox_2d_xywh": [
+            1824,
+            1159,
+            862,
+            782
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 5,
+          "path": "rgb_views/11_38/view_05_yaw_p034.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_left",
+          "yaw_deg": 33.565337753142074,
+          "pitch_deg": -21.909443422673725,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1724,
+            1180,
+            2338,
+            1718
+          ],
+          "bbox_2d_xywh": [
+            1724,
+            1180,
+            615,
+            539
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 6,
+          "path": "rgb_views/11_38/view_06_yaw_n146.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "back_right",
+          "yaw_deg": -146.43466224685793,
+          "pitch_deg": -21.909440564143466,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1790,
+            1162,
+            2425,
+            2286
+          ],
+          "bbox_2d_xywh": [
+            1790,
+            1162,
+            636,
+            1125
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 7,
+          "path": "rgb_views/11_38/view_07_yaw_n056.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "front_right",
+          "yaw_deg": -56.434662246857926,
+          "pitch_deg": -21.90944183845425,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1412,
+            1151,
+            2234,
+            1878
+          ],
+          "bbox_2d_xywh": [
+            1412,
+            1151,
+            823,
+            728
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 8,
+          "path": "rgb_views/11_38/view_08_yaw_p079.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "left",
+          "yaw_deg": 78.56533775314207,
+          "pitch_deg": -89.99994270421367,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1959,
+            1017,
+            2531,
+            1908
+          ],
+          "bbox_2d_xywh": [
+            1959,
+            1017,
+            573,
+            892
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        }
+      ],
+      "annotation_status": "labeled",
+      "auto_label_category": "building",
+      "auto_label_subcategory": "wooden shack",
+      "auto_label_description": "weathered wooden shack with corrugated metal roof and blue tarpaulin coverings",
+      "auto_label_name": "wooden shack",
+      "auto_label_confidence": 0.9,
+      "auto_label_landmark_type": "building",
+      "auto_label_landmark_description": "weathered wooden shack with corrugated metal roof and blue tarpaulin coverings",
+      "auto_label_reason": "auto_label_class:vlm:building",
+      "auto_label_views": "front,back,left,right",
+      "auto_label_comment": "weathered wooden shack with corrugated metal roof and blue tarpaulin coverings",
+      "landmark_category": "building",
+      "landmark_subcategory": "wooden shack",
+      "landmark_description": "weathered wooden shack with corrugated metal roof and blue tarpaulin coverings",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by class",
+      "review_action": "keep"
+    },
+    {
+      "instance_id": "11_39",
+      "class_id": 11,
+      "class_name": "building",
+      "instance_numeric_id": 39,
+      "center_3d": [
+        -49.362735748291016,
+        -13.662325859069824,
+        6.897928714752197
+      ],
+      "bbox_3d": {
+        "min": [
+          -49.3782958984375,
+          -16.060884475708008,
+          5.267706394195557
+        ],
+        "max": [
+          -49.26551055908203,
+          -11.983264923095703,
+          8.508121490478516
+        ],
+        "size": [
+          0.11278533935546875,
+          4.077619552612305,
+          3.240415096282959
+        ],
+        "yaw_deg": 90.06663696002367
+      },
+      "point_count": 210,
+      "preview_image": "",
+      "pcd_views": [
+        {
+          "view_id": 0,
+          "path": "pcd_views/11_39/pcd_view_00_yaw_p090.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "front",
+          "yaw_deg": 90.06663696002367,
+          "pitch_deg": -48.67569747059532,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 1,
+          "path": "pcd_views/11_39/pcd_view_01_yaw_n090.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "back",
+          "yaw_deg": -89.93336303997631,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 2,
+          "path": "pcd_views/11_39/pcd_view_02_yaw_n180.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "left",
+          "yaw_deg": -179.9333630399763,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 3,
+          "path": "pcd_views/11_39/pcd_view_03_yaw_p000.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "right",
+          "yaw_deg": 0.06663696002367203,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 4,
+          "path": "pcd_views/11_39/pcd_view_04_yaw_p135.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "front_left",
+          "yaw_deg": 135.0666369600237,
+          "pitch_deg": -48.67570229033356,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 5,
+          "path": "pcd_views/11_39/pcd_view_05_yaw_p045.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_right",
+          "yaw_deg": 45.06663696002367,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 6,
+          "path": "pcd_views/11_39/pcd_view_06_yaw_n135.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "back_left",
+          "yaw_deg": -134.9333630399763,
+          "pitch_deg": -48.67570967475416,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 7,
+          "path": "pcd_views/11_39/pcd_view_07_yaw_n045.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "back_right",
+          "yaw_deg": -44.93336303997633,
+          "pitch_deg": -48.675695215538916,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 8,
+          "path": "pcd_views/11_39/pcd_view_08_yaw_p090.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "topdown",
+          "yaw_deg": 90.06663696002367,
+          "pitch_deg": -89.99994270421706,
+          "pitch_offset_deg": 0.0
+        }
+      ],
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "path": "rgb_views/11_39/view_00_yaw_p090.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "left",
+          "yaw_deg": 90.06663696002367,
+          "pitch_deg": -48.67569747059532,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            2042,
+            1050,
+            2073,
+            2182
+          ],
+          "bbox_2d_xywh": [
+            2042,
+            1050,
+            32,
+            1133
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "is_valid": false,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "path": "rgb_views/11_39/view_01_yaw_n090.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "right",
+          "yaw_deg": -89.93336303997631,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            2022,
+            974,
+            2051,
+            2066
+          ],
+          "bbox_2d_xywh": [
+            2022,
+            974,
+            30,
+            1093
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 2,
+          "path": "rgb_views/11_39/view_02_yaw_n180.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "back",
+          "yaw_deg": -179.9333630399763,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1452,
+            1288,
+            2461,
+            1777
+          ],
+          "bbox_2d_xywh": [
+            1452,
+            1288,
+            1010,
+            490
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "is_valid": false,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 3,
+          "path": "rgb_views/11_39/view_03_yaw_p000.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "front",
+          "yaw_deg": 0.06663696002367203,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1634,
+            1293,
+            2639,
+            1783
+          ],
+          "bbox_2d_xywh": [
+            1634,
+            1293,
+            1006,
+            491
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": true
+        },
+        {
+          "view_id": 4,
+          "path": "rgb_views/11_39/view_04_yaw_p135.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "back_left",
+          "yaw_deg": 135.0666369600237,
+          "pitch_deg": -48.67570229033356,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1588,
+            1118,
+            2324,
+            2052
+          ],
+          "bbox_2d_xywh": [
+            1588,
+            1118,
+            737,
+            935
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "is_valid": false,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 5,
+          "path": "rgb_views/11_39/view_05_yaw_p045.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_left",
+          "yaw_deg": 45.06663696002367,
+          "pitch_deg": -48.67570711007174,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1776,
+            1121,
+            2520,
+            2057
+          ],
+          "bbox_2d_xywh": [
+            1776,
+            1121,
+            745,
+            937
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 6,
+          "path": "rgb_views/11_39/view_06_yaw_n135.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "back_right",
+          "yaw_deg": -134.9333630399763,
+          "pitch_deg": -48.67570967475416,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1658,
+            1063,
+            2358,
+            1973
+          ],
+          "bbox_2d_xywh": [
+            1658,
+            1063,
+            701,
+            911
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "is_valid": false,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 7,
+          "path": "rgb_views/11_39/view_07_yaw_n045.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "front_right",
+          "yaw_deg": -44.93336303997633,
+          "pitch_deg": -48.675695215538916,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1730,
+            1067,
+            2422,
+            1976
+          ],
+          "bbox_2d_xywh": [
+            1730,
+            1067,
+            693,
+            910
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 8,
+          "path": "rgb_views/11_39/view_08_yaw_p090.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "left",
+          "yaw_deg": 90.06663696002367,
+          "pitch_deg": -89.99994270421706,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            2042,
+            1058,
+            2075,
+            2221
+          ],
+          "bbox_2d_xywh": [
+            2042,
+            1058,
+            34,
+            1164
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        }
+      ],
+      "annotation_status": "labeled",
+      "auto_label_category": "building",
+      "auto_label_subcategory": "rural farmhouse",
+      "auto_label_description": "rustic wooden structure with corrugated metal roof",
+      "auto_label_name": "rural farmhouse",
+      "auto_label_confidence": 0.95,
+      "auto_label_landmark_type": "building",
+      "auto_label_landmark_description": "rustic wooden structure with corrugated metal roof",
+      "auto_label_reason": "auto_label_class:vlm:building",
+      "auto_label_views": "front,back,left,right",
+      "auto_label_comment": "rustic wooden structure with corrugated metal roof",
+      "landmark_category": "building",
+      "landmark_subcategory": "rural farmhouse",
+      "landmark_description": "rustic wooden structure with corrugated metal roof",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by class",
+      "review_action": "keep"
+    },
+    {
+      "instance_id": "3_28",
+      "class_id": 3,
+      "class_name": "tree",
+      "instance_numeric_id": 28,
+      "center_3d": [
+        -18.440759658813477,
+        -37.22050476074219,
+        4.1233930587768555
+      ],
+      "bbox_3d": {
+        "min": [
+          -20.178428649902344,
+          -40.49602508544922,
+          1.8398733139038086
+        ],
+        "max": [
+          -15.968856811523438,
+          -34.73772048950195,
+          6.170726776123047
+        ],
+        "size": [
+          4.209571838378906,
+          5.758304595947266,
+          4.330853462219238
+        ],
+        "yaw_deg": 100.51193243147327
+      },
+      "point_count": 197,
+      "preview_image": "",
+      "pcd_views": [
+        {
+          "view_id": 0,
+          "path": "pcd_views/3_28/pcd_view_00_yaw_n079.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "back",
+          "yaw_deg": -79.48806756852673,
+          "pitch_deg": -43.234817928475636,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 1,
+          "path": "pcd_views/3_28/pcd_view_01_yaw_p011.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "right",
+          "yaw_deg": 10.51193243147327,
+          "pitch_deg": -27.234815454743895,
+          "pitch_offset_deg": 8.0
+        },
+        {
+          "view_id": 2,
+          "path": "pcd_views/3_28/pcd_view_02_yaw_p056.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_right",
+          "yaw_deg": 55.51193243147327,
+          "pitch_deg": -19.23482092533445,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 3,
+          "path": "pcd_views/3_28/pcd_view_03_yaw_n034.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "back_right",
+          "yaw_deg": -34.48806756852673,
+          "pitch_deg": -43.2348155891699,
+          "pitch_offset_deg": 24.0
+        },
+        {
+          "view_id": 4,
+          "path": "pcd_views/3_28/pcd_view_04_yaw_p101.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "topdown",
+          "yaw_deg": 100.51193243147327,
+          "pitch_deg": -89.99994270421367,
+          "pitch_offset_deg": 0.0
+        }
+      ],
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "path": "rgb_views/3_28/view_00_yaw_n079.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "back_right",
+          "yaw_deg": -79.48806756852673,
+          "pitch_deg": -43.234817928475636,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1715,
+            1075,
+            2264,
+            1883
+          ],
+          "bbox_2d_xywh": [
+            1715,
+            1075,
+            550,
+            809
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "path": "rgb_views/3_28/view_01_yaw_p011.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "front_right",
+          "yaw_deg": 10.51193243147327,
+          "pitch_deg": -27.234815454743895,
+          "pitch_offset_deg": 8.0,
+          "bbox_2d_xyxy": [
+            1601,
+            1327,
+            2561,
+            1849
+          ],
+          "bbox_2d_xywh": [
+            1601,
+            1327,
+            961,
+            523
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 2,
+          "path": "rgb_views/3_28/view_02_yaw_p056.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front",
+          "yaw_deg": 55.51193243147327,
+          "pitch_deg": -19.23482092533445,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1640,
+            1272,
+            2397,
+            1829
+          ],
+          "bbox_2d_xywh": [
+            1640,
+            1272,
+            758,
+            558
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": true
+        },
+        {
+          "view_id": 3,
+          "path": "rgb_views/3_28/view_03_yaw_n034.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "right",
+          "yaw_deg": -34.48806756852673,
+          "pitch_deg": -43.2348155891699,
+          "pitch_offset_deg": 24.0,
+          "bbox_2d_xyxy": [
+            1700,
+            1176,
+            2458,
+            1851
+          ],
+          "bbox_2d_xywh": [
+            1700,
+            1176,
+            759,
+            676
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 4,
+          "path": "rgb_views/3_28/view_04_yaw_p101.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "front_left",
+          "yaw_deg": 100.51193243147327,
+          "pitch_deg": -89.99994270421367,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1807,
+            1082,
+            2417,
+            2092
+          ],
+          "bbox_2d_xywh": [
+            1807,
+            1082,
+            611,
+            1011
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        }
+      ],
+      "annotation_status": "labeled",
+      "auto_label_category": "vegetation",
+      "auto_label_subcategory": "deciduous tree",
+      "auto_label_description": "leafy deciduous tree with green foliage and visible branches",
+      "auto_label_name": "deciduous tree",
+      "auto_label_confidence": 0.95,
+      "auto_label_landmark_type": "vegetation",
+      "auto_label_landmark_description": "leafy deciduous tree with green foliage and visible branches",
+      "auto_label_reason": "auto_label_class:vlm:vegetation",
+      "auto_label_views": "front,right,front_left,front_right",
+      "auto_label_comment": "leafy deciduous tree with green foliage and visible branches",
+      "landmark_category": "vegetation",
+      "landmark_subcategory": "deciduous tree",
+      "landmark_description": "leafy deciduous tree with green foliage and visible branches",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by class",
+      "review_action": "keep"
+    },
+    {
+      "instance_id": "11_37",
+      "class_id": 11,
+      "class_name": "building",
+      "instance_numeric_id": 37,
+      "center_3d": [
+        22.354969024658203,
+        -14.714805603027344,
+        10.079097747802734
+      ],
+      "bbox_3d": {
+        "min": [
+          20.51825523376465,
+          -15.229631423950195,
+          8.26865005493164
+        ],
+        "max": [
+          24.44644546508789,
+          -14.249383926391602,
+          11.250519752502441
+        ],
+        "size": [
+          3.928190231323242,
+          0.9802474975585938,
+          2.981869697570801
+        ],
+        "yaw_deg": 166.64900732311537
+      },
+      "point_count": 92,
+      "preview_image": "",
+      "pcd_views": [
+        {
+          "view_id": 0,
+          "path": "pcd_views/11_37/pcd_view_00_yaw_p167.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "front",
+          "yaw_deg": 166.64900732311537,
+          "pitch_deg": -26.293520211738432,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 1,
+          "path": "pcd_views/11_37/pcd_view_01_yaw_n013.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "back",
+          "yaw_deg": -13.35099267688463,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 2,
+          "path": "pcd_views/11_37/pcd_view_02_yaw_n103.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "left",
+          "yaw_deg": -103.35099267688463,
+          "pitch_deg": -26.29352476818495,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 3,
+          "path": "pcd_views/11_37/pcd_view_03_yaw_p077.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "right",
+          "yaw_deg": 76.64900732311537,
+          "pitch_deg": -26.29352476818495,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 4,
+          "path": "pcd_views/11_37/pcd_view_04_yaw_n148.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "front_left",
+          "yaw_deg": -148.35099267688463,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 5,
+          "path": "pcd_views/11_37/pcd_view_05_yaw_p122.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "front_right",
+          "yaw_deg": 121.64900732311537,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 6,
+          "path": "pcd_views/11_37/pcd_view_06_yaw_n058.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "back_left",
+          "yaw_deg": -58.35099267688463,
+          "pitch_deg": -26.29352325540087,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 7,
+          "path": "pcd_views/11_37/pcd_view_07_yaw_p032.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "back_right",
+          "yaw_deg": 31.64900732311537,
+          "pitch_deg": -26.29352325540087,
+          "pitch_offset_deg": 0.0
+        },
+        {
+          "view_id": 8,
+          "path": "pcd_views/11_37/pcd_view_08_yaw_p167.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "topdown",
+          "yaw_deg": 166.64900732311537,
+          "pitch_deg": -89.99994270421706,
+          "pitch_offset_deg": 0.0
+        }
+      ],
+      "rgb_views": [
+        {
+          "view_id": 0,
+          "path": "rgb_views/11_37/view_00_yaw_p167.jpg",
+          "mode": "orbit",
+          "label": "front",
+          "view_direction": "right",
+          "yaw_deg": 166.64900732311537,
+          "pitch_deg": -26.293520211738432,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            2042,
+            1165,
+            2074,
+            2059
+          ],
+          "bbox_2d_xywh": [
+            2042,
+            1165,
+            33,
+            895
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 1,
+          "path": "rgb_views/11_37/view_01_yaw_n013.jpg",
+          "mode": "orbit",
+          "label": "back",
+          "view_direction": "left",
+          "yaw_deg": -13.35099267688463,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            2017,
+            1109,
+            2051,
+            1972
+          ],
+          "bbox_2d_xywh": [
+            2017,
+            1109,
+            35,
+            864
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "is_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 2,
+          "path": "rgb_views/11_37/view_02_yaw_n103.jpg",
+          "mode": "orbit",
+          "label": "left",
+          "view_direction": "front",
+          "yaw_deg": -103.35099267688463,
+          "pitch_deg": -26.29352476818495,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1515,
+            1235,
+            2512,
+            1875
+          ],
+          "bbox_2d_xywh": [
+            1515,
+            1235,
+            998,
+            641
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": true
+        },
+        {
+          "view_id": 3,
+          "path": "rgb_views/11_37/view_03_yaw_p077.jpg",
+          "mode": "orbit",
+          "label": "right",
+          "view_direction": "back",
+          "yaw_deg": 76.64900732311537,
+          "pitch_deg": -26.29352476818495,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1584,
+            1236,
+            2580,
+            1851
+          ],
+          "bbox_2d_xywh": [
+            1584,
+            1236,
+            997,
+            616
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 4,
+          "path": "rgb_views/11_37/view_04_yaw_n148.jpg",
+          "mode": "orbit",
+          "label": "front_left",
+          "view_direction": "front_right",
+          "yaw_deg": -148.35099267688463,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1616,
+            1188,
+            2349,
+            2007
+          ],
+          "bbox_2d_xywh": [
+            1616,
+            1188,
+            734,
+            820
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 5,
+          "path": "rgb_views/11_37/view_05_yaw_p122.jpg",
+          "mode": "orbit",
+          "label": "front_right",
+          "view_direction": "back_right",
+          "yaw_deg": 121.64900732311537,
+          "pitch_deg": -26.29352629906355,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1755,
+            1188,
+            2472,
+            1987
+          ],
+          "bbox_2d_xywh": [
+            1755,
+            1188,
+            718,
+            800
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 6,
+          "path": "rgb_views/11_37/view_06_yaw_n058.jpg",
+          "mode": "orbit",
+          "label": "back_left",
+          "view_direction": "front_left",
+          "yaw_deg": -58.35099267688463,
+          "pitch_deg": -26.29352325540087,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1714,
+            1149,
+            2408,
+            1894
+          ],
+          "bbox_2d_xywh": [
+            1714,
+            1149,
+            695,
+            746
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        },
+        {
+          "view_id": 7,
+          "path": "rgb_views/11_37/view_07_yaw_p032.jpg",
+          "mode": "orbit",
+          "label": "back_right",
+          "view_direction": "back_left",
+          "yaw_deg": 31.64900732311537,
+          "pitch_deg": -26.29352325540087,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            1676,
+            1151,
+            2386,
+            1894
+          ],
+          "bbox_2d_xywh": [
+            1676,
+            1151,
+            711,
+            744
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false,
+          "is_valid": false
+        },
+        {
+          "view_id": 8,
+          "path": "rgb_views/11_37/view_08_yaw_p167.jpg",
+          "mode": "topdown",
+          "label": "topdown",
+          "view_direction": "right",
+          "yaw_deg": 166.64900732311537,
+          "pitch_deg": -89.99994270421706,
+          "pitch_offset_deg": 0.0,
+          "bbox_2d_xyxy": [
+            2042,
+            998,
+            2077,
+            2162
+          ],
+          "bbox_2d_xywh": [
+            2042,
+            998,
+            36,
+            1165
+          ],
+          "bbox_2d_image_size": [
+            4096,
+            3072
+          ],
+          "bbox_2d_valid": true,
+          "view_direction_auto": true,
+          "is_query_view": false
+        }
+      ],
+      "annotation_status": "labeled",
+      "auto_label_category": "building",
+      "auto_label_subcategory": "wooden shack",
+      "auto_label_description": "weathered wooden shack with corrugated roof and blue tarp covering",
+      "auto_label_name": "wooden shack",
+      "auto_label_confidence": 0.9,
+      "auto_label_landmark_type": "building",
+      "auto_label_landmark_description": "weathered wooden shack with corrugated roof and blue tarp covering",
+      "auto_label_reason": "auto_label_class:vlm:building",
+      "auto_label_views": "front,back,left,right",
+      "auto_label_comment": "weathered wooden shack with corrugated roof and blue tarp covering",
+      "landmark_category": "building",
+      "landmark_subcategory": "wooden shack",
+      "landmark_description": "weathered wooden shack with corrugated roof and blue tarp covering",
+      "landmark_decision": "auto_approved",
+      "landmark_note": "auto approved by class",
+      "review_action": "keep"
+    }
+  ]
+}

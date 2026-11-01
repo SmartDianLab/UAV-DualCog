@@ -1,0 +1,128 @@
+task:
+  name: UAV-DualCog-3DGS-real-scene-pilot
+  engine: gsplat
+  base_dir: scene_data
+  scene_id: gauu_smbu
+  scene_dir_name: gsplat_gauu_smbu
+
+output_layout:
+  scene_dir_include_engine: true
+  stage1_dir: pcd_map
+  stage2_raw_dir: landmarks_raw
+  stage2_review_dir: landmarks_review
+  stage2_landmarks_dir: landmarks
+  stage3_task_root_dir: stage3_tasks
+  stage3_mission_dir: missions
+  stage3_trajectory_dir: trajectory
+  stage3_review_dir: review
+  stage3_dataset_dir: datasets
+  stage3_experiment_dir: experiments
+  stage3_report_dir: reports
+  stage3_cache_dir: cache
+  logs_dir: logs
+
+camera: {width: 1280, height: 720, fov: 72.0, fps: 10}
+
+traj_map:
+  DilateRadius: 3
+  VoxelWidth: 1.0
+  MapBound: [-575, 570, -905, 270, -190, 15]
+  LidarDelta: [50, 50, 30]
+  pcd_scale_ratio: 1
+  traj_scale_ratio: 1
+  map_elevation: 0
+  min_height_thresh: 8
+  EstimatedSurfaceZ: -148.51
+  DetectedMinZ: -179.67
+
+collect:
+  yaw_list_deg: [0, 90, 180, 270]
+  pose_settle_sec: 0.0
+  multimodal_fusion: {enabled: false}
+  lidar_segmentation: {enabled: false}
+
+parallel:
+  mode: single_instance_multi_thread
+  workers: 1
+  bindings: [{worker_id: 0, vehicle: virtual_uav}]
+
+stage1_output:
+  formats: {pcd: true, ply: true}
+  primary_cloud_type: raw
+
+depth_backproject:
+  depth_scale: 1.0
+  fov_deg: 72.0
+  sample_step: 4
+  min_depth: 0.5
+  max_depth: 250.0
+
+real_scene_landmarks:
+  coverage_mode: full_scene
+  pose_sampling_policy: colmap_supported_region
+  lidar_bounds_xyz_m:
+    min: [-504.1422, -819.7473, -179.6648]
+    max: [470.5656, 134.1218, -2.0127]
+  colmap_camera_bounds_xyz_m:
+    min: [-544.8202, -874.6716, 0.1341]
+    max: [538.9929, 235.5794, 5.6115]
+  candidate_count: 100
+  final_count: 20
+  scene_grid_rows: 6
+  scene_grid_cols: 6
+  sampled_view_count_min: 160
+  sampled_view_count_max: 240
+  sampled_view_manifest: task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/full_scene_views.json
+  rendered_view_manifest: task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/full_scene_render_jobs.json
+  render_root: task_pipeline_data/UAV-DualCog-3DGS-Pilot/renders/gauu_smbu/full_scene
+  raw_candidate_instances: task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/raw_landmark_instances.json
+  per_view_detections: task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/per_view_detections.jsonl
+  candidate_shortlist: task_pipeline_data/UAV-DualCog-3DGS-Pilot/derived/gauu_smbu/landmark_candidates_100.json
+  final_landmarks: scene_data/gsplat_gauu_smbu/landmarks_review/gauu_smbu.valid_instances.json
+  min_valid_views: 3
+  min_quality_score: 0.35
+  min_stability_score: 0.65
+  dedup_distance_m: 3.0
+  bbox_iou_threshold: 0.45
+  preferred_categories: [building, public_facility, urban_landscape, transport_infrastructure, vegetation, industrial_infrastructure, vehicle, other]
+  final_min_coarse_categories: 4
+  final_min_subcategories: 10
+
+stage2:
+  mode: review_instances_web
+  collect_min_points: 50
+  collect_enable_rgb_views: true
+  collect_rgb_source: sim
+  collect_rgb_views_count: 8
+  collect_side_view_min_keep: 4
+  collect_add_birdseye_view: false
+  collect_view_image_size: 640
+  collect_view_image_width: 1280
+  collect_view_image_height: 720
+  collect_rgb_pose_settle_sec: 0.0
+  collect_rgb_parallel_workers: 1
+  collect_side_view_min_visible_ratio: 0.02
+  collect_side_view_min_visible_points: 50
+  collect_camera_distance_scale: 2.5
+  collect_camera_distance_min_m: 9.0
+  review_web_port: 20272
+
+stage3:
+  repair_max_lift_step_m: 3.0
+  repair_max_total_lift_m: 48.0
+
+stage4:
+  reuse_registered_env_views: true
+  generation_retry_limit: 12
+
+engine_params:
+  gsplat:
+    render_url: http://127.0.0.1:18080/render
+    scene_manifest: configs/uav_dualcog/3dgs/gauu_smbu_scene.json
+    geometry_path: task_pipeline_data/UAV-DualCog-3DGS-Pilot/assets/gauu_smbu/gauu_v2_1/lidar_world_voxel_0p5m.npy
+    connect_on_init: true
+    launch_sim: false
+    request_timeout_sec: 240
+    capture_retries: 2
+    depth_fallback_when_lidar_empty: false
+    raycast_clearance_m: 0.75

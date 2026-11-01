@@ -2019,8 +2019,8 @@ def run_fuse(config: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="UAV-DualCog Stage 1: collect and fuse point clouds")
-    parser.add_argument("--config", type=str, default="configs/uav_dualcog/task_airsim_env_7.yaml")
+    parser = argparse.ArgumentParser(description="FlightMVSTG Step2: collect and fuse point clouds")
+    parser.add_argument("--config", type=str, default="configs/uav_dualcog/task_default.yaml")
     parser.add_argument("--mode", type=str, default="all", choices=["collect_raw", "fuse", "all"])
     parser.add_argument("--engine", type=str, default="airsim")
     parser.add_argument("--scene-id", type=str, default=None)
