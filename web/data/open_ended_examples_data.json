@@ -4,7 +4,7 @@
   "tasks": [
     {
       "task_id": "self_where",
-      "task_title": "Task 1 · Self-Relative Position Reasoning",
+      "task_title": "Task 1 · Landmark-relative Position Reasoning",
       "cognition": "Agent-State Reasoning",
       "modality": "image",
       "modification_summary": "Replaces multiple-choice letters [A, B, C, D] with open natural language direction fill-in ('Right', 'Front-Left', etc.), paired with strict normalized bounding box prediction.",
@@ -152,7 +152,7 @@
     },
     {
       "task_id": "env_where",
-      "task_title": "Task 3 · Landmark-Relative Position Reasoning",
+      "task_title": "Task 3 · Self-relative Position Reasoning",
       "cognition": "World-State Reasoning",
       "modality": "image",
       "modification_summary": "Replaces fixed directional choices with open relative-direction fill-in ('Front-Left', 'Right', etc.) relative to forward heading.",
@@ -225,7 +225,7 @@
           "semantic_status": "incorrect",
           "grounding_eval": "IoU = 0.720 (Acc@0.5 Passed)",
           "grounding_status": "correct",
-          "takeaway": "Qwen3.5-9B obtains 29.88% on open landmark-relative reasoning, localizing well but losing fine-grained directional granularity."
+          "takeaway": "Qwen3.5-9B obtains 29.88% on open self-relative reasoning, localizing well but losing fine-grained directional granularity."
         }
       ]
     },

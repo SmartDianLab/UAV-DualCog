@@ -9,7 +9,7 @@
   "tasks": [
     {
       "id": "self_where",
-      "title": "Self-relative Position Reasoning",
+      "title": "Landmark-relative Position Reasoning",
       "summary": "Infer the UAV position relative to the target landmark from a landmark-centric reference view and a current egocentric observation.",
       "modality": "image",
       "cognition": "Agent-State Reasoning",
@@ -87,7 +87,7 @@
     },
     {
       "id": "env_where",
-      "title": "Landmark-relative Direction Reasoning",
+      "title": "Self-relative Position Reasoning",
       "summary": "Judge where the target landmark lies relative to the UAV's current forward direction and ground it in the same observation.",
       "modality": "image",
       "cognition": "World-State Reasoning",

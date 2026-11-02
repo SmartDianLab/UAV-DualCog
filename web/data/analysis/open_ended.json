@@ -6,15 +6,15 @@
   "missing_response_policy": "Unreturned image responses are excluded from the reported completed-prediction denominator and are not silently imputed as errors.",
   "image": {
     "columns": [
-      "Self-relative Position: Acc",
-      "Self-relative Position: BBox Acc@0.5",
-      "Self-relative Position: mIoU",
-      "Future Observation: Acc",
-      "Future Observation: BBox Acc@0.5",
-      "Future Observation: mIoU",
       "Landmark-relative Position: Acc",
       "Landmark-relative Position: BBox Acc@0.5",
       "Landmark-relative Position: mIoU",
+      "Future Observation: Acc",
+      "Future Observation: BBox Acc@0.5",
+      "Future Observation: mIoU",
+      "Self-relative Position: Acc",
+      "Self-relative Position: BBox Acc@0.5",
+      "Self-relative Position: mIoU",
       "Action Decision: Acc",
       "Action Decision: BBox Acc@0.5",
       "Action Decision: mIoU"

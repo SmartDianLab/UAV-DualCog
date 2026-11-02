@@ -1705,7 +1705,7 @@
   ],
   "taskCorrelations": [
     {
-      "label": "Self-relative Position",
+      "label": "Landmark-relative Position",
       "n": 45,
       "pearson": 0.4822390080183948,
       "spearman": 0.30668379632543685
@@ -1717,7 +1717,7 @@
       "spearman": 0.4783697430373178
     },
     {
-      "label": "Landmark-relative Position",
+      "label": "Self-relative Position",
       "n": 45,
       "pearson": 0.5805297721763,
       "spearman": 0.6753871513840713
@@ -1751,8 +1751,8 @@
     {
       "id": "position",
       "title": "Position",
-      "agent": "Self-relative Position",
-      "world": "Landmark-relative Position",
+      "agent": "Landmark-relative Position",
+      "world": "Self-relative Position",
       "medium": "image",
       "models": 45,
       "min": 1024,

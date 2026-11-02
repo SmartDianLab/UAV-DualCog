@@ -140,7 +140,7 @@
     "groups": [
       {
         "task_id": "self_where",
-        "task_title": "Self-relative Position Reasoning",
+        "task_title": "Landmark-relative Position Reasoning",
         "examples": [
           {
             "example_id": "gauu_lfls_gauu_lfls_candidate_0038_self_shared_8way_010005_where",
@@ -152,7 +152,7 @@
             "task_modality": "image",
             "gold_answer": "C",
             "gold_bbox": "[0.478, 0.427, 0.549, 0.511]",
-            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Self-relative Position Reasoning question, the target is GT option C and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 3/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are Gemini 3.8 Flash, GPT-5.6 Sol, and Kimi K2.6, evidence-only cases are none, and 7/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Landmark-relative Position Reasoning question, the target is GT option C and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 3/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are Gemini 3.8 Flash, GPT-5.6 Sol, and Kimi K2.6, evidence-only cases are none, and 7/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",
@@ -401,7 +401,7 @@
             "task_modality": "image",
             "gold_answer": "A",
             "gold_bbox": "[0.074, 0.311, 0.336, 0.681]",
-            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.074, 0.311, 0.336, 0.681]. Across 10 available outputs, option prediction succeeds for 4/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 3/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and MiMo-V2.5). Semantic-only cases are GPT-6 Astra, evidence-only cases are Muse Spark 1.3 Contributor, GLM-5.3-Flash, and Qwen3.8-27B (+1 more), and 2/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.074, 0.311, 0.336, 0.681]. Across 10 available outputs, option prediction succeeds for 4/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 3/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and MiMo-V2.5). Semantic-only cases are GPT-6 Astra, evidence-only cases are Muse Spark 1.3 Contributor, GLM-5.3-Flash, and Qwen3.8-27B (+1 more), and 2/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",
@@ -650,7 +650,7 @@
             "task_modality": "image",
             "gold_answer": "A",
             "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
-            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 0/10 and landmark localization at IoU >= 0.5 for 4/10; both succeed for 0/10 (none). Semantic-only cases are none, evidence-only cases are Gemini 3.8 Flash, GLM-5.3-Flash, and Kimi K2.6 (+1 more), and 6/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 0/10 and landmark localization at IoU >= 0.5 for 4/10; both succeed for 0/10 (none). Semantic-only cases are none, evidence-only cases are Gemini 3.8 Flash, GLM-5.3-Flash, and Kimi K2.6 (+1 more), and 6/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",
@@ -1646,7 +1646,7 @@
       },
       {
         "task_id": "env_where",
-        "task_title": "Landmark-relative Position Reasoning",
+        "task_title": "Self-relative Position Reasoning",
         "examples": [
           {
             "example_id": "gauu_lfls_gauu_lfls_candidate_0038_env_shared_8way_010010_where",
@@ -1658,7 +1658,7 @@
             "task_modality": "image",
             "gold_answer": "D",
             "gold_bbox": "[0.478, 0.427, 0.549, 0.511]",
-            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Landmark-relative Position Reasoning question, the target is GT option D and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 5/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are GPT-6 Astra, Muse Spark 1.3 Contributor, and GLM-5.3-Flash (+2 more), evidence-only cases are none, and 5/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the dense green deciduous tree cluster with irregular shape located in urban gap in this Self-relative Position Reasoning question, the target is GT option D and BBox [0.478, 0.427, 0.549, 0.511]. Across 10 available outputs, option prediction succeeds for 5/10 and landmark localization at IoU >= 0.5 for 0/10; both succeed for 0/10 (none). Semantic-only cases are GPT-6 Astra, Muse Spark 1.3 Contributor, and GLM-5.3-Flash (+2 more), evidence-only cases are none, and 5/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",
@@ -1907,7 +1907,7 @@
             "task_modality": "image",
             "gold_answer": "A",
             "gold_bbox": "[0.127, 0.295, 0.347, 0.593]",
-            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.127, 0.295, 0.347, 0.593]. Across 10 available outputs, option prediction succeeds for 7/10 and landmark localization at IoU >= 0.5 for 8/10; both succeed for 6/10 (GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+3 more)). Semantic-only cases are Muse Spark 1.3 Contributor, evidence-only cases are Gemini 3.8 Flash and MiMo-V2.5, and 1/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the gray mid-rise building with flat roof and rectangular windows in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.127, 0.295, 0.347, 0.593]. Across 10 available outputs, option prediction succeeds for 7/10 and landmark localization at IoU >= 0.5 for 8/10; both succeed for 6/10 (GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+3 more)). Semantic-only cases are Muse Spark 1.3 Contributor, evidence-only cases are Gemini 3.8 Flash and MiMo-V2.5, and 1/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",
@@ -2156,7 +2156,7 @@
             "task_modality": "image",
             "gold_answer": "A",
             "gold_bbox": "[0.691, 0.421, 0.878, 0.660]",
-            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Landmark-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 9/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 6/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and GLM-5.3-Flash (+3 more)). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Muse Spark 1.3 Contributor, evidence-only cases are Qwen3.8-27B, and 0/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
+            "prediction_analysis": "For the gray low-rise building with flat roof and adjacent green courts in this Self-relative Position Reasoning question, the target is GT option A and BBox [0.691, 0.421, 0.878, 0.660]. Across 10 available outputs, option prediction succeeds for 9/10 and landmark localization at IoU >= 0.5 for 7/10; both succeed for 6/10 (Gemini 3.8 Flash, Qwen3.7-Plus, and GLM-5.3-Flash (+3 more)). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Muse Spark 1.3 Contributor, evidence-only cases are Qwen3.8-27B, and 0/10 fail both. The split outcomes show that reference-frame reasoning and localization of the same reconstructed landmark do not yet reliably coincide.",
             "predictions": [
               {
                 "model": "Gemini 3.8 Flash",

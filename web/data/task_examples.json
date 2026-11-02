@@ -3,9 +3,9 @@
   "groups": [
     {
       "group_id": "self_where",
-      "group_title": "Self-relative Position Reasoning",
+      "group_title": "Landmark-relative Position Reasoning",
       "task_id": "self_where",
-      "task_title": "Self-relative Position Reasoning",
+      "task_title": "Landmark-relative Position Reasoning",
       "examples": [
         {
           "example_id": "env_7_27_237_self_shared_4way_000149_where",
@@ -477,7 +477,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Right) and BBox [0.398, 0.384, 0.562, 0.674]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 1/16; both succeed for 0/16 (none). Semantic-only cases are Claude Opus 4.8 and MiMo-V2.5, evidence-only cases are Gemini 3.8 Flash, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Right) and BBox [0.398, 0.384, 0.562, 0.674]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 1/16; both succeed for 0/16 (none). Semantic-only cases are Claude Opus 4.8 and MiMo-V2.5, evidence-only cases are Gemini 3.8 Flash, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_11_12_231_self_shared_4way_000021_where",
@@ -965,7 +965,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Left) and BBox [0.489, 0.370, 0.513, 0.654]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 1/16; both succeed for 0/16 (none). Semantic-only cases are GLM-5.3-Flash and MiMo-V2.5, evidence-only cases are Gemini 3.8 Flash, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Left) and BBox [0.489, 0.370, 0.513, 0.654]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 1/16; both succeed for 0/16 (none). Semantic-only cases are GLM-5.3-Flash and MiMo-V2.5, evidence-only cases are Gemini 3.8 Flash, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_21_1_12_self_shared_4way_000029_where",
@@ -1389,7 +1389,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option B (Left) and BBox [0.367, 0.417, 0.634, 0.663]. Across 16 available outputs, option prediction succeeds for 8/16 and spatial grounding for 7/16; both succeed for 5/16 (GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+2 more)). Semantic-only cases are InternVL 3.5-30B-A3B, SpaceR, and SpaceThinker, evidence-only cases are GPT-5.6 Sol and Kimi K2.6, and 6/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option B (Left) and BBox [0.367, 0.417, 0.634, 0.663]. Across 16 available outputs, option prediction succeeds for 8/16 and spatial grounding for 7/16; both succeed for 5/16 (GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+2 more)). Semantic-only cases are InternVL 3.5-30B-A3B, SpaceR, and SpaceThinker, evidence-only cases are GPT-5.6 Sol and Kimi K2.6, and 6/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_23_10_34_self_shared_4way_000133_where",
@@ -1813,7 +1813,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option D (Left) and BBox [0.373, 0.440, 0.625, 0.578]. Across 16 available outputs, option prediction succeeds for 3/16 and spatial grounding for 6/16; both succeed for 3/16 (GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.1 Pro Preview). Semantic-only cases are none, evidence-only cases are MiMo-V2.5, Qwen3.8-27B, and SpaceOm, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option D (Left) and BBox [0.373, 0.440, 0.625, 0.578]. Across 16 available outputs, option prediction succeeds for 3/16 and spatial grounding for 6/16; both succeed for 3/16 (GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.1 Pro Preview). Semantic-only cases are none, evidence-only cases are MiMo-V2.5, Qwen3.8-27B, and SpaceOm, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_21_102_self_shared_4way_000029_where",
@@ -2285,7 +2285,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Right) and BBox [0.434, 0.333, 0.524, 0.694]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 3/16; both succeed for 0/16 (none). Semantic-only cases are Claude Opus 4.8 and Qwen3.7-Plus, evidence-only cases are Gemini 3.1 Pro Preview, GLM-5.3-Flash, and MiMo-V2.5, and 11/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Right) and BBox [0.434, 0.333, 0.524, 0.694]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 3/16; both succeed for 0/16 (none). Semantic-only cases are Claude Opus 4.8 and Qwen3.7-Plus, evidence-only cases are Gemini 3.1 Pro Preview, GLM-5.3-Flash, and MiMo-V2.5, and 11/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_16_33_403_self_shared_8way_000127_where",
@@ -2741,7 +2741,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option B (Front) and BBox [0.438, 0.315, 0.542, 0.740]. Across 16 available outputs, option prediction succeeds for 0/16 and spatial grounding for 7/16; both succeed for 0/16 (none). Semantic-only cases are none, evidence-only cases are GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+4 more), and 9/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option B (Front) and BBox [0.438, 0.315, 0.542, 0.740]. Across 16 available outputs, option prediction succeeds for 0/16 and spatial grounding for 7/16; both succeed for 0/16 (none). Semantic-only cases are none, evidence-only cases are GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+4 more), and 9/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_26_107_self_shared_8way_000067_where",
@@ -3213,7 +3213,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option D (Front-Right) and BBox [0.368, 0.432, 0.626, 0.582]. Across 16 available outputs, option prediction succeeds for 6/16 and spatial grounding for 10/16; both succeed for 4/16 (GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+1 more)). Semantic-only cases are Claude Opus 4.8 and Kimi K2.6, evidence-only cases are Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and GLM-5.3-Flash (+3 more), and 4/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option D (Front-Right) and BBox [0.368, 0.432, 0.626, 0.582]. Across 16 available outputs, option prediction succeeds for 6/16 and spatial grounding for 10/16; both succeed for 4/16 (GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+1 more)). Semantic-only cases are Claude Opus 4.8 and Kimi K2.6, evidence-only cases are Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and GLM-5.3-Flash (+3 more), and 4/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_7_20_134_self_shared_4way_000129_where",
@@ -3669,7 +3669,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option B (Back) and BBox [0.435, 0.345, 0.595, 0.712]. Across 16 available outputs, option prediction succeeds for 7/16 and spatial grounding for 2/16; both succeed for 1/16 (GLM-5.3-Flash). Semantic-only cases are Claude Opus 4.8, GPT-6 Astra, and Qwen3.7-Plus (+3 more), evidence-only cases are SpaceThinker, and 8/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option B (Back) and BBox [0.435, 0.345, 0.595, 0.712]. Across 16 available outputs, option prediction succeeds for 7/16 and spatial grounding for 2/16; both succeed for 1/16 (GLM-5.3-Flash). Semantic-only cases are Claude Opus 4.8, GPT-6 Astra, and Qwen3.7-Plus (+3 more), evidence-only cases are SpaceThinker, and 8/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_11_45_627_self_shared_4way_000005_where",
@@ -4141,7 +4141,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option D (Left) and BBox [0.439, 0.353, 0.554, 0.726]. Across 16 available outputs, option prediction succeeds for 0/16 and spatial grounding for 6/16; both succeed for 0/16 (none). Semantic-only cases are none, evidence-only cases are Claude Opus 4.8, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+3 more), and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option D (Left) and BBox [0.439, 0.353, 0.554, 0.726]. Across 16 available outputs, option prediction succeeds for 0/16 and spatial grounding for 6/16; both succeed for 0/16 (none). Semantic-only cases are none, evidence-only cases are Claude Opus 4.8, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+3 more), and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_15_42_self_shared_8way_000095_where",
@@ -4613,7 +4613,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option C (Back-Right) and BBox [0.399, 0.436, 0.627, 0.582]. Across 16 available outputs, option prediction succeeds for 4/16 and spatial grounding for 6/16; both succeed for 3/16 (Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and Qwen3.8-27B). Semantic-only cases are SpaceThinker, evidence-only cases are GPT-6 Astra, GLM-5.3-Flash, and MiMo-V2.5, and 9/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option C (Back-Right) and BBox [0.399, 0.436, 0.627, 0.582]. Across 16 available outputs, option prediction succeeds for 4/16 and spatial grounding for 6/16; both succeed for 3/16 (Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and Qwen3.8-27B). Semantic-only cases are SpaceThinker, evidence-only cases are GPT-6 Astra, GLM-5.3-Flash, and MiMo-V2.5, and 9/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         }
       ]
     },
@@ -8374,9 +8374,9 @@
     },
     {
       "group_id": "env_where",
-      "group_title": "Landmark-relative Position Reasoning",
+      "group_title": "Self-relative Position Reasoning",
       "task_id": "env_where",
-      "task_title": "Landmark-relative Position Reasoning",
+      "task_title": "Self-relative Position Reasoning",
       "examples": [
         {
           "example_id": "env_16_33_417_env_shared_4way_000062_where",
@@ -8832,7 +8832,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option C (Right) and BBox [0.693, 0.289, 0.870, 0.787]. Across 16 available outputs, option prediction succeeds for 7/16 and spatial grounding for 6/16; both succeed for 4/16 (GPT-6 Astra, Gemini 3.1 Pro Preview, and GLM-5.3-Flash (+1 more)). Semantic-only cases are GPT-5.6 Sol, Qwen3.7-Plus, and Qwen3.8-27B, evidence-only cases are Gemini 3.8 Flash and MiMo-V2.5, and 7/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option C (Right) and BBox [0.693, 0.289, 0.870, 0.787]. Across 16 available outputs, option prediction succeeds for 7/16 and spatial grounding for 6/16; both succeed for 4/16 (GPT-6 Astra, Gemini 3.1 Pro Preview, and GLM-5.3-Flash (+1 more)). Semantic-only cases are GPT-5.6 Sol, Qwen3.7-Plus, and Qwen3.8-27B, evidence-only cases are Gemini 3.8 Flash and MiMo-V2.5, and 7/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_7_11_56_env_shared_4way_000146_where",
@@ -9304,7 +9304,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Left) and BBox [0.100, 0.338, 0.363, 0.784]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are SpaceOm and SpaceThinker, evidence-only cases are none, and 14/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Left) and BBox [0.100, 0.338, 0.363, 0.784]. Across 16 available outputs, option prediction succeeds for 2/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are SpaceOm and SpaceThinker, evidence-only cases are none, and 14/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_23_30_314_env_shared_4way_000106_where",
@@ -9760,7 +9760,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option D (Front) and BBox [0.482, 0.354, 0.518, 0.727]. Across 16 available outputs, option prediction succeeds for 3/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are SpaceOm, SpaceR, and ViLaSR, evidence-only cases are none, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option D (Front) and BBox [0.482, 0.354, 0.518, 0.727]. Across 16 available outputs, option prediction succeeds for 3/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are SpaceOm, SpaceR, and ViLaSR, evidence-only cases are none, and 13/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_20_99_684_env_shared_8way_000144_where",
@@ -10184,7 +10184,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option C (Front) and BBox [0.364, 0.340, 0.616, 0.728]. Across 16 available outputs, option prediction succeeds for 9/16 and spatial grounding for 6/16; both succeed for 6/16 (GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+3 more)). Semantic-only cases are Qwen3.7-Plus, SpaceR, and SpaceThinker, evidence-only cases are none, and 7/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option C (Front) and BBox [0.364, 0.340, 0.616, 0.728]. Across 16 available outputs, option prediction succeeds for 9/16 and spatial grounding for 6/16; both succeed for 6/16 (GPT-6 Astra, Gemini 3.8 Flash, and Gemini 3.1 Pro Preview (+3 more)). Semantic-only cases are Qwen3.7-Plus, SpaceR, and SpaceThinker, evidence-only cases are none, and 7/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_21_87_env_shared_4way_000110_where",
@@ -10656,7 +10656,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Front) and BBox [0.447, 0.286, 0.553, 0.747]. Across 16 available outputs, option prediction succeeds for 10/16 and spatial grounding for 3/16; both succeed for 1/16 (GPT-6 Astra). Semantic-only cases are Qwen3.7-Plus, GLM-5.3-Flash, and Kimi K2.6 (+6 more), evidence-only cases are Gemini 3.8 Flash and Gemini 3.1 Pro Preview, and 4/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Front) and BBox [0.447, 0.286, 0.553, 0.747]. Across 16 available outputs, option prediction succeeds for 10/16 and spatial grounding for 3/16; both succeed for 1/16 (GPT-6 Astra). Semantic-only cases are Qwen3.7-Plus, GLM-5.3-Flash, and Kimi K2.6 (+6 more), evidence-only cases are Gemini 3.8 Flash and Gemini 3.1 Pro Preview, and 4/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_7_20_118_env_shared_8way_000084_where",
@@ -11128,7 +11128,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option D (Front-Right) and BBox [0.733, 0.342, 0.999, 0.818]. Across 16 available outputs, option prediction succeeds for 8/16 and spatial grounding for 1/16; both succeed for 1/16 (SpaceOm). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.1 Pro Preview (+4 more), evidence-only cases are none, and 8/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option D (Front-Right) and BBox [0.733, 0.342, 0.999, 0.818]. Across 16 available outputs, option prediction succeeds for 8/16 and spatial grounding for 1/16; both succeed for 1/16 (SpaceOm). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.1 Pro Preview (+4 more), evidence-only cases are none, and 8/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_49_224_env_shared_4way_000026_where",
@@ -11600,7 +11600,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Left) and BBox [0.026, 0.378, 0.428, 0.803]. Across 16 available outputs, option prediction succeeds for 12/16 and spatial grounding for 9/16; both succeed for 8/16 (GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.8 Flash (+5 more)). Semantic-only cases are Kimi K2.6, InternVL 3.5-30B-A3B, and SpaceOm (+1 more), evidence-only cases are MiMo-V2.5, and 3/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Left) and BBox [0.026, 0.378, 0.428, 0.803]. Across 16 available outputs, option prediction succeeds for 12/16 and spatial grounding for 9/16; both succeed for 8/16 (GPT-6 Astra, GPT-5.6 Sol, and Gemini 3.8 Flash (+5 more)). Semantic-only cases are Kimi K2.6, InternVL 3.5-30B-A3B, and SpaceOm (+1 more), evidence-only cases are MiMo-V2.5, and 3/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_20_31_273_env_shared_4way_000034_where",
@@ -12024,7 +12024,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Right) and BBox [0.647, 0.308, 0.890, 0.799]. Across 16 available outputs, option prediction succeeds for 5/16 and spatial grounding for 2/16; both succeed for 1/16 (Gemini 3.1 Pro Preview). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+1 more), evidence-only cases are Gemini 3.8 Flash, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Right) and BBox [0.647, 0.308, 0.890, 0.799]. Across 16 available outputs, option prediction succeeds for 5/16 and spatial grounding for 2/16; both succeed for 1/16 (Gemini 3.1 Pro Preview). Semantic-only cases are GPT-6 Astra, GPT-5.6 Sol, and Qwen3.7-Plus (+1 more), evidence-only cases are Gemini 3.8 Flash, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_7_2_36_env_shared_8way_000120_where",
@@ -12512,7 +12512,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Front) and BBox [0.427, 0.293, 0.572, 0.748]. Across 16 available outputs, option prediction succeeds for 1/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are Muse Spark 1.3 Contributor, evidence-only cases are none, and 15/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Front) and BBox [0.427, 0.293, 0.572, 0.748]. Across 16 available outputs, option prediction succeeds for 1/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are Muse Spark 1.3 Contributor, evidence-only cases are none, and 15/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         },
         {
           "example_id": "env_9_15_42_env_shared_4way_000094_where",
@@ -12968,7 +12968,7 @@
             }
           ],
           "answer_media_panels": [],
-          "prediction_analysis": "This Landmark-relative Position Reasoning question uses GT Option A (Front) and BBox [0.484, 0.411, 0.515, 0.657]. Across 16 available outputs, option prediction succeeds for 6/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and SpaceOm (+3 more), evidence-only cases are none, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
+          "prediction_analysis": "This Self-relative Position Reasoning question uses GT Option A (Front) and BBox [0.484, 0.411, 0.515, 0.657]. Across 16 available outputs, option prediction succeeds for 6/16 and spatial grounding for 0/16; both succeed for 0/16 (none). Semantic-only cases are Gemini 3.8 Flash, Gemini 3.1 Pro Preview, and SpaceOm (+3 more), evidence-only cases are none, and 10/16 fail both. This exposes whether reference-frame reasoning and localization of the shared landmark succeed together."
         }
       ]
     },
