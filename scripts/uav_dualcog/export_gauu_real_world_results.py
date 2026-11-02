@@ -19,9 +19,9 @@ LANCZOS = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
 
 
 TASK_TITLES = {
-    "self_where": "Self-relative Position Reasoning",
+    "self_where": "Landmark-relative Position Reasoning",
     "self_what": "Action-conditioned Future Observation Prediction",
-    "env_where": "Landmark-relative Position Reasoning",
+    "env_where": "Self-relative Position Reasoning",
     "env_how": "Goal-conditioned Action Decision",
 }
 SCENE_NAMES = {"gauu_upper_campus": "Upper Campus", "gauu_smbu": "SMBU", "gauu_lfls": "LFLS"}

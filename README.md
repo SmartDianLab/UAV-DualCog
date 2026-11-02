@@ -45,6 +45,15 @@ This repository provides the construction, evaluation, and training code for **U
 
 For benchmark definitions, leaderboard interpretation, and supplementary explanations, read the website pages in order: Home -> Benchmark -> Construction -> Evaluation -> Leaderboard -> Analysis -> Sim-to-Real -> Training -> Usage.
 
+The image tasks use the following stable manifest IDs:
+
+| Manifest ID | Task | Cognition |
+| --- | --- | --- |
+| `self_where` | Landmark-relative Position Reasoning: locate the UAV relative to the landmark | Agent-State |
+| `self_what` | Action-conditioned Future Observation Prediction | Agent-State |
+| `env_where` | Self-relative Position Reasoning: locate the landmark relative to the UAV | World-State |
+| `env_how` | Goal-conditioned Action Decision | World-State |
+
 ## 1) What Is Included
 
 - `scripts/uav_dualcog/`: Stage 1-4 entrypoints, pipeline orchestrator, shared utilities, 3DGS construction tools, and optimization-probe code.
