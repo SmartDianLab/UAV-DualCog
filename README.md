@@ -24,7 +24,7 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2607.16193"><img src="https://img.shields.io/badge/arXiv-2607.16193-b31b1b.svg" alt="arXiv paper"></a>
   <a href="https://smartdianlab.github.io/UAV-DualCog/"><img src="https://img.shields.io/badge/Project-Website-2b8a6e.svg" alt="Project website"></a>
-  <a href="https://huggingface.co/datasets/Lozumi/UAV-DualCog"><img src="https://img.shields.io/badge/Dataset-Hugging%20Face-ffcf40.svg" alt="Hugging Face dataset"></a>
+  <a href="https://huggingface.co/datasets/Lozumi/UAV-DualCog"><img src="https://img.shields.io/badge/Hugging%20Face-Incomplete-ffcf40.svg" alt="Hugging Face dataset (incomplete)"></a>
   <a href="https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog"><img src="https://img.shields.io/badge/Dataset-ModelScope-2277dd.svg" alt="ModelScope dataset"></a>
   <a href="https://github.com/SmartDianLab/UAV-DualCog"><img src="https://img.shields.io/github/stars/SmartDianLab/UAV-DualCog" alt="GitHub stars"></a>
 </p>
@@ -39,7 +39,7 @@ This repository provides the construction, evaluation, and training code for **U
 - Project website: https://smartdianlab.github.io/UAV-DualCog/
 - Paper: https://arxiv.org/abs/2607.16193
 - Code: https://github.com/SmartDianLab/UAV-DualCog
-- Dataset (Hugging Face): https://huggingface.co/datasets/Lozumi/UAV-DualCog
+- Dataset (Hugging Face, **incomplete**): https://huggingface.co/datasets/Lozumi/UAV-DualCog
 - Dataset (ModelScope): https://www.modelscope.cn/datasets/Lozumi/UAV-DualCog
 - AerialVLN simulator: https://www.kaggle.com/datasets/shuboliu/aerialvln-simulators
 
