@@ -924,9 +924,9 @@ These checks confirm runnable CLI interfaces before launching long construction 
 Please cite the current arXiv version:
 
 ```bibtex
-@misc{liu2026knowingselfunderstandingworld,
-      title={Knowing the Self, Understanding the World: A Dual-Cognition Benchmark for UAV Spatio-temporal Reasoning with MLLMs},
-      author={Like Liu and Zhengzheng Xu and Haitao He and Hongzhe Li and Shuchang Zhang and Dian Shao},
+@misc{liu2026uavdualcogdualcognitionbenchmarkgrounded,
+      title={UAV-DualCog: A Dual-Cognition Benchmark for Grounded UAV Agent-World Reasoning with MLLMs},
+      author={Like Liu and Zhengzheng Xu and Hongzhe Li and Lin Wang and Dian Shao},
       year={2026},
       eprint={2607.16193},
       archivePrefix={arXiv},
